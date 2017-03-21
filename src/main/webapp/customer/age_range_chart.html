@@ -1,0 +1,208 @@
+<div id="main" class="lift:surround?with=calendar;at=content">
+  <link rel="stylesheet" type="text/css" href="/select2/select2.css" />
+  <script src="/select2/select2.js"></script><script src="/select2/select2_locale_pt-BR.js"></script>
+  <script src="/js/reports.js"></script>
+  <script src="/js/jquery.tablesorter.pager.js"></script>
+  <script type="text/javascript">
+  $(function(){
+//    $("#start").val(getDateBr(new Date().getStartOfMonth()));
+//    $("#end").val(getDateBr(new Date()));    
+    var total_count = 0;
+    var fields = [];
+    fields[1] = "int";
+    var url = "/customer/age_range_chart";
+    var request = function(){
+      total_count = 0;
+      renderReport(url,fields,$("#form_report").serializeObject(),"#grid",function(data){
+        data.forEach(function(row){
+          total_count += parseInt(row[1]);
+        });
+        $("#total_count").val(total_count);
+        drawChart(jQuery.merge([["Form Pag", "Valor"]],data.map(function(i){ return [i[0], i[1]]})));
+      });
+    }
+    $("#send").click(request);
+    $("#agerange").ageRangeField(true);
+    $("#mapIcon").mapIcon(true);
+    $("#noprojectclass").projectClassField(true);
+    $("#projectclass").projectClassField(true);
+    $("#project").projectField(true);
+    $("#noproject").projectField(true);
+    $("#civilstatus").civilStatusField(true,false);
+    $("#offsale").offSaleField(true);
+    $("#unit").unitField(true,false);
+  });
+  </script>
+ <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+ <script type="text/javascript">
+      google.load("visualization", "1", {packages:["corechart"]});
+      function drawChart(data) {
+        data = data.map(function(item, i){
+          try{
+            if( i > 0 ){
+              item[1] = window.parseFloat(item[1]);
+            }
+          }catch(e){};       
+          return item;
+        });
+        data = google.visualization.arrayToDataTable(data);
+        var options = {title:" Distribuição por Faixa Etária"}
+        var typeg = $("#graphtype").val()
+        if (typeg == "1") {
+          var chartP = new google.visualization.PieChart(document.getElementById('chart_div'));
+            chartP.draw(data, options);
+        } else {
+          var chartB = new google.visualization.BarChart(document.getElementById('chart_div'));
+            chartB.draw(data, options);
+        }
+      }
+  </script>     
+    <form id="form_report" class="well form-search" method='get'>   
+      <h1>
+        <span class="lift:CompanySnippet.thumb"> </span>Relatório Distribuição por Faixa Etária
+      </h1>
+      <div class="row">
+          <span class='span9'>
+            <div class="clearfix">
+              <label for="mapIcon">Ícone / Status</label>
+                <div class="input">
+                  <div class="inline-inputs">
+                    <div style="float:left; padding-right:10px" class="input-prepend">
+                      <select multiple size="30" id="mapIcon" class='local_storage medium' name="mapIcon">
+                      </select>                               
+                    </div>
+                    <div style="float:left; padding-right:10px" class="input-prepend">
+                      <select multiple="multiple" class="medium" id="status" name="status" value="" >
+                          <option value="All">Todos</option>
+                          <option value="1">Ativo</option>
+                          <option value="4">Inativo</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+            </div>
+            <div class="lift:SecuritySnippet.hasEventModule clearfix">
+              <label for="projectclass"><span data-i18n='Classe Evento'></span></label>
+              <div class="input">
+                <div class='inline-inputs'>
+                  <div class="input-prepend" style='float:left; padding-right:10px'>
+                    <select multiple id='projectclass' class="medium projectclass" name='projectclass'></select>
+                    <span class="help-block">Participa de / não participa</span>
+                  </div>
+                  <div class="input-prepend" style='float:left; padding-right:10px'>
+                    <select multiple id='noprojectclass' class="medium noprojectclass" name='noprojectclass'></select>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="lift:SecuritySnippet.hasEventModule clearfix">
+              <label for="project"><span data-i18n='Evento'></span></label>
+              <div class="input">
+                <div class='inline-inputs'>
+                  <div class="input-prepend" style='float:left; padding-right:10px'>
+                      <select multiple id='project' class="medium project" name='project'></select>
+                      <span class="help-block">Participa de / não participa</span>
+                  </div>
+                  <div class="input-prepend" style='float:left; padding-right:10px'>
+                      <select multiple id='noproject' class="medium noproject" name='noproject'></select>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="clearfix">
+              <label for="start">Sexo / Estado Civil</label>
+                <div class="input">
+                  <div class="inline-inputs">
+                    <div style="float:left; padding-right:10px" class="input-prepend">
+                      <select multiple="multiple" class="medium" id="sex" name="sex" value="" >
+                          <option value="All">Todos</option>
+                          <option value="F">Feminino</option>
+                          <option value="M">Masculino</option>
+                          <option value="N">Não Informado</option>
+                      </select>
+                    </div>
+                    <div style="float:left; padding-right:10px" class="input-prepend">
+                      <select multiple id='civilstatus' class="medium civilstatus" name='civilstatus'></select>
+                    </div>
+                  </div>
+                </div>
+            </div>
+            <div class="clearfix">
+              <label for="agerange">
+                Faixa etária
+              </label>
+                <div class="input">
+                  <div class="inline-inputs">
+                    <select class="local_storage" name="agerange" values ="1" id='agerange'></select>
+                  </div>
+                </div>
+            </div>
+                <div class="clearfix">
+                  <label for="graphtype">Tipo de Gráfico</label>
+                   <div class="input">
+                      <div class='inline-inputs'>
+                        <div class="input-prepend" style='float:left; padding-right:10px'>
+                          <select class="medium local_storage" id="graphtype" name="graphtype">
+                              <option value="1">Pizza</option>
+                              <option value="2">Barra</option>
+                          </select>
+                        </div>
+                      </div>
+                   </div>
+                </div>
+            <div class="clearfix">
+                <div class="input">
+                  <input type='button' class="btn success" value="Buscar" id='send' />
+                </div>
+            </div>      
+          </span>
+          <span class="span8">
+            <input type="hidden" class="has-unit-module lift:SecuritySnippet.hasUnitModule" value="1">
+            <div class="clearfix lift:SecuritySnippet.hasUnitModule">
+              <label for="unit">Unidade </label>
+                <div class="input">
+                  <div class="inline-inputs">
+                    <select id="unit" name="unit"></select>
+                    <span class="help-block">Unidade do cadastro do cliente, mesmo que ele tenha sido atendido em outra unidade
+                    </span>
+                  </div>
+                </div>
+            </div>
+            <div class="clearfix lift:SecuritySnippet.hasOffSaleModule">
+              <label for="offsale">Convênio</label>
+              <div class="input">
+                <div class="inline-inputs">
+                  <div style="float:left; padding-right:10px" class="input-prepend">
+                    <span class="add-on"><img width="16" src="/images/agreement.png"></span> 
+                    <select class= 'local_storage xlarge' id='offsale'  name="offsale"></select>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </span>
+          <span class="span12">
+            <div class="clearfix">
+              <label for="total">Total </label>
+              <div class="input">
+                <div class="inline-inputs">
+                  <div class="lift:SecuritySnippet.isShowSalesToUser input-prepend" style="float:left; padding-right:10px">
+                    <span class="add-on"><img src="/images/add.png" width="16"></span>
+                    <input class="small" id="total_count" name="total_count" size="19" placeholder="0.00" type="text">
+                    <span class="help-block">Total</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </span>
+      </div>
+  </form>
+  <div id="chart_div" style="width: 900px; height: 500px;"></div>
+  <table id="grid" class="bordered-table zebra-striped">
+      <thead>
+        <th>Faixa Etária</th>
+        <th>Quantidade</th>
+      </thead>
+      <tbody>
+      </tbody>
+  </table>
+ </div>

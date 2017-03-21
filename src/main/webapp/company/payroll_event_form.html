@@ -1,0 +1,68 @@
+<div id="main" class="lift:surround?with=calendar&at=content">
+    <form class="lift:form.ajax">
+      <div class="well">
+        <h1><span class="lift:CompanySnippet.thumb"> </span>Verbas de Folha de Pagamento</h1>
+        <label for="btn"></label>
+        <a class="btn primary" href="/company/payroll_event_list">Lista</a>
+        <input class="btn success" type="submit" value="Salvar">
+        <a class="btn primary" href="/company/payroll_event_form">Inserir novo</a>
+      </div>
+      <div class="lift:PayrollEventSnippet.maintain">
+        <span>
+          <div class="clearfix">
+            <label for="name">Nome</label>        
+             <div class="input">
+                <div class='inline-inputs'>
+                  <div class="input-prepend" style='float:left; padding-right:10px'>
+                    <input class="large" id="name" name="name" size="30" type="text"/>
+                  </div>
+                  <div class="input-prepend">
+                    <input class="medium" id="short_name" name="short_name" size="30" type="text"/>
+                  </div>
+                  <span class="help-block">Nome completo e nome reduzido, este último usado em alguns relatórios</span>
+              </div>
+             </div>
+          </div>
+          <div class="clearfix">
+            <label for="type">Tipo</label>
+             <div class="input">
+                <input class="medium" id="type" name="type" size="30" type="text"/>
+                <span class="help-block">Tipo da verba</span>
+             </div>
+          </div>
+          <div class="clearfix">
+            <label for="isCommition">Consolida Comissão?</label>        
+             <div class="input">
+                <div class='inline-inputs'>
+                    <input name='isCommition'/>
+                </div>
+             </div>
+          </div>
+          <div class="clearfix">
+            <label for="isAdvance">Consolida Adiantamento?</label>        
+             <div class="input">
+                <div class='inline-inputs'>
+                    <input name='isAdvance'/>
+                </div>
+             </div>
+          </div>
+          <div class="clearfix">
+            <label for="isLiquid">Gera o LÍquido?</label>        
+             <div class="input">
+                <div class='inline-inputs'>
+                    <input name='isLiquid'/>
+                </div>
+             </div>
+          </div>
+          <div class="clearfix">
+            <label for="repeat">Repete?</label>        
+             <div class="input">
+                <div class='inline-inputs'>
+                    <input name='repeat'/>
+                </div>
+             </div>
+          </div>
+        </span>
+      </div>
+    </form>
+</div>

@@ -1,0 +1,37 @@
+<div id="main" class="lift:surround?with=calendar;at=content">
+	<div class="well">
+	  	<h1><span class="lift:CompanySnippet.thumb"> </span>Verbas de Folha de Pagamento</h1>
+        <label for="btn"></label>
+		<a class="btn primary" href="/company/payroll_event_form">Inserir novo</a>
+	</div>
+	<table class="bordered-table zebra-striped">
+		<thead>
+			<th>Id</th>
+			<th>Nome</th>		
+			<th>Ações</th>
+		</thead>
+		<tbody>
+			<tr class="lift:PayrollEventSnippet:list">
+				<td>
+					<f:id></f:id>
+				</td>
+				<td>
+					<f:name></f:name>
+				</td>
+				<td>
+					<form method="post">
+						<span>
+							<f:actions></f:actions>
+						</span>
+						<span>
+							<f:delete></f:delete>
+						</span>
+						<span style="display:none">
+							<f:_id></f:_id>
+						</span>
+					</form>
+				</td>				
+			</span>
+		</tbody>
+	</table>
+</div>

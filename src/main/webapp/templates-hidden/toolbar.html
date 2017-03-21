@@ -1,0 +1,283 @@
+<div class="topbar-wrapper" style="z-index: 5;">
+    <!--div id="key_map_model" class="modal hide fade" style="width: 50%; left: 25%; margin: auto auto auto auto; top:5%; height:100%; max-height:100%;">
+        <div class="modal-header">
+            <a href="/docs/shortcuts.html" class="close">&times;</a>
+            <h3>Atalhos - H Help</h3>
+        </div>
+        <div class="modal-body">
+            <div class="row span9">
+                <div class="span3 column_help">
+                    <dl class="keyboard-mappings">
+                        <dt>P</dt>
+                        <dd>Cadasto de Profissionais</dd>
+                    </dl>
+                    <dl class="keyboard-mappings">
+                        <dt>C</dt>
+                        <dd>Cadastro de Clientes</dd>
+                    </dl>
+                    <dl class="keyboard-mappings">
+                        <dt>S</dt>
+                        <dd>Cadastro de Serviços</dd>
+                    </dl>
+                    <dl class="keyboard-mappings">
+                        <dt>A</dt>
+                        <dd>Agenda</dd>
+                    </dl>
+                    <dl class="keyboard-mappings">
+                        <dt>E</dt>
+                        <dd>Estoque - Produtos</dd>
+                    </dl>
+                    <dl class="keyboard-mappings">
+                        <dt>F</dt>
+                        <dd>Financeiro</dd>
+                    </dl>
+                    <dl class="keyboard-mappings">
+                        <dt>R</dt>
+                        <dd>Relatórios</dd>
+                    </dl>
+                    <dl class="keyboard-mappings">
+                        <dt>U</dt>
+                        <dd>Unidades lista/troca</dd>
+                    </dl>
+                    <dl class="keyboard-mappings">
+                        <dt>O</dt>
+                        <dd>Comanda/Lista Pacientes</dd>
+                    </dl>
+                </dl>
+                </div><!-- /.column.first >
+                <div class='span3'>
+                    <dl class="keyboard-mappings">
+                        <dt>#</dt>
+                        <dd>Abertura de Caixa</dd>
+                    </dl>
+                    <dl class="keyboard-mappings">
+                        <dt>X</dt>
+                        <dd>Lançamento de Caixa</dd>
+                    </dl>
+                    <dl class="keyboard-mappings">
+                        <dt>T</dt>
+                        <dd>Consultar Agendamentos</dd>
+                    </dl>
+                    <dl class="keyboard-mappings">
+                        <dt>K</dt>
+                        <dd>Conferência de Comanda</dd>
+                    </dl>
+                    <dl class="keyboard-mappings">
+                        <dt>L</dt>
+                        <dd>Profissionais X Serviços</dd>
+                    </dl>
+                    <dl class="keyboard-mappings">
+                        <dt>Y</dt>
+                        <dd>Agendamento Periódico</dd>
+                    </dl>
+                    <dl class="keyboard-mappings">
+                        <dt>B</dt>
+                        <dd>Bloqueio Agenda Profissional</dd>
+                    </dl>
+                    <dl class="keyboard-mappings">
+                        <dt>D</dt>
+                        <dd>Dashboard</dd>
+                    </dl>
+                    <dl class="keyboard-mappings">
+                        <dt>N</dt>
+                        <dd>Notificar - E-mail SMS Facebook</dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            Atalhos principais correspondem à primeira letra do menu superior
+        </div>
+    </div-->
+    <div id="help_modal" class="modal hide fade">
+        <div class="modal-header">
+            <a href="#" class="close">&times;</a>
+            <h3>Informação</h3>
+        </div>
+        <div class="modal-body" style="height: 79%;">
+            <iframe src="" id='help_iframe' style="width: 100%; height: 100%;" frameborder="0">                
+            </iframe>
+        </div>
+        <!--
+        <div class="modal-footer">
+            <p>
+                Caso queira falar conosco (31) 99169-3247 - (31) 99154-0340, contacte-nos via whatsapp ou e-mail: suporte@vilarika.com.br
+            </p>
+        </div>
+        -->
+    </div>
+    <div id="messages_modal" class="modal hide fade">
+        <div class="modal-header">
+            <a href="#" class="close">&times;</a>
+            <h3>Alertas</h3>
+        </div>
+        <div class="modal-body">
+        </div>
+        <div class="modal-footer">
+        </div>
+    </div>
+    <div id="send_messages_modal" class="modal hide fade">
+        <div class="modal-header">
+            <a href="#" class="close">&times;</a>
+            <h3>Mensagens</h3>
+        </div>
+        <div class="modal-body">
+            <form>
+                <div class="clearfix">
+                    <label for="message_title">Título </label>
+                    <div class="input">
+                        <input name='message_title' id="message_title" />
+                    </div>
+                </div>
+                <div class="clearfix">
+                    <label for="message_message">Mensagem </label>
+                    <div class="input">
+                        <textarea name="message_message" id="message_message"></textarea>
+                    </div>
+                </div>
+                <div class="clearfix">
+                    <label for="message_groups">Grupos </label>
+                    <div class="input">
+                        <select name='message_groups' id="message_groups">
+                        </select>
+                    </div>
+                </div>
+                <div class="clearfix">
+                    <label for="message_message">Usuários </label>
+                    <div class="input">
+                        <select class="alow_all" name='message_users' id="message_users" multiple="multiple">
+                        </select>
+                    </div>
+                </div>
+                <div class="clearfix">
+                    <label for="">Data Expiração</label>
+                    <div class="input">
+                        <div class="inline-inputs">
+                            <div class="input-prepend" style="float:left; padding-right:10px">
+                                <span class="add-on"><img width="16" src="/images/calendar_addon.png"></span>
+                                <input type="text" class="input-small date next_week" id='expirationdate' name="expirationdate" placeholder="Expiração">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="clearfix">
+                    <div class="input">
+                        <a type="button" id="message_send" class="btn primary">
+                            <img width="16px" src="/images/mail.png"/>
+                            Enviar
+                        </a>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+        </div>
+    </div>
+    <div class="topbar" data-dropdown="dropdown" >
+        <div class="topbar-inner">
+            <div class="container">
+                <a class="brand" href="/index"><img width='40' src='/images/logo.png'/></a>
+                <lift:Menu.builder
+                    linkToSelf="true"
+                    li_item:linkToSelf="true"
+                    li:class="menuitem"
+                    li_item:class="selectedMenu"
+                    li_item:onclick="javascript:alert(’Already selected!’);"
+                ></lift:Menu.builder>
+                <span class="pull-left">
+                <script class="lift:SecuritySnippet.unLogged">
+                var logged = false;
+                </script>
+                <form method="post" action="/" class="lift:SecuritySnippet.unLogged login_form">
+                    <!--
+                    <input class="input-small" name="user" type="text" id="_userForLogin" placeholder="Usuário">
+                    <input class="input-mini" name="password" type="password" id="_passwrodForLogin" placeholder="Senha">
+                    <input class="mini" name="company" type="text" placeholder="Empresa" id="_companyForLogin">
+
+                    <button class="btn" alt="Será descontinuado a partir de fevereiro/2015" id="_btnIn" type="submit">Entrar</button>
+                    -->
+                    <a class="btn danger in_button" href="/v2/login">Entrar</a>
+                </form>
+                </span>
+                <p class="pull-right">
+                <img id="ajax_loader" src="/images/ajax-loader-small.gif"/>
+                <span>
+                <ul class="nav secondary-nav lift:SecuritySnippet.logged">
+                    <script>
+                    var logged = true;
+                    </script>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle">
+                            <span class="lift:loginSnippet.imageGravatar pull-right"></span>
+                            <span class="lift:loginSnippet.userName"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <span class="lift:loginSnippet.companyInfos"></span>
+                            </li>
+                            <li class="divider"></li>
+                            <li>
+                                <a href="/security/change_password">
+                                    <img width="16" src="/images/password.png"/> Alterar Senha
+                                </a>
+                            </li>
+                            <li>
+                                <a href="/financial/monthly">
+                                    <img width="16" src="/images/monthly.png"/> Mensalidade
+                                </a>
+                            </li>
+                            <li>
+                                <a href="/company_log/edit">
+                                    <img width="16" src="/images/configure.png"/> Configuração
+                                </a>
+                            </li>
+                            <li>
+                                <a href="/unit/list">
+                                    <img width="16" src="/images/home.png"/> Unidades
+                                </a>
+                            </li>
+                            <li>
+                                <a id="menu_messages_hided" href="#">
+                                    <img width="16" src="/images/messages_forward.png"/> Ler Mensagens
+                                </a>
+                            </li>
+                            <li>
+                                <a id="menu_messages" href="#">
+                                    <img width="16" src="/images/messages.png"/> Enviar Mensagens
+                                </a>
+                            </li>
+                            <li>
+                                <a data-help-url="/docs/shortcuts.html" rel="popover" class="_popover_basic _help">
+                                    <img width="16" src="/images/keys.png"/> Atalhos
+                                </a>
+                            </li>
+                            <!--li>
+                                <a class="map_key" href="#">
+                                    <img width="16" src="/images/keys.png"/> Atalhos
+                                </a>
+                            </li-->
+                            <li class="lift:SecuritySnippet.hasFinancialModule">
+                                <a href="/company/payment_forms_list">
+                                    <img width="16" src="/images/money.png"/> Forma Pagamento
+                                </a>
+                            </li>
+                            <li class="divider"></li>
+                            <li>
+                                <a  href="/security/logout">
+                                    <img width="16" src="/images/log_off.png"/> Sair
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+                </span>
+                </p>
+            </div>
+        </div><!-- /topbar-inner -->
+    </div><!-- /topbar -->
+    <span class='topbar_fallback'>
+        <a href="#">
+            <img src="/images/icon.png" alt="">
+        </a>
+    </span>
+</div><!-- /topbar-wrapper -->

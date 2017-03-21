@@ -1,0 +1,66 @@
+<div id="main" class="lift:surround?with=user&at=content">
+    <form   class="lift:form.ajax">
+      <div class="well">
+        <label for="btn"></label>
+        <a class="btn primary" href="/group/list">Lista</a>
+        <input class="btn success" type="submit" value="Salvar">
+        <a class="btn primary" href="/group/edit">Inserir novo</a>
+      </div>
+      <div class="lift:UserGroupSnippet.maintain">
+        <span id="user_form">
+          <div class="clearfix">
+            <label for="name">Nome</label>        
+             <div class="input">
+                <div class='inline-inputs'>
+                  <div class="input-prepend" style='float:left; padding-right:10px'>
+                    <input class="large" id="name" name="name" size="30" type="text"/>
+                  </div>
+                  <div class="input-prepend">
+                    <input class="medium" id="short_name" name="short_name" size="30" type="text"/>
+                    <a data-original-title="Informação" data-content="clique para abrir a documentação" data-help-url='/docs/name.html' rel="popover" class="_popover_basic _help">
+                      <img src="/images/info.gif" width="20">
+                    </a>
+                  </div>
+                  <span class="help-block">Nome do grupo de <span data-i18n='Profissional'></span>, completo e nome reduzido, este último usado em alguns relatórios</span>
+              </div>
+             </div>
+          </div>
+          <div class="clearfix">
+            <label for="name">Mostrar na agenda</label>
+             <div class="input">
+                <div class="input-prepend">
+                  <input type="checkbox" name="showInCalendar">
+                  <span class="help-block">Mostrar grupo na agenda?</span>
+                </div>
+             </div>
+          </div>          
+          <div class="clearfix">
+            <label for="defaultquiz">Questionário</label>
+            <div class="input">
+              <select name="defaultquiz"></select>
+              <span class="help-block">Questionário padrão do grupo, para inserção automática</span>
+            </div>
+          </div>
+          <div class="clearfix">
+            <label for="name">Observação</label>
+             <div class="input">
+                <input class="medium" id="obs" name="obs" size="30" type="text"/>
+                <span class="help-block">Descrição do grupo de <span data-i18n='Profissionais'></span></span>
+             </div>
+          </div>
+          <div class="clearfix">
+            <label for="status">Status</label>
+            <div class="input">
+              <div class="input-prepend">
+                <select class="medium" id="status" name="status" >
+                </select>
+                <a data-original-title="Informação" data-content="clique para abrir a documentação" data-help-url='/docs/status.html' rel="popover" class="_popover_basic _help">
+                  <img src="/images/info.gif" width="20">
+                </a>
+              </div>
+            </div>
+          </div>                       
+        </span>
+      </div>
+    </form>
+</div>

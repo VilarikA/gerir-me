@@ -1,0 +1,123 @@
+<div id="main" class="lift:surround?with=financial&at=content">
+    <script type="text/javascript">
+    $(function() {  
+      $(".color_picker").miniColors({letterCase: 'uppercase'});
+    })
+    </script>
+    <form method="post">
+      <div class="well">
+        <label for="btn"></label>
+        <a class="btn primary" href="/financial/list_category">Lista</a>
+        <input class="btn success" type="submit" value="Salvar">
+        <a class="btn primary" href="/financial_admin/account_category">Inserir novo</a>
+        <a class="btn primary" href="/financial_admin/report_tree_accounts">Árvore de categorias</a>
+      </div>
+          <span class="lift:AccountCategorySnippet.maintain">
+            <div class="clearfix">
+              <label for="name">Nome</label>        
+               <div class="input">
+                  <div class='inline-inputs'>
+                    <div class="input-prepend" style='float:left; padding-right:10px'>
+                      <input class="large" id="name" name="name" size="30" type="text"/>
+                    </div>
+                    <div class="input-prepend">
+                      <input class="medium" id="short_name" name="short_name" size="30" type="text"/>
+                      <a data-original-title="Informação" data-content="clique para abrir a documentação" data-help-url='/docs/name.html' rel="popover" class="_popover_basic _help">
+                        <img src="/images/info.gif" width="20">
+                      </a>
+                    </div>
+                    <span class="help-block">Nome completo e nome reduzido, este último usado e em alguns relatórios</span>
+                </div>
+               </div>
+            </div>
+            <div class="clearfix">
+              <label for="type_category">Tipo</label>
+                <div class="input">
+                  <div class="inline-inputs">
+                    <select id='typeMovement' class='notselect2' name='typeMovement'>
+                    </select>
+                  </div>
+                </div>
+            </div>
+            <div class="clearfix">
+              <label for="parentAccount">Categoria Pai</label>
+                <div class="input">
+                  <div class="inline-inputs">
+                    <select id='parentAccount' class='notselect2' name='parentAccount'>
+                    </select>
+                  </div>
+                </div>
+            </div>            
+            <div class="clearfix">
+              <label for="recurrence">Associado ao <span data-i18n='Profissional'></span>?</label>
+               <div class="input">
+                    <input type="checkbox" name="userAssociated" id="userAssociated">
+                    <span class="help-block">Usado para pagamento de vale/adiantamento a <span data-i18n='Profissionais'></span></span>
+               </div>
+            </div>
+            <div class="clearfix">
+              <label for="recurrence">É Totalizadora?</label>
+               <div class="input">
+                    <input type="checkbox" name="isParent" id="isParent">
+                    <span class="help-block">Usado para categorias que não recebem lançamentos</span>
+               </div>
+            </div>
+            <div class="clearfix">
+              <label for="balanceControl">Controle de Saldo?</label>
+               <div class="input">
+                    <input type="checkbox" name="balanceControl" id="balanceControl">
+                    <span class="help-block">Usado para conciliação e consolidação de saldo</span>
+               </div>
+            </div>
+            <div class="clearfix">
+              <label for="name">Ordem </label>
+               <div class="input">
+                  <input class="mini" id="order" name="order" size="30" type="text"/>
+                  <span class="help-block">Ordem, para categorias do mesmo grupo e nível, em que será exibida nos relatórios</span>
+               </div>
+            </div>            
+            <div class="clearfix">
+              <label for="managerLevel">Nível Gerencial </label>
+               <div class="input">
+                  <input class="mini" id="managerLevel" name="managerLevel" size="30" type="text"/>
+                  <span class="help-block">0 financeiro e caixa, 1 apenas gerentes e administradores</span>
+               </div>
+            </div>            
+            <div class="clearfix">
+              <label for="name">Observação</label>
+               <div class="input">
+                  <div class="input-prepend">
+                    <textarea class="xlarge" id="obs" name="obs" size="16"></textarea>
+                  </div>
+                  <span class="help-block">Descrição da categoria</span>
+               </div>
+            </div>
+            <div class="clearfix">
+              <label for="name">Cor</label>
+               <div class="input">
+                  <input class="medium color_picker hide" id="color" name="color" size="30" type="text"/>
+                  <span class="help-block">Cor que será mostrada no relatório</span>
+               </div>
+            </div>
+          <div class="clearfix">
+            <label for="status">Status</label>
+            <div class="input">
+              <div class="input-prepend">
+                <select class="medium" id="status" name="status" >
+                </select>
+                <a data-original-title="Informação" data-content="clique para abrir a documentação" data-help-url='/docs/status.html' rel="popover" class="_popover_basic _help">
+                  <img src="/images/info.gif" width="20">
+                </a>
+              </div>
+            </div>
+          </div>                       
+          </span>
+      <div class="well">
+        <label for="btn"></label>
+        <a class="btn primary" href="/financial/list_category">Lista</a>
+        <input class="btn success" type="submit" value="Salvar">
+        <a class="btn primary" href="/financial_admin/account_category">Inserir novo</a>
+        <a class="btn primary" href="/financial_admin/report_tree_accounts">Árvore de categorias</a>
+      </div>
+    </form>
+</div>  

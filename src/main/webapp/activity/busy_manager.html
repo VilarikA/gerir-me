@@ -1,0 +1,148 @@
+<div id="main" class="lift:surround?with=user;at=content">
+  <script type="text/javascript" src="/js/event_busy.js"></script>
+  <div class="well">
+    <div class="clearfix">
+      <label for="btn"></label>
+      <div class="input">
+        <a class="btn primary" id="new">Inserir novo</a>
+      </div>
+    </div>
+  </div>
+  <div class="well">
+  <div class='filter block-message success"'>
+    <span class="filter_form">
+        <h1>Bloqueio de Agenda</h1>
+        <form action="">
+          <div class="clearfix">
+            <label for="name">Intervalo</label>
+              <div class="input">
+                <div class="inline-inputs">
+                    <div style="float:left; padding-right:10px" class="input-prepend">
+                      <span class="add-on"><img width="16" src="/images/calendar_addon.png"></span>
+                      <input type="text" placeholder="De" size="19" name="start_date" 
+                      id="start_date" class="input-small date">
+                    </div>
+                    <div style="float:left; padding-right:10px" class="input-prepend">
+                      <span class="add-on"><img width="16" src="/images/calendar_addon.png"></span>
+                      <input type="text" placeholder="Ate" size="19" name="end_date" 
+                      id="end_date" class="input-small date">
+                    </div>
+                </div>
+              </div>
+          </div>
+          <div class="clearfix">
+            <label for="name"><span data-i18n='Profissionais'></label>
+              <div class="input">
+                <div class="inline-inputs">
+                  <select class='alow_all' multiple id='user_filter' name='user'></select>
+                </div>
+              </div>
+          </div>
+          <div class="clearfix">
+            <label for="name">Mostrar Horário de Trabalho</label>
+              <div class="input">
+                <div class="inline-inputs">
+                  <input type="checkbox" id="show_work_hours">
+                </div>
+              </div>
+          </div>           
+          <div class="clearfix">
+              <div class="input">
+                <input id="send" value="Buscar" class="btn success" type="button">
+              </div>
+          </div>                  
+        </form>
+      </span>
+    </div>
+  </div>
+  <table id="grid" class="bordered-table zebra-striped">
+    <thead>
+      <th><span data-i18n='Profissionais'></span></th>
+      <th>Início</th>
+      <th>Fim</th>
+      <th>Descrição</th>
+      <th>Ações</th>
+    </thead>
+    <tbody>
+    </tbody>
+</table>
+  <div id="account_modal" style="width: 90%; left: 5%; margin: auto auto auto auto; top:5%; height:100%; max-height:100%;" class="modal hide">
+    <div class="modal-header">
+      <a href="#" class="close">&times;</a>
+      <h3>Bloqueios de Agenda do <span data-i18n='Profissional'></span></h3>
+    </div>
+    <span id="cash_form">
+      <form id='eventForm' action="/calendar/">
+        <div>
+            <div>
+              <div class="span7">
+                <div class="well">
+                  <input class="btn success b_add_account" id="b_add_account" type="button" value="Salvar">
+                </div>
+                <div class="clearfix">
+                  <label for="start">Data Início</label>
+                    <div class="input">
+                      <div class="inline-inputs">
+                          <div style="float:left; padding-right:10px" class="input-prepend">
+                            <span class="add-on"><img width="16" src="/images/calendar_addon.png"></span>
+                            <input type="text" size="19" name="start" id="start" class="input-small date"/>
+                          </div>
+                      </div>
+                    </div>
+                </div>
+                <div class="clearfix">
+                  <label for="start">Hora Início</label>
+                    <div class="input">
+                      <div class="inline-inputs">
+                          <div style="float:left; padding-right:10px" class="input-prepend">
+                            <span class="add-on"><img width="16" src="/images/clock.png"></span>
+                            <input type="text" size="19" name="hour_start" id="hour_start" class="mini time"/>
+                          </div>
+                      </div>
+                    </div>
+                </div>
+                <div class="clearfix">
+                  <label for="start">Data Fim</label>
+                    <div class="input">
+                      <div class="inline-inputs">
+                          <div style="float:left; padding-right:10px" class="input-prepend">
+                            <span class="add-on"><img width="16" src="/images/calendar_addon.png"></span>
+                            <input type="text" size="19" name="end" id="end" class="input-small date"/>
+                          </div>
+                      </div>
+                    </div>
+                </div>
+                <div class="clearfix">
+                  <label for="start">Hora Fim</label>
+                    <div class="input">
+                      <div class="inline-inputs">
+                          <div style="float:left; padding-right:10px" class="input-prepend">
+                            <span class="add-on"><img width="16" src="/images/clock.png"></span>
+                            <input type="text" size="19" name="hour_end" id="hour_end" class="mini time"/>
+                          </div>
+                      </div>
+                    </div>
+                </div>
+                <div class="clearfix">
+                  <label for="name">Observação </label>
+                   <div class="input">
+                      <input class="medium" id="obs" name="obs" size="30" type="textarea"/>
+                      <span class="help-block">Descrição / motivo do bloqueio</span>
+                   </div>
+                </div>
+                <div class="clearfix">
+                  <label for="user"><span data-i18n='Profissional'></span></label>
+                   <div class="input">
+                      <select class='alow_all' multiple id='user' name='user'></select>
+                   </div>
+                </div>
+                <div class="well">
+                  <input class="btn success b_add_account" id="b_add_account" type="button" value="Salvar">
+                </div>                
+             </div>
+            </div>
+        </div>
+      </form>
+    </span>
+  </div>
+</div>

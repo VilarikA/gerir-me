@@ -1,0 +1,60 @@
+<div class="table-responsive">
+	<table id="sample-table-1" class="table table-striped table-bordered table-hover">
+		<thead>
+			<tr>
+				<th data-ng-repeat='column in columns' style=" width: {{column.width}}">
+					<i data-ng-show='column.icon' data-ng-class='column.icon'  class="bigger-110 hidden-480"></i>
+					<span data-ng-bind='column.label'></span>
+				</th>
+				<th data-ng-show='userGridAction'></th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr ng-repeat='obj in list'>
+				<td data-ng-repeat='column in columns'>
+					<span data-ng-hide='column.editable || (!!column.unEditableField && !obj[column.unEditableField]) '>
+						{{obj[column.name]|column_filter:column.filter:column.filterParams}}
+					</span>
+					<span data-ng-if='column.editable || (!!column.unEditableField && !obj[column.unEditableField])' data-ng-include src="'pages/general/columns/'+column.template">
+					</span>
+				</td>
+				<td data-ng-show='userGridAction'>
+					<div class="visible-md visible-lg hidden-sm hidden-xs action-buttons">
+						<a class="green" data-ng-click="edit(obj)">
+							<i class="icon-pencil bigger-130"></i>
+						</a>
+
+						<a class="red" data-ng-click="remove(obj)" >
+							<i class="icon-trash bigger-130"></i>
+						</a>
+					</div>
+
+					<div data-ng-show='userGridAction' class="visible-xs visible-sm hidden-md hidden-lg">
+						<div class="inline position-relative">
+							<button class="btn btn-minier btn-yellow dropdown-toggle" data-toggle="dropdown">
+								<i class="icon-caret-down icon-only bigger-120"></i>
+							</button>
+							<ul class="dropdown-menu dropdown-only-icon dropdown-yellow pull-right dropdown-caret dropdown-close">																		<li>
+									<a class="tooltip-success" data-ng-click="edit(obj)" data-rel="tooltip" title="Edit">
+										<span class="green">
+											<i class="icon-edit bigger-120"></i>
+										</span>
+									</a>
+								</li>
+
+								<li>
+									<a class="tooltip-error" data-ng-click="remove(obj)" data-rel="tooltip" title="Delete">
+										<span class="red" >
+											<i class="icon-trash bigger-120"></i>
+
+										</span>
+									</a>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+</div><!-- /.table-responsive -->

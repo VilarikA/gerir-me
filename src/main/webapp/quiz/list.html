@@ -1,0 +1,71 @@
+<div id="main" class="lift:surround?with=quiz;at=content">
+	<div class="well">
+        <label for="btn"></label>
+		<a class="btn primary" href="/quiz/quiz">Inserir novo</a>
+	</div>
+	<div class='filter block-message success"'>
+		<img style='float:left' src="/images/filter.png"/>
+		<span class="filter_form">
+		<script type="text/javascript">
+			$(function(){
+				$(".name_quiz").val(gup("name"));
+				if(gup("all")){
+					$("#all").attr("checked", "checked");
+				}				
+			});
+		</script>			
+			<form action=''>
+				<input class="local_storage xlarge name_quiz" id="name_quiz" name="name" size="30" type="text" placeholder="Nome"/>
+				<input class="all" id="all" name="all" type="checkbox"/> Mostrar todos?
+				<input class="btn success" type="submit" value="Buscar">
+			</form>
+		</span>		
+	</div>	
+<table class="bordered-table zebra-striped">
+		<thead>
+			<th>Id</th>
+			<th>Nome</th>
+			<th>Grupo</th>
+			<th>Compartilhado</th>
+			<th>Ações</th>
+		</thead>
+		<tbody>
+			<tr class="lift:QuizSnippet:list">
+				<td>
+					<f:id></f:id>
+				</td>
+				<td>
+					<f:name></f:name>
+				</td>
+				<td>
+					<f:usergroup></f:usergroup>
+				</td>
+				<td>
+					<f:share></f:share>
+				</td>
+				<td>
+					<form method="post">
+						<span>
+							<f:actions></f:actions>
+						</span>
+						<span>
+							<f:delete></f:delete>
+						</span>
+						<span style="display:none">
+							<f:_id></f:_id>
+						</span>
+					</form>
+				</td>				
+			</span>
+		</tbody>
+</table>
+<span class='lift:QuizSnippet.paginate'>
+		<ul class='pagination'>
+			<li class="fisrt"><nav:first/></li>
+			<li class="prev"><nav:prev/></li>
+			<li class="next"><nav:zoomedpages/></li>
+			<li class="next"><nav:next/></li>
+			<li class="last"><nav:last/></li>
+		</ul>
+</span>
+</div>

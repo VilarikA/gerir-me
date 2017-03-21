@@ -1,0 +1,49 @@
+<div id="main" class="lift:surround?with=bprelationship;at=content">
+	<div class="well">
+        <label for="btn"></label>
+		<a class="btn primary" href="/bprelationship/edit_relationship">Inserir novo</a>
+	    <a class="btn primary" alt="Cadastro de relacionamentos" href="/bprelationship/list_bprelationship">Relacionamentos</a>
+	</div>
+<table class="bordered-table zebra-striped">
+		<thead>
+			<th>Id</th>
+			<th>Nome</th>
+			<th>Nome Feminino</th>
+			<th>Tipo</th>
+			<th>Observação</th>
+			<th>Ações</th>			
+		</thead>
+		<tbody>
+			<tr class="lift:BpRelationshipSnippet:relationships">
+				<td>
+					<f:id></f:id>
+				</td>
+				<td>
+					<f:name></f:name>
+				</td>			
+				<td>
+					<f:female_name></f:female_name>
+				</td>			
+				<td>
+					<f:type></f:type>
+				</td>			
+				<td>
+					<f:obs></f:obs>
+				</td>								
+				<td>
+					<form method="post">
+						<span>
+							<f:actions></f:actions>
+						</span>
+						<span>
+							<f:delete></f:delete>
+						</span>
+						<span style="display:none">
+							<f:_id></f:_id>
+						</span>
+					</form>
+				</td>				
+			</tr>
+		</tbody>
+</table>		
+</div>

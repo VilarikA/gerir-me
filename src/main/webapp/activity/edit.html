@@ -1,0 +1,456 @@
+<div id="main" class="lift:surround?with=activity&at=content">
+  <script type="text/javascript">
+  $(function() {  
+    $(".color_picker").miniColors({letterCase: 'uppercase'});
+  })
+  </script>
+  <script>
+    $(function(){
+      $.get("/product/discount",function(t){
+        eval("products = "+t)
+        var ret = "";
+        for (var i = products.length - 1; i >= 0; i--) {
+          ret += "<option value='"+products[i].id+"'>"+products[i].name+"</option>"
+        };
+        $("#discounts").html(ret);
+        var str = $("#discount_text_id input").val();
+        $("#discounts").val(str.split(",")).change();          
+      });
+    })
+  </script>  
+  <form   class="lift:form.ajax">
+    <div class="well">
+      <label for="btn"></label>
+      <a class="btn primary" href="/activity/list">Lista</a>
+      <input class="btn success" type="submit" value="Salvar">
+      <a class="btn primary" href="/activity/edit">Inserir novo</a>
+      <a class="btn primary lift:SecuritySnippet.isSuperAdmin " id="pbom_link" target="relationshippage" alt= "Criar pacote para este serviço" href="/bprelationship/bprelationship?business_pattern=##">Pacote</a>
+    </div>
+    <div class="lift:ActivitySnippet.maintain">
+      <span id="activity_form">
+        <span class="row">
+          <span class="span12">
+            <div class="clearfix">
+              <label for="name">Nome</label>        
+              <div class="input">
+                <div class='inline-inputs'>
+                  <div class="input-prepend" style='float:left; padding-right:10px'>
+                    <input class="large" id="name" name="name" size="30" type="text"/>
+                  </div>
+                  <div class="input-prepend">
+                    <input class="medium" id="short_name" name="short_name" size="30" type="text"/>
+                    <a data-original-title="Informação" data-content="clique para abrir a documentação" data-help-url='/docs/name.html' rel="popover" class="_popover_basic _help">
+                      <img src="/images/info.gif" width="20">
+                    </a>
+                  </div>
+                  <span class="help-block">Nome do serviço completo e nome reduzido, este último usado em alguns relatórios</span>
+                </div>
+              </div>
+            </div>
+            <div class="clearfix lift:SecuritySnippet.isSuperAdmin">
+              <label for="name">Migração *</label>        
+              <div class="input">
+                    <input class="mini" id="external_id" name="external_id" size="30" type="text"/>
+              </div>
+            </div>
+          </span>
+          <span class="span7">
+            <div class="clearfix">
+              <label for="type">Tipo</label>
+              <div class="input">
+                <select name="type"></select>
+                <span class="help-block">Produto/Serviço</span>
+              </div>
+            </div>
+            <div class="clearfix">
+              <label for="price">Preço</label>
+              <div class="input">
+                <div class="input-prepend">
+                  <span class="add-on"><img src='/images/dre.png' width="16"/></span> 
+                  <input class="mini currency" id="price" name="price" size="30" type="text"/>
+                  <span class="help-block">Valor do serviço</span>
+                </div>
+              </div>
+            </div>
+            <div class="clearfix">
+              <label for="commissionAbs">Comissão Abs</label>
+              <div class="input">
+                <div class="input-prepend">
+                  <span class="add-on"><img src='/images/dre.png' width="16"/></span> 
+                  <input class="mini currency" id="commissionAbs" name="commissionAbs" size="30" type="text"/>
+                  <span class="help-block">Valor absoluto de comissão</span>
+                </div>
+              </div>
+            </div>
+            <div class="clearfix lift:SecuritySnippet.hasFidelityModule">
+              <label for="price" >Pontos Fidelidade</label>
+              <div class="input">
+                <div class="input-prepend">
+                  <span class="add-on"><img src='/images/diamond-16.png'/></span> 
+                  <input class="mini currency" id="pointsonbuy" name="pointsonbuy" size="30" type="text"/>
+                  <span class="help-block">Quantidade de pontos somados para o programa de fidelidade</span>
+                </div>
+              </div>
+            </div>                
+            <div class="clearfix lift:SecuritySnippet.hasFidelityModule">
+              <label for="price" >Preço em Pontos</label>
+              <div class="input">
+                <div class="input-prepend">
+                  <span class="add-on"><img src='/images/diamond-16.png'/></span> 
+                  <input class="mini currency" id="pointsprice" name="pointsprice" size="30" type="text"/>
+                  <span class="help-block">Pontos necessários para comprar este serviço</span>
+                </div>
+              </div>
+            </div>                
+            <div class="clearfix">
+              <label for="customernotification">Notifica <span data-i18n='Cliente'></span></label>
+              <div class="input">
+                <select name="customernotification"></select>
+                <span class="help-block">Notifica o <span data-i18n='Cliente'></span></span>
+              </div>
+            </div>          
+            <div class="clearfix">
+              <label for="usernotification">Notifica <span data-i18n='Profissional'></span></label>
+              <div class="input">
+                <select name="usernotification"></select>
+                <span class="help-block">Notifica o <span data-i18n='Profissional'></span></span>
+              </div>
+            </div>          
+            <div class="lift:SecuritySnippet.hasBpmonthlyModule clearfix">
+              <label for="bpmonthly">Pagamento de Mensalidade</label>
+              <div class="input">
+                <select name="bpmonthly"></select>
+                <span class="help-block">Pagamento de mensalidade</span>
+              </div>
+            </div>          
+            <div class="lift:SecuritySnippet.hasBpmonthlyModule clearfix">
+              <label for="bpmCount" >Quantidade Meses</label>
+              <div class="input">
+                <div class="input-prepend">
+                  <span class="add-on"></span>
+                  <input class="mini" id="bpmCount" name="bpmCount" size="30" type="text"/>
+                  <span class="help-block">Quantos meses são vendidos neste plano</span>
+                </div>
+              </div>
+            </div>                
+            <div class="lift:SecuritySnippet.isMedicalSystem clearfix">
+              <label for="showInRecords">Expande no Prontuário</label>
+              <div class="input">
+                <select name="showInRecords"></select>
+                <span class="help-block">Indica que este <span data-i18n='Serviço'></span> será expandido no prontuário do <span data-i18n='Cliente'></span></span>
+              </div>
+            </div>          
+            <div class="clearfix">
+              <label for="outsideService">Serviço Externo</label>
+              <div class="input">
+                <select name="outsideService"></select>
+                <span class="help-block">Feito no endereço do cliente</span>
+              </div>
+            </div>          
+            <div class="lift:SecuritySnippet.hasCrmModule clearfix">
+              <label for="crmService">Atividade CRM</label>
+              <div class="input">
+                <select name="crmService"></select>
+                <span class="help-block">Indica atividade de relacionamento com cliente</span>
+              </div>
+            </div>          
+          </span>
+          <span class="span7">
+            <div class="clearfix">
+              <label for="type">Gênero</label>
+              <div class="input">
+                <select name="gender"></select>
+                <span class="help-block">Se o serviço se aplica a ambos os sexos ou a um específico</span>
+              </div>
+            </div>            
+            <div class="clearfix">
+              <label for="commission">Comissão </label>
+              <div class="input">
+                <div class="input-append">
+                  <input class="mini" id="commission" name="commission" size="30" type="text"/>
+                  <span class="add-on">%</span>
+                  <a href="" class="_popover_basic" rel="popover" data-content="A comissão aqui no serviço funciona como um percentual base, podendo ser diferenciada por profissional quando o mesmo for associado ao serviço em questão. Pacotes de serviços devem ser cadastrados como produtos que por sua vez são configurados com os serviços e sessões desejados. No caso de pacotes o profissional receberá a comissão sobre os serviços quando as sessões dos mesmos forem sendo realizadas" data-original-title="Informação">
+                    <img width='20' src="/images/info.gif"/>
+                  </a>
+                </div>
+              </div>
+            </div>
+            <div class="lift:SecuritySnippet.hasAuxiliarModule clearfix">
+              <label for="auxPercent">Perc <span data-i18n='Assistente'></label>
+              <div class="input">
+                <div class="input-append">
+                  <input class="mini currency" id="auxPercent" name="auxPercent" size="30" type="text"/>
+                  <span class="add-on">%</span> 
+                  <a href="" class="_popover_basic" rel="popover" data-content="Percentual do valor do serviço, subtraído da comissão do profissional e pago ao assistente caso haja um" data-original-title="Informação">
+                    <img width='20' src="/images/info.gif"/>
+                  </a>
+                </div>
+              </div>
+            </div>
+            <div class="lift:SecuritySnippet.hasAuxiliarModule clearfix">
+              <label for="auxPrice">Valor <span data-i18n='Assistente'></label>
+              <div class="input">
+                <div class="input-append">
+                  <span class="add-on"><img src='/images/dre.png' width="16"/></span> 
+                  <input class="mini currency" id="auxPrice" name="auxPrice" size="30" type="text"/>
+                  <a href="" class="_popover_basic" rel="popover" data-content="Parcela do valor do serviço, subtraído da comissão do profissional e pago ao assistente caso haja um" data-original-title="Informação">
+                    <img width='20' src="/images/info.gif"/>
+                  </a>
+                </div>
+              </div>
+            </div>
+            <div class="lift:SecuritySnippet.hasAuxiliarModule clearfix">
+              <label for="auxHousePercent">Perc Casa <span data-i18n='Assistente'></label>
+              <div class="input">
+                <div class="input-append">
+                  <input class="mini currency" id="auxHousePercent" name="auxHousePercent" size="30" type="text"/>
+                  <span class="add-on">%</span> 
+                  <a href="" class="_popover_basic" rel="popover" data-content="Percentual do valor do serviço, pago ao assistente pela casa caso haja um" data-original-title="Informação">
+                    <img width='20' src="/images/info.gif"/>
+                  </a>
+                </div>
+              </div>
+            </div>
+            <div class="lift:SecuritySnippet.hasAuxiliarModule clearfix">
+              <label for="auxHousePrice">Valor Casa <span data-i18n='Assistente'></label>
+              <div class="input">
+                <div class="input-append">
+                  <span class="add-on"><img src='/images/dre.png' width="16"/></span> 
+                  <input class="mini currency" id="auxHousePrice" name="auxHousePrice" size="30" type="text"/>
+                  <a href="" class="_popover_basic" rel="popover" data-content="Parcela do valor do serviço, pago pela casa ao assistente caso haja um" data-original-title="Informação">
+                    <img width='20' src="/images/info.gif"/>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </span>
+          <span class="span7">
+            <div class="clearfix">
+              <label for="duration">Duração</label>
+              <div class="input">
+                <div class="input-prepend">
+                  <span class="add-on"><img src='/images/clock.png'/></span>
+                  <input class="time mini" id="duration" name="duration" size="30" type="text"/>
+                  <a href="" class="_popover_basic" rel="popover" data-content="A duração do serviço determina o espaço de tempo que será ocupado na agenda por uma ocorrência do mesmo. Para um serviço de 30 minutos você deve informar 00:30, para um serviço de uma hora você pode informar 00:60 ou 01:00, para um serviço de uma hora e meia, 01:30 ou 00:90. Se for preenchido 30:00 você estará determinando um serviço de 30 horas" data-original-title="Informação">
+                    <img width='20' src="/images/info.gif"/>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </span>
+          <span class="span7">
+            <div class="clearfix lift:SecuritySnippet.isNotMedicalSystem">
+              <label for="name">Mostra na Comanda?</label>
+              <div class="input">
+                <div class="input-prepend">
+                  <label class="add-on"><input type="checkbox" name="showInCommand"></label>
+                  <input class="mini" name="orderInCommand" size="16" type="text">
+                </div>
+              </div>
+            </div>        
+            <div class="clearfix">
+              <label for="accountCategory">Categoria</label>
+              <div class="input">
+                <select id='accountCategory' class="accountCategory" name='accountCategory'></select>
+                <span class="help-block">Categoria para faturamento, depende de parâmetro na configuração da empresa</span>
+              </div>
+            </div>
+            <div class="clearfix">
+              <label for="discountAccountCategory">Categoria Desconto</label>
+              <div class="input">
+                <select id='discountAccountCategory' class="discuntAccountCategory" name='discountAccountCategory'></select>
+                <span class="help-block">Categoria de desconto para faturamento, depende de parâmetro na configuração da empresa</span>
+              </div>
+            </div>
+            <div class="clearfix">
+              <label for="costcenter">Centro de Custo</label>
+              <div class="input">
+                <select id='costcenter' class="costcenter" name='costcenter'></select>
+                <span class="help-block">Centro de custo</span>
+              </div>
+            </div>
+          </span>  
+          <span class="span7">
+            <div class="clearfix">
+              <label for="obs">Observação</label>
+              <div class="input">
+                <div class="input-prepend">
+                  <textarea class="xlarge" id="obs" name="obs" size="16"></textarea>
+                </div>
+              </div>
+            </div>
+          </span>
+          <span class="span7">
+            <div class="clearfix">
+              <label for="allowSimultaneos">Bloqueia Simultâneo</label>
+              <div class="input">
+                <select name="allowSimultaneos"></select>
+                <a href="" class="_popover_basic" rel="popover" data-content="Marque apenas se este serviço não puder ser agendado simultaneamente para mais de um profissional, no caso por exemplo de envolver um recurso (sala, aparelho, etc), que não possa ser utilizado por mais de uma pessoa ao mesmo tempo" data-original-title="Informação">
+                  <img width='20' src="/images/info.gif"/>
+                </a>
+              </div>
+            </div>          
+            <div class="clearfix">
+              <label for="conflictsallowed" >Conflitos Permitidos</label>
+              <div class="input">
+                <div class="input-prepend">
+                  <span class="add-on"></span>
+                  <input class="mini" id="conflictsallowed" name="conflictsallowed" size="30" type="text"/>
+                  <span class="help-block">Quantos confitos de agenda este serviço permite</span>
+                </div>
+              </div>
+            </div>                
+          </span>
+          <span class="span7">
+            <span id="discount_text_id" class="hide">
+              <input name="discount_text"/>
+            </span>
+            <div class="clearfix">
+              <label for="discounts">Descontos</label>
+              <div class="input">
+                <select multiple="multiple" class="medium" id="discounts" name="discounts"></select>
+                <a data-original-title="Informação" data-content="clique para abrir a documentação" data-help-url='/docs/product_discount.html' rel="popover" class="_popover_basic _help">
+                  <img src="/images/info.gif" width="20">
+                </a>
+                <span class="help-block">Descontos serão deduzidos da comissão</span>
+              </div>
+            </div>
+            <div class="clearfix">
+              <label for="discountPercent">Perc Desconto</label>
+              <div class="input">
+                <div class="input-append">
+                  <input class="mini currency" id="discountPercent" name="discountPercent" size="30" type="text"/>
+                  <span class="add-on">%</span> 
+                  <a href="" class="_popover_basic" rel="popover" data-content="Percentual do valor do serviço, subtraído do preço para cálculo da comissão do profissional. Se algum desconto ou acréscimo for apliacado ao preço original do serviço no pagamento, o valor de desconto será alterado proporcionalmente" data-original-title="Informação">
+                    <img width='20' src="/images/info.gif"/>
+                  </a>
+                </div>
+              </div>
+            </div>
+            <div class="clearfix">
+              <label for="discountPrice">Valor Desconto</label>
+              <div class="input">
+                <div class="input-append">
+                  <span class="add-on"><img src='/images/dre.png' width="16"/></span> 
+                  <input class="mini currency" id="discountPrice" name="discountPrice" size="30" type="text"/>
+                  <a href="" class="_popover_basic" rel="popover" data-content="Valor absoluto subtraído do preço do serviço para cálculo da comissão do profissional" data-original-title="Informação">
+                    <img width='20' src="/images/info.gif"/>
+                  </a>
+                </div>
+              </div>
+            </div>
+            <div class="clearfix lift:SecuritySnippet.isSuperAdmin">
+              <label for="name">Cor</label>
+               <div class="input">
+                  <input class="medium color_picker hide" id="color" name="color" size="30" type="text"/>
+                  <span class="help-block">Cor que será mostrada no relatório</span>
+               </div>
+            </div>
+          </span>
+          <span class="span7">
+            <div class="clearfix">
+              <label for="status">Status</label>
+              <div class="input">
+                <select class="medium" id="status" name="status" >
+                </select>
+                <a data-original-title="Informação" data-content="clique para abrir a documentação" data-help-url='/docs/status.html' rel="popover" class="_popover_basic _help">
+                  <img src="/images/info.gif" width="20">
+                </a>
+                <span class="help-block">Status do serviço</span>
+              </div>
+            </div>
+          </span>
+        </span>
+        <span>
+        <div class="well">
+          <label for="btn"></label>
+          <a class="btn primary" href="/activity/list">Lista</a>
+          <input class="btn success" type="submit" value="Salvar">
+          <a class="btn primary" href="/activity/edit">Inserir novo</a>
+        </div>
+          <ul class="tabs">
+            <li class="lift:SecuritySnippet.hasPortalModule active tab"><a href="#site">Portal</a></li>
+            <li class="tab"><a href="#photo">Foto</a></li>
+          </ul>
+          <div class="pill-content">
+            <div class="lift:SecuritySnippet.hasPortalModule tab_content row" id="site">
+              <div class='span12'>
+                <div class="clearfix">
+                  <label for="allowshowonsite">Mostrar no Site</label>
+                  <div class="input">
+                    <div class='inline-inputs'>
+                      <div class="input-prepend" style='float:left; padding-right:10px'>
+                        <input type="checkbox" name="allowshowonsite">
+                      </div>
+                      <div class="input-prepend" style='float:left; padding-right:20px'>
+                        <label for="allowshowonsite">Mostrar no Portal</label>
+                      </div>
+                      <div class="input-prepend" style='float:left; padding-right:10px'>
+                        <input type="checkbox" name="allowshowonportal">
+                      </div>
+                    </div>
+                  </div>
+                </div>                     
+                <div class="lift:SecuritySnippet.isSuperAdmin clearfix">
+                  <label for="moderatedportal">Aprovado Moderador</label>
+                  <div class="input">
+                    <input type="checkbox" name="moderatedportal">
+                    <span class="help-block">Se foi aprovado pelo moderador do portal do ebelle</span>
+                  </div>
+                </div>                     
+                <div class="clearfix">
+                  <label for="sitetitle">Título Público</label>        
+                  <div class="input">
+                    <input class="large" id="sitetitle" name="sitetitle" size="30" type="text"/>
+                    <span class="help-block">Título como aparecerá no site/portal</span>
+                  </div>
+                </div>
+                <div class="clearfix">
+                  <label for="sitedescription">Descrição Pública</label>
+                  <div class="input">
+                    <div class="input-prepend">
+                      <textarea class="xlarge" id="sitedescription" name="sitedescription" size="16"></textarea>
+                      <a data-original-title="Informação" data-content="clique para abrir a documentação" data-help-url='/docs/portal.html' rel="popover" class="_popover_basic _help">
+                        <img src="/images/info.gif" width="20">
+                      </a>
+                      <span class="help-block">Descrição como aparecerá no site/portal</span>
+                    </div>
+                  </div>
+                </div>              
+              </div>
+            </div>
+          </div>  
+        </span>
+      </div>
+    </form>
+    <script>
+      $(function(){
+        $('#sitedescription').jqte();
+      });
+    </script>
+    <div class="pill-content">    
+      <div class="active tab_content" id='photo'>
+        <div class="lift:ActivitySnippet.thumbToShow">
+          
+        </div>
+        <form class="lift:ActivitySnippet.render?form=post;multipart=true">
+          <div class="clearfix">
+            <input class="large url_parameter" id="id" name="id" type="hidden" />
+            <label for="name">Alterar foto</label>
+            <div class="input">
+              <input type="text" name='file' id='file'/>
+              <span class="help-block">Selecione sua foto</span>
+            </div>
+          </div>
+          <div class="clearfix">
+            <label for="name"></label>
+            <div class="input">
+              <div class="input-prepend">
+                <input type="submit" value="Enviar" id='submit' class="btn success"/>
+              </div>
+            </div>
+          </div>
+        </form>    
+      </div>    
+    </div>
+  </div>

@@ -1,0 +1,52 @@
+<div id="main" class="lift:surround?with=bootstrap;at=content">
+	  <link rel="stylesheet" type="text/css" href="/select2/select2.css" />
+	  <script src="/select2/select2.js"></script><script src="/select2/select2_locale_pt-BR.js"></script>
+	  <script src="/js/reports.js"></script>
+	  <script src="/js/jquery.tablesorter.pager.js"></script>
+	  <script type="text/javascript">
+	  $(function(){
+	    var isSuperAdmin = $('.is-super-admin').length > 0;
+	    var fields = [];
+	    fields[3] = "date";
+	    fields[5] = "boolean"; 
+	    fields[6] = "date";
+	    fields[7] = {
+		    type : "format",
+		    decode : function(id,row){
+		    	if(!row[6]) {
+		        	return "<a target='_blank' href='http://boleto.vilarika.com.br/boleto/boleto.php?data="+(new Date(row[3]).getDateBr())+"&valor="+parseFloat(row[4]).formatMoney().replace('.','')+"&nosso_numero="+row[1]+"&documento="+row[1]+"&nome="+row[8]+"'><img width='32' src='/images/bar_code.png'/>"
+/*
+		        	return "<a target='_blank' href='/docs/notice.html'><img width='32' src='/images/bar_code.png'/>"
+*/
+		    	} else {
+		    		return "";
+		    	}
+		    }
+		};
+	    fields[8] = "none"; // nome da company_customer
+	    if (!isSuperAdmin) {
+	    	fields[9] = "none";
+		}
+	    var request = function(){
+	      renderReport("/report/monthly", fields,{});
+	    }
+	    request();
+	  });  
+	  </script>
+      <input type="hidden" class="is-super-admin lift:SecuritySnippet.isSuperAdmin" value="1">
+	  <table id="grid" class="bordered-table zebra-striped">
+	      <thead>
+	        <th>Id</th>
+	        <th>Cod.</th>
+	        <th>Obs</th>
+	        <th>Vencimento</th>
+	        <th>Valor</th>
+	        <th>Pago?</th>
+	        <th>Data do pagamento</th>
+	        <th>Imprimir Boleto</th>
+	        <th class="lift:SecuritySnippet.isSuperAdmin" title="só super adm vê">obs*</th>
+	      </thead>
+	      <tbody>
+	      </tbody>
+	  </table>
+</div>

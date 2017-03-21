@@ -1,0 +1,112 @@
+<div id="main" class="lift:surround?with=bootstrap&at=content">
+	<link href="/css/media_galery.css" rel="stylesheet"/>
+	<style>
+		.content .nav {
+			min-height: 100px;
+			overflow: auto;
+		}
+
+		.content .nav li {
+			height: auto;
+			margin-bottom: 8px;
+		}
+
+		.slide {
+			width: 100%;
+		}
+
+		.slide img {
+			max-width: 300px;
+			max-height: 300px;
+		}
+
+		.center-cropped {
+			width: 50px;
+			height: 50px;
+			background-repeat: no-repeat;
+			background-size: 50px 50px; 
+		}
+		.content .nav li.active {
+			border: none;
+			opacity: .5;
+		}
+	</style>
+      <form class="crud_form">
+		  <div class="well">
+	        <label for="btn"></label>
+	        <a class="btn primary" href="/customer/notification_list">Lista</a>
+		    <input value="Salvar" class='btn success' type="button" id="send"/>
+		    <a class="btn primary" href="./notification_create">Inserir novo</a>
+		  </div>      	
+          <div class="clearfix">
+	        <label for="name">Título</label>
+	         <div class="input">
+	         	<input id="name" name='name'/>             
+                <a data-original-title="Informação" data-content="clique para abrir a documentação" data-help-url='/docs/replacedata.html' 
+                rel="popover" class="_popover_basic _help">
+                <img src="/images/info.gif" width="20">
+                </a>
+	            <span class="help-block">Título da mensagem, vai aparecer como subject/assunto do email</span>
+	         </div>
+	      </div>
+          <div class="clearfix">
+	         <div class="input">
+				  <textarea name='body' id="body">Olá ##nome##,</textarea>                
+	            <span class="help-block">Corpo da mensagem</span>
+	         </div>
+	      </div>
+          <div class="clearfix">
+	         <div class="input">
+	         	<span class="help-block">Para colocar o nome do cliente no corpo do e-mail<br/> basta colocar esta expressão no texto ##nome##.<br/> Para colocar as imagens abaixo no email basta clicar sobre a imagem.</span>
+	         </div>
+	      </div>	      	      
+	    </form>
+
+
+	    <span ng-app="FotoCarrousel">
+			<span ng-controller="FotoCarrouselCtrl">
+			    <!-- slider container -->
+			    <div class="container slider">
+			        <!-- enumerate all photos -->
+			        <center>
+			        
+			        	<a src="#" class="slide"  ng-repeat="photo in photos" data-ng-click='addImage(photo.url)'>
+			        		<img ng-swipe-right="showPrev()" ng-swipe-left="showNext()" ng-show="isActive($index)" ng-src="{{photo.url}}" />
+						</a>
+			        <center>
+			        <!-- prev / next controls -->
+			        <a class="arrow prev" href="" ng-click="showPrev()"></a>
+			        <a class="arrow delete" href="" ng-click="deleteImage()"></a>
+			        <a class="arrow next" href="" ng-click="showNext()"></a>
+			        <!-- extra navigation controls -->
+			        <ul class="nav">
+			            <li ng-repeat="photo in photos" ng-class="{'active':isActive($index)}">
+			                <center>
+			                	<div class="center-cropped" ng-style="{'background-image':'url(' + photo.url + ')'}" alt="{{photo.desc}}" title="{{photo.desc}}" ng-click="showPhoto($index);"></div>			                	
+			                </center>
+			            </li>
+			        </ul>
+			    </div>
+			</span>
+		</span>
+	<form class="lift:UploadMedia?form=post;multipart=true">
+	  <div class="clearfix">
+	    <label for="name">Enviar nova media?</label>
+	    <div class="input">
+	    	<input type="text" name='file' id='file'/>
+	    	<span class="help-block">Selecione a imagem</span>
+	    </div>
+	  </div>
+	  <div class="clearfix">
+	    <label for="name"></label>
+	    <div class="input-prepend">
+	    	<input class="btn success" type="submit" value="Enviar Media" id='submit' title="Envia media para a galeria, não envia o email"/>
+	    </div>
+	  </div>
+	</form>
+	<script type="text/javascript" src='/js/angular.js'></script>
+	<script type="text/javascript" src='/js/image_manager.js'></script>
+	<script type="text/javascript" src='/js/image_galery.js'></script>
+	<script type="text/javascript" src='/js/notification_create.js'></script>
+
+</div>

@@ -1,0 +1,1 @@
+update business_pattern set is_unit = false where is_unit is null;

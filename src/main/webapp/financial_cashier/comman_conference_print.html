@@ -1,0 +1,56 @@
+<div id="main" class="lift:surround?with=calendar;at=content">
+  <table class="bordered-table">
+    <tr class="lift:ReportSales:reportCommandConference">
+      <td>
+        <table>
+           <thead>
+              <th>
+                Caixa
+              </th>
+              <th>
+                Data
+              </th>
+              <th>
+                Cod. Cli
+              </th>        
+              <th>
+                Nome Cliente
+              </th>                
+              <th>
+                Comanda
+              </th>     
+              <th>
+                Total pago
+              </th>        
+          </thead>
+          <tbody>
+            <tr>
+                <td>
+                  <f:cashier></f:cashier>
+                </td>
+                <td class="translate_date">
+                  <f:date></f:date>
+                </td>
+                <td>
+                  <f:customerid></f:customerId>
+                </td>        
+                <td>
+                  <f:customername></f:customerName>
+                </td>
+                <td>
+                  <f:command></f:command>
+                </td>
+                <td>
+                  <f:total></f:total>
+                </td>
+            </tr>
+            <tr>
+              <td colspan="3"><f:treatments></f:treatments></td>
+              <td colspan="3"><f:payments></f:payments></td>
+            </tr>
+          </tbody>          
+        </table>
+      </td>
+    </tr>
+  </table>
+</div>

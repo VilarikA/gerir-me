@@ -1,0 +1,175 @@
+<div id="main" class="lift:surround?with=records&at=content">
+  <script>
+    $(function(){
+      $.get("/customer_report/quizzes",function(t){
+        eval("quizzes = "+t)
+        var ret = "";
+        for (var i = 0; i < quizzes.length; i++) {
+/*          ret += '<input class="btn success quiz_addd" data-id="'+quizzes[i].id+'" type="button" value="'+ quizzes[i].short_name + '" href="#">'
+          */
+          ret += '<ul><li><input class="btn success quiz_addd" data-id="'+quizzes[i].id+'" type="button" value="'+ quizzes[i].short_name + '" href="#"></li></ul>'
+        };
+        $("#records").html(ret);
+      });
+    })
+  </script>  
+    <div class="lift:CustomerSnippet.maintain">
+        <form class="crud_form" id="customer_form">
+            <div class="well">
+                <label for="btn"></label>
+                <a class="btn primary" href="/customer/list">Lista</a>
+                <input class="btn success" id="edit_customer" type="button" value="Cadastro">
+                <input type="hidden" class="has-pet-system lift:SecuritySnippet.isEbellepetSystem" value="1">
+                <input type="hidden" class="has-medical-system lift:SecuritySnippet.isMedicalSystem" value="1">
+                <input type="hidden" class="has-edoctus-system lift:SecuritySnippet.isEdoctusSystem" value="1">
+                <input type="hidden" class="has-ephysio-system lift:SecuritySnippet.isEphysioSystem" value="1">
+                <input type="hidden" class="has-gerirme-system lift:SecuritySnippet.isGerirmeSystem" value="1">
+            </div>
+            <span id="user_form">
+                <span class='row'>
+                    <span class='span18'>
+                        <div class="clearfix lift:SecuritySnippet.hasAnvisaModule ">
+                            <label for="barcode">Prontuário</label>
+                            <div class="input">
+                                <input class="medium" id="barcode" name="barcode" size="30" type="text"/>
+                            </div>
+                        </div>
+                        <div class="clearfix">
+                            <label for="name">Nome</label>        
+                            <div class="input">
+                                <div class='inline-inputs'>
+                                  <div class="input-prepend" style='float:left; padding-right:10px'>
+                                    <span>
+                                        <input class="large" id="name" name="name" size="30" type="text"/>
+                                    </span>
+                                  </div>
+                                  <div class="input-prepend" style='float:left; padding-right:10px'>
+                                    <span>
+                                        <img id='img_mapicon' alt=""/>
+                                        <img id='img_customer_short' alt=""/>
+                                    </span>                    
+                                  </div>
+                                  <div class="input-prepend" style='float:left; padding-right:10px'>
+                                    <span>
+                                        <input style="font-size:16px;" class="xlarge" id="custInfo" name="custInfo" size="30" type="textarea" disabled="true" />
+                                    </span>
+                                  </div>
+                                </div>
+                            </div>
+                        </div>
+                    </span>
+                </span>
+            </span>
+            <ul class="tabs">
+                <li class="lift:SecuritySnippet.hasQuizModule active tab"><a href="#quiz"><span data-i18n='Questionários'></span></a></li>
+                <li class="lift:SecuritySnippet.hasGalleryModule tab"><a href="#images">Imagens</a></li>
+            </ul>
+        </form>
+        <script>
+            $(function(){
+              $('#obscomplement').jqte();
+            });
+        </script>
+    </div>
+    <div class="pill-content">
+        <div id="quiz" class='active tab_content'>
+            <!--<div class='span18'>
+                <div class="clearfix">
+                    <label for="btn_records"></label>
+                    <div class="input" id="recordsss">
+            </div>
+            -->
+            <div class='span8'>
+                <div class="clearfix">
+                    <label for="text">Data</label>
+                    <div class="input">
+                        <input type="text" class="input-small date to_day" id='quiz_date' name="quiz_date" placeholder="Data"/>
+                    </div>
+                </div>
+                <div class="clearfix">
+                    <label for="text"><span data-i18n='Questionário'></span></label>
+                    <div class="input">
+                        <select class="large" id="quiz_quiz" size="30" type="text">
+                        </select>
+                    </div>
+                </div>
+                <div class="clearfix">
+                    <label for="text">Observação</label>
+                    <div class="input">
+                        <input class="xlarge" id="quiz_obs" size="30" type="textarea"/>
+                    </div>
+                </div>
+                <div class="clearfix">
+                    <label for="btn"></label>
+                    <input class="btn success" id="quiz_add" type="button" value="Adicionar">
+                </div>
+            </div>
+            <table id="grid_quiz" class="bordered-table zebra-striped">
+                <thead>
+                    <th>Data</th>
+                    <th>Tempo</th>
+                    <th><span data-i18n='Questionário'></span></th>
+                    <th>Obs</th>
+                    <th>Grupo</th>
+                    <th></th>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+            <div>
+                <div class="input">
+                    <div class="input" id="message_total1">
+                    </div>
+                    <textarea type="hidden" class="mini disabled" id="message_total" name="message_total" size="30" disabled='true'></textarea>
+                    <input class="btn primary" type="button" id='print_message' value='Imprimir' />
+                    <span class="help-block">_</span>
+                </div>
+            </div>
+        </div>
+        <div id="images" class='tab_content'>
+            <form id="MyForm" action="http://api2.transloadit.com/assemblies" enctype="multipart/form-data" method="POST">
+                <input type="hidden" name="params" value="{&quot;auth&quot;:{&quot;key&quot;:&quot;7f81cf59322e4238adec65c94cdcfe5b&quot;},&quot;template_id&quot;:&quot;49786b3752fe43a59ba5dc06d92d80ff&quot;,&quot;redirect_url&quot;:&quot;#&quot;}" />
+                <input type="file" name="my_file" />
+                <input type="submit" class="btn success" value="Enviar">
+            </form>
+            <script type="text/javascript" src="//assets.transloadit.com/js/jquery.transloadit2.js"></script>
+            <script type="text/javascript">
+                // We call .transloadit() after the DOM is initialized:
+                $(document).ready(function() {
+                 try{
+                  $('#MyForm').transloadit({
+                   wait: true
+                 });
+                }catch(e){
+                
+                }
+                });
+            </script>
+            <span class="lift:CustomerSnippet.imageList"></span>
+        </div>
+    </div>
+    <script type="text/javascript" src="/js/jquery.tablesorter.pager.js"></script>
+    <script type="text/javascript" src="/js/reports.js"></script>
+    <script src="/js/datetimepicker/jquery.datetimepicker.js"></script>
+    <style>
+        @import url("/js/datetimepicker/jquery.datetimepicker.css");
+    </style>
+    <script src="/js/customer_crud.js?sensor=true"></script>
+    <div id="fb-root"></div>
+    <script type="text/javascript" src="/js/face_prepare.js"></script>
+    <script type="text/javascript" src="/js/facebook_login.js"></script>
+    <script type="text/javascript" src="/js/q.min.js"></script>
+    <script type="text/javascript" src="/js/ebelle_face.js"></script>
+    <script type='text/javascript'>
+        $(function() {
+         $("#id_user_image").val(gup("id"));
+         $("#generate-id").on('click', function() {
+            $.get('/customer/next_id', function(r) {
+                eval("obj=" + r);
+                $('#idForCompany').val(obj.id);
+            });
+         });
+        });        
+    </script>
+</div>
+</div>

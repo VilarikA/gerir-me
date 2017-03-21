@@ -1,0 +1,68 @@
+<div id="main" class="lift:surround?with=financial&at=content">
+    <form method="post">
+      <div class="well">
+        <label for="btn"></label>
+        <a class="btn primary" href="/financial/list_costcenter">Lista</a>
+        <input class="btn success" type="submit" value="Salvar">
+        <a class="btn primary" href="/financial_admin/cost_center">Inserir novo</a>
+      </div>
+          <span class="lift:CostCenterSnippet.maintain">
+            <div class="clearfix">
+              <label for="name">Nome</label>        
+               <div class="input">
+                  <div class='inline-inputs'>
+                    <div class="input-prepend" style='float:left; padding-right:10px'>
+                      <input class="large" id="name" name="name" size="30" type="text"/>
+                    </div>
+                    <div class="input-prepend">
+                      <input class="medium" id="short_name" name="short_name" size="30" type="text"/>
+                    </div>
+                    <span class="help-block">Nome completo e nome reduzido, este último usado em alguns relatórios</span>
+                </div>
+               </div>
+            </div>
+            <div class="clearfix">
+              <label for="name">Ordem </label>
+               <div class="input">
+                  <input class="medium" id="order" name="order" size="30" type="text"/>
+                  <span class="help-block">Ordem em que será exibido nos relatórios</span>
+               </div>
+            </div>            
+            <div class="clearfix">
+              <label for="name">Observação</label>
+               <div class="input">
+                  <input class="medium" id="obs" name="obs" size="30" type="text"/>
+                  <span class="help-block">Descrição do centro de custo</span>
+               </div>
+            </div>
+            <div class="clearfix">
+              <label for="parent_reg">C Custo Pai</label>
+                <div class="input">
+                  <div class="inline-inputs">
+                    <select id='parent_reg' class='notselect2' name='parent_reg'>
+                    </select>
+                  </div>
+                </div>
+            </div>            
+            <div class="clearfix">
+              <label for="is_parent">E Totalizador?</label>
+               <div class="input">
+                    <input type="checkbox" name="is_parent" id="is_parent">
+                    <span class="help-block">Usado para centros de custo que nao tem lançamentos?</span>
+               </div>
+            </div>
+          <div class="clearfix">
+            <label for="status">Status</label>
+            <div class="input">
+              <div class="input-prepend">
+                <select class="medium" id="status" name="status" >
+                </select>
+                <a data-original-title="Informação" data-content="clique para abrir a documentação" data-help-url='/docs/status.html' rel="popover" class="_popover_basic _help">
+                  <img src="/images/info.gif" width="20">
+                </a>
+              </div>
+            </div>
+          </div>                       
+          </span>
+    </form>
+</div>  

@@ -1,0 +1,145 @@
+ <div id="main" class="lift:surround?with=calendar;at=content">
+<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+<style type="text/css">
+  html { height: 100% }
+  body { height: 100%; margin: 0px; padding: 0px }
+  #map_canvas { height: 100%; width:100%; }
+  #filter{
+  	position: absolute;
+	right: 0px;
+	top: 60px;
+  }
+</style>
+<script type="text/javascript"
+    src="http://maps.google.com/maps/api/js?sensor=true">
+</script>
+<script type="text/javascript">
+	var getLocationsInner = function(executeOnEnd){
+		$.get("/location/userLocation/"+gup("user")+"/"+encodeURIComponent(gup("startDate"))+"/"+encodeURIComponent(gup("endDate")),function(t){
+			eval("t = "+t)
+			list = [];
+			var arrayPoints = [];
+			for (var i = t.length - 1; i >= 0; i--) {
+				var user = t[i];
+				var image = user.icon;
+					if(user.lat != null){
+						var myLatLng = new google.maps.LatLng(user.lat, user.lng);
+						list.push(myLatLng);
+						arrayPoints.push(myLatLng);
+					}
+				}
+				buildPolyLine(0,list);
+				if(executeOnEnd)
+					executeOnEnd(arrayPoints);
+		});
+	}
+	function loadLocations(){
+		if(gup("user")){
+				setInterval('getLocationsInner();',3000);
+				getLocationsInner(setBestZoomForMap);
+		}else{
+			$.get("/location/customerLocation",function(t){
+			//$.get("/location/userLocation",function(t){
+			eval("t = "+t)
+			var arrayPoints = [];
+			for (var i = t.length - 1; i >= 0; i--) {
+				var user = t[i];
+				var image = user.icon;
+				if(user.lat != null){
+					var myLatLng = new google.maps.LatLng(user.lat, user.lng);
+					arrayPoints.push(myLatLng);
+					var beachMarker = new google.maps.Marker({
+					    position: myLatLng,
+					    map: map,
+	      				title:user.title,
+					    icon: image,
+					    id:user.id
+					  });
+					google.maps.event.addListener(beachMarker, 'click', function() {
+						window.open("/customer/edit?id="+this.id,'customer_window')
+					 });					
+				}
+			}
+			setBestZoomForMap(arrayPoints);
+			})
+		}
+	}
+	$(function(){
+		initialize();
+		resizeMap();
+	})
+	var buildPolyLine = function(startId,line_1){
+				var polyOptions = {
+				    //strokeColor: getValue(value),
+				    strokeOpacity: 1.0,
+				    strokeWeight: 3
+				  }
+				 	poly = new google.maps.Polyline(polyOptions);
+					path = poly.getPath();
+					for(i=startId;i<line_1.length;i++){
+						path.push(line_1[i])
+					}
+					poly.setMap(map);
+			}
+	var resizeMap = function(){
+		$("#map_canvas").height($(window).height()-$(".navbar-fixed-top").height())
+		$("#map_canvas").css("top",$(".navbar-fixed-top").height())
+		$("#map_canvas").width($(window).width())
+		$("body").height($("#map_canvas").height()+$(".navbar-fixed-top").height())
+	}
+
+  function initialize() {
+    var latlng = new google.maps.LatLng( -19.92098205876759, -43.937809143066374);
+    var myOptions = {
+      zoom: 15,
+      center: latlng,
+      mapTypeId: google.maps.MapTypeId.ROADMAP
+    };
+    window.map = new google.maps.Map(document.getElementById("map_canvas"),
+        myOptions);
+    loadLocations();
+  }
+ /**
+   * Calcula o melhor nível de Zoom e ponto central para o mapa de acordo com os pontos.
+   * @param {Array Point API Map} arrayPoints
+   */
+   var setBestZoomForMap = function (arrayPoints) {
+       var bounds = new google.maps.LatLngBounds();
+       for (var i = 0; i < arrayPoints.length; i++) {
+           bounds.extend(arrayPoints[i]);
+       }
+       map.setCenter(bounds.getCenter());
+       map.fitBounds(bounds);
+   }
+</script>
+	<div id="map_canvas"></div>
+      <script type="text/javascript">
+      var getUsers = function(){
+          url = $('#cash_form').attr('action');
+          url +="/getUsers";
+          $.get(url, function(t){
+            eval("userObj = "+t)
+            $('#user').append("<option value=''>Selecione um Profissional</option>")
+            for(i in userObj){
+              $('#user').append("<option value='"+userObj[i].id+"'>"+userObj[i].name+"</option>")
+            }
+            $("#user").val(gup("user"))
+          })
+      }
+      $(function(){
+        getUsers()
+        $("#startDate").val(gup("startDate"))
+        $("#endDate").val(gup("endDate"))
+      });
+    </script>
+      <div class="span9" id='filter'>
+          <form id='cash_form' action="/cash/" ></form>
+          <form class="well form-search" method='get'>
+            <select name="user" id="user" class="xlarge">
+            </select>
+            <input type="text" class="input-small date" id='startDate' name="startDate" placeholder="Início">
+            <input type="text" class="input-small date" id='endDate' name="endDate" placeholder="Fim">
+            <button type="submit" class="btn success">Buscar</button>
+          </form>
+      </div>
+</div>

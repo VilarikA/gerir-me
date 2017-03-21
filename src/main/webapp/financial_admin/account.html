@@ -1,0 +1,79 @@
+<div id="main" class="lift:surround?with=financial&at=content">
+    </script>
+    <form>
+      <div class="well">
+        <label for="btn"></label>
+        <a class="btn primary" href="/financial/list_account">Lista</a>
+        <input class="btn success" type="submit" value="Salvar">
+        <a class="btn primary" href="/financial_admin/account">Inserir novo</a>
+      </div>
+      <div class="lift:AccountSnippet.maintain">
+        <span id="activity_form">
+          <div class="clearfix">
+            <label for="name">Nome</label>        
+             <div class="input">
+                <div class='inline-inputs'>
+                  <div class="input-prepend" style='float:left; padding-right:10px'>
+                    <input class="large" id="name" name="name" size="30" type="text"/>
+                  </div>
+                  <div class="input-prepend">
+                    <input class="medium" id="short_name" name="short_name" size="30" type="text"/>
+                    <a data-original-title="Informação" data-content="clique para abrir a documentação" data-help-url='/docs/name.html' rel="popover" class="_popover_basic _help">
+                      <img src="/images/info.gif" width="20">
+                    </a>
+                  </div>
+                  <span class="help-block">Nome completo e nome reduzido, este último usado e em alguns relatórios</span>
+              </div>
+             </div>
+          </div>
+          <div class="clearfix">
+            <label for="name">Banco</label>
+             <div class="input">
+                <input id="bank" name="bank"  type="text"/>
+                <span class="help-block">Banco da conta caso haja</span>
+             </div>
+          </div>               
+          <div class="clearfix">
+            <label for="value">Saldo</label>
+             <div class="input">
+                <div class="input-prepend">
+                  <span class="add-on"><img src="/images/dre.png" width="16"></span>             
+                  <input class="small currency" id="value" name="value" type="text"/>
+                  <span class="help-block">Saldo altual da conta</span>
+                </div>
+             </div>
+          </div>
+          <div class="clearfix">
+            <label for="allowCashierOut">Aceita saída do caixa?</label>
+            <div class="input">
+              <input id="allowCashierOut" name='allowCashierOut'>
+              <a href="" class="_popover_basic" rel="popover" data-content="Somente a conta caixa deve ter este campo marcado, o que vai fazer com que o sistema solicite o número do caixa no momento em que um lançamento financeiro for feito nesta conta" data-original-title="Informação">
+                <img width='20' src="/images/info.gif"/>
+              </a>
+              <span class="help-block">Aceita que o valor dessa conta saia ou entre do caixa</span>
+            </div>
+          </div>
+          <div class="clearfix">
+            <label for="allowCashierOut">Controla saldo?</label>
+            <div class="input">
+              <input id="balanceControl" name='balanceControl'/>
+              <span class="help-block">O saldo dessa conta será controlado?</span>
+            </div>
+          </div>
+          
+          <div class="clearfix">
+            <label for="status">Status</label>
+            <div class="input">
+              <div class="input-prepend">
+                <select class="medium" id="status" name="status" >
+                </select>
+                <a data-original-title="Informação" data-content="clique para abrir a documentação" data-help-url='/docs/status.html' rel="popover" class="_popover_basic _help">
+                  <img src="/images/info.gif" width="20">
+                </a>
+              </div>
+            </div>
+          </div>          
+        </span>
+      </div>
+    </form>
+</div>  

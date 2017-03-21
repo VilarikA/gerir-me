@@ -1,0 +1,62 @@
+<span class="row" data-ng-controller='WorkhourController'>
+	<div class="row">
+	    <h3 class="lift:SecuritySnippet.hasUnitModule">
+	    	<span class="lift:UnitSnippet.unitName"></span>
+	    </h3>
+		<span class="col-sm-4">
+			<label for="form-field-select-2">Dias</label>
+			<div class="input-group width-80">
+				<select class="width-80" multiple="multiple" ng-model='current.days' ui-select2 id="form-field-select-2">
+					<option value="Mon">Segunda</option>
+					<option value="Tue">Terça</option>
+					<option value="Wed">Quarta</option>
+					<option value="Thu">Quinta</option>
+					<option value="Fri">Sexta</option>
+					<option value="Sat">Sábado</option>
+					<option value="Sun">Domingo</option>
+				</select>			
+			</div>												
+		</span>
+	</div>
+	<div class="row">
+		<span class="col-sm-9">
+			<span class='col-sm-2'>
+				<label for="timepicker1">Início</label>
+
+				<div class="input-group bootstrap-timepicker">
+					<input id="timepicker1" br.time ng-model='current.start' type="text" class="form-control" />
+				</div>
+			</span>
+			<span class='col-sm-2'>
+				<label for="timepicker1">Início Almoço</label>
+
+				<div class="input-group bootstrap-timepicker">
+					<input id="timepicker1" br.time ng-model='current.startLanch' type="text" class="form-control" />
+				</div>
+			</span>
+			<div class='col-sm-2'>
+				<label for="timepicker1">Fim Almoço</label>
+
+				<div class="input-group bootstrap-timepicker">
+					<input id="timepicker1" br.time ng-model='current.endLanch' type="text" class="form-control" />
+				</div>
+			</div>
+			<div class='col-sm-2'>
+				<label for="timepicker1">Fim</label>
+
+				<div class="input-group bootstrap-timepicker">
+					<input br.time ng-model='current.end' id="timepicker1" type="text" class="form-control" />
+				</div>
+			</div>																						
+		</span>
+	</div>
+	<div class="clearfix form-actions">
+		<div class="col-md-offset-3 col-md-9">
+			<button class="btn btn-success" data-ng-click='save(current)' type="button">
+				<i class="icon-ok bigger-110"></i>
+				Salvar
+			</button>
+		</div>
+	</div>
+	<ng-include src='"pages/general/grid.html"'/>	
+</span>

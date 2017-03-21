@@ -1,0 +1,140 @@
+<div id="main" class="lift:surround?with=financial&at=content">
+    <script src="/js/angular.js"></script>
+    <script src="/js/angular-resource.min.js"></script>      
+    <script src="/js/angular.date.js"></script>
+    <script src="/js/angular.select2.js"></script>
+    
+    <form  class="lift:form.ajax">
+      <div class="well">
+        <label for="btn"></label>
+        <a class="btn primary" href="/monthly/list_monthly">Lista</a>
+        <input class="btn success" type="submit" value="Salvar">
+        <a class="btn primary" href="/monthly/edit_monthly">Inserir novo</a>
+      </div>
+      <div class="lift:MonthlySnippet.maintain">
+        <span id="monthly_form">
+                <span class='row'>
+            <span class="span12">
+              <div class="clearfix">
+                  <label for="phone">Nro Boleto</label>        
+                  <div class="input">
+                      <input class="small" id="id" name="id" size="10" type="text" disabled="" />
+                  </div>
+              </div>
+              <div class="clearfix lift:SecuritySnippet.hasAuditModule">
+                  <label for="createdAt">Empresa Cliente</label>
+                  <div class="input">
+                    <div class='inline-inputs'>
+                      <div class="input-prepend" style='float:left; padding-right:10px'>
+                        <span class="add-on"><img src='/images/sex.png'/></span> 
+                        <input class="input-large disabled" disabled="true" id="bpname" name="bpname" size="19" type="text"/>
+                      </div>
+                    </div>
+                  </div>                            
+              </div>                     
+              <div class="clearfix">
+                <label for="name">Descrição</label>        
+                 <div class="input">
+                    <div class='inline-inputs'>
+                      <div class="input-prepend" style='float:left; padding-right:10px'>
+                        <input class="large" id="description" name="description" size="30" type="text"/>
+                      </div>
+                    </div>
+                 </div>
+              </div>
+              <div class="clearfix">
+                  <label for="createdAt">Vencimento / Pagamento</label>
+                  <div class="input">
+                    <div class='inline-inputs'>
+                      <div class="input-prepend" style='float:left; padding-right:10px'>
+                        <span class="add-on"><img width="16" src='/images/calendar_addon.png'/></span> 
+                        <input class="input-small date" id="dateExpiration" name="dateExpiration" size="19" type="text"/>
+                      </div>
+                      <div class="input-prepend" style='float:left; padding-right:10px'>
+                        <span class="add-on"><img width="16" src='/images/calendar_addon.png'/></span> 
+                        <input class="input-small date" id="paymentDate" name="paymentDate" size="19" type="text"/>
+                      </div>
+                    </div>
+                  </div>
+              </div>
+              <div class="clearfix">
+                <label for="paid">Pago</label>
+                 <div class="input">
+                    <input name="paid" id="paid" />
+                    <span class="help-block"></span>
+                 </div>
+              </div>
+              <div class="clearfix">
+                <label for="value">Valor</label>
+                 <div class="input">
+                    <div class="input-prepend">
+                      <span class="add-on"><img src="/images/dre.png" width="16"></span>
+                      <input class="mini currency" id="value" name="value" size="30" type="text"/>
+                    </div>
+                 </div>
+              </div>       
+              <div class="clearfix">
+                <label for="status">Status</label>
+                 <div class="input">
+                    <select class="medium" id="status" name="status" >
+                    </select>
+                 </div>
+              </div>
+              <div class="clearfix">
+                <label for="obs">Observação</label>
+                 <div class="input">
+                    <input class="large" id="obs" name="obs" size="30" type="textarea"/>
+                    <span class="help-block">Observação</span>
+                 </div>
+              </div>          
+              <div class="clearfix">
+                <label for="barCode">Código de Barras</label>
+                 <div class="input">
+                    <input class="xlarge" id="barCode" name="barCode" size="30" type="text"/>
+                 </div>
+              </div>          
+              <div class="clearfix">
+                <label for="editableLine">Linha Digitável</label>
+                 <div class="input">
+                    <input class="xlarge" id="editableLine" name="editableLine" size="30" type="text"/>
+                 </div>
+              </div>          
+              <div class="clearfix lift:SecuritySnippet.hasAuditModule">
+                  <label for="createdAt">Criado/Alterado</label>
+                  <div class="input">
+                    <div class='inline-inputs'>
+                      <div class="input-prepend" style='float:left; padding-right:10px'>
+                        <span class="add-on"><img width="16" src='/images/calendar_addon.png'/></span> 
+                        <input class="input-medium datetime disabled" disabled="true" id="createdAt" name="createdAt" size="19" type="text"/>
+                      </div>
+                      <div class="input-prepend" style='float:left; padding-right:10px'>
+                        <span class="add-on"><img width="16" src='/images/calendar_addon.png'/></span> 
+                        <input class="input-medium datetime disabled" disabled="true" id="updatedAt" name="updatedAt" size="19" type="text"/>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="input">
+                    <div class='inline-inputs'>
+                      <div class="input-prepend" style='float:left; padding-right:10px'>
+                        <span class="add-on"><img src='/images/sex.png'/></span> 
+                        <input class="input-medium disabled" disabled="true" id="createdby" name="createdby" size="19" type="text"/>
+                      </div>
+                      <div class="input-prepend" style='float:left; padding-right:10px'>
+                        <span class="add-on"><img src='/images/sex.png'/></span> 
+                        <input class="input-medium disabled" disabled="true" id="updatedby" name="updatedby" size="19" type="text"/>
+                      </div>
+                    </div>
+                  </div>                            
+              </div>                     
+            </span>
+            </span>
+        </span>
+      </div>
+      <div class="well">
+        <label for="btn"></label>
+        <a class="btn primary" href="/monthly/list_monthly">Lista</a>
+        <input class="btn success" type="submit" value="Salvar">
+        <a class="btn primary" href="/monthly/edit_monthly">Inserir novo</a>
+      </div>
+    </form>
+</div>

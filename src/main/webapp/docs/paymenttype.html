@@ -1,0 +1,44 @@
+<div id="main" class="lift:surround?with=empty;at=content">
+  <h1>
+    <font face="verdana,geneva">Formas de Pagamento no <span class='system-name'></span>. </font>
+  </h1>
+  <section id="commission">
+    <h1>
+        <font face="verdana,geneva">Comissão</font>
+    </h1>
+    <h1>
+        <font face="verdana,geneva">Percentual de Desconto</font>
+    </h1>
+    <p>
+      Só informe um percentual aqui se você quiser que, para esta forma de pagamento específica, o valor para cálculo de comissão seja antes reduzido deste percentual. Normalmente usado para cartões de crédito, mas apenas se você desejar que a comissão do profissional seja diferente por exemplo de quando o pagamento for feito em dinheiro.
+    </p>
+    <p>
+      Se por exemplo você parametrizar 4%, e a comissão do profissional for 70% o <span class='system-name'></span> <b>não reduz</b> a comissão para 66%. O percentual de 4% é aplicado no valor da venda reduzindo o valor para 96% e então é aplicado o percentual de comissão original de 70% em 96% do valor da venda.
+    </p>
+    <p>
+      <u>Muito cuidado</u> para não confundir este percentual com o percentual de desconto na aba <b>Faturamento</b> que implicará no desconto gerado no financeiro, normalmente relativo a taxa da operadora de cartão.
+    </p>
+  </section>
+  <section id="special">
+    <h1>
+        <font face="verdana,geneva">Comportamentos Especiais</font>
+    </h1>
+    <h1>
+        <font face="verdana,geneva">Vale profissional</font>
+    </h1>
+    <p>
+      Este comportamento especial faz com que o <span class='system-name'></span> verifique se o cliente selecionado na venda é um profissional da casa. Na aba de faturamento a categoria padrão de faturamento deve ser uma categoria usada como vale para profissionais, para que ela seja gerada no financeiro no fechamento do caixa
+    </p>
+  </section>
+  <section id="invoicing">
+    <h1>
+        <font face="verdana,geneva">Faturamento</font>
+    </h1>
+    <h1>
+        <font face="verdana,geneva">Número de Dias para o Faturamento</font>
+    </h1>
+    <p>
+      Quando a forma de pagamento vai ser gerada no financeiro, se este campo estiver preenchido com 0 (zero) o lançamento é feito no dia de abertura do caixa, caso ele esteja preenchdo com 1 (um) o lançamento é feito no dia seguinte, e assim por diante. Caso o lançamento seja projetado para um sábado ou domingo o <span class='system-name'></span> o projetará para a segunda feira
+    </p>
+  </section>
+</div>

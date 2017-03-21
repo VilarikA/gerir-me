@@ -1,0 +1,24 @@
+<span data-ng-controller='UserProductsController'>
+	<div class="space-10"></div>
+
+	<div class="form-group">
+		<label class="col-sm-3 control-label no-padding-right" for="form-field-pass1">Tipos</label>
+
+		<div class="col-sm-9">
+			<select class="width-40" data-ng-change='findByCategory(current.category)'  data-ng-model='current.category' data-ui-select2 data-eb-select data-url="/cash/getProductTypes"  id="form-field-select-2">
+				<option data-ng-repeat='item in items' value='{{item.id}}'>{{item.name}}</option>
+			</select>
+			<input type="text" data-ng-model='percentCategory' br.money data-ng-change='applayPercernt(percentCategory)'> %
+			<span class="help-block">Adicione o percentual para todos os produtos deste tipo.</span>
+		</div>
+		<span>
+			<input type="checkbox" data-ng-model='doAll' data-ng-change='doAllApplay(doAll)'> Selecionar todos
+		</span>		
+		<button type="button" data-ng-click='saveChanged()' class="btn btn-info btn-sm">
+			Salvar
+		</button>
+	</div>
+
+	<div class="space-4"></div>
+	<ng-include src='"pages/general/grid.html"'/>
+</span>

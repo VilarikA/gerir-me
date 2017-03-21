@@ -1,0 +1,304 @@
+<span data-ng-controller='UserController'>
+	<div class="space-4"></div>
+	<div class="clearfix form-actions">
+		<div class="col-md-offset-3 col-md-9">
+			<button class="btn btn-info" data-ng-click='save(current)' type="button">
+				<i class="icon-ok bigger-110"></i>
+				Salvar
+			</button>
+
+			&nbsp; &nbsp;
+			<button class="btn" type="reset">
+				<i class="icon-undo bigger-110"></i>
+				Reset
+			</button>
+		</div>
+	</div>	
+	<h4 class="header blue bolder smaller">Dados</h4>
+
+	<div class="row">
+		<div class="vspace-xs"></div>
+
+		<div class="col-xs-12 col-sm-8">
+			<div class="form-group">
+				<label class="col-sm-4 control-label no-padding-right" for="form-field-username">Nome</label>
+				<div class="col-sm-8">
+					<input class="col-xs-12 col-sm-10" type="text" data-ng-model='current.name' placeholder="Nome" value="" />
+				</div>
+			</div>
+
+			<div class="space-4"></div>
+
+			<div class="form-group">
+				<label class="col-sm-4 control-label no-padding-right" for="form-field-first">Nome agenda</label>
+
+				<div class="col-sm-8">
+					<input class="input" type="text" data-ng-model='current.short_name' placeholder="Nome agenda" value="" />
+				</div>
+			</div>
+
+			<div class="space-4"></div>
+
+			<div class="form-group">
+				<label class="col-sm-4 control-label no-padding-right" for="form-field-first">Obs</label>
+
+				<div class="col-sm-8">
+					<input class="input" type="text" data-ng-model='current.obs' placeholder="OBS" value="" />
+				</div>
+			</div>
+			<hr />
+			<div class="form-group">
+				<label class="col-sm-3 control-label no-padding-right" for="form-field-date">Aniversário</label>
+				<div class="col-sm-8">
+					<div class="input-medium">
+						<div class="input-group">
+							<input class="input-small date-picker" br.datepicker data-ng-model='current.birthday'  type="text" placeholder="" />
+							<span class="input-group-addon">
+								<i class="icon-calendar"></i>
+							</span>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="space-4"></div>
+
+			<div class="form-group">
+				<label class="col-sm-3 control-label no-padding-right">Sexo</label>
+
+				<div class="col-sm-9">
+					<label class="inline">
+						<input data-ng-model='current.sex' value='M'  type="radio" class="ace" />
+						<span class="lbl"> Masculino</span>
+					</label>
+
+					&nbsp; &nbsp; &nbsp;
+					<label class="inline">
+						<input data-ng-model='current.sex' value='F' type="radio" class="ace" />
+						<span class="lbl"> Feminino</span>
+					</label>
+				</div>
+			</div>			
+		</div>
+	</div>
+<div class="space-4"></div>
+	<div class="space"></div>
+	<h4 class="header blue bolder smaller">Contato</h4>
+
+	<div class="form-group">
+		<label class="col-sm-3 control-label no-padding-right" for="form-field-email">Email</label>
+
+		<div class="col-sm-9">
+			<span class="input-icon input-icon-right">
+				<input type="email" data-ng-model='current.email' />
+				<i class="icon-envelope"></i>
+			</span>
+		</div>
+	</div>
+
+	<div class="space-4"></div>
+
+	<div class="space-4"></div>
+
+	<div class="form-group">
+		<label class="col-sm-3 control-label no-padding-right" for="form-field-phone">Telefones</label>
+
+		<div class="col-sm-9">
+			<span class="input-icon input-icon-right">
+				<input class="input-medium" type="text" data-ng-model='current.phone' br.phone />
+				<i class="icon-phone icon-flip-horizontal"></i>
+			</span>
+			<span class="input-icon input-icon-right">
+				<input class="input-medium" type="text" data-ng-model='current.mobilePhone' br.phone  />
+				<i class="icon-mobile-phone icon-flip-horizontal"></i>
+			</span>
+			<span class="input-icon input-icon-right">
+				<input class="input-medium" type="text" data-ng-model='current.email_alternative' br.phone  />
+				<i class="icon-mobile-phone icon-flip-horizontal"></i>
+			</span>																				
+		</div>
+	</div>
+	<div class="space"></div>
+	<h4 class="header blue bolder smaller">Documento</h4>
+
+	<div class="form-group">
+		<label class="col-sm-3 control-label no-padding-right" for="form-field-facebook">CPF</label>
+
+		<div class="col-sm-9">
+			<span class="input-icon">
+				<input type="text" data-ng-model='current.document'/>
+			</span>
+		</div>
+	</div>
+
+	<div class="space-4"></div>
+
+	<div class="form-group">
+		<label class="col-sm-3 control-label no-padding-right" for="form-field-twitter">CNPJ</label>
+
+		<div class="col-sm-9">
+			<span class="input-icon">
+				<input type="text" value="" data-ng-model='current.document_company'>
+			</span>
+		</div>
+	</div>
+	<div class="space-4"></div>
+	<div class="space"></div>
+	<h4 class="header blue bolder smaller">Acessos</h4>
+	<div class="form-group">
+		<label class="col-sm-3 control-label no-padding-right">Usuário</label>
+		<div class="col-sm-9">
+			<span class="input-icon">
+				<input type="text" value="" data-ng-model='current.userName'>
+			</span>
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-3 control-label no-padding-right">Senha</label>
+		<div class="col-sm-9">
+			<span class="input-icon">
+				<input type="password" value="" data-ng-model='current.password'>
+			</span>
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-3 control-label no-padding-right">Permissões</label>
+		<div class="col-sm-9">
+			<span class="input-icon">
+			<select data-ng-model="current.groupPermissionText" ui-select2="" style="min-width: 200px" multiple="multiple" tabindex="-1">
+					<option value="1">Administrador</option>
+					<option value="2">Estoque</option>
+					<option value="3">Financeiro</option>
+					<option value="4">Agenda Geral</option>
+					<option value="5">Administrativo</option>
+					<option value="7">Gerente de Estoque</option>
+					<option value="8">Gerente de Financeiro</option>
+					<option value="9">Gerente de Vendas</option>
+					<option value="11">Gerente de Pessoas</option>
+					<option value="6">Profissional</option>
+					<option value="12">Caixa</option>
+					<option value="10">Profissional s/ Cliente</option>
+				</select>
+			</span>
+		</div>		
+	</div>
+	<div class="space-4"></div>
+	<div class="space"></div>
+	<h4 class="header blue bolder smaller">Configuração</h4>
+	<div class="form-group">
+		<label class="col-sm-4 control-label no-padding-right">Agenda</label>
+		<div class="col-sm-8">
+			<div class="input-group">
+				<span class="input-group-addon">
+					<input type="checkbox" data-ng-model='current.showInCalendar_$qmark'>
+				</span>
+				<input class="col-sm-2" type="text" data-ng-model='current.orderInCalendar'>
+
+			</div>
+			<span class="help-block">Mostrar na agenda? / Ordem na agenda.</span>				
+		</div>
+	</div>	
+	<div class="form-group">
+		<label class="col-sm-4 control-label no-padding-right" for="form-field-date">Admissão / Rescisão</label>
+		<div class="col-sm-8">
+			<div class="input-group">
+				<input class="input-small date-picker" br.datepicker data-ng-model='current.hireDate'  type="text" placeholder="" />
+				&nbsp; &nbsp; &nbsp;
+				<input class="input-small date-picker" br.datepicker data-ng-model='current.resignationDate'  type="text" placeholder="" />
+			</div>
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-4 control-label no-padding-right">Status</label>
+		<div class="col-sm-8">
+			<span class="input">
+				<select data-ng-model='current.userStatus'>
+					<option value="1">Ativo</option>
+					<option value="4">Inativo</option>
+				</select>
+			</span>
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-4 control-label no-padding-right">Unidade / Grupo de Usuário</label>
+		<div class="col-sm-8">
+			<div class="input-group">
+				<span class="input">
+					<select eb-select data-url="/inventory/units" ng-options="obj.id as obj.name for obj in items " data-ng-model='current.unit'></select>
+				</span>
+				&nbsp; &nbsp; &nbsp;
+				<span class="input">
+					<select data-ng-model='current.group' eb-select data-url="/calendar/groups" ng-options="obj.id as obj.name for obj in items "></select>
+				</span>
+			</div>
+		</div>
+	</div>	
+	<div class="space"></div>
+	<h4 class="header blue bolder smaller">Dados Superior</h4>
+	<div class="form-group">
+		<label class="col-sm-4 control-label no-padding-right">Superior</label>
+		<div class="col-sm-8">
+			<span class="input">
+				<select data-ng-model='current.parent' eb-select data-url="/cash/getAllUsers" ng-options="obj.id as obj.name for obj in items "></select>
+			</span>
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-4 control-label no-padding-right" >Comissão Superior</label>
+		<div class="col-sm-8">
+			<span class="input-icon">
+				<input type="number" min='0' max='100' data-ng-model='current.parent_percent'/>
+			</span>
+		</div>
+	</div>
+	<div class="space"></div>
+	<h4 class="header blue bolder smaller">Endereço</h4>
+	<div>
+		<div class="form-group">
+			<label class="col-sm-4 control-label no-padding-right" for="form-field-username">Rua</label>
+			<div class="col-sm-8">
+				<input class="col-xs-12 col-sm-10" type="text" data-ng-model='current.street' placeholder="Rua" value="" />
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-4 control-label no-padding-right" for="form-field-first">Número / Complemento</label>		
+			<div class="col-sm-8">
+				<div class="input-group">
+					<input class="input" type="text" data-ng-model='current.number' placeholder="Nº" value="" />
+					&nbsp; &nbsp; &nbsp;
+					<input class="input" type="text" data-ng-model='current.complement' placeholder="Complemento" value="" />
+				</div>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-4 control-label no-padding-right" for="form-field-first">Bairro</label>		<div class="col-sm-8">
+				<input class="input" type="text" data-ng-model='current.district' placeholder="Bairro" value="" />
+			</div>
+		</div>
+		<div class="space-4"></div>
+
+		<div class="form-group">
+			<label class="col-sm-4 control-label no-padding-right" for="form-field-first">Cidade</label>
+
+			<div class="col-sm-8">
+				<input class="input" type="text" data-ng-model='current.city' placeholder="Cidade" value="" />
+			</div>
+		</div>
+		<hr />
+	</div>
+	<div class="space-4"></div>
+	<div class="clearfix form-actions">
+		<div class="col-md-offset-3 col-md-9">
+			<button class="btn btn-info" data-ng-click='save(current)' type="button">
+				<i class="icon-ok bigger-110"></i>
+				Salvar
+			</button>
+
+			&nbsp; &nbsp;
+			<button class="btn" type="reset">
+				<i class="icon-undo bigger-110"></i>
+				Reset
+			</button>
+		</div>
+	</div>	
+</span>

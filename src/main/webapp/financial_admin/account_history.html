@@ -1,0 +1,119 @@
+<div id="main" class="lift:surround?with=calendar;at=content">
+  <link rel="stylesheet" type="text/css" href="/select2/select2.css" />
+  <script src="/select2/select2.js"></script><script src="/select2/select2_locale_pt-BR.js"></script>
+  <script src="/js/reports.js"></script>
+  <script src="/js/jquery.tablesorter.pager.js"></script>
+  <script type="text/javascript">
+  $(function(){
+    $("#user").userField(true);
+    $("#unit").unitField(true);
+    $("#account").accountField(false);
+    $("#start").val(getDateBr(new Date().getStartOfMonth()));
+    var hasUnitModule = $('.has-unit-module').length > 0;
+    var fields = [];
+    fields[2] = "dateTime";
+    fields[3] = "real";
+    fields[5] = "real";
+    fields[8] = "date";
+    fields[9] = "real";
+    if (!hasUnitModule) {
+      fields[11] = "none";
+    }
+//    fields[7] = "real";
+    var url = "/report/account_history";
+    var total_to_pay = 0.00;
+    var request = function(){
+      //var total_commission = 0.00;
+      var account = $('#account').val()
+      if (!account) {
+        alert("Conta inválida!")
+        return
+      }
+      renderReport(url,fields,$("#form_report").serializeObject(),"#grid", function(data){
+        data.forEach(function(row){
+          //total_commission += parseFloat(row[8]);
+        });
+        //$("#total_commission").val(total_commission.formatMoney());
+      });
+    }
+    $("#send").click(request);
+    //request();
+  });  
+  </script>
+  <div>
+    <form id="form_report" class="well  form-search" method='get'>
+      <h1>
+        <span class="lift:CompanySnippet.thumb"> </span>
+        <input class="report_title local_storage" id="title_account_history" name="title_account_history" size="30" type="text" value="Relatório Extrato de Conta"/>
+      </h1>
+      <div class="row">
+        <div class="span8">
+          <div class="clearfix">
+            <label for="type_category">Intervalo</label>
+              <div class="input">
+                <div class="inline-inputs">
+                  <div class="input-prepend" style="float:left; padding-right:10px">
+                    <span class="add-on"><img width="16" src="/images/calendar_addon.png"></span>
+                    <input type="text" class="input-small date" id='start' name="start" placeholder="Início"/>
+                  </div>
+                  <div class="input-prepend" style="float:left; padding-right:10px">
+                    <span class="add-on"><img width="16" src="/images/calendar_addon.png"></span>
+                    <input type="text" class="input-small date to_day" id='end' name="end" placeholder="Fim"/>
+                  </div>
+                </div>
+              </div>
+          </div>
+          <div class="clearfix">
+              <label for="account">Conta</label>
+              <div class="input">
+                  <select class="local_storage" name='account' id="account"></select>
+              </div>
+          </div>            
+          <div class="clearfix">
+            <label for="user"><span data-i18n='Profissional'></span></label>
+              <div class="input">
+                <div class="inline-inputs">
+                    <select class='local_storage value_to_env' data-env-name="NOME_PROFISSIONAL" data-env-value='IDPROFISSIONAL' name="user" id="user"></select>
+                </div>
+              </div>
+          </div>
+          <input type="hidden" class="has-unit-module lift:SecuritySnippet.hasUnitModule" value="1">
+          <div class="clearfix lift:SecuritySnippet.hasUnitModule">
+            <label for="unit">Unidade</label>
+             <div class="input">
+                <select class="local_storage xlarge url_parameter" name="unit" id='unit'></select>
+             </div>
+          </div>
+        </div>
+        <div class="span8">
+        </div>
+      </div>  
+      <div class="clearfix">
+        <label for="send"></label>
+          <div class="input">
+              <button type="button" id="send" class="btn success">Buscar</button>
+          </div>
+      </div>
+    </form>
+  </div>
+
+  <table id="grid" class="bordered-table zebra-striped">
+      <thead>
+        <th>Conta</th>
+        <th>Usuário</th>
+        <th>Data</th>
+        <th>Valor</th>
+        <th>Evento</th>
+        <th>Saldo</th>
+        <th title="Vários registros de saldo podem apontar para um mesmo lançamento que foi sendo modificado. Apenas os conteúdos atuais do lançamento serão exibidos">Obs Lanc</th>
+        <th>Cat Lanc</th>
+        <th>Venc Lanc</th>
+        <th>Valor Lanc</th>
+        <th>Parc Lanc</th>
+        <th class="lift:SecuritySnippet.hasUnitModule">Unid Lanc</th>
+        <th title="Pelo id é possível ver o log de alteração do lançamento, mesmo que ele tenha sido excluído">Id Lanc</th>
+      </thead>
+      <tbody>
+      </tbody>
+  </table>
+ </div>

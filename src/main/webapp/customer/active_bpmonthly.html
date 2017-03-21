@@ -1,0 +1,261 @@
+<div id="main" class="lift:surround?with=calendar;at=content">
+  <link rel="stylesheet" type="text/css" href="/select2/select2.css" />
+  <script src="/select2/select2.js"></script><script src="/select2/select2_locale_pt-BR.js"></script>
+  <script src="/js/reports.js"></script>
+  <script src="/js/jquery.tablesorter.pager.js"></script>
+  <script type="text/javascript">
+  var customers = [];
+  $(function(){ 
+    $("#send_message").notificationField(true);
+    var fields = [];
+    var total = 0;
+    var total_month = 0;
+    var session_avg = 0;
+    fields[1] = {
+      type: "format",
+      decode: function(name, row) {
+        return "<a href='/customer/edit?id=" + row[0] + "' target='_customer_maste'>" + name + "</a>";
+      }
+    }
+    fields[5]="date";
+    fields[6]="date";
+    fields[8]={
+      type : "format",
+      decode : function(value){
+        var floatValue = parseFloat(value);
+        return floatValue.formatMoney();
+      }
+    };
+    fields[9]={
+      type : "format",
+      decode : function(value){
+        var floatValue = parseFloat(value);
+        if(!isNaN(floatValue))
+          total += 1;
+        return floatValue.formatMoney();
+      }
+    };
+    fields[10]={
+      type : "format",
+      decode : function(value){
+        var floatValue = parseFloat(value);
+        if(!isNaN(floatValue))
+          //total += floatValue;
+        return floatValue.formatMoney();
+      }
+    };    
+    fields[11]={
+      type : "format",
+      decode : function(value){
+        var floatValue = parseFloat(value);
+        if(!isNaN(floatValue))
+          total_month += floatValue;
+        return floatValue.formatMoney();
+      }
+    };    
+    fields[12]={
+      type : "format",
+      decode : function(value){
+        var floatValue = parseFloat(value);
+        if(!isNaN(floatValue))
+          session_avg += floatValue;
+        return floatValue.formatMoney();
+      }
+    };    
+    var url = "/report/active_bpmonthly";
+    var request = function(){
+      customers = [];
+      total = 0.00;
+      total_month = 0.00;
+      session_avg = 0.00;
+      renderReport(url,fields,$("#form_report").serializeObject(), "#grid", function(data){
+        data.forEach(function(iten){
+          customers.push(iten[0]);
+        });
+        $('#total').val(total);
+        $('#session_avg').val((session_avg/total).formatMoney());
+        $('#total_month').val((total_month).formatMoney());
+      });
+    }
+    $("#send").click(request);
+    $("#send_notifications").click(function(){
+      var message = $("#send_message").val();
+      if(confirm("Deseja enviar esta mensagem aos clientes?")){
+        $.get("/notification/messagesend/"+customers.join(",")+"/"+message,function(r){
+          if(r === '1'){
+            alert("Enviado com sucesso!");
+          }else {
+            alert(r);
+          }
+        }).error(function(){
+          alert("Erro ao enviar!")
+        }); 
+      }
+    });    
+    $("#activity").activityField(true);
+    $("#activity_type").activityTypeField(true);
+    $("#unit").unitField(true);
+  });
+  </script>
+  <div>
+      <form id="form_report" class="well form-search" method='get'>
+        <h1>
+          <span class="lift:CompanySnippet.thumb"> </span>
+          <input class="report_title local_storage" id="title_active_bpmonthly" name="title_active_bpmonthly" size="30" type="text" value="Relatório de Mensalidades Ativas"/>
+        </h1>
+        <span class="row">
+            <span class="span9">
+              <div class="clearfix">
+                <label for="customer">
+                  Cliente 
+                  <img src="/images/search.png" width="24" class="customer_search_button">  
+                </label>
+                <div class="input">
+                  <div class="inline-inputs">
+                  <span>
+                    <input name="customer" class="mini id_customer_search"> 
+                    <input placeholder="Nome" type="text" size="30" name="name_customer" class="name_customer_search normal_name"/>
+                  </span>  
+                  <span class="help-block">Cliente</span>
+                  </div>
+                </div>
+              </div>
+              <div class="clearfix">
+                <label for="activity_type">
+                  Tipo de Serviço 
+                </label>
+                  <div class="input">
+                    <div class="inline-inputs">
+                      <select multiple name="activity_type" id='activity_type'></select>
+                    </div>
+                  </div>
+              </div>                                      
+              <div class="clearfix">
+                <label for="activity">
+                  Serviço
+                </label>
+                  <div class="input">
+                    <div class="inline-inputs">
+                      <select class="url_parameter" name="activity" id='activity'></select>
+                    </div>
+                  </div>
+              </div>
+              <input type="hidden" class="has-unit-module lift:SecuritySnippet.hasUnitModule" value="1">
+              <div class="clearfix lift:SecuritySnippet.hasUnitModule">
+                <label for="unit">
+                  Unidade 
+                </label>
+                  <div class="input">
+                    <div class="inline-inputs">
+                      <select class="url_parameter" name="unit" id='unit'></select>
+                    </div>
+                  </div>
+              </div>
+          </span>     
+          <span class="span8">
+              <div class="clearfix">
+                <label for="active">Ativos/Sintético
+                </label>
+                  <div class="input">
+                    <div class="inline-inputs">
+                      <input class="url_parameter" name="active" id='active' type='checkbox' /> Somente Ativos
+                      <input class="url_parameter" name="rel_mini" id='rel_mini' type='checkbox' /> Rel sintético
+                      <span class="help-block">Mostrar apenas pacotes ativos / Relatório sintético</span>
+                    </div>
+                  </div>
+              </div>
+              <div class="clearfix">
+                <label for="type_category">No dia</label>
+                  <div class="input">
+                    <div class="inline-inputs">
+                        <div style="float:left; padding-right:10px" class="input-prepend">
+                            <span class="add-on"><img width="16" src="/images/calendar_addon.png"></span>
+                            <input type="text" class="input-small date to_day" id='start' name="start" placeholder="Início"/>
+                        </div>
+                    </div>
+                  </div>
+              </div> 
+              <fieldset>
+                <legend>Envio de E-mail</legend>
+                <div class="clearfix">
+                  <label for="">Notificação</label>
+                  <div class="input">
+                    <select name="send_message" id="send_message"></select>
+                    <span class="help-block">Selecione uma mensagem para enviar aos clientes</span>
+                  </div>
+                </div>
+                <div class="clearfix">
+                  <label for=""></label>
+                  <div class="input">
+                    <a type="button" id="send_notifications" class="btn primary">
+                      <img width="16px" src="/images/mail.png"/>
+                      Enviar
+                    </a>
+                  </div>
+                </div>
+              </fieldset>
+          </span>
+        </span>
+              <div class="clearfix">
+                <label for=""></label>
+                 <div class="input">
+                    <button type="button" id="send" class="btn success">Buscar</button>
+                 </div>
+              </div>        
+              <div class="clearfix">
+                <label for="total">Total </label>
+                <div class="input">
+                  <div class="inline-inputs">
+                    <div class="input-prepend" style="float:left; padding-right:10px">
+                      <div style="float:left; padding-right:10px" class="input-prepend">
+                        <span class="add-on"><img src="/images/money.png" width="16"></span>
+                        <input class="small" id="total" name="total" size="19" placeholder="0.00" type="text">
+                        <span class="help-block">Total</span>
+                      </div>
+                    </div>
+                    <div class="input-prepend" style="float:left; padding-right:10px">
+                      <div style="float:left; padding-right:10px" class="input-prepend">
+                        <span class="add-on"><img src="/images/money.png" width="16"></span>
+                        <input class="small" id="total_month" name="total_month" size="19" placeholder="0.00" type="text" title='Valor no mês considerando planos bismestrais, trimestrais, etc'>
+                        <span class="help-block">Val no mês</span>
+                      </div>
+                    </div>
+                    <div class="input-prepend" style="float:left; padding-right:10px">
+                      <div style="float:left; padding-right:10px" class="input-prepend">
+                        <span class="add-on"><img src="/images/money.png" width="16"></span>
+                        <input class="small" id="session_avg" name="session_avg" size="19" placeholder="0.00" type="text" title='Valor médio das sessões'>
+                        <span class="help-block">Val médio sessões</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>                      
+              </div>
+      </form>
+  </div>
+  <table id="grid" class="bordered-table zebra-striped">
+    <thead>
+      <tr>
+        <th>Id</th>
+        <th>Cliente</th>
+        <th>Telefone</th>
+        <th>E-mail</th>
+        <th>Alerta</th>
+        <th>Início</th>
+        <th>Fim</th>
+        <th>Serviço / Produto</th>
+        <th>Preço</th>
+        <th>Valor</th>
+        <th>C/Desconto</th>
+        <th>Val Mês</th>
+        <th>Sessões</th>
+        <th>Valor</th>
+        <th>Cancel</th>
+        <th>Obs</th>
+      </tr>
+    </thead>
+    <tbody>
+    </tbody>
+  </table>
+ </div>
+
+ 

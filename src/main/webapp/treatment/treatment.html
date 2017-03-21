@@ -1,0 +1,193 @@
+<div id="main" class="lift:surround?with=dashboard_customer;at=content">
+  <script src="/js/angular.js"></script>
+  <script src="/js/angular-resource.min.js"></script>      
+  <script src="/js/angular.date.js"></script>
+  <script src="/js/datetimepicker/jquery.datetimepicker.js"></script>
+  <script src="/js/icd_search.js"></script>
+  <style>
+    @import url("/js/datetimepicker/jquery.datetimepicker.css");
+  </style>
+  <script type="text/javascript" charset="utf-8">
+    setTimeout(function(){
+      if($("#customer").val() && $("#customer").val() != '0'){
+        $("#customer").change();
+      }
+    }, 500);    
+  </script>
+  <span class=' lift:TreatmentSnippet.maintain'>
+    <form  class="lift:form.ajax">
+      <div class="well">
+        <label for="btn"></label>
+        <a class="btn primary" href="/treatment/list_treatment">Lista</a>
+        <input class="btn success" type="submit" value="Salvar">
+        <a class="btn primary" href="/treatment/treatment">Inserir novo</a>
+      </div>
+      <div>
+        <span id="treatment_form">
+          <span class="row">
+            <span class="span18">
+              <div class="clearfix">
+                <label for="customer"><span data-i18n='Cliente'></span></label>
+                <div class="input">
+                  <span>
+                    <img class="customer_search_button" width='24' src="/images/search.png"/>
+                    <input class='mini id_customer_search url_parameter' data-url-name='customer'  id='customer' name="customer" /> 
+                    <input class="name_customer_search" name="customername" id="customername"  size="30" type="text" placeholder="Nome"/>    
+                  </span>
+                </div>
+              </div>
+            </span>
+            <span class="span7">
+              <div class="clearfix">
+                <label for="start">Início</label>
+                <div class="input">
+                  <div class='inline-inputs'>
+                    <div class="input-prepend" style='float:left; padding-right:10px'>
+                      <span class="add-on"><img width="16" src='/images/calendar_addon.png'/></span> 
+                      <input class="medium datetime" id="start" name="start" size="19" type="text"/>
+                    </div>
+                  </div>
+                </div>
+              </div>                     
+              <div class="clearfix">
+                <label for="user"><span data-i18n='Profissional'></span></label>
+                <div class="input">
+                  <select id='user' class="user" name='user'></select>
+                </div>
+              </div>
+              <div class="lift:SecuritySnippet.hasUnitModule clearfix">
+                <label for="unit">Unidade</label>
+                <div class="input">
+                  <select class="medium" id="unit" name="unit" >
+                  </select>
+                </div>
+              </div>
+            </span>
+            <span class="span7">
+              <div class="clearfix">
+                <label for="end">Fim</label>
+                <div class="input">
+                  <div class='inline-inputs'>
+                    <div class="input-prepend" style='float:left; padding-right:10px'>
+                      <span class="add-on"><img width="16" src='/images/calendar_addon.png'/></span> 
+                      <input class="medium datetime" id="end" name="end" size="19" type="text"/>
+                    </div>
+                  </div>
+                </div>
+              </div>                     
+              <div class="clearfix">
+                <label for="status">Status</label>
+                <div class="input">
+                  <select class="medium" id="status" name="status" >
+                  </select>
+                  <a data-original-title="Informação" data-content="clique para abrir a documentação" data-help-url='/docs/status.html' rel="popover" class="_popover_basic _help">
+                    <img src="/images/info.gif" width="20">
+                  </a>
+                </div>
+              </div>
+            </span>
+            <span class="span18">
+              <div class="lift:SecuritySnippet.IsEdoctusSystem clearfix">
+                <label for="offsale">Convênio</label>
+                <div class="input">
+                  <select class="xlarge" id="offsale" name="offsale" >
+                  </select>
+                </div>
+              </div>
+              <div class="lift:SecuritySnippet.IsEdoctusSystem clearfix">
+                  <label for="name">Cid</label>
+                  <div class="input">
+                    <div class="inline-inputs">
+                      <div style="float:left; padding-right:10px" class="input-prepend">
+                            <span class="add-on"></span> 
+                            <input class="xlarge process_icd_field" name="icd" id='icd'/>
+                      </div>                                                    
+                    </div>
+                  </div>
+              </div>
+              <div class="clearfix">
+                <label for="hospitalizationType">Tipo Internação</label>
+                <div class="input">
+                  <text class="large" id="hospitalizationType" name="hospitalizationType" size="30"></text>
+                  <span class="help-block">Tipo Internação</span>
+                </div>
+              </div>
+              <div class="clearfix">
+                <label for="Obs">Obs</label>
+                <div class="input">
+                  <textarea class="large" id="obs" name="obs" size="30"></textarea>
+                  <span class="help-block">Observações</span>
+                </div>
+              </div>
+            </span>
+          </span>
+        </span>
+      </div>
+      <div class="well">
+        <label for="btn"></label>
+        <a class="btn primary" href="/treatment/list_treatment">Lista</a>
+        <input class="btn success" type="submit" value="Salvar">
+        <a class="btn primary" href="/treatment/treatment">Inserir novo</a>
+      </div>
+      <span>
+        <ul class="tabs">
+          <li class="active tab"><a href="#activities">Serviços</a></li>
+          <li class="tab"><a href="#products">Produtos</a></li>
+        </ul>
+        <div class="pill-content">
+          <div class="active tab_content row" id="activities">
+            <span class='span18'>
+              <div class="clearfix">
+                <div class="input">
+                  <a class="btn primary" href="/treatment/treatmentdetail?treatment=##" id ="add_td">Inserir novo</a>
+                </div>
+              </div>              
+              <table id="table_activities" class='bordered-table zebra-striped'>
+                <thead>
+                  <tr>
+                    <th>Serviço</th>
+                    <th>Assistente</th>
+                    <th>Val Unit</th>
+                    <th>Qtde</th>
+                    <th>Val Total</th>
+                    <th>Obs</th>
+                    <th>Código</th>
+                    <th>Ações</th>
+                  </tr>
+                </thead>
+                <tbody>
+                </tbody>
+              </table>
+            </span>
+          </div>
+          <div class="tab_content row" id="products">
+            <span class='span18'>
+              <div class="clearfix">
+                <div class="input">
+                  <a class="btn primary" href="/treatment/treatmentdetail?treatment=##" id ="add_td1">Inserir novo</a>
+                </div>
+              </div>              
+              <table id="table_products" class='bordered-table zebra-striped'>
+                <thead>
+                  <tr>
+                    <th>Produto</th>
+                    <th>Val Unit</th>
+                    <th>QTde</th>
+                    <th>Val Total</th>
+                    <th>Obs</th>
+                    <th>Código</th>
+                    <th>Ações</th>
+                  </tr>
+                </thead>
+                <tbody>
+                </tbody>
+              </table>
+            </span>
+          </div>
+        </div>
+      </span>
+    </form>
+    <script type="text/javascript" src="/js/reports.js"></script>
+    <script type="text/javascript" src="/js/treatments.js"></script>
+  </span>
+</div>

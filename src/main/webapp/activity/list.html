@@ -1,0 +1,113 @@
+<div id="main" class="lift:surround?with=activity;at=content">
+	<div class="well">
+        <label for="btn"></label>
+		<a class="btn primary" href="/activity/edit">Inserir novo</a>
+		<a class="btn primary" href="/activity/list_type">Tipos de <span data-i18n='Serviço'></span></a>
+		<a data-original-title="Informação" data-content="clique para abrir a documentação" data-help-url='/docs/tutorial.html' rel="popover" class="_popover_basic _help lift:SecuritySnippet.isSuperAdmin">
+		<img src="/images/info.gif" width="20">
+		</a>
+	</div>
+	<div class='filter block-message success"'>
+		<img style='float:left' src="/images/filter.png"/>
+		<span class="filter_form">
+		<script type="text/javascript">
+			$(function(){
+				$(".name_activity").val(gup("name"))
+				$("#productType").activityTypeField(true);
+				if(gup("all")){
+					$("#all").attr("checked", "checked");
+				}				
+			});
+		</script>
+			<form action=''>
+				<input class="local_storage xlarge name_activity" id="name_activity" name="name" size="30" type="text" placeholder="Nome"/>
+			    <span class='label-inline'>
+			    	Tipo
+			    </span>
+			    <span class='select-inline'>
+			      <select size="30" id="productType" class='local_storage' name="productType">
+			      </select>					       						    
+			    </span>
+				<input class="all" id="all" name="all" type="checkbox"/> Mostrar todos?
+				<input class="btn success" type="submit" value="Buscar">
+			</form>
+		</span>
+	</div>
+	<a onclick="return ExcellentExport.excel(this, 'table_result', 'data');"
+	href="#" download="data.xls" class="btn excel_buttton"
+	title="Exportar para excel">
+	<img style="width: 16px;" src="/images/excel.png" />
+	</a>  
+	<a onclick="return ExcellentExport.csv(this, 'table_result', ';');"
+	href="#" download="data.csv" class="btn excel_buttton"
+	title="Exportar para csv">
+	<img style="width: 16px;" src="/images/generate.png" />
+	</a>  
+<table id="table_result" class="bordered-table zebra-striped">
+		<thead>
+			<th>Id</th>
+			<th>Nome</th>
+			<th>Duração</th>
+			<th>Preço</th>
+			<th>Comissão</th>
+			<th>Tipo</th>
+			<th class='lift:SecuritySnippet.hasBpmonthlyModule'>Mensal</th>
+			<th class='lift:SecuritySnippet.hasBpmonthlyModule'>Qtde</th>
+			<th>Observação</th>
+			<th>Ações</th>
+		</thead>
+		<tbody>
+			<tr class="lift:ActivitySnippet:activitys">
+				<td>
+					<f:id></f:id>
+				</td>
+				<td>
+					<f:name></f:name>
+				</td>
+				<td>
+					<f:duration></f:duration>
+				</td>
+				<td>
+					<f:price></f:price>
+				</td>
+				<td>
+					<f:commission></f:commission>
+				</td>
+				<td>
+					<f:type></f:type>
+				</td>
+				<td class='lift:SecuritySnippet.hasBpmonthlyModule'>
+					<f:bpmonthly></f:bpmonthly>
+				</td>
+				<td class='lift:SecuritySnippet.hasBpmonthlyModule'>
+					<f:bpmcount></f:bpmcount>
+				</td>
+				<td>
+					<f:obs></f:obs>
+				</td>
+				<td>
+					<form method="post">
+						<span>
+							<f:actions></f:actions>
+						</span>
+						<span>
+							<f:delete></f:delete>
+						</span>
+						<span style="display:none">
+							<f:_id></f:_id>
+						</span>
+					</form>
+				</td>
+			</tr>
+		</tbody>
+</table>
+	<span class='lift:ActivitySnippet.paginate'>
+		<ul class='pagination'>
+			<li class="fisrt"><nav:first/></li>
+			<li class="prev"><nav:prev/></li>
+			<li class="next"><nav:zoomedpages/></li>
+			<li class="next"><nav:next/></li>
+			<li class="last"><nav:last/></li>
+		</ul>
+	</span>
+</div>

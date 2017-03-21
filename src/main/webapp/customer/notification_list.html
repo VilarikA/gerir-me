@@ -1,0 +1,32 @@
+<div id="main" class="lift:surround?with=bootstrap&at=content">
+	<script type="text/javascript" src="/js/angular.js"></script>
+	<script type="text/javascript" src="/js/notification_list.js"></script>
+	<span ng-app>
+	  <div class="well">
+        <label for="btn"></label>
+	    <a class="btn primary" href="./notification_create">Inserir novo</a>
+	  </div>
+	  <table class="bordered-table zebra-striped" ng-controller='NotificationController'>
+		<thead>
+			<th>Id</th>
+			<th>Título</th>
+			<th>Enviar</th>
+			<th>Excluir</th>
+		</thead>
+		<tbody>
+			<tr ng-repeat="notification in notifications">
+				<td>{{notification.id}}</td>
+				<td>{{notification.title}}</td>
+				<td>
+					<button ng-click='sendToYou(notification.id)' class="btn primary">Enviar para você mesmo!</button>
+					<button ng-click='sendToAll(notification.id)' class="btn primary">Enviar para Todos!</button>
+				</td>
+				<td>
+					<button ng-click='edit(notification.id)' class="btn">Editar</button>	
+					<button ng-click='remove(notification.id)' class="btn danger">Excluir</button>
+				</td>				
+			</tr>
+			</tbody>			
+		</table>		
+	</span>
+</div>

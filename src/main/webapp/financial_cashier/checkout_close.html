@@ -1,0 +1,164 @@
+<div id="main" class="lift:surround?with=financial;at=content">
+  <script src="/js/reports.js"></script>
+  <script src="/js/cashiers_payment_types.js"></script>
+  <span id="cash_form">
+  	<script type="text/javascript" src='/js/checkout_close.js'></script>
+<form id='checkoutClose_form' onsubmit='callApiGetValue();return false;' action="/cash/">
+  <div>
+    <div class="well">
+      <label for="btn"></label>
+      <!--
+      <input class="btn success" onclick='callApiGetValue()' type="button" value="Conferir">
+      -->
+      <a class="btn success"  onclick="openDetail()" > Conferência detalhada</a>
+      <input class="btn primary" onclick='callApiClose()' type="button" value="Fechar">
+    </div>            
+    <div class="row">
+      <div class="span8">
+        <div class="clearfix">
+          <label for="birthday">Caixas Abertos</label>
+          <div class="input">
+            <div class="inline-inputs">
+              <div style="float:left; padding-right:10px" class="input-prepend">
+                <span class="add-on"><img width="16" src="/images/close_cash.png"></span> 
+                <select class = "xlarge" id='cashiers_select'  name="cashiers"></select>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="clearfix">
+          <label for="birthday">Data da Abertura</label>
+          <div class="input">
+            <div class="inline-inputs">
+              <div style="float:left; padding-right:10px" class="input-prepend">
+                <span class="add-on"><img width="16" src="/images/calendar_addon.png"></span> 
+                <input type="text" size="19" name="opener_date" id="opener_date" disabled='true' class="medium disabled">
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="clearfix">
+          <label for="price">Valor de Abertura</label>
+          <div class="input">
+            <div class="input-prepend">
+              <span class="add-on"><img src="/images/dre.png" width="16"></span>             
+              <input class="mini disabled" disabled='true' id="start_value" name="start_value" size="30" type="text"/>
+              <span class="help-block">Valor de abertura de caixa</span>
+            </div>
+          </div>
+        </div>  
+        <div id='payment_types'>
+          <span class="span3">
+            <div class="clearfix">
+              <label for="price">Dinheiro</label>
+              <div class="input">
+                <div class="input-prepend">
+                  <span class="add-on"><img src='/images/money.png'/></span>             
+                  <input class="mini disabled" disabled='true' id="money_value" name="money_value" size="30" type="text"/>
+                  <span class="help-block">Total pago com dinheiro</span>
+                </div>
+              </div>
+            </div>          
+          </span>
+          <span class="span12">
+            <div class="clearfix">
+              <label for="price">Saída/Entrada</label>
+              <div class="input">
+                <div class="inline-inputs">
+                  <div class="input-prepend" style="float:left; padding-right:10px">
+                    <span class="add-on"><img width="16px" src='/images/remove.png'/></span>             
+                    <input class="mini disabled" disabled='true' id="out_value" name="out_value" size="30" type="text"/>
+                  </div>
+                  <div class="input-prepend">
+                    <span class="add-on"><img width="16px" src='/images/add.png'/></span>             
+                    <input class="mini disabled" disabled='true' id="in_value" name="in_value" size="30" type="text"/>
+                  </div>
+                  <a data-original-title="Informação" data-content="clique para abrir a documentação" data-help-url='/docs/checkou.html#out' rel="popover" class="_popover_basic _help">
+                  <img src="/images/info.gif" width="20">
+                  </a>
+                <span class="help-inline">Saídas do caixa, vales, etc</span>
+                </div>
+              </div>
+            </div>                 
+          </span>
+          <div class="clearfix">
+            <label for="price">Valor em Caixa</label>
+            <div class="input">
+              <div class="input-prepend">
+                <span class="add-on"><img src='/images/money.png'/></span>             
+                <input class="mini disabled" disabled='true' id="final_value" name="final_value" size="30" type="text"/>
+                <span class="help-block">Valor atual em dinheiro no caixa</span>
+              </div>
+            </div>
+          </div>             
+        </div>           
+      </div>
+      <div class="span8">
+        <div class="clearfix">
+          <label for="price">Total</label>
+          <div class="input">
+            <div class="input-prepend">
+              <span class="add-on"><img src="/images/money.png" width="16"></span>             
+              <input class="mini disabled" disabled='true' id="total_value" name="total_value" size="30" type="text"/>
+            </div>
+            <a data-original-title="Informação" data-content="clique para abrir a documentação" data-help-url='/docs/checkou.html#total' rel="popover" class="_popover_basic _help">
+            <img src="/images/info.gif" width="20">
+            </a>
+            <span class="help-inline">Valor total para conferência</span>
+          </div>
+        </div>
+        <div class="clearfix">
+          <label for="price">Cheques</label>
+          <div class="input">
+            <div class="inline-inputs">
+              <div class="input-prepend" style="float:left; padding-right:10px">
+                <span class="add-on"><img src='/images/cheque.png'/></span>             
+                <input class="mini disabled" disabled='true' id="cheque_value" name="cheque_value" size="30" type="text"/>
+              </div>
+              <div class="input-prepend">
+                <span class="add-on"><img width="16px" src='/images/remove.png'/></span>             
+                <input class="mini disabled" disabled='true' id="out_cheque" name="out_cheque" size="30" type="text"/>
+              </div>
+              <span class="help-block">Total pago cheque/cheques retirados</span>
+            </div>
+          </div>
+        </div> 
+        <div class="clearfix">
+          <label for="price">Cartões</label>
+          <div class="input">
+            <div class="input-prepend">
+              <span class="add-on"><img src='/images/card.png'/></span>             
+              <input class="mini disabled" disabled='true' id="card_value" name="card_value" size="30" type="text"/>
+              <span class="help-block">Total pago débito/crédito</span>
+            </div>
+          </div>
+        </div> 
+      </div>
+    </div>                    
+  </div>
+  <span class='span10'>
+    <center>
+      <span class='span9'>    
+        <h2>Formas de pagamento</h2>
+        <table id="grid" class="bordered-table zebra-striped span7">
+          <thead>
+            <th>Form Pag</th>
+            <th>Valor</th>
+          </thead>
+          <tbody>
+          </tbody>
+          <tfoot style="background-color: #B9B9B9">
+            <tr>
+              <td>
+                Total Form. Pags
+              </td>
+              <td id='total_payment_types'>
+              </td>
+            </tr>
+          </tfoot>
+        </table>
+      </span>
+    </center>
+  </span>
+</form>
+</div> 

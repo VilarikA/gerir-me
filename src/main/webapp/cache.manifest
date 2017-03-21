@@ -1,0 +1,15 @@
+CACHE MANIFEST
+# v2 - 2015-07-06
+# This is a comment. 
+index.html
+#cache.html - 23/08/2016 eu comentei com lucas
+style.css
+#image1.png  - 23/08/2016 eu comentei com lucas
+
+# Use from network if available
+NETWORK:
+network.html
+
+# Fallback content
+FALLBACK:
+/ fallback.html

@@ -1,0 +1,142 @@
+<div id="main" class="lift:surround?with=calendar;at=content">
+  <link rel="stylesheet" type="text/css" href="/select2/select2.css" />
+  <script src="/select2/select2.js"></script><script src="/select2/select2_locale_pt-BR.js"></script>
+  <script src="/js/reports.js"></script>
+  <script src="/js/jquery.tablesorter.pager.js"></script>
+  <script type="text/javascript">
+  $(function(){
+    $("#bank").bankField(true);
+    var fields = [];
+    fields[1] = {
+      type: "format",
+      decode: function(name, row) {
+        return "<a href='/customer/edit?id=" + row[0] + "' target='_customer_maste'>" + name + "</a>";
+      }
+    }
+    fields[8] = "boolean";
+    fields[9] = "real";
+    fields[10] = "date";
+    fields[11] = "date";
+    fields[12] = "date";
+    fields[13] = "date";
+    var url = "/report/cheques";
+    var request = function(){
+      renderReport(url,fields,$("#form_report").serializeObject());
+    }
+    $("#send").click(request);
+    //request();
+  });  
+  </script>
+<div class="page-header">
+          <h1>
+            <span class="lift:CompanySnippet.thumb"> </span>Relatório de Cheques
+          </h1>
+        </div>  
+  <div class="row">
+      <form id="form_report" class="well form-search" method='get'>
+      <div class="row">
+        <div class="span8">
+            <div class="clearfix">
+              <label for="start">Bom para</label>
+                <div class="input">
+                  <div class="inline-inputs">
+                    <div class="input-prepend" style="float:left; padding-right:10px">
+                      <span class="add-on"><img width="16" src="/images/calendar_addon.png"></span>
+                      <input type="text" class="input-small date to_day" id='start' name="start" placeholder="Início"/>
+                    </div>
+                    <div class="input-prepend" style="float:left; padding-right:10px">
+                      <span class="add-on"><img width="16" src="/images/calendar_addon.png"></span>
+                      <input type="text" class="input-small date to_day" id='end' name="end" placeholder="Fim"/>
+                    </div>
+                  </div>
+                </div>
+            </div>   
+            <div class="clearfix">
+              <label for="start">Data Cheque</label>
+                <div class="input">
+                  <div class="inline-inputs">
+                    <div class="input-prepend" style="float:left; padding-right:10px">
+                      <span class="add-on"><img width="16" src="/images/calendar_addon.png"></span>
+                      <input type="text" class="input-small date" id='receivedDate_start' name="receivedDate_start" placeholder="Início"/>
+                    </div>
+                    <div class="input-prepend" style="float:left; padding-right:10px">
+                      <span class="add-on"><img width="16" src="/images/calendar_addon.png"></span>
+                      <input type="text" class="input-small date" id='receivedDate_end' name="receivedDate_end" placeholder="Fim"/>
+                    </div>
+                  </div>
+                </div>
+            </div>
+            <div class="clearfix">
+              <label for="start">Data Descontado</label>
+                <div class="input">
+                  <div class="inline-inputs">
+                    <div class="input-prepend" style="float:left; padding-right:10px">
+                      <span class="add-on"><img width="16" src="/images/calendar_addon.png"></span>
+                      <input type="text" class="input-small date" id='efetivepaymentdate_start' name="received_start" placeholder="Início"/>
+                    </div>
+                    <div class="input-prepend" style="float:left; padding-right:10px">
+                      <span class="add-on"><img width="16" src="/images/calendar_addon.png"></span>
+                      <input type="text" class="input-small date" id='efetivepaymentdate_end' name="received_end" placeholder="Fim"/>
+                    </div>
+                  </div>
+                </div>
+            </div>
+          </div>
+          <div class="span9">
+            <div class="clearfix">
+              <label for="start">Banco</label>
+                <div class="input">
+                  <select name="bank" id="bank"></select><br/>
+                </div>
+            </div>  
+            <div class="clearfix">
+              <label for="start">Cliente</label>
+                <div class="input">
+                  <span>
+                    <span>
+                      <img class="customer_search_button" width='24' src="/images/search.png"/>
+                      <input name="customer" class='mini id_customer_search' id='customer_for_seach' /> 
+                      <input class=" name_customer_search large" name="name_customer" size="30" type="text" placeholder="Nome"/>    
+                    </span>
+                  </span>
+                </div>
+            </div>
+            <div class="clearfix">
+              <label for="start">Valores</label>
+                <div class="input">
+                  <div class="inline-inputs">
+                          <input type="text" class="input-small currency" id='value_start' name="value_start" placeholder="Mínimo"/>
+                          <input type="text" class="input-small currency" id='value_end' name="value_end" placeholder="Máximo"/>
+                  </div>
+                </div>
+            </div>             
+          </div>
+        </div>
+        <div class="clearfix">
+          <label for="start"></label>
+            <div class="input">
+              <button type="button" id="send" class="btn success">Buscar</button>
+            </div>
+        </div>
+      </form>
+  </div>
+  <table id="grid" class="bordered-table zebra-striped">
+      <thead>
+        <th>Cliente</th>
+        <th>Nome</th>
+        <th>Caixa</th>
+        <th>Banco</th>
+        <th>Agência</th>
+        <th>Conta</th>
+        <th>Nro</th>
+        <th>Comanda</th>
+        <th>Recebido?</th>
+        <th>Valor</th>
+        <th>Bom para</th>
+        <th>Data Cheque</th>
+        <th>Data Descontou</th>
+      </thead>
+      <tbody>
+      </tbody>
+  </table>
+ </div>

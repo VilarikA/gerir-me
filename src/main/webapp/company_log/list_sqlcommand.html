@@ -1,0 +1,67 @@
+<div id="main" class="lift:surround?with=calendar;at=content">
+	<div class="well">
+	  	<h1><span class="lift:CompanySnippet.thumb"> </span>Comandos Sql</h1>
+        <label for="btn"></label>
+		<a class="btn primary" href="/company_log/sql_command">
+			<img src="/images/new.png" width="16">
+			Inserir novo
+		</a>
+	</div>
+	<div class='filter block-message success"'>
+		<img style='float:left' src="/images/filter.png"/>
+		<span class="filter_form">
+		<script type="text/javascript">
+			$(function(){
+				$(".name_sqlcommand").val(gup("name"))
+				if(gup("all")){
+					$("#all").attr("checked", "checked");
+				}
+			});
+		</script>			
+			<form action=''>
+				<input class="local_storage xlarge name_sqlcommand" id="name_sqlcommand" name="name" size="30" type="text" placeholder="Nome"/>
+				<input class="all" id="all" name="all" type="checkbox"/> Mostrar todos?
+				<input class="btn success" type="submit" value="Buscar">
+			</form>
+		</span>		
+	</div>	
+<table class="bordered-table zebra-striped">
+		<thead>
+			<th>Id</th>
+			<th>Nome</th>
+			<th>Ações</th>			
+		</thead>
+		<tbody>
+			<tr class="lift:SqlCommandSnippet:list">
+				<td>
+					<f:id></f:id>
+				</td>
+				<td>
+					<f:name></f:name>
+				</td>
+				<td>
+					<form method="post">
+						<span>
+							<f:actions></f:actions>
+						</span>
+						<span>
+							<f:delete></f:delete>
+						</span>
+						<span style="display:none">
+							<f:_id></f:_id>
+						</span>
+					</form>
+				</td>				
+			</tr>
+		</tbody>
+</table>
+<span class='lift:SqlCommandSnippet.paginate'>
+		<ul class='pagination'>
+			<li class="fisrt"><nav:first/></li>
+			<li class="prev"><nav:prev/></li>
+			<li class="next"><nav:zoomedpages/></li>
+			<li class="next"><nav:next/></li>
+			<li class="last"><nav:last/></li>
+		</ul>
+</span>
+</div>

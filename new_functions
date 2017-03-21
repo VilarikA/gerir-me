@@ -1,0 +1,189 @@
+public static void diferencaEntreDatas(String maiorData, String menorData) {  
+        try {  
+            SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");  
+            GregorianCalendar maior = new GregorianCalendar();
+            maior.setTime(dateFormat.parse(maiorData));
+            GregorianCalendar menor = new GregorianCalendar();
+            menor.setTime(dateFormat.parse(menorData));
+            GregorianCalendar dif = new GregorianCalendar();
+            dif.setTimeInMillis(maior.getTimeInMillis() - menor.getTimeInMillis());
+            System.out.println(maior.get(GregorianCalendar.YEAR));
+            System.out.println(menor.get(GregorianCalendar.YEAR));
+            System.out.println("Diferença: " + (maior.get(GregorianCalendar.YEAR)-menor.get(GregorianCalendar.YEAR)) + " ano(s), "  
+                    + (dif.get(GregorianCalendar.MONTH) + 1) + " mes(es), "  
+                    + dif.get(GregorianCalendar.DAY_OF_MONTH) + " dia(s)");  
+        } catch (ParseException ex) { //Lança exceção caso a data informada não esteja no formato "dd/MM/yyyy"  
+            ex.printStackTrace(System.err);  
+        }  
+    }
+
+
+    
+    -- Function: fu_extenso_blk(character)
+
+DROP FUNCTION fu_extenso_blk(character);
+
+CREATE OR REPLACE FUNCTION fu_extenso_blk(num character)
+  RETURNS text AS
+$BODY$
+declare
+w_cen integer ;
+w_dez integer ;
+w_dez2 integer ;
+w_uni integer ;
+w_tcen text ;
+w_tdez text ;
+w_tuni text ;
+w_ext text ;
+m_cen text[] := array['','cento','duzentos','trezentos','quatrocentos','quinhentos','seiscentos','setecentos','oitocentos','novecentos'];
+m_dez text[] := array['','dez','vinte','trinta','quarenta','cinquenta','sessenta','setenta','oitenta','noventa'] ;
+m_uni text[] := array['','um','dois','três','quatro','cinco','seis','sete','oito','nove','dez','onze','doze','treze','quatorze','quinze','dezesseis','dezessete','dezoito','dezenove'] ;
+begin
+  w_cen := cast(substr(num,1,1) as integer) ;
+  w_dez := cast(substr(num,2,1) as integer) ;
+  w_dez2 := cast(substr(num,2,2) as integer) ;
+  w_uni := cast(substr(num,3,1) as integer) ;
+  if w_cen = 1 and w_dez2 = 0 then
+     w_tcen := 'Cem' ;
+     w_tdez := '' ;
+     w_tuni := '' ;
+    else
+     if w_dez2 < 20 then 
+        w_tcen := m_cen[w_cen + 1] ;
+        w_tdez := m_uni[w_dez2 + 1] ; 
+        w_tuni := '' ;
+       else
+        w_tcen := m_cen[w_cen + 1] ;
+        w_tdez := m_dez[w_dez + 1] ; 
+        w_tuni := m_uni[w_uni + 1] ;
+     end if ;    
+  end if ; 
+  w_ext := w_tcen ;
+  if w_tdez <> '' then  
+     if w_ext = '' then 
+        w_ext := w_tdez ;
+       else
+        w_ext := w_ext || ' e ' || w_tdez ;
+     end if ;      
+  end if ;   
+  if w_tuni <> '' then  
+     if w_ext = '' then 
+        w_ext := w_tuni ;
+       else
+        w_ext := w_ext || ' e ' || w_tuni ;
+     end if ;
+  end if ;
+  return w_ext ;  
+end ;
+$BODY$
+  LANGUAGE plpgsql IMMUTABLE STRICT
+  COST 100;
+ALTER FUNCTION fu_extenso_blk(character)
+  OWNER TO mateus;
+
+
+-- Function: fu_extenso(numeric, text, text)
+
+DROP FUNCTION fu_extenso(numeric, text, text);
+
+CREATE OR REPLACE FUNCTION fu_extenso(num numeric, moeda text, moedas text)
+  RETURNS text AS
+$BODY$
+-- num -> numero a ser convertido em extenso
+-- moeda -> nome da moeda no singular
+-- moedas -> nome da moeda no plural
+declare
+w_int char(21) ;
+x integer ;
+v integer ;
+w_ret text ;
+w_ext text ;
+w_apoio text ;
+m_cen text[] := array['quatrilhão','quatrilhões','trilhão','trilhões','bilhão','bilhões','milhão','milhões','mil','mil'] ;
+begin
+  w_ret := '' ;
+  w_int := to_char(num * 100 , 'fm000000000000000000 00') ;
+  for x in 1..5 loop
+      v := cast(substr(w_int,(x-1)*3 + 1,3) as integer) ;    
+      if v > 0 then
+         if v > 1 then
+            w_ext := m_cen[(x-1)*2+2] ;
+           else
+            w_ext := m_cen[(x-1)*2+1] ;
+         end if ;   
+         w_ret := w_ret || fu_extenso_blk(substr(w_int,(x-1)*3 + 1,3)) || ' ' || w_ext ||', ' ;
+      end if ;  
+  end loop ;
+  v := cast(substr(w_int,16,3) as integer) ;    
+  if v > 0 then
+     if v > 1 then
+        w_ext := moedas ;
+       else
+        if w_ret = '' then 
+           w_ext := moeda ;
+          else
+           w_ext := moedas ;
+        end if ;   
+     end if ; 
+     w_apoio := fu_extenso_blk(substr(w_int,16,3)) || ' ' || w_ext ;
+     if w_ret = '' then 
+        w_ret := w_apoio ;
+       else 
+        if v > 100 then 
+           if w_ret = '' then 
+              w_ret := w_apoio ;
+             else
+              w_ret := w_ret || w_apoio ;
+           end if ;   
+          else
+           w_ret := btrim(w_ret,', ') || ' e ' || w_apoio ;
+        end if ;   
+     end if ;   
+    else 
+     if w_ret <> '' then  
+        if substr(w_int,13,6) = '000000' then 
+           w_ret := btrim(w_ret,', ') || ' de ' || moedas ;
+          else 
+           w_ret := btrim(w_ret,', ') || ' ' || moedas ;
+        end if ;    
+     end if ;  
+  end if ;    
+  v := cast(substr(w_int,20,2) as integer) ;    
+  if v > 0 then
+     if v > 1 then
+        w_ext := 'centavos' ;
+       else
+        w_ext := 'centavo' ;
+     end if ;   
+     w_apoio := fu_extenso_blk('0'||substr(w_int,20,2)) || ' ' || w_ext ;
+     if w_ret = '' then 
+        w_ret := w_apoio  || ' de ' || moeda;
+       else 
+        w_ret := w_ret || ' e ' || w_apoio ;
+     end if ;   
+  end if ;    
+  return w_ret ;  
+end ;
+$BODY$
+  LANGUAGE plpgsql IMMUTABLE STRICT
+  COST 100;
+ALTER FUNCTION fu_extenso(numeric, text, text)
+  OWNER TO mateus;
+
+-- Function: fu_extenso_real(numeric)
+
+DROP FUNCTION fu_extenso_real(numeric);
+
+CREATE OR REPLACE FUNCTION fu_extenso_real(num numeric)
+  RETURNS text AS
+$BODY$
+-- num -> numero a ser convertido em extenso
+begin
+  return fu_extenso(num,'Real','Reais') ;  
+end ;
+$BODY$
+  LANGUAGE plpgsql IMMUTABLE STRICT
+  COST 100;
+ALTER FUNCTION fu_extenso_real(numeric)
+  OWNER TO mateus;
+

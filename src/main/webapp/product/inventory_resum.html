@@ -1,0 +1,108 @@
+<div id="main" class="lift:surround?with=calendar;at=content">
+  <link rel="stylesheet" type="text/css" href="/select2/select2.css" />
+  <script src="/select2/select2.js"></script><script src="/select2/select2_locale_pt-BR.js"></script>
+  <script src="/js/reports.js"></script>
+  <script src="/js/jquery.tablesorter.pager.js"></script>
+  <script type="text/javascript">
+  $(function(){
+    var formatCurrentMonmey =  function(value){
+      return value.formatMoney();
+    };
+    var formatCurrentQTD =  function(value){
+      return value;
+    };        
+    var formatCurrent = formatCurrentMonmey;
+    var formater = function(value){
+      return formatCurrent(value);
+    };    
+    $("#start").val(getDateBr(new Date().getStartOfMonth()));
+    $("#end").val(getDateBr(new Date()));   
+    var fields = [];
+    var url = "/report/inventory_current_status";
+    var request = function(infoColumn){
+        var group = function(row,value){
+          return parseFloat(value) + parseFloat(row[infoColumn]);
+        };
+        renderReport(url,fields,$("#form_report").serializeObject(),"#grid", false, false, false, false. false, false,{"key":0, "name":0, "groupFunction" : group,
+        "formater" : formater,
+        "show" : true,
+        "childGroup" : {"key":1, "name":1, "groupFunction" : group,
+                        "show" : true,
+                        "formater" : formater,
+                        "childGroup" : {
+                          "key":2, "name":2, "groupFunction" : group,
+                          "show" : true,
+                          "formater" : formater,
+                          "childGroup" : {
+                            "key":3, "name":3, "groupFunction" : group,
+                            "formater" : formater                            
+                          }
+                        }
+                      }
+      });
+    }
+    $("#b_qtd").click(function(){
+      formatCurrent = formatCurrentQTD;
+      request(4);
+    });
+    $("#b_coust").click(function(){
+      formatCurrent = formatCurrentMonmey;
+      request(5);
+    });
+    $("#b_sale").click(function(){
+      formatCurrent = formatCurrentMonmey;
+      request(6);
+    });    
+    request(5);
+  });  
+  </script>
+<div class="page-header">
+          <h1>
+            <span class="lift:CompanySnippet.thumb"> </span>Relatório de Resumo de Estoque
+          </h1>
+        </div>  
+  <div class="row">
+      <form id="form_report" class="well form-search" method='get'>       
+          <div class="clearfix">
+            <label id="optionsRadio">Análise</label>
+            <div class="input">
+              <ul class="inputs-list">
+                <li>
+                  <label>
+                    <input type="radio" id="b_qtd" name="optionsRadios" value="option1">
+                    <span>Quantidade em estoque</span>
+                  </label>
+                </li>
+                <li>
+                  <label>
+                    <input type="radio" id="b_coust"  checked="true" name="optionsRadios" value="option2">
+                    <span>Valor de compra</span>
+                  </label>
+                </li>
+                <li>
+                  <label>
+                    <input type="radio" id="b_sale" name="optionsRadios" value="option2">
+                    <span>Valor de venda</span>
+                  </label>
+                </li>                
+              </ul>
+            </div>
+          </div>              
+      </form>
+  </div>
+  <table id="grid" class="bordered-table zebra-striped">
+      <thead>
+        <tr> 
+          <th></th>
+          <th></th>
+          <th></th>
+          <th></th>
+          <th alt="Quantidade em estoque">QTD</th>
+          <th alt="Valor de compra">Compra</th>
+          <th alt="Valor de Venda">Venda</th>
+        </tr>
+      </thead>
+      <tbody>
+      </tbody>
+  </table>
+ </div>

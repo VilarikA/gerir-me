@@ -1,0 +1,443 @@
+<div id="main" class="lift:surround?with=inventory&at=content">
+    <script type="text/javascript" src="/js/product_bom.js">
+    </script>
+    <script type="text/javascript" src="/js/product_line.js">
+    </script>
+    <script type="text/javascript" src="/js/product.js">
+    </script>
+    <form   class="lift:form.ajax">
+      <div class="well">
+        <label for="btn"></label>
+        <a class="btn primary" href="/product/list">Lista</a>
+        <input class="btn success" type="submit" value="Salvar">
+        <a class="btn primary" href="/product_admin/edit">Inserir novo</a>
+      </div>
+      <div class="lift:ProductSnippet.maintain">
+        <span class="row">
+          <span class="span12">
+            <div class="clearfix">
+              <label for="name">Nome</label>        
+               <div class="input">
+                  <div class='inline-inputs'>
+                    <div class="input-prepend" style='float:left; padding-right:10px'>
+                      <input class="large" id="name" name="name" size="30" type="text"/>
+                    </div>
+                    <div class="input-prepend">
+                      <input class="medium" id="short_name" name="short_name" size="30" type="text"/>
+                      <a data-original-title="Informação" data-content="clique para abrir a documentação" data-help-url='/docs/name.html' rel="popover" class="_popover_basic _help">
+                        <img src="/images/info.gif" width="20">
+                      </a>
+                    </div>
+                    <span class="help-block">Nome do produto completo e nome reduzido, este último usado em alguns relatórios</span>
+                </div>
+               </div>
+            </div>
+            <div class="clearfix">
+              <label for="name">Código Externo</label>
+               <div class="input">
+                  <input class="medium" id="external_id" name="external_id" size="30" type="text"/>
+                  <span class="help-block">Código para busca simplificada, use pelo menos 3 caracteres</span>
+               </div>
+            </div>
+            <div class="clearfix">
+              <label for="name">Código Barra</label>
+               <div class="input">
+                  <input class="medium" id="barcode" name="barcode" size="30" type="text"/>
+                  <span class="help-block">Nro correspondente ao código de barra</span>
+               </div>
+            </div>
+            <div class="clearfix">
+              <label for="type">Tipo</label>
+               <div class="input">
+                  <select name="type"></select>
+                  <span class="help-block">Tipos de produto</span>
+               </div>
+            </div>            
+            <div class="clearfix">
+              <label for="brand">Fabricante</label>
+               <div class="input">
+                  <select name="brand"></select>
+                  <a href="" class="_popover_basic" rel="popover" data-content="Para cadastrar um fabricante, insira um novo registro com os dados do mesmo no cadastro de clientes/pacientes e posteriormente acesse a aba propriedades para marcá-lo como tal." data-original-title="Informação">
+                  <img width='20' src="/images/info.gif"/>
+                  </a>
+               </div>
+            </div>            
+            <div class="lift:SecuritySnippet.isInventoryManager clearfix">
+              <label for="price">Preço de Compra</label>
+              <div class="input">
+                  <div class="input-prepend">
+                    <span class="add-on"><img src="/images/dre.png" width="16"></span>
+                    <input class="mini currency" id="purchasePrice" name="purchasePrice" size="30" type="text"/>
+                    <span class="help-block">Valor de compra do produto</span>
+                  </div>
+              </div>
+            </div>
+            <div class="clearfix">
+              <label for="price" >Preço de Venda</label>
+              <div class="input">
+                <div class="input-prepend">
+                  <span class="add-on"><img src="/images/dre.png" width="16"></span>
+                  <input class="mini currency" id="salePrice" name="salePrice" size="30" type="text"/>
+                  <span class="help-block">Valor de venda do produto</span>
+                </div>
+              </div>
+            </div>
+            <div class="clearfix">
+              <label for="commission">Comissão</label>
+              <div class="input">
+                <div class="input-append">
+                  <input class="mini" id="commission" name="commission" size="30" type="text"/>
+                  <span class="add-on">%</span>
+                  <a href="" class="_popover_basic" rel="popover" data-content="A comissão aqui no produto funciona como um percentual base, podendo ser diferenciada por profissional quando o mesmo for associado ao produto em questão. Pacotes de serviços normalmente têm a comissão zero, pois o profissional receberá a comissão sobre os serviços quando as sessões dos mesmos forem sendo realizadas" data-original-title="Informação">
+                  <img width='20' src="/images/info.gif"/>
+                  </a>
+                </div>
+              </div>
+            </div>            
+          </span>
+          <span class='span4'>
+              <img id='img_product' alt=""/>
+          </span>                    
+          <span class="span7">
+            <div class="clearfix lift:SecuritySnippet.hasFidelityModule">
+              <label for="price" >Pontos Fidelidade</label>
+              <div class="input">
+                <div class="input-prepend">
+                  <span class="add-on"><img src='/images/diamond-16.png'/></span> 
+                  <input class="mini currency" id="pointsonbuy" name="pointsonbuy" size="30" type="text"/>
+                  <span class="help-block">Quantidade de pontos somados para o programa de fidelidade</span>
+                </div>
+              </div>
+            </div>            
+            <div class="clearfix">
+              <label for="minStock">Estoque Mínimo</label>
+                <div class="input">
+                  <input name="minStock" class="mini" type="text"/>
+                  <span class="help-block">Quantidade mínima de estoque</span>
+                </div>
+            </div>            
+            <div class="clearfix">
+              <label for="unitofmeasure">Unidade de Medida</label>
+              <div class="input">
+                <select id='unitofmeasure' class="unitofmeasure" name='unitofmeasure'></select>
+              </div>
+            </div>
+            <div class="clearfix">
+              <label for="measureinunit">Qtde Embalagem</label>
+                <div class="input">
+                  <input name="measureinunit" class="mini" type="text"/>
+                  <span class="help-block">Quantidade na embalagem</span>
+                </div>
+            </div>            
+            <span id="lines_id" class='hide'>
+              <input type="text" class="lines_text" id="lines_text"  name="lines_text" />
+            </span>
+            <div class="clearfix">
+              <label for="lines">Linhas</label>
+               <div class="input">
+                  <select multiple="multiple" class="medium" id="lines" name="lines" >
+                  </select>
+                  <span class="help-block">Linhas do produto</span>
+               </div>
+            </div>
+            <div class="clearfix">
+              <label for="accountCategory">Categoria</label>
+              <div class="input">
+                <select id='accountCategory' class="accountCategory" name='accountCategory'></select>
+                <span class="help-block">Categoria para faturamento, depende de parâmetro na configuração da empresa</span>
+              </div>
+            </div>
+            <div class="clearfix">
+              <label for="discountAccountCategory">Categoria Desconto</label>
+              <div class="input">
+                <select id='discountAccountCategory' class="discountAccountCategory" name='discountAccountCategory'></select>
+                <span class="help-block">Categoria de desconto para faturamento, depende de parâmetro na configuração da empresa</span>
+              </div>
+            </div>
+            <div class="clearfix">
+              <label for="costcenter">Centro de Custo</label>
+              <div class="input">
+                <select id='costcenter' class="costcenter" name='costcenter'></select>
+                <span class="help-block">Centro de custo</span>
+              </div>
+            </div>
+            <div class="clearfix">
+              <label for="status">Status</label>
+               <div class="input">
+                  <select class="medium" id="status" name="status" >
+                  </select>
+                      <a data-original-title="Informação" data-content="clique para abrir a documentação" data-help-url='/docs/status.html' rel="popover" class="_popover_basic _help">
+                        <img src="/images/info.gif" width="20">
+                      </a>
+                  <span class="help-block">Status do produto</span>
+               </div>
+            </div>                       
+            <div class="clearfix">
+                <label for="is_discount">É um Desconto?</label>
+                <div class="input">
+                  <div class="input-prepend">
+                    <input type="checkbox" class="is_discount" id="is_discount"  name="is_discount" />
+                    <a data-original-title="Informação" data-content="clique para abrir a documentação" data-help-url='/docs/product_discount.html' rel="popover" class="_popover_basic _help">
+                      <img src="/images/info.gif" width="20">
+                    </a>
+                  </div>
+                </div>
+            </div>
+            <div class="clearfix">
+                <label for="obs">Observação</label>
+                <div class="input">
+                  <div class="input-prepend">
+                    <textarea class="xlarge" id="obs" name="obs" size="16"></textarea>
+                  </div>
+                </div>
+            </div>                         
+          </span>
+          <span class="span7">
+            <div class="clearfix">
+              <label for="currentStock">Estoque Atual</label>
+                <div class="input">
+                  <input name="currentStock" class="mini" type="text"/>
+                  <a href="" class="_popover_basic" rel="popover" data-content="Para alterar a quantidade em estoque é necessário fazer uma movimentação de entrada ou saída" data-original-title="Informação">
+                  <img width='20' src="/images/info.gif"/>
+                  </a>
+                  <span class="help-block">Quantidade atual em estoque</span>
+                </div>
+            </div>            
+            <div class="clearfix">
+              <label for="is_for_sale">Este Produto Será Vendido?</label>
+              <div class="input">
+                <div class='inline-inputs'>
+                  <div class="input-prepend">
+                    <input type="checkbox" class="is_for_sale" id="is_for_sale"  name="is_for_sale" />
+                  </div>            
+                </div>
+              </div>
+            </div>
+            <div class="clearfix">
+                <label for="is_inentory_control">Controlar Estoque?</label>
+                <div class="input">
+                  <div class="input-prepend">
+                    <input type="checkbox" class="is_inentory_control" id="is_inentory_control"  name="is_inentory_control" />
+                  </div>
+                </div>
+            </div>
+            <div class="clearfix">
+                <label for="is_inentory_control">Aceita Estoque Negativo?</label>
+                <div class="input">
+                  <div class="input-prepend">
+                    <input type="checkbox" class="allow_negative_inventory" id="allow_negative_inventory"  name="allow_negative_inventory" />
+                  </div>
+                </div>
+            </div>            
+            <div class="clearfix">
+                <label for="is_bom">É um Pacote?</label>
+                <div class="input">
+                  <div class="input-prepend">
+                    <input type="checkbox" class="is_bom" id="is_bom"  name="is_bom" />
+                    <a data-original-title="Informação" data-content="clique para abrir a documentação" data-help-url='/docs/product_bom.html' rel="popover" class="_popover_basic _help">
+                      <img src="/images/info.gif" width="20">
+                    </a>
+                  </div>
+                </div>
+            </div>
+            <div class="clearfix">
+                <label for="allowSaleByUser">Aceita profissional na venda?</label>
+                <div class="input">
+                  <div class="input-prepend">
+                    <input type="checkbox" id="allowSaleByUser"  name="allowSaleByUser" />
+                  </div>
+                </div>
+            </div>            
+            <div class="clearfix lift:SecuritySnippet.isNotMedicalSystem">
+              <label for="name">Mostra na Comanda?</label>
+              <div class="input">
+                <div class="input-prepend">
+                  <label class="add-on"><input type="checkbox" name="showInCommand"></label>
+                  <input class="mini" name="orderInCommand" size="16" type="text">
+                </div>
+              </div>
+            </div>        
+          </span>
+        </span>
+          <div class="well">
+            <label for="btn"></label>
+            <a class="btn primary" href="/product/list">Lista</a>
+            <input class="btn success" type="submit" value="Salvar">
+            <a class="btn primary" href="/product_admin/edit">Inserir novo</a>
+          </div>
+      </div>
+      <span>
+          <ul class="tabs">
+            <li class="tab"><a href="#bom">Configuração de Pacote</a></li>
+            <li class="lift:SecuritySnippet.hasPortalModule active tab"><a href="#site">Portal</a></li>
+            <li class="tab"><a href="#photo">Foto</a></li>
+          </ul>
+          <div class="pill-content">
+            <div class="lift:SecuritySnippet.hasPortalModule tab_content row" id="site">
+              <div class='span12'>
+                <div class="clearfix">
+                  <label for="allowshowonsite">Mostrar no Site</label>
+                  <div class="input">
+                    <div class='inline-inputs'>
+                      <div class="input-prepend" style='float:left; padding-right:10px'>
+                        <input type="checkbox" name="allowshowonsite">
+                      </div>
+                      <div class="input-prepend" style='float:left; padding-right:20px'>
+                        <label for="allowshowonsite">Mostrar no Portal</label>
+                      </div>
+                      <div class="input-prepend" style='float:left; padding-right:10px'>
+                        <input type="checkbox" name="allowshowonportal">
+                      </div>
+                    </div>
+                  </div>
+                </div>                     
+                <div class="lift:SecuritySnippet.isSuperAdmin clearfix">
+                  <label for="moderatedportal">Aprovado Moderador</label>
+                  <div class="input">
+                    <input type="checkbox" name="moderatedportal">
+                    <span class="help-block">Se foi aprovado pelo moderador do portal do ebelle</span>
+                  </div>
+                </div>                     
+                <div class="clearfix">
+                  <label for="sitetitle">Título Público</label>        
+                  <div class="input">
+                    <input class="large" id="sitetitle" name="sitetitle" size="30" type="text"/>
+                    <span class="help-block">Título como aparecerá no site/portal</span>
+                  </div>
+                </div>
+                <div class="clearfix">
+                  <label for="sitedescription">Descrição Pública</label>
+                  <div class="input">
+                    <div class="input-prepend">
+                      <textarea class="xlarge" id="sitedescription" name="sitedescription" size="16"></textarea>
+                      <a data-original-title="Informação" data-content="clique para abrir a documentação" data-help-url='/docs/portal.html' rel="popover" class="_popover_basic _help">
+                        <img src="/images/info.gif" width="20">
+                      </a>
+                      <span class="help-block">Descrição como aparecerá no site/portal</span>
+                    </div>
+                  </div>
+                </div>              
+              </div>
+            </div>
+          </div>  
+      </span>
+    </form>
+    <script>
+      $(function(){
+        $('#sitedescription').jqte();
+      });
+    </script>
+    <div class="pill-content">
+        <div class="tab_content" id="bom">
+          <form>
+            <div class="clearfix">
+              <label for="product"><span data-i18n='Serviço'></span></label>
+              <div class="input">
+                  <select class="xlarge" id="product" name="product">
+                  </select>
+                  <span class="help-block">Serviço</span>
+              </div>
+            </div>
+            <div class="clearfix">
+              <label for="qtd">Quantidade</label>
+              <div class="input">
+                  <div class='inline-inputs'>
+                    <input class="mini" id="qtd" name="qtd" size="5 " value = "1" type="text"/>
+                    Ordem
+                    <input class="mini" id="orderinreport" name="orderinreport" size="5 " value = "1" type="text"/>
+                  </div>
+                  <span class="help-block">Quantidade / Ordem nos relatórios</span>
+              </div>
+            </div>
+            <div class="clearfix">
+              <label for="praceled">Parcelado?</label>
+               <div class="input">
+                  <div class="input-prepend">
+                    <input checked="true" type="checkbox" name="praceled" id="praceled" value = "true">
+                    <span class="help-block">Quando sim, provoca a geração de sessões deste serviço</span>
+                  </div>
+               </div>
+            </div>
+            <div class="clearfix">
+              <label for="price">Preço do Item no Pacote</label>
+              <div class="input">
+                <div class="input-prepend">
+                  <span class="add-on"><img src="/images/dre.png" width="16"></span>
+                  <input class="mini currency" id="bom_salePrice" name="bom_salePrice" size="30" type="text"/>
+                  <span class="help-block">Valor de venda do item no pacote</span>
+                </div>
+              </div>
+            </div>
+            <div class="clearfix">
+              <label for="obs_bom">Obs</label>
+               <div class="input">
+                  <div class='inline-inputs'>
+                    <textarea class="xlarge" id="obs_bom" name="obs_bom"></textarea>
+                  </div>
+                  <span class="help-block">Obs</span>
+               </div>
+            </div>
+            <div class="clearfix">
+               <div class="input">
+                  <input class="btn success" id="b_save" type="button" value="Salvar"/>
+               </div>
+            </div>
+            <table id="grid" class="bordered-table zebra-striped">
+              <thead>
+                <th>Produto</th>
+                <th>Quantidade</th>
+                <th>Obs</th>
+                <th>Preço</th>
+                <th>Parcelado</th>
+                <th>Ordem</th>
+                <th>Ações</th>
+              </thead>
+              <tbody>
+                <tr>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                </tr>
+              </tbody>
+          </table>
+            <div class="clearfix">
+              <label for="price">Preço Total Pacote</label>
+              <div class="input">
+                <div class="input-prepend">
+                  <span class="add-on"><img src="/images/dre.png" width="16"></span>
+                  <input class="small currency disabled" id="product_salePrice" name="product_salePrice" size="30" type="text" disabled='true'/>
+                  <span class="help-block">Valor total de venda do pacote</span>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+    </div>
+    <div class="pill-content">    
+      <div class="tab_content" id='photo'>
+        <div class="lift:ProductSnippet.thumbToShow">
+          
+        </div>
+        <form class="lift:ProductSnippet.render?form=post;multipart=true">
+          <div class="clearfix">
+            <input class="large url_parameter" id="id" name="id" type="hidden" />
+            <label for="name">Alterar foto</label>
+            <div class="input">
+              <input type="text" name='file' id='file'/>
+              <span class="help-block">Selecione sua foto</span>
+            </div>
+          </div>
+          <div class="clearfix">
+            <label for="name"></label>
+            <div class="input">
+              <div class="input-prepend">
+                <input type="submit" value="Enviar" id='submit' class="btn success"/>
+              </div>
+            </div>
+          </div>
+        </form>    
+      </div>    
+    </div>
+</div>

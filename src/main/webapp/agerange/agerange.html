@@ -1,0 +1,99 @@
+<div id="main" class="lift:surround?with=dashboard_customer;at=content">
+    <form method="post">
+      <div class="well">
+        <label for="btn"></label>
+        <a class="btn primary" href="/agerange/list_agerange">Lista</a>
+        <input class="btn success" type="submit" value="Salvar">
+        <a class="btn primary" href="/agerange/agerange">Inserir novo</a>
+      </div>
+          <span class="lift:AgeRangeSnippet.maintain">
+            <div class="clearfix">
+              <label for="name">Nome</label>        
+               <div class="input">
+                  <div class='inline-inputs'>
+                    <div class="input-prepend" style='float:left; padding-right:10px'>
+                      <input class="large" id="name" name="name" size="30" type="text"/>
+                    </div>
+                    <div class="input-prepend">
+                      <input class="medium" id="short_name" name="short_name" size="30" type="text"/>
+                      <a data-original-title="Informação" data-content="clique para abrir a documentação" data-help-url='/docs/name.html' rel="popover" class="_popover_basic _help">
+                        <img src="/images/info.gif" width="20">
+                      </a>
+                    </div>
+                    <span class="help-block">Nome da Faixa Etária completo e nome reduzido, este último usado em alguns relatórios</span>
+                </div>
+               </div>
+            </div>
+            <div>
+              <label for="name">Observação</label>
+               <div class="input">
+                  <input class="xlarge" id="obs" name="obs" size="30" type="text"/>
+                  <span class="help-block">Descrição da faixa etária</span>
+               </div>
+            </div>
+            <div class="clearfix">
+              <label for="status">Status</label>
+              <div class="input">
+                <div class="input-prepend">
+                  <select class="medium" id="status" name="status" >
+                  </select>
+                  <a data-original-title="Informação" data-content="clique para abrir a documentação" data-help-url='/docs/status.html' rel="popover" class="_popover_basic _help">
+                    <img src="/images/info.gif" width="20">
+                  </a>
+                </div>
+              </div>
+            </div>                       
+          </span>
+      <div class="well">
+        <label for="btn"></label>
+        <a class="btn primary" href="/agerange/list_agerange">Lista</a>
+        <input class="btn success" type="submit" value="Salvar">
+        <a class="btn primary" href="/agerange/agerange">Inserir novo</a>
+      </div>
+      <ul class="tabs">
+          <li class="active tab"><a href="#agerangeinterval">Faixas</a></li>
+      </ul>
+    </form>
+    <div id="agerangeinterval" class='tab_content'>
+        <div class='span8'>
+            <div class="clearfix">
+                <label for="text">Nome</label>
+                <div class="input">
+                    <input class="xlarge" id="agerangeinterval_obs" size="30" type="textarea"/>
+                </div>
+            </div>
+            <div class="clearfix">
+              <label for="qtd">Início (meses)</label>
+              <div class="input">
+                  <div class='inline-inputs'>
+                    <input class="mini" id="agerangeinterval_startmonths" name="agerangeinterval_startmonths" size="5 " value = "1" type="text"/>
+                    Fim (meses)
+                    <input class="mini" id="agerangeinterval_endmonths" name="agerangeinterval_endmonths" size="5 " value = "1" type="text"/>
+                    <a href="" class="_popover_basic" rel="popover" data-content="Informe o início e fim da faixa em número de meses. O início da faixa seguinte deve ser igual ao fim da faixa anterior" data-original-title="Informação">
+                      <img width='20' src="/images/info.gif"/>
+                    </a>
+                  </div>
+              </div>
+            </div>
+            <div class="clearfix">
+                <label for="btn"></label>
+                <input class="btn success" id="agerangeinterval_add" type="button" value="Adicionar">
+            </div>
+        </div>
+        <table id="grid_agerangeinterval" class="bordered-table zebra-striped">
+            <thead>
+                <th>Nome</th>
+                <th title='Meses'>Inicio</th>
+                <th>Anos</th>
+                <th title='Meses'>Fim</th>
+                <th>Anos</th>
+                <th></th>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+    <script type="text/javascript" src="/js/jquery.tablesorter.pager.js"></script>
+    <script type="text/javascript" src="/js/reports.js"></script>
+    <script src="/js/agerange_crud.js?sensor=true"></script>
+</div>  

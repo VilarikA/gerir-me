@@ -1,0 +1,107 @@
+<div id="main" class="lift:surround?with=bprelationship;at=content">
+  <script type="text/javascript" charset="utf-8">
+    setTimeout(function(){
+      if($("#business_pattern").val() && $("#business_pattern").val() != '0'){
+        $("#business_pattern").change();
+      }
+      setTimeout(function(){
+        if($("#bp_related").val() && $("#bp_related").val() != '0'){
+          $("#bp_related").change();
+        }
+      },500);
+    }, 500);    
+  </script>
+  <span class=' lift:BpRelationshipSnippet.maintain'>
+    <form  class="lift:form.ajax">
+      <div class="well">
+        <label for="btn"></label>
+        <a class="btn primary" href="/bprelationship/list_bprelationship">Lista</a>
+        <input class="btn success  lift:SecuritySnippet.isNotAdminRead" type="submit" value="Salvar">
+        <a class="btn primary" href="/bprelationship/bprelationship">Inserir novo</a>
+      </div>
+      <div>
+        <span id="bprelationship_form">
+          <span class="row">
+            <span class="span18">
+              <div class="clearfix">
+                <label for="business_pattern">Parceiro</label>
+                <div class="input">
+                  <span>
+                    <img class="customer_search_button" width='24' src="/images/search.png"/>
+                    <input class='mini id_customer_search url_parameter' data-url-name='business_pattern'  id='business_pattern' name="business_pattern" /> 
+                    <input class="name_customer_search" name="business_patternname" id="business_patternname"  size="30" type="text" placeholder="Nome"/>    
+                  </span>
+                  <span class="help-block">Parceiro</span>
+                </div>
+              </div>
+            </span>
+            <span class="span7">
+              <div class="clearfix">
+                <label for="startat">Início</label>
+                <div class="input">
+                  <div class='inline-inputs'>
+                    <div class="input-prepend" style='float:left; padding-right:10px'>
+                      <span class="add-on"><img width="16" src='/images/calendar_addon.png'/></span> 
+                      <input class="input-small date" id="startat" name="startat" size="19" type="text"/>
+                    </div>
+                  </div>
+                </div>
+              </div>                     
+              <div class="clearfix">
+                <label for="relationship">Classe de Relacionamento</label>
+                <div class="input">
+                  <select id='relationship' class="relationship" name='relationship'></select>
+                  <span class="help-block">Classe de relacionamento</span>
+                </div>
+              </div>
+            </span>
+            <span class="span7">
+              <div class="clearfix">
+                <label for="startat">Fim</label>
+                <div class="input">
+                  <div class='inline-inputs'>
+                    <div class="input-prepend" style='float:left; padding-right:10px'>
+                      <span class="add-on"><img width="16" src='/images/calendar_addon.png'/></span> 
+                      <input class="input-small date" id="endat" name="endat" size="19" type="text"/>
+                    </div>
+                  </div>
+                </div>
+              </div>                     
+              <div class="clearfix">
+                <label for="status">Status</label>
+                <div class="input">
+                  <select class="medium" id="status" name="status" >
+                  </select>
+                  <a data-original-title="Informação" data-content="clique para abrir a documentação" data-help-url='/docs/status.html' rel="popover" class="_popover_basic _help">
+                    <img src="/images/info.gif" width="20">
+                  </a>
+                </div>
+              </div>
+            </span>
+            <span class="span18">
+              <div class="clearfix">
+                <label for="bp_related">Relacionado</label>
+                <div class="input">
+                  <span>
+                    <img class="customer_search_button" width='24' src="/images/search.png"/>
+                    <input class='mini id_customer_search' id='bp_related' name="bp_related" /> 
+                    <input class="name_customer_search" name="bp_relatedname" id="bp_relatedname"  size="30" type="text" placeholder="Nome"/>
+                  </span>
+                  <span class="help-block">Relacionado</span>
+                </div>
+              </div>
+              <div>
+                <label for="Obs">Obs</label>
+                <div class="input">
+                  <textarea class="large" id="obs" name="obs" size="30"></textarea>
+                  <span class="help-block">Observações</span>
+                </div>
+              </div>
+            </span>
+          </span>
+        </span>
+      </div>
+    </form>
+  </span>
+</div>
+</div>

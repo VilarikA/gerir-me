@@ -1,0 +1,1 @@
+sbt.bat ~jetty-run

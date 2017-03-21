@@ -1,0 +1,1 @@
+update accountpayable set lastcashier = cashier;

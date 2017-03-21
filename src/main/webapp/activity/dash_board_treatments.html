@@ -1,0 +1,160 @@
+<div id="main" class="lift:surround?with=calendar;at=content">
+  <link rel="stylesheet" type="text/css" href="/select2/select2.css" />
+  <link rel="stylesheet" type="text/css" href="/css/dashboars.css" />
+  <script src="/select2/select2.js"></script><script src="/select2/select2_locale_pt-BR.js"></script>
+  <div class="hide_on_print">
+    <span>
+      <div class="row">
+
+          <form id="form_report" class="well form-search" method='get'>
+          <ul class="tabs">
+                <li class="active tab"><a href="#dates">Intervalo</a></li>
+                <li class="tab"><a href="#units_tab">Unidades</a></li>
+                <li class="tab"><a href="#users_tab"><span data-i18n='Profissionais'></span></a></li>
+                <li class="tab"><a href="#services">Serviços</a></li>
+          </ul>
+          <div class="pill-content">
+            <div class="active tab_content" id="dates">
+              <div class="clearfix">
+                <label for="dates">Intervalo</label>
+                 <div class="input">
+                    <div class='inline-inputs'>
+                      <div class="input-prepend" style="float:left; padding-right:10px">
+                        <span class="add-on"><img width="16" src="/images/calendar_addon.png"></span>
+                        <input type="text" class="input-small date" id='start' name="start" placeholder="Início"/>
+                      </div>
+                      <div class="input-prepend" style="float:left; padding-right:10px">
+                        <span class="add-on"><img width="16" src="/images/calendar_addon.png"></span>
+                        <input type="text" class="input-small date" id='end' name="end" placeholder="Fim"/><br/>
+                      </div>
+                    </div>
+                 </div>
+                 <span class="help-block">Selecione o intervalo de datas para o relatório</span>
+              </div>        
+            </div>
+            <div  id="units_tab" class='tab_content'>
+              <div class="clearfix">
+                <label for="units">Unidades</label>
+                 <div class="input">
+                    <div class='inline-inputs'>
+                       <select id="units" name="units" multiple="true"></select>
+                    </div>
+                    <span class="help-block">Selecione as unidades</span>
+                 </div>
+              </div>        
+            </div>
+            <div  id="users_tab" class="tab_content">
+              <div class="clearfix">
+                <label for="users"><span data-i18n='Profissionais'></span></label>
+                 <div class="input">
+                    <div class='inline-inputs'>
+                       <select id="users" name="users" multiple="true"></select>
+                    </div>
+                    <span class="help-block"><span data-i18n='Profissionais'></span> que você deseja analisar</span>
+                 </div>
+              </div>
+              <div class="clearfix">
+                <label for="users">Grupos</label>
+                 <div class="input">
+                    <div class='inline-inputs'>
+                       <select id="user_groups" name="user_groups" multiple="true"></select>
+                    </div>
+                    <span class="help-block"></span>
+                 </div>
+              </div>              
+            </div>
+            <div  id="services" class="tab_content">
+              <div class="clearfix">
+                <label for="activitys"><span data-i18n='Serviços'></span></label>
+                 <div class="input">
+                    <div class='inline-inputs'>
+                       <select id="activitys" name='activitys' multiple="true"></select>
+                    </div>
+                    <span class="help-block">Filtrar <span data-i18n='Serviços'></span></span>
+                 </div>
+              </div>        
+              <div class="clearfix">
+                <label for="users">Tipos de <span data-i18n='Serviço'></span></label>
+                 <div class="input">
+                    <div class='inline-inputs'>
+                       <select id="activity_types" name="activity_types" multiple="true"></select>
+                    </div>
+                    <span class="help-block"></span>
+                 </div>
+              </div>               
+            </div>
+          </div>          
+          <div class="clearfix">
+            <label for="buscar"></label>
+            <div class="input">
+              <button type="button" id="send" class="btn success">Buscar</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </span>   
+  </div>
+  <div id="treatments_line" width="100%">
+  </div>
+  <span class='dashboar_container'>
+    <span class='row'>
+       <div id='total_treatments' class="dashboar_data span3">
+          <span class='text_dashboar span3'>
+            Atendimentos
+          </span>
+          <span class='value_dashboar span3'>
+              a
+          </span>
+        </div>
+       <div id='unic_customers' class="dashboar_data span3">
+          <span class='text_dashboar span3'>
+            Clientes únicos
+          </span>
+          <span class='value_dashboar span3'>
+              0
+          </span>
+        </div>
+       <div id='services' alt='Quantidade total de serviços executados neste periodo.' class="dashboar_data span3">
+          <span class='text_dashboar span3'>
+            Serviços executados
+          </span>
+          <span class='value_dashboar span8'>
+              0
+          </span>
+        </div>                    
+    </span>
+    <span class='row'>
+       <div id='avg_duration' alt='Duração média dos atendimentos neste período!' class="dashboar_data span3">
+          <span class='text_dashboar span3'>
+            Duração média
+          </span>
+          <span class='value_dashboar span3'>
+             00:00
+          </span>
+        </div> 
+       <div id='rejeision' alt='Percentual de clientes que foram atendidos apenas uma vez neste período.' class="dashboar_data span3">
+          <span class='text_dashboar span3'>
+            Taxa de rejeição
+          </span>
+          <span class='value_dashboar span3'>
+              0
+          </span>
+        </div>
+       <div id='percent_new_customer' alt='Percentual de clientes que foram atendidos neste período e foram cadastrados no mesmo dia do atendimento.' class="dashboar_data span3">
+          <span class='text_dashboar span3'>
+            Novos clientes
+          </span>
+          <span class='value_dashboar span3'>
+              0
+          </span>
+        </div>                      
+    </span>
+  </span>
+  <div id='treatments_stats'>
+  </div>
+  <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+  <script type="text/javascript">
+    google.load("visualization", "1", {packages:["corechart"]});
+  </script>
+  <script type="text/javascript" src='/js/dash_board_treatments.js'></script>
+</div>

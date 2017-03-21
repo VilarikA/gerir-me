@@ -1,0 +1,45 @@
+<div id="main" class="lift:surround?with=system;at=content">
+  <!--Load the AJAX API-->
+  <script type="text/javascript">
+    $(function(){
+      $("#startDate").val(gup("startDate"))
+      $("#endDate").val(gup("endDate"))
+    });
+  </script>
+  <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+  <script type="text/javascript">
+      // Load the Visualization API and the piechart package.
+      google.load('visualization', '1.0', {'packages':['corechart']});
+  </script>
+  <script type="text/javascript">
+      // Set a callback to run when the Google Visualization API is loaded.
+    var buildChartTreatments = function(users){
+            // Create the data table.
+        var data = new google.visualization.DataTable();
+        data.addColumn('string', 'nomes');
+        data.addColumn('number', 'total');
+         for(i in users){
+          data.addRow([users[i].name,users[i].total]);
+      }
+
+        var options = {'title':'Atendimentos por Profissional',
+                           'width':800,
+                       'height':600
+                    };
+
+            // Instantiate and draw our chart, passing in some options.
+            var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
+            chart.draw(data, options);
+
+    }
+  </script>
+    <div class="span9">
+        <form class="well form-search" method='get'>
+          <input type="text" class="input-small date" id='startDate' name="startDate" placeholder="Início">
+          <input type="text" class="input-small date" id='endDate' name="endDate"  placeholder="Fim">
+          <button type="submit" class="btn success">Buscar</button>
+        </form>
+    </div>
+    <div id="chart_div"></div>
+    <div class="lift:ReportSales:usersJsonFromChartReport"></div>
+</div>

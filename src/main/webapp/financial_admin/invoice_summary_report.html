@@ -1,0 +1,149 @@
+<div id="main" class="lift:surround?with=calendar;at=content">
+  <link rel="stylesheet" type="text/css" href="/select2/select2.css" />
+  <script src="/select2/select2.js"></script><script src="/select2/select2_locale_pt-BR.js"></script>
+  <script src="/js/reports.js"></script>
+  <script src="/js/jquery.tablesorter.pager.js"></script>
+  <script type="text/javascript">
+    $(function(){ 
+      var formater = function(value){
+        return value.formatMoney();
+      };        
+      $("#invoiceid").html(gup("invoiceid"));
+      var url = "/report/invoice_summary";
+      var request = function(){
+        var total_paid = 0.00;
+        var offsalename = "";
+        var fields = [];
+        fields[0]="none";
+        fields[1]="none";
+        fields[2]="none";
+        fields[3]="none";
+        fields[4]="none";
+        fields[5]="none";
+        fields[6]="none";
+        fields[7]="none";
+        fields[8]="none";
+        fields[11]="date";
+        fields[13]="real";
+        fields[14]="none";
+        fields[15]="none";
+        fields[16]="none";
+        fields[17]="none";
+        renderReport(url,fields,{invoiceid:gup("invoiceid")},"#grid", function(data){
+          data.forEach(function(row){
+            if(!isNaN(parseFloat(row[13]))){
+              total_paid += parseFloat(row[13]);
+            }
+            invoice = row[0]
+            offsalename = row[1]
+            offsaledocument = row[2]
+            unitname = row[3]
+            unitdocument = row[4]
+            unitstreet = row[5]
+            unitdistrict = row[7]
+            unitphone = row[17]
+            unitcity = row[6]
+            unitpostalcode = row[8]
+          });
+          $("#total_paid").val(total_paid.formatMoney());
+          $("#total_paid1").val(total_paid.formatMoney());
+          $("#offsalename").html(offsalename);
+          $("#offsaledocument").html(offsaledocument);
+          $("#invoice").html(invoice);
+          $("#unitname").html(unitname);
+          $("#unitdocument").html(unitdocument);
+          $("#unitstreet").html(unitstreet);
+          $("#unitdistrict").html(unitdistrict);
+          $("#unitphone").html(unitphone);
+          $("#unitcity").html(unitcity);
+          $("#unitpostalcode").html(unitpostalcode);
+        }, false, false, false, false);
+      }
+      $("#send").click(request);
+      request();
+    });
+  </script>
+  <div class='filter block-message success"'>
+    <span class="filter_form">
+      <form id="form_report" action=''>
+        <h1><span class="lift:CompanySnippet.thumb"></span>
+          <input class="report_title local_storage" id="title_invoice_summary_report" name="title_invoice_summary_report" size="30" type="text" value="Fatura de Pacientes"/>
+        </h1>
+        <div class="span8">
+          <div class="clearfix">
+          </div>
+        </div>
+        <div class="clearfix">
+          <label for="buscar"></label>
+          <div class="input">
+            <input class="btn success" id="send" type="button" value="Buscar">
+          </div>
+        </div>
+        <div class="clearfix">
+          <label for="total">Total a pagar</label>
+          <div class="input">
+            <div class="input-prepend">
+              <span class="add-on"><img src="/images/money.png" width="16"></span>
+              <input class="mini disabled" disabled='true' id="total_paid" name="total_paid" size="30" type="text"/>
+              <span class="help-block">Valor total faturado por convênio</span>
+            </div>
+          </div>
+        </div>        
+      </form>
+    </span>   
+  </div>
+  <table style="width:100%" class="bordered-table">
+    <tr>
+      <th>Convênio</th>
+      <th>Entidade</th>
+      <th>Fatura</th>
+    </tr>
+    <tr>
+      <td><span id="offsalename"></span> / <span id="offsaledocument"></span></td>
+      <td><span id="unitname"></span></td>
+      <td><span id="invoice"></span></td>
+    </tr>
+    <tr>
+      <th>CNPJ</th>
+      <th>Endereço</th>
+      <th>Bairro</th>
+    </tr>
+    <tr>
+      <td><span id="unitdocument"></span></td>
+      <td><span id="unitstreet"></span></td>
+      <td><span id="unitdistrict"></span></td>
+    </tr>
+    <tr>
+      <th>Fone</th>
+      <th>Município</th>
+      <th>Cep</th>
+    </tr>
+    <tr>
+      <td><span id="unitphone"></span></td>
+      <td><span id="unitcity"></span></td>
+      <td><span id="unitpostalcode"></span></td>
+    </tr>
+    <!--
+    <tr>
+      <th>Name</th>
+      <th colspan="2">Telephone</th>
+    </tr>
+    <tr>
+      <td>Bill Gates</td>
+      <td>555 77 854</td>
+      <td><input class="mini disabled" disabled='true' id="total_paid1" name="total_paid1" size="30" type="text"/></td>
+    </tr>
+    -->
+  </table>
+  <table  id="grid" class="bordered-table">
+    <thead>
+      <th>Guia</th> 
+      <th>Matrícula</th>
+      <th>Data</th>
+      <th><span data-i18n='Cliente'></span></th>
+      <th>Valor</th>
+    </thead>
+    <tbody>
+    </tbody>
+  </table>
+ </div> 

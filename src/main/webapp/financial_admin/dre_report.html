@@ -1,0 +1,42 @@
+<div id="main" class="lift:surround?with=calendar;at=content">
+  <link rel="stylesheet" type="text/css" href="/select2/select2.css" />
+  <script src="/select2/select2.js"></script><script src="/select2/select2_locale_pt-BR.js"></script>
+  <script src="/js/reports.js"></script>
+  <script src="/js/jquery.tablesorter.pager.js"></script>
+  <script type="text/javascript">
+  $(function(){
+    $("#start").val(getDateBr(new Date().getStartOfMonth()));
+    $("#end").val(getDateBr(new Date()));    
+    var fields = [];
+    fields[1] = "real";
+    var url = "/report/dre";
+    var request = function(){
+      renderReport(url,fields,$("#form_report").serializeObject());
+    }
+    $("#send").click(request);
+    request();
+  });  
+  </script>
+<div class="page-header">
+          <h1>
+            <span class="lift:CompanySnippet.thumb"></span>
+            Relatório DRE
+          </h1>
+        </div>  
+  <div class="span9">
+      <form id="form_report" class="well form-search" method='get'>
+        Dias : 
+        <input type="text" class="input-small date" id='start' name="start" placeholder="Início"/>
+        <input type="text" class="input-small date" id='end' name="end" placeholder="Fim"/><br/>
+        <button type="button" id="send" class="btn success">Buscar</button>
+      </form>
+  </div>
+  <table id="grid" class="bordered-table zebra-striped">
+      <thead>
+        <th>Conta</th>
+        <th>Valor</th>
+      </thead>
+      <tbody>
+      </tbody>
+  </table>
+ </div>

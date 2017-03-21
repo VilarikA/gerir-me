@@ -1,0 +1,119 @@
+<div id="main" class="lift:surround?with=calendar;at=content">
+	<div class="well">
+	  	<h1><span class="lift:CompanySnippet.thumb"> </span>Formas de Pagamento</h1>
+        <label for="btn"></label>
+		<a class="btn primary" href="/company/payment_forms">Inserir novo</a>
+	</div>
+	<div class='filter block-message success'>
+		<img style='float:left' src="/images/filter.png"/>
+		<span class="filter_form">
+		<script type="text/javascript">
+			$(function(){
+				$(".name_paymenttype").val(gup("name"))
+				if(gup("all")){
+					$("#all").attr("checked", "checked");
+				}
+			});
+		</script>			
+			<form action=''>
+				<input class="local_storage xlarge name_paymenttype" id="name_paymenttype" name="name" size="30" type="text" placeholder="Nome"/>
+				<input class="all" id="all" name="all" type="checkbox"/> Mostrar todos?
+				<input class="btn success" type="submit" value="Buscar">
+			</form>
+		</span>		
+	</div>	
+<table class="bordered-table zebra-striped">
+		<thead>
+			<th>Id</th>
+			<th>Name</th>
+			<th>Soma no Caixa</th>
+			<th>Soma p/ Confere</th>
+			<th>Gera Comissão</th>
+			<th>Cartão</th>
+			<th>Cheque</th>
+			<th>Baixa Pacote</th>
+			<th>Conta Cliente</th>
+			<th>Comissão a Vista</th>
+			<th>Mostra no Caixa</th>
+			<th>Mostra Financeiro</th>
+			<th>Faturada a Vista</th>
+			<th>Faturada</th>
+			<th>Prox Mês</th>
+			<th>Conta Fatura</th>
+			<th>Categ Fatura</th>
+			<th>Categ Desconto</th>
+			<th>Ações</th>
+		</thead>
+		<tbody>
+			<tr class="lift:PaymentTypesSnippet:paymenttypes">
+				<td>
+					<f:id></f:id>
+				</td>
+				<td>
+					<f:name></f:name>
+				</td>				
+				<td>
+					<f:sumincachier></f:sumincachier>
+				</td>
+				<td>
+					<f:sumtoconference></f:sumtoconference>
+				</td>
+				<td>
+					<f:generatecommision></f:generatecommision>
+				</td>
+				<td>
+					<f:needcardinfo></f:needcardinfo>
+				</td>
+				<td>
+					<f:needchequeinfo></f:needchequeinfo>
+				</td>
+				<td>
+					<f:deliverycontol></f:deliverycontol>
+				</td>
+				<td>
+					<f:customerregisterdebit></f:customerregisterdebit>
+				</td>
+				<td>
+					<f:showasoptions></f:name>
+				</td>
+				<td>
+					<f:showasfinoptions></f:name>
+				</td>
+				<td>
+					<f:acceptinstallment></f:acceptinstallment>
+				</td>
+				<td>
+					<f:receiveatsight></f:receiveatsight>
+				</td>
+				<td>
+					<f:receive></f:receive>
+				</td>
+				<td>
+					<f:nextmonth></f:nextmonth>
+				</td>
+				<td>
+					<f:defaltaccount></f:defaltaccount>
+				</td>
+				<td>
+					<f:defaltcategory></f:defaltcategory>
+				</td>
+				<td>
+					<f:defaltdicountcategory></f:defaltdicountcategory>
+				</td>				
+				<td>
+					<form method="post">
+						<span>
+							<f:actions></f:actions>
+						</span>
+						<span>
+							<f:delete></f:delete>
+						</span>
+						<span style="display:none">
+							<f:_id></f:_id>
+						</span>
+					</form>
+				</td>				
+			</span>
+		</tbody>
+	</table>
+</div>

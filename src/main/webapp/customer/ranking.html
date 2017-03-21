@@ -1,0 +1,184 @@
+<div id="main" class="lift:surround?with=calendar;at=content">
+  <link rel="stylesheet" type="text/css" href="/select2/select2.css" />
+  <script src="/select2/select2.js"></script><script src="/select2/select2_locale_pt-BR.js"></script>
+  <script src="/js/reports.js"></script>
+  <script src="/js/jquery.tablesorter.pager.js"></script>
+  <script type="text/javascript">
+  var customers = [];
+  $(function(){
+    $("#send_message").notificationField(true);
+    $("#start").val(getDateBr(new Date().getStartOfMonth()));
+    $("#end").val(getDateBr(new Date()));    
+    var fields = [];
+    fields[0] = "int";
+    fields[2] = "int";
+    fields[3] = "real";
+    fields[6] = {
+      type : "format",
+      decode : function(id){
+        customers.push(id);
+        return "<a class='btn' href='/customer/edit?id="+id+"' target='_customer_maste'>Ir</a>"
+      }
+    };    
+    var url = "/report/customer_ranking";
+    var request = function(){
+      customers=[];
+      renderReport(url,fields,$("#form_report").serializeObject(),"#grid",function(data){
+        // tá bugado pelo nro de colunas o grafico espera 3 tem 7 no relatório
+        //drawChart(data);
+      });
+    }
+    DataManager.getPaymentTypes(function(paymentTypes){
+          var ret = "";
+          ret += "<option value='SELECT_ALL'>Todos</option>";
+          for(var i in paymentTypes){
+              ret += "<option value='"+paymentTypes[i].id+"'>"+paymentTypes[i].name+"</option>";
+          }
+      $('#payment_type').append(ret);
+    });
+    $("#unit").unitField(true,false);
+    $("#send").click(request);
+    $("#send_notifications").click(function(){
+      var message = $("#send_message").val();
+      if(confirm("Deseja enviar esta mensagem aos clientes?")){
+        $.get("/notification/messagesend/"+customers.join(",")+"/"+message,function(r){
+          if(r === '1'){
+            alert("Enviado com sucesso!");
+          }else {
+            alert(r);
+          }
+        }).error(function(){
+          alert("Erro ao enviar!")
+        }); 
+      }
+    });    
+    //request();
+  });  
+  </script>
+ <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+ <script type="text/javascript">
+      google.load("visualization", "1", {packages:["corechart"]});
+      function drawChart(data) {
+        data = data.map(function(item){
+          item[2]= window.parseInt(item[2])
+          item[3]= window.parseFloat(item[3])
+          return item;
+        })
+        data = jQuery.merge([["Nome","Quantidade","Valor"]],data);
+        data = google.visualization.arrayToDataTable(data);
+        var options = {
+          title: 'Ranking de clientes',
+          hAxis: {title: 'Nome', titleTextStyle: {color: 'red'}, minValue : 0.00}
+        };
+
+        var chart = new google.visualization.ColumnChart(document.getElementById('chart_div'));
+        chart.draw(data, options);
+      }
+  </script>  
+  <div class="">
+      <form id="form_report" class="well form-search" method='get'>
+        <h1>
+          <span class="lift:CompanySnippet.thumb"> </span>Relatório Ranking de Clientes
+        </h1>
+        <div class="row">
+        <div class="span8">
+          <div class="clearfix">
+            <label for="start">Intervalo</label>
+            <div class="input">
+              <div class="inline-inputs">
+                <div class="input-prepend" style="float:left; padding-right:10px">
+                  <span class="add-on"><img width="16" src="/images/calendar_addon.png"></span>
+                  <input type="text" class="input-small date" id='start' name="start" placeholder="Início">
+                </div>
+                <div class="input-prepend" style="float:left; padding-right:10px">
+                  <span class="add-on"><img width="16" src="/images/calendar_addon.png"></span>
+                  <input type="text" class="input-small date" id='end' name="end" placeholder="Fim">
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="clearfix">
+            <label for="type_category">Tipo</label>
+              <div class="input">
+                <div class="inline-inputs">
+                    <select class="local_storage" name="type" id="type">
+                        <option value='1,0'>Todos</option>
+                        <option value='1'>Produtos</option>
+                        <option value='0'>Serviços</option>
+                     </select>
+                     <span class="help-block">Tipos de Comissões (ex: Prod / Ser)</span>
+                </div>
+              </div>
+          </div>
+          <div class="clearfix">
+            <label for="payment_type">Formas de Pagamento</label>
+              <div class="input">
+                <div class="inline-inputs">
+                  <select class="url_parameter alow_all" multiple="multiple" name="payment_type" id='payment_type'>
+                  </select>
+                </div>
+              </div>
+          </div>                        
+          <div class="clearfix lift:SecuritySnippet.hasUnitModule">
+            <label for="unit">Unidade </label>
+            <div class="input">
+              <div class="inline-inputs">
+                <select id="unit" name="unit"></select>
+                <span class="help-block">Unidade do atendimento, mesmo que o cliente tenha outra unidade no cadastro
+                </span>
+              </div>
+            </div>
+          </div>
+          <div class="clearfix">
+            <label for="maxcli">Limite Clientes</label>
+            <div class="input">
+              <input id = "maxcli" name="maxcli" class="mini" type="text" value = "20"/>
+              <span class="help-block">Quantidade limite de clientes no ranking</span>
+            </div>
+          </div>            
+          <div class="clearfix">
+            <label for="buscar"></label>
+            <div class="input">
+              <button type="button" id="send" class="btn success">Buscar</button>
+            </div>
+          </div>
+        </div>
+        <div class="span7">
+          <fieldset>
+            <legend>Envio de E-mail</legend>
+            <div class="clearfix">
+              <label for="">Notificação</label>
+              <div class="input">
+                <select name="send_message" id="send_message"></select>
+                <span class="help-block">Selecione uma mensagem para enviar aos clientes</span>
+              </div>
+            </div>
+            <div class="clearfix">
+              <label for=""></label>
+              <div class="input">
+                <a type="button" id="send_notifications" class="btn primary">
+                  <img width="16px" src="/images/mail.png"/>
+                  Enviar
+                </a>
+              </div>
+            </div>
+          </fieldset>
+        </div>
+        </div>
+      </form>
+  </div>
+  <table id="grid" class="bordered-table zebra-striped">
+      <thead>
+        <th>Pos</th>
+        <th>Nome</th>
+        <th>Quantidade</th>
+        <th>Total</th>
+        <th>Telefone</th>
+        <th>Email</th>
+        <th>Ir</th>
+      </thead>
+      <tbody>
+      </tbody>
+  </table>
+  <div id="chart_div" style="width: 900px; height: 500px;"></div>s
+ </div>

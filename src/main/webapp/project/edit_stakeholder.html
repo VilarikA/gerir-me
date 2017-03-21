@@ -1,0 +1,142 @@
+<div id="main" class="lift:surround?with=event;at=content">
+  <script src="/js/angular.js"></script>
+  <script src="/js/angular-resource.min.js"></script>      
+  <script src="/js/angular.date.js"></script>
+  <script src="/js/datetimepicker/jquery.datetimepicker.js"></script>
+  <style>
+    @import url("/js/datetimepicker/jquery.datetimepicker.css");
+  </style>
+  <script type="text/javascript" charset="utf-8">
+    $(function(){
+    setTimeout(function(){
+      if($("#business_pattern").val() && $("#business_pattern").val() != '0'){
+        $("#business_pattern").change();
+      }
+    }, 500);    
+  </script>
+  <script src="/js/angular.select2.js"></script>
+  <span class=' lift:StakeHolderSnippet.maintain'>
+    <form>
+      <div class="well">
+        <label for="btn"></label>
+        <a class="btn primary" href="/project/list_stakeholder">Lista</a>
+        <input class="btn success" type="submit" value="Salvar">
+        <a class="btn primary" href="/project/edit_stakeholder">Inserir novo</a>
+      </div>
+      <div>
+        <span id="project_form">
+          <span class="row">
+            <span class="span18">
+              <div class="clearfix">
+                <label for="bp_sponsor"><span data-i18n='Cliente'></span></label>
+                <div class="input">
+                  <span>
+                    <img class="customer_search_button" width='24' src="/images/search.png"/>
+                    <input data-url-name="business_pattern" class='mini id_customer_search url_parameter' id='business_pattern' name="business_pattern" /> 
+                    <input class="name_customer_search" name="business_patternname" id="business_patternname"  size="30" type="text" placeholder="Nome"/>    
+                  </span>
+                </div>
+              </div>
+            </span>
+            <span class="span7">
+              <div class="clearfix">
+                <label for="startat">Início</label>
+                <div class="input">
+                  <div class='inline-inputs'>
+                    <div class="input-prepend" style='float:left; padding-right:10px'>
+                      <span class="add-on"><img width="16" src='/images/calendar_addon.png'/></span> 
+                      <input class="medium datetime" id="startat" name="startat" size="19" type="text"/>
+                    </div>
+                  </div>
+                </div>
+              </div>                     
+              <div class="clearfix">
+                <label for="stakeholdertype">Tipo participante</label>
+                <div class="input">
+                  <select name='stakeholdertype'></select>
+                  <span class="help-block">Tipo participante</span>
+                </div>
+              </div>
+            </span>
+            <span class="span7">
+              <div class="clearfix">
+                <label for="startat">Fim</label>
+                <div class="input">
+                  <div class='inline-inputs'>
+                    <div class="input-prepend" style='float:left; padding-right:10px'>
+                      <span class="add-on"><img width="16" src='/images/calendar_addon.png'/></span> 
+                      <input class="medium datetime" id="endat" name="endat" size="19" type="text"/>
+                    </div>
+                  </div>
+                </div>
+              </div>                     
+              <div class="clearfix">
+                <label for="status">Status</label>
+                <div class="input">
+                  <select class="medium" id="status" name="status" >
+                  </select>
+                  <a data-original-title="Informação" data-content="clique para abrir a documentação" data-help-url='/docs/status.html' rel="popover" class="_popover_basic _help">
+                    <img src="/images/info.gif" width="20">
+                  </a>
+                </div>
+              </div>
+            </span>
+            <span class="span18">
+              <div class="clearfix">
+                <label for="project"><span data-i18n='Evento'></span></label>
+                <div class="input">
+                  <select id='project' class="project" name='project'></select>
+                </div>
+              </div>
+              <div class="clearfix">
+                <label for="Obs">Obs</label>
+                <div class="input">
+                  <textarea class="large" id="obs" name="obs" size="30"></textarea>
+                  <span class="help-block">Observações</span>
+                </div>
+              </div>
+              <div class="clearfix">
+                <label for="approved">Aprovado</label>
+                <div class="input">
+                  <select class="medium" id="approved" name="approved" ></select>
+                  <span class="help-block">Indica se o participante foi aprovado</span>
+                </div>
+              </div>          
+            </span>
+            <span class="span12">
+              <div class="clearfix lift:SecuritySnippet.hasAuditModule">
+                  <label for="createdAt">Criado/Alterado</label>
+                  <div class="input">
+                    <div class='inline-inputs'>
+                      <div class="input-prepend" style='float:left; padding-right:10px'>
+                        <span class="add-on"><img width="16" src='/images/calendar_addon.png'/></span> 
+                        <input class="input-medium datetime disabled" disabled="true" id="createdAt" name="createdAt" size="19" type="text"/>
+                      </div>
+                      <div class="input-prepend" style='float:left; padding-right:10px'>
+                        <span class="add-on"><img width="16" src='/images/calendar_addon.png'/></span> 
+                        <input class="input-medium datetime disabled" disabled="true" id="updatedAt" name="updatedAt" size="19" type="text"/>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="input">
+                    <div class='inline-inputs'>
+                      <div class="input-prepend" style='float:left; padding-right:10px'>
+                        <span class="add-on"><img src='/images/sex.png'/></span> 
+                        <input class="input-medium disabled" disabled="true" id="createdby" name="createdby" size="19" type="text"/>
+                      </div>
+                      <div class="input-prepend" style='float:left; padding-right:10px'>
+                        <span class="add-on"><img src='/images/sex.png'/></span> 
+                        <input class="input-medium disabled" disabled="true" id="updatedby" name="updatedby" size="19" type="text"/>
+                      </div>
+                    </div>
+                  </div>                            
+              </div>                     
+            </span>
+          </span>
+        </span>
+      </div>
+    </form>
+    <script type="text/javascript" src="/js/reports.js"></script>
+    <script type="text/javascript" src="/js/events.js"></script>
+  </span>
+</div>

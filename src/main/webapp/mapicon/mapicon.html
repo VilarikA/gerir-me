@@ -1,0 +1,87 @@
+<div id="main" class="lift:surround?with=dashboard_customer;at=content">
+    <form method="post">
+      <div class="well">
+        <label for="btn"></label>
+        <a class="btn primary" href="/mapicon/list_mapicon">Lista</a>
+        <input class="btn success" type="submit" value="Salvar">
+        <a class="btn primary" href="/mapicon/mapicon">Inserir novo</a>
+      </div>
+          <span class="lift:MapIconSnippet.maintain">
+            <span class='row'>
+                <span class='span12'>
+                  <div class="clearfix">
+                    <label for="name">Nome</label>        
+                     <div class="input">
+                        <div class='inline-inputs'>
+                          <div class="input-prepend" style='float:left; padding-right:10px'>
+                            <input class="large" id="name" name="name" size="30" type="text"/>
+                          </div>
+                          <div class="input-prepend">
+                            <input class="medium" id="short_name" name="short_name" size="30" type="text"/>
+                            <a data-original-title="Informação" data-content="clique para abrir a documentação" data-help-url='/docs/name.html' rel="popover" class="_popover_basic _help">
+                              <img src="/images/info.gif" width="20">
+                            </a>
+                          </div>
+                          <span class="help-block">Nome do ícone completo e nome reduzido, este último usado em alguns relatórios</span>
+                      </div>
+                     </div>
+                  </div>
+                  <div>
+                    <label for="name">Observação</label>
+                     <div class="input">
+                        <input class="medium" id="obs" name="obs" size="30" type="text"/>
+                        <span class="help-block">Descrição do ícone</span>
+                     </div>
+                  </div>
+                  <div class="clearfix">
+                    <label for="status">Status</label>
+                    <div class="input">
+                      <div class="input-prepend">
+                        <select class="medium" id="status" name="status" >
+                        </select>
+                        <a data-original-title="Informação" data-content="clique para abrir a documentação" data-help-url='/docs/status.html' rel="popover" class="_popover_basic _help">
+                          <img src="/images/info.gif" width="20">
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                </span>
+                <span class='span4'>
+                    <img id='img_mapicon' alt=""/>
+                </span>                    
+            </span>                       
+          </span>
+        <span>
+          <ul class="tabs">
+            <li class="active tab"><a href="#photo">Ícone</a></li>
+          </ul>
+          <div class="pill-content">
+          </div>  
+        </span>
+    </form>
+    <div class="pill-content">    
+      <div class="active tab_content" id='photo'>
+        <div class="lift:MapIconSnippet.thumbToShow">
+          
+        </div>
+        <form class="lift:MapIconSnippet.render?form=post;multipart=true">
+          <div class="clearfix">
+            <input class="large url_parameter" id="id" name="id" type="hidden" />
+            <label for="name">Alterar ícone</label>
+            <div class="input">
+              <input type="text" name='file' id='file'/>
+              <span class="help-block">Selecione seu ícone</span>
+            </div>
+          </div>
+          <div class="clearfix">
+            <label for="name"></label>
+            <div class="input">
+              <div class="input-prepend">
+                <input type="submit" value="Enviar" id='submit' class="btn success"/>
+              </div>
+            </div>
+          </div>
+        </form>    
+      </div>    
+    </div>
+</div>  

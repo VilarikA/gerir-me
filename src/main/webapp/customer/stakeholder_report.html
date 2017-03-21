@@ -1,0 +1,98 @@
+<div id="main" class="lift:surround?with=calendar;at=content">
+  <link rel="stylesheet" type="text/css" href="/select2/select2.css" />
+  <script src="/select2/select2.js"></script><script src="/select2/select2_locale_pt-BR.js"></script>
+  <script src="/js/reports.js"></script>
+  <script src="/js/jquery.tablesorter.pager.js"></script>
+  <script type="text/javascript">
+    $(function(){ 
+      var group = function(row,value){
+        return parseFloat(value) + 1;
+      };
+      var formater = function(value){
+        return value;
+      };        
+      var group_meta_data = {"key":0, "name":0, "groupFunction" : group,
+                    "formater" : formater,
+                    "show" : true,
+                    "childGroup" : {
+                        "key":1, 
+                        "name":1, 
+                        "groupFunction" : group, 
+                        "show" : true,
+                        "formater" : formater
+        }
+      }
+      var url = "/report/stakeholder";
+      var request = function(){
+        var total_paid = 0.00;
+        var fields = [];
+//        fields[1]="date";
+//        fields[7]="real";
+        renderReport(url,fields,$("#form_report").serializeObject(),"#grid", function(data){
+          data.forEach(function(row){
+              total_paid += 1;
+          });
+          // $("#total_paid").val(total_paid.formatMoney());
+        }, false, false, false, false, group_meta_data);
+      }
+      $("#send").click(request);
+      $("#projectclass").projectClassField(true);
+    });
+  </script>
+  <div class='filter block-message success"'>
+    <span class="filter_form">
+      <form id="form_report" action=''>
+        <h1><span class="lift:CompanySnippet.thumb"> </span>Relatório de <span data-i18n='Eventos'></span>/Participantes</h1>
+        <div class="span9">
+          <div class="clearfix">
+            <label for="type_category">Intervalo</label>
+            <div class="input">
+              <div class="inline-inputs">
+                <div class="input-prepend" style="float:left; padding-right:10px">
+                  <span class="add-on"><img width="16" src="/images/calendar_addon.png"></span>
+                  <input type="text" class="input-small date start_of_month" id='start' name="start" placeholder="Início"/>
+                </div>
+                <div class="input-prepend" style="float:left; padding-right:10px">
+                  <span class="add-on"><img width="16" src="/images/calendar_addon.png"></span>
+                  <input type="text" class="input-small date to_day" id='end' name="end" placeholder="Fim"/>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="clearfix">
+            <label for="projectclass"><span data-i18n='Classe Evento'></span> / Status</label>
+              <div class="input">
+                <div class="inline-inputs">
+                  <div style="float:left; padding-right:10px" class="input-prepend">
+                    <select multiple id='projectclass' class="projectclass medium" name='projectclass'></select>
+                  </div>
+                  <div style="float:left; padding-right:10px" class="input-prepend">
+                    <select multiple="multiple" class="medium" id="status" name="status" value="" >
+                        <option value="All">Todos</option>
+                        <option value="1">Ativo</option>
+                        <option value="4">Inativo</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+          </div>
+        </div>
+        <div class="clearfix">
+          <label for="buscar"></label>
+          <div class="input">
+            <input class="btn success" id="send" type="button" value="Buscar">
+          </div>
+        </div>
+      </form>
+    </span>   
+  </div>
+  <table  id="grid" class="bordered-table">
+    <thead>
+      <th>Classe</th> 
+      <th><span data-i18n='Evento'></span></th>
+      <th>Participante</th>
+    </thead>
+    <tbody>
+    </tbody>
+  </table>
+</div> 

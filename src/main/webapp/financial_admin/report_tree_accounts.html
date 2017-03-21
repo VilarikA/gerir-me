@@ -1,0 +1,81 @@
+<div id="main" class="lift:surround?with=calendar;at=content">
+  <link rel="stylesheet" type="text/css" href="/select2/select2.css" />
+  <style type="text/css">
+   ul.tree, ul.tree ul {
+     list-style-type: none;
+     background: url(/images/vline.png) repeat-y;
+     margin: 0;
+     padding: 0;
+   }
+   
+   ul.tree ul {
+     margin-left: 10px;
+   }
+
+   ul.tree li {
+     margin: 0;
+     padding: 0 12px;
+     line-height: 20px;
+     background: url(/images/node.png) no-repeat;
+     color: #369;
+     font-weight: bold;
+   }
+
+   ul.tree li:last-child {
+     background: #eee url(/images/lastnode.png) no-repeat;
+   }
+
+ </style>
+ <script src="/select2/select2.js"></script><script src="/select2/select2_locale_pt-BR.js"></script>
+ <script src="/js/reports.js"></script>
+ <script src="/js/jquery.tablesorter.pager.js"></script>
+ <script type="text/javascript">
+  $(function(){    
+    var request = function(){
+      $.post("/report/accounts_tree",{},function(t){
+        eval("var treeData = "+t);
+        var tops = treeData.filter(function(account){
+          return account[4] =='0';
+        });
+        var parents = treeData.filter(function(account){
+          return account[5] =='true';
+        });
+        parents.forEach(function(account){
+          account.childs = treeData.filter(function(accountChild){
+            return accountChild[4]==account[0];
+          });
+        });
+        function printTree(tree){
+          return "<ul class='tree'>"+tree.map(function(item){
+            var ret = "<li><a href='/financial_admin/account_category?id="+item[0]+"'>"+item[1]+"</a>";
+            if(item.childs && item.childs.length > 0){
+              ret += printTree(item.childs);
+            }
+            ret += "</li>";
+            return ret;
+          }).join("")+"</ul>";
+        }
+        $("#grid").html(printTree(tops));
+      });
+    }
+    $("#send").click(request);
+    request();
+  });  
+</script>
+<div class="well">
+      <label for="btn"></label>
+        <a class="btn primary" href="/financial/list_category">Lista</a>
+  <a class="btn primary" href="/financial_admin/account_category">
+        Inserir novo
+  </a>
+</div>
+<div class="span9">
+  <h1>
+    <span class="lift:CompanySnippet.thumb"></span>
+    Árvore de Categorias
+  </h1>
+</div>
+<div id="grid" class="bordered-table zebra-striped">
+
+</div>
+</div>

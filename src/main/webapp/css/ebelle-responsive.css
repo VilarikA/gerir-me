@@ -1,0 +1,178 @@
+/*!
+ * Bootstrap Responsive v2.0.0
+ *
+ * Copyright 2012 Twitter, Inc
+ * Licensed under the Apache License v2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Designed and built with all the love in the world @twitter by @mdo and @fat.
+ */
+ .topbar_fallback{
+    position: fixed;
+    width: 10%;
+    display: none;
+ }
+.hidden {
+  display: none;
+  visibility: hidden;
+}
+table form{
+  margin-bottom: 0px;
+}
+@media (max-width: 480px) {
+   .sidebar {
+      position: absolute;
+      top: 0;
+      left: -1px;
+      width: 50px;    
+    }
+}
+@media (max-width: 768px) {
+  .container-fluid>.sidebar {
+    position: absolute;
+    top: 0;
+    left: -1px;
+    width: 50px;
+    background-color: #404040;
+    display: none;
+  }
+  body, .container{
+    width: 100% !important;
+    padding-top: 0px  !important;
+  
+    margin-bottom: 0px !important;
+}
+  .topbar{
+    display: none;
+    z-index: 1;
+    height: 0px;
+  }
+  .topbar_fallback{
+    display: block;
+    z-index: 10000;
+  }
+  * {
+        max-width: 100% !important;
+    
+  }
+  .span2{
+    width: 100%;
+  }
+  #new_page{
+    min-width: 480px !important;
+  }
+  .container-fluid {
+      width: 100% !important;
+      min-width: 200px;
+      padding-left: 0px;
+      padding-right: 0px;
+      padding-bottom: 0px;
+      margin-bottom: 0px;
+      height: 100%;
+  }
+  .wc-toolbar > div{
+      display: none;
+  }
+  .wc-toolbar > div:nth-child(4){
+      display: block ;
+  }
+  .filters{
+
+  }
+  .hide_mobile{
+    display: none;
+  }
+  .show_mobile{
+    display: block;
+  }
+}
+@media (min-width: 768px) and (max-width: 980px) {
+    .container-fluid>.sidebar {
+      position: absolute;
+      top: 0;
+      left: -1px;
+      width: 50px;    
+    }
+}
+@media (max-width: 980px) {
+
+}
+@media (min-width: 980px) {
+  .nav-collapse.collapse {
+    height: auto !important;
+  }
+}
+@media (min-width: 1200px) {
+
+}
+#treatment_class, #treatment_add,#payment_register, #help_modal{
+  width: 90%; left: 5%; 
+  margin: auto auto auto auto; 
+  top:5%; 
+  height:100%;
+  max-height:100%;
+ }
+ .delete-button{
+    background-image: url("/images/delete.png");
+    background-repeat: no-repeat;
+    width: 24px !important;
+    background-color: transparent;
+    border: none;
+  }
+.bordered-table form {
+  min-width: 60px;
+}  
+.bordered-table form span{
+    float: left;
+    padding-left: 6px;  
+}
+.row-features{
+  width: 100%;
+  float: left;
+  margin-left: auto;
+  margin-right: auto;
+}
+.row-features .span2 {
+  min-width: 200px;
+  float: left;
+  max-width: 22%;
+  margin-left: 100px;
+  width: 100px;
+  /* margin-left: auto; */
+  /* margin-right: auto; */
+}
+.label-inline {
+  padding-top: 0PX;
+  font-size: 13px;
+  line-height: 18px;
+  width: 130px;
+  text-align: right;
+  color: #404040;
+  padding-left: 10px;
+  position: relative;
+}
+
+.select-inline .select2-container{
+  top: 9px;
+}
+
+.print_command_table td {
+  /* para commanda ficar com fonte preta na térmica */
+  /* testar o font-family truetype */
+  /* e o grayscale pro logo */
+  color: #000000;
+  /*font-size:16px;*/
+  font-weight: bold;
+}
+
+.print_form_table td {
+  font-size:18px;
+}
+
+.report_title {
+  border-style:none none none none;
+  font-size:18px;
+  font-weight:bold;
+  background-color:transparent;
+  width:530px;
+}

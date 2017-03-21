@@ -1,0 +1,44 @@
+<div id="main" class="lift:surround?with=financial;at=content">
+	<div class="well">
+        <label for="btn"></label>
+		<a class="btn primary" href="/financial_admin/account">Inserir novo</a>
+	</div>
+<table class="bordered-table zebra-striped">
+		<thead>
+			<th>Id</th>
+			<th>Nome</th>
+			<th title="Associada aos caixas">Caixa</th>
+			<th>Saldo</th>
+			<th>Ações</th>			
+		</thead>
+		<tbody>
+			<tr class="lift:AccountSnippet:list">
+				<td>
+					<f:id></f:id>
+				</td>
+				<td>
+					<f:name></f:name>
+				</td>			
+				<td>
+					<f:allowcashierout></f:allowcashierout>
+				</td>								
+				<td>
+					<f:value></f:value>
+				</td>								
+				<td>
+					<form method="post">
+						<span>
+							<f:actions></f:actions>
+						</span>
+						<span>
+							<f:delete></f:delete>
+						</span>
+						<span style="display:none">
+							<f:_id></f:_id>
+						</span>
+					</form>
+				</td>				
+			</tr>
+		</tbody>
+</table>		
+</div>

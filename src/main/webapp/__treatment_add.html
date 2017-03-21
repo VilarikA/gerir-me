@@ -1,0 +1,57 @@
+<span>
+	<div id="treatment_add" class="modal hide fade" style="">
+			<div class="modal-header">
+	            <a href="#" class="close">&times;</a>
+		        <h3>Adicionar Atendimento</h3>
+		    </div>
+			<div class="modal-body ">
+			  	<div class="row">				
+		      		<form class="span12 lift:form.ajax">
+			            <div class="lift:TreatmentSnippet.add" id="treatment_div_span">
+			            	<div class="span12">
+						        <div class="clearfix">
+						            <label for="command">Comanda </label>
+						            <div class="input">
+						                <input class='mini command' name='command' /> 
+				                		<span class="help-block">Número da comanda do atendimento</span>
+						            </div>
+						        </div>
+						        <div class="clearfix">
+						        	<label for='customer'>
+						        		<img class="customer_search_button" width='24' src="/images/search.png"/>
+						        	</label>
+						            <div class="input">
+						            	<div class='inline-inputs'>
+											<input class='mini id_customer_search' onchange='$("#treatment_div").click();' name='customer' /> 
+											<input class="xlarge name_customer_search" name="name_customer" size="30" type="text" placeholder="Nome"/>
+						                	<span class="help-block">Cliente que será atendido<img id="customer_add_button" width='24' src="/images/add.png" alt="Cadastro rápido"/></span>
+						            	</div>
+						            </div>
+						        </div>
+						    </div>
+						    <div class="span12">
+								<div class="clearfix">
+						            <label>Profissional </label>
+						            <div class="input">
+						              <div class="inline-inputs">
+						                <select name="users" class="xlarge"></select>
+						                Data : 
+						                <input name="date" class="date small start_treatment"/>
+						                <input  name="hour_start" class="time mini"/>
+						                <span class="help-block">Profissional que irá executar o serviço</span>
+						              </div>
+						            </div>
+						         </div>
+						    </div>
+						    <!-- todo alinhar o botão que está sem margem -->
+					        <input type="submit" id="treatment_div" class="btn primary" value="Salvar"/>
+					        <input type="button" class="btn primary closing" value="Fechar" onclick="$('#treatment_add').modal('hide');renewTratment();"/>
+					        <input type="hidden" name="id" id="treatment_add_form_id"/>
+			            </div>				            
+				    </form>
+				</div>
+				<span id="treatment_detail_div">
+				</span>
+		</div>
+	</div>
+</span>

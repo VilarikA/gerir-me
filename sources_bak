@@ -1,0 +1,16 @@
+sources_bak
+
+Botão submit com imagem
+Let's say your image is a 16x16 .png icon called icon.png Use the power of CSS!
+
+CSS:
+
+input#image-button{
+    background: #ccc url('icon.png') no-repeat top left;
+    padding-left: 16px;
+    height: 16px;
+}
+HTML:
+
+<input type="submit" id="image-button" value="Text"></input>
+This will put the image to the left of the text.

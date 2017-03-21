@@ -1,0 +1,73 @@
+<div id="main" class="lift:surround?with=calendar;at=content">
+  <link rel="stylesheet" type="text/css" href="/select2/select2.css" />
+  <script src="/select2/select2.js"></script><script src="/select2/select2_locale_pt-BR.js"></script>
+  <script src="/js/reports.js"></script>
+  <script src="/js/jquery.tablesorter.pager.js"></script>
+  <script type="text/javascript">
+  $(function(){
+    $("#start").val(getDateBr(new Date().getStartOfMonth()));
+    $("#end").val(getDateBr(new Date()));    
+    var fields = [];
+    fields[0] = "real";
+    fields[1] = "real";
+    fields[2] = "real";
+    fields[3] = "real";
+    fields[4] = "real";  
+    var url = "/report/operacional_results";
+    var request = function(){
+      renderReport(url,fields,$("#form_report").serializeObject(),"#grid");
+    }
+    $("#send").click(request);
+    $("#unit").unitField(false,false,true);
+  });
+  </script>
+  <div class="page-header">
+    <h1>
+      <span class="lift:CompanySnippet.thumb"> </span>Relatório Produtividade Operacional
+    </h1>
+  </div>
+    <form id="form_report" class="well form-search" method='get'>   
+      <div class="row">
+          <span class='span8'>
+            <div class="clearfix">
+              <label for="start">Intervalo</label>
+                <div class="input">
+                  <div class="inline-inputs">
+                    <div class="input-prepend" style="float:left; padding-right:10px">
+                      <span class="add-on"><img width="16" src="/images/calendar_addon.png"></span>
+                      <input type="text" class="input-small date" id='start' name="start" placeholder="Início"/>
+                    </div>
+                    <div class="input-prepend" style="float:left; padding-right:10px">
+                      <span class="add-on"><img width="16" src="/images/calendar_addon.png"></span>
+                      <input type="text" class="input-small date" id='end' name="end" placeholder="Fim"/>
+                    </div>
+                  </div>
+                </div>
+            </div>             
+            <div class="clearfix">
+              <label for="unit">Unidade </label>
+                <div class="input">
+                  <div class="inline-inputs">
+                    <select id="unit" multiple="multiple" name="unit"></select>
+                  </div>
+                </div>
+            </div>
+            <div class="clearfix">
+                <div class="input">
+                  <input type='button' class="btn success" value="Buscar" id='send' />
+                </div>
+            </div>      
+          </span>
+      </div>
+  </form>
+  <table id="grid" class="bordered-table zebra-striped">
+      <thead>
+        <th>Lucros</th>
+        <th>Faturamento</th>
+        <th>Comissões</th>
+        <th>Custo de produto</th>
+      </thead>
+      <tbody>
+      </tbody>
+  </table>
+ </div>

@@ -1,0 +1,30 @@
+<div id="main" class="lift:surround?with=calendar;at=content">
+	<div class="well">
+	  	<h1><span class="lift:CompanySnippet.thumb"> </span>Processos</h1>
+	</div>
+    <form id="form_report" class="well  form-search" method='get'>
+      <div class="span8">        
+        <div class="clearfix">
+          <label for="type_category">Company</label>
+          <div class="input">
+            <div class="inline-inputs">
+              <input type="text" class="input-small" id='company' name="company" placeholder="Empresa"/>
+            </div>
+          </div>
+        </div>
+      </div>      
+      <div class="clearfix">
+        <label for="send"></label>
+        <div class="input">
+			<input id="fix_location" class="btn primary" type='button' value='Ajustar localização'/>
+        </div>
+      </div>                     
+    </form>
+	<script type="text/javascript">
+		$("#fix_location").click(function(){
+			$.get("/location/ajustsCompany/"+$("#company").val(), function(){
+				alert('Processo iniciado com sucesso [Isso pode levar muito tempo!]');
+			});
+		});
+	</script>
+</div>

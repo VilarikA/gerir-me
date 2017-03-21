@@ -1,0 +1,208 @@
+<div id="main" class="lift:surround?with=inventory&at=content">
+    <script type="text/javascript" src="/js/inventory.js"></script>
+    <form   class="lift:form.ajax">
+      <div class="well">
+        <label for="btn"></label>
+        <a class="btn primary" href="/product/list">
+          <img src="/images/product.png" width="16px">
+         Produtos
+        </a>
+        <a class="btn primary" href="/product/control_panel">
+          <img src="/images/control.png" width="16px">
+          Painel de Controle
+        </a>    
+      </div>
+      <!--
+        class="lift:InventorySnippet.movementForm"
+      -->
+      <div>
+      <div class="row">
+        <span class="span9">
+          <div class="clearfix">
+            <label for="name">Produto</label>
+             <div class="input">
+                <span class="add-on"></span><input class="xlarge" name="product" id="product" />
+                <span class="help-block">Produto que está entrando/saindo do estoque</span>
+             </div>
+          </div>
+          <div class="clearfix">
+            <label for="type">Tipo</label>
+             <div class="input">
+                <select class="type" name="type" id="type">
+                  <option value="In">Entrada</option>
+                  <option value="Out">Saída</option>
+                  <option value="Transfer">Transferência</option>
+                </select>
+             </div>
+          </div>
+          <div class="clearfix">
+            <label for="unit_of">De </label>
+             <div class="input">
+                <select name="unit_of" class="unit notselect2" id="unit_of"></select>
+                <span class="help-block">O estoque sairá dessa unidade</span>
+             </div>
+          </div>
+          <div class="clearfix transfer">
+            <label for="unit_to">Para</label>
+             <div class="input">
+                <select name="unit_to" id="unit_to" class="unit notselect2"></select>
+                <span class="help-block">O estoque entrará nesta unidade</span>
+             </div>
+          </div>          
+          <div class="lift:SecuritySnippet.isInventoryManager clearfix">
+            <label for="purchasePrice">Preço Compra/Venda</label>
+             <div class="input">
+                <div class="inline-inputs">
+                  <div style="float:left; padding-right:10px" class="input-prepend">
+                    <span class="add-on"><img src="/images/dre.png" width="16"></span>
+                    <input class="mini currency" id="purchasePrice" name="purchasePrice" size="30" type="text"/>
+                  </div>
+                  <div style="float:left; padding-right:10px" class="input-prepend">
+                    <span class="add-on"><img src="/images/dre.png" width="16"></span>
+                    <input class="mini currency" id="salePrice" name="salePrice" size="30" type="text"/>
+                  </div>
+                </div>
+             </div>
+          </div>
+          <input type="hidden" class="is-gerirme-system lift:SecuritySnippet.isGerirmeSystem" value="1">
+          <div class="lift:SecuritySnippet.isGerirmeSystem clearfix">
+            <label for="indic1">Indicadores</label>
+             <div class="input">
+                <div class="inline-inputs">
+                  <div style="float:left; padding-right:10px" class="input-prepend">
+                    <input class="mini currency" id="indic1" name="indic1" size="30" type="text" placeholder="Frete"/>
+                  </div>
+                  <div style="float:left; padding-right:10px" class="input-prepend">
+                    <input class="mini currency" id="indic2" name="indic2" size="30" type="text" placeholder="Dif Icms"/>
+                  </div>
+                  <div style="float:left; padding-right:10px" class="input-prepend">
+                    <input class="mini currency" id="indic3" name="indic3" size="30" type="text" placeholder="Ipi"/>
+                  </div>
+                  <div style="float:left; padding-right:10px" class="input-prepend">
+                    <input class="mini currency" id="indic4" name="indic4" size="30" type="text" placeholder="Perda"/>
+                  </div>
+                  <div style="float:left; padding-right:10px" class="input-prepend">
+                    <input class="mini currency" id="indic5" name="indic5" size="30" type="text"/>
+                  </div>
+                </div>
+             </div>
+          </div>
+          <div class="clearfix">
+            <label for="duration">Quantidade</label>
+              <div class="input">
+                <input name="amount" id="amount" value="1"  class="mini" type="text"/>
+                <span class="help-block">Quantidade da movimentação</span>
+              </div>
+          </div>
+        </span>
+        <span class="span8">
+          <div class="clearfix">
+            <label for="opener_date">Estoque Atual</label>
+              <div class="input">
+                <div class="inline-inputs">
+                      <span type="text" size="19" name="current_stock" id="current_stock" disabled='true' class="medium disabled inventory_product_search">
+                      </span>
+                </div>
+              </div>
+          </div>        
+          <div class="clearfix">
+            <label for="supplier">Fornecedor</label>
+             <div class="input">
+                <select class="xlarge" name="supplier" id="supplier"></select>
+                <a href="" class="_popover_basic" rel="popover" data-content="Para cadastrar um fornecedor, insira um novo registro com os dados do mesmo no cadastro de clientes/pacientes e posteriormente acesse a aba propriedades para marcá-lo como tal." data-original-title="Informação">
+                <img width='20' src="/images/info.gif"/>
+                </a>
+                <span class="help-block">Fornecedor para o caso de compra</span>
+             </div>
+          </div>
+          <div class="clearfix">
+            <label for="cause">Motivo</label>
+            <input name='causeh' class="url_parameter" id="causeh" type="hidden">
+             <div class="input">
+                <select name="cause" id="cause" class="url_parameter"></select>
+                <span class="help-block">Motivo da movimentação de estoque</span>
+             </div>
+          </div>
+          <div class="clearfix">
+              <label for="obs">Observação</label>
+              <div class="input">
+                <div class="input-prepend">
+                  <textarea id="obs" name="obs" ></textarea>
+                </div>
+              </div>
+          </div>          
+          <div class="clearfix">
+            <label for="invoice">Nota Fiscal</label>
+             <div class="input">
+                <input class="mini" id="invoice" name="invoice" size="30" type="text"/>
+                <span class="help-block">Nota fiscal  de compra</span>
+             </div>
+          </div>
+          <div class="clearfix">
+            <label for="birthday">Data da Movimentação</label>
+              <div class="input">
+                <div class="inline-inputs">
+                    <div style="float:left; padding-right:10px" class="input-prepend">
+                      <span class="add-on"><img width="16" src="/images/calendar_addon.png"></span>
+                      <input type="text" size="19" name="date" id="date" class="input-small date">
+                    </div>
+                </div>
+              </div>
+          </div>
+        </span>
+        <span class="span7">
+        
+        </span>
+        <span  class="span12">
+            <div class="clearfix">
+              <label for="btn"></label>
+              <a class="btn primary" alt="Adiciona o produto na tabela de movimentações abaixo, após digitar toda a nota clique em <Salvar tudo>" type="button" id="b_add">
+                <img src="/images/add.png" width="16px">
+                Adicionar
+              </a>
+            </div>
+            <div class="clearfix">
+              <label for="btn"></label>
+              <a class="btn success b_save" alt="Efetiva todas as movimentações desde que já adicionadas na tabela" type="button" id="b_save" value="">
+                  <img src="/images/select.png" width="16px">
+                  Salvar tudo
+              </a>
+            </div>
+            <table id="table_data" class="span7 bordered-table zebra-striped">
+              <thead>
+                <th>Produto</th>
+                <th>Tipo</th>
+                <th>Unidade</th>
+                <th>Preço Compra</th>
+                <th class="lift:SecuritySnippet.isGerirmeSystem">
+                  Frete</th>
+                <th class="lift:SecuritySnippet.isGerirmeSystem">
+                  Dif Icms</th>
+                <th class="lift:SecuritySnippet.isGerirmeSystem">
+                  IPI</th>
+                <th class="lift:SecuritySnippet.isGerirmeSystem">
+                  Perda</th>
+                <th class="lift:SecuritySnippet.isGerirmeSystem">
+                  Indic 5</th>
+                <th>Preço Venda</th>
+                <th>Nota Fiscal</th>
+                <th>Quantidade</th>
+                <th>Fornecedor</th>              
+                <th>Motivo</th>              
+                <th>Observação</th>
+                <th>Ações</th>
+              </thead>
+              <tbody>
+              </tbody>
+            </table>          
+            <div class="clearfix">
+              <label for="btn"></label>
+              <a class="btn success b_save" alt="Efetiva todas as movimentações desde que já adicionadas na tabela" type="button" id="b_save" value="">
+                  <img src="/images/select.png" width="16px">
+                  Salvar tudo
+              </a>
+            </div>
+        </span>
+      </div>
+    </form>
+</div>

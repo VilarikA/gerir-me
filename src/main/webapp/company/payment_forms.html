@@ -1,0 +1,353 @@
+<div id="main" class="lift:surround?with=calendar&at=content">
+  <div class="lift:PaymentTypesSnippet.maintain">
+    <form class="lift:form.ajax">
+      <div class="well">
+        <h1><span class="lift:CompanySnippet.thumb"> </span>Formas de Pagamento</h1>
+        <label for="btn"></label>
+        <a class="btn primary" href="/company/payment_forms_list">Lista</a>
+        <input class="btn success" type="submit" value="Salvar">
+        <a class="btn primary" href="/company/payment_forms">Inserir novo</a>
+      </div>      
+      <span>
+        <div class="clearfix">
+          <label for="name">Nome</label>        
+          <div class="input">
+            <div class='inline-inputs'>
+              <div class="input-prepend" style='float:left; padding-right:10px'>
+                <input class="large" id="name" name="name" size="30" type="text"/>
+              </div>
+              <div class="input-prepend">
+                <input class="medium" id="short_name" name="short_name" size="30" type="text"/>
+                <a data-original-title="Informação" data-content="clique para abrir a documentação" data-help-url='/docs/name.html' rel="popover" class="_popover_basic _help">
+                  <img src="/images/info.gif" width="20">
+                </a>
+              </div>
+              <span class="help-block">Nome da forma de pagamento completo e nome reduzido, este último usado em alguns relatórios</span>
+            </div>
+          </div>
+          <div class="clearfix">
+            <label for="status">Status</label>
+            <div class="input">
+              <select class="medium" id="status" name="status" >
+              </select>
+              <a data-original-title="Informação" data-content="clique para abrir a documentação" data-help-url='/docs/status.html' rel="popover" class="_popover_basic _help">
+                <img src="/images/info.gif" width="20">
+              </a>
+              <span class="help-block">Status da forma de pagamento</span>
+            </div>
+          </div>
+        </div>
+        <ul class="tabs">
+          <li class="active tab"><a href="#commission">Comissão</a></li>
+          <li class="tab"><a href="#cash">Caixa</a></li>
+          <li class="tab"><a href="#behavior">Comportamento Pagamento</a></li>
+          <li class="tab"><a href="#receive">Faturamento</a></li>
+        </ul>
+        <div class="pill-content">
+          <div class="active tab_content" id="commission">
+            <div class="clearfix">
+              <label for="generateCommision">Gera Comissão?</label>        
+              <div class="input">
+                <div class='inline-inputs'>
+                  <input name='generateCommision'/>
+                </div>
+              </div>
+            </div>          
+            <div class="clearfix">
+              <label for="comissionAtSight">Paga Comissão a Vista?</label>
+              <div class="input">
+                <div class='inline-inputs'>
+                  <input name='comissionAtSight'/>
+                  <span class="help-block"></span>
+                </div>
+              </div>
+            </div>
+            <div class="clearfix">
+              <label for="numDays">Número de Dias para o Pagamento</label>        
+              <div class="input">
+                <div class='inline-inputs'>
+                  <input name='numDays' class= "mini"/>
+                </div>
+              </div>
+            </div>
+            <div class="clearfix">
+              <label for="numDays">% de Desconto desta Forma de Pagamento</label>        
+              <div class="input">
+                <div class='input-append'>
+                  <input name='percentDiscountToCommision' class="mini currency" />
+                  <span class="add-on">%</span>
+                  <a data-original-title="Informação" data-content="clique para abrir a documentação" data-help-url='/docs/paymenttype.html#commission' rel="popover" class="_popover_basic _help">
+                  <img src="/images/info.gif" width="20">
+                  </a>
+                </div>
+              </div>
+            </div>    
+            <div class="span12 clearfix lift:SecuritySnippet.hasAuditModule">
+                <label for="createdAt">Criado/Alterado</label>
+                <div class="input">
+                  <div class='inline-inputs'>
+                    <div class="input-prepend" style='float:left; padding-right:10px'>
+                      <span class="add-on"><img width="16" src='/images/calendar_addon.png'/></span> 
+                      <input class="input-medium datetime disabled" disabled="true" id="createdAt" name="createdAt" size="19" type="text"/>
+                    </div>
+                    <div class="input-prepend" style='float:left; padding-right:10px'>
+                      <span class="add-on"><img width="16" src='/images/calendar_addon.png'/></span> 
+                      <input class="input-medium datetime disabled" disabled="true" id="updatedAt" name="updatedAt" size="19" type="text"/>
+                    </div>
+                  </div>
+                </div>
+                <div class="input">
+                  <div class='inline-inputs'>
+                    <div class="input-prepend" style='float:left; padding-right:10px'>
+                      <span class="add-on"><img src='/images/sex.png'/></span> 
+                      <input class="input-medium disabled" disabled="true" id="createdby" name="createdby" size="19" type="text"/>
+                    </div>
+                    <div class="input-prepend" style='float:left; padding-right:10px'>
+                      <span class="add-on"><img src='/images/sex.png'/></span> 
+                      <input class="input-medium disabled" disabled="true" id="updatedby" name="updatedby" size="19" type="text"/>
+                    </div>
+                  </div>
+                </div>                            
+            </div>                     
+          </div>
+          <div id="cash" class='tab_content'>
+            <div class="clearfix">
+              <label for="order">Ordem</label>
+              <div class="input">
+                <input class="mini" id="order" name="order" size="30" type="text"/>
+                <span class="help-block">Ordem na qual ela será mostrada no caixa</span>
+              </div>
+            </div>
+            <div class="clearfix">
+              <label for="showAsOptions">Mostrar no Caixa?</label>
+              <div class="input">
+                <div class='inline-inputs'>
+                  <input name='showAsOptions'/>
+                  <span class="help-block"></span>
+                </div>
+              </div>
+            </div>         
+            <div class="clearfix">
+              <label for="showAsFinOptions">Mostrar no Financeiro?</label>
+              <div class="input">
+                <div class='inline-inputs'>
+                  <input name='showAsFinOptions'/>
+                  <span class="help-block"></span>
+                </div>
+              </div>
+            </div>         
+          </div> 
+          <div id="behavior" class='tab_content'>
+            <span class="row">
+              <span class="span8">
+                <div class="clearfix">
+                  <label for="sumInCachier">Dinheiro?</label>        
+                  <div class="input">
+                    <div class='inline-inputs'>
+                      <input name='sumInCachier'/>
+                      <span class="help-block">Esta forma de pagamento é recebida em espécie</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="clearfix">
+                  <label for="sumToConference">Soma para Conferência?</label>        
+                  <div class="input">
+                    <div class='inline-inputs'>
+                      <input name='sumToConference'/>
+                      <span class="help-block">Caso esta forma de pagamento seja marcada os valores pagos nela serão somados ao campo (Total) no fechamento de caixa</span>
+                    </div>
+                  </div>
+                </div>             
+                <div class="clearfix">
+                  <label for="needCardInfo">Solicita Dados do Cartão?</label>        
+                  <div class="input">
+                    <div class='inline-inputs'>
+                      <input name='needCardInfo'/>
+                    </div>
+                  </div>
+                </div>
+                <div class="clearfix">
+                  <label for="needChequeInfo">Solicita Dados do Cheque?</label>        
+                  <div class="input">
+                    <div class='inline-inputs'>
+                      <input name='needChequeInfo'/>
+                    </div>
+                  </div>
+                </div> 
+                <div class="clearfix">
+                  <label for="acceptInstallment">Aceita Parcelamento?</label>
+                  <div class="input">
+                    <div class='inline-inputs'>
+                      <input name='acceptInstallment'/>
+                      <span class="help-block"></span>
+                    </div>
+                  </div>
+                </div>             
+              </span>
+              <span class="span8">
+                <fieldset>
+                <legend>Comportamentos Especiais</legend>
+                </fieldset>
+                <div class="clearfix">
+                  <label for="deliveryContol">Pagamento de Pacote?</label>        
+                  <div class="input">
+                    <div class='inline-inputs'>
+                      <input name='deliveryContol'/>
+                      <span class="help-block">Caso essa opção seja marcada essa forma de pagamento irá baixar sessões de pacotes do cliente, caso não haja pacotes/sessões será exibida uma mensagem de erro.</span>
+                    </div>
+                  </div>
+                </div>           
+                <div class="clearfix">
+                  <label for="customerRegisterDebit">Pagamento Acrescenta Conta Cliente?</label>        
+                  <div class="input">
+                    <div class='inline-inputs'>
+                      <input name='customerRegisterDebit'/>
+                      <span class="help-block"></span>
+                    </div>
+                  </div>
+                </div>
+                <div class="clearfix">
+                  <label for="customerUseCredit">Pagamento Usa Crédito Cliente?</label>        
+                  <div class="input">
+                    <div class='inline-inputs'>
+                      <input name='customerUseCredit'/>
+                      <span class="help-block"></span>
+                    </div>
+                  </div>
+                </div>
+                <div class="clearfix">
+                  <label for="addUserAccountToDiscount">Pagamento Vale p/ <span data-i18n='Profissional'></span>?</label>
+                  <div class="input">
+                    <div class='inline-inputs'>
+                      <input name='addUserAccountToDiscount'/>
+                      <a data-original-title="Informação" data-content="clique para abrir a documentação" data-help-url='/docs/paymenttype.html#special' rel="popover" class="_popover_basic _help">
+                      <img src="/images/info.gif" width="20">
+                      </a>
+                      <span class="help-block"></span>
+                    </div>
+                  </div>
+                </div>            
+                <div class="clearfix">
+                  <label for="bpmonthly">Pagamento de Mensalidade?</label>
+                  <div class="input">
+                    <div class='inline-inputs'>
+                      <input name='bpmonthly'/>
+                      <span class="help-block"></span>
+                    </div>
+                  </div>
+                </div>            
+                <div class="clearfix">
+                  <label for="OffSale">Pagamento por Convênio?</label>
+                  <div class="input">
+                    <div class='inline-inputs'>
+                      <input name='offSale'/>
+                      <span class="help-block"></span>
+                    </div>
+                  </div>
+                </div>            
+              </span>
+            </span>
+          </div>
+          <div id="receive" class='tab_content'>    
+            <div class="clearfix">
+              <label for="receive">Faturada/Recebida?</label>        
+              <div class="input">
+                <div class='inline-inputs'>
+                  <div class="input-prepend" style='float:left; padding-right:20px'>
+                    <input name='receive'/>
+                  </div>
+                  <div class="input-prepend" style='float:left; padding-right:20px'>                    
+                    <span class='label-inline' style='float:left; padding-right:20px'>
+                        Faturada/Recebida a Vista?
+                    </span>
+                    <input name='receiveAtSight'/>
+                  </div>
+                  <div class="input-prepend" style='float:left; padding-right:20px'>
+                    <span class='label-inline' style='float:left; padding-right:20px'>
+                        Faturada Individual?
+                    </span>
+                    <input name='individualReceive'/>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="clearfix">
+              <label for="defaltAccount">Conta Padrão do Faturamento</label>
+              <div class="input">
+                <div class='inline-inputs'>
+                  <div class="input-prepend" style='float:left; padding-right:20px'>
+                    <select name='defaltAccount' class="defaltAccount">
+                    </select>
+                  </div>
+                  <div class="input-prepend" style='float:left; padding-right:20px'>                    
+                    <span class='label-inline' style='float:left; padding-right:20px'>
+                        Categoria Padrão do Faturamento
+                    </span>
+                    <select name='defaltCategory' class="defaltCategory">
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="clearfix">
+              <label for="defaltDicountCategory">Categoria Padrão de Descontos do Faturamento</label>
+              <div class="input">
+                <div class='inline-inputs'>
+                  <div class="input-prepend" style='float:left; padding-right:20px'>
+                    <select name='defaltDicountCategory' class="defaltDicountCategory">
+                    </select>
+                  </div>
+                  <div class="input-prepend" style='float:left; padding-right:20px'>                    
+                    <span class='label-inline' style='float:left; padding-right:20px'>
+                        Percentual de Desconto no Faturamento
+                    </span>
+                    <input name='percentDiscountToReceive' class="mini currency"/>
+                    <span class="add-on">%</span>
+                  </div>
+                </div>
+              </div>
+            </div>            
+            <div class="clearfix">
+              <label for="numDaysForReceive">Número de Dias para o Faturamento</label>        
+              <div class="input">
+                <div class='inline-inputs'>
+                  <input name='numDaysForReceive' class= "mini"/>
+                  <a data-original-title="Informação" data-content="clique para abrir a documentação" data-help-url='/docs/paymenttype.html#invoicing' rel="popover" class="_popover_basic _help">
+                  <img src="/images/info.gif" width="20">
+                  </a>
+                </div>
+              </div>
+            </div>
+            <div class="clearfix">
+              <label for="receiveAtSight">Fat Próximo Mês?</label>        
+              <div class="input">
+                <div class='inline-inputs'>
+                  <div class="input-prepend" style='float:left; padding-right:20px'>
+                    <input name='nextMonth'/>
+                  </div>
+                  <div class="input-prepend" style='float:left; padding-right:20px'>                    
+                    <span class='label-inline' style='float:left; padding-right:20px'>
+                        Dia Para Faturamento
+                    </span>
+                    <input name='day' class= "mini"/>
+                  </div>
+                  <div class="input-prepend" style='float:left; padding-right:20px'>                    
+                    <span class='label-inline' style='float:left; padding-right:20px'>
+                        Dia Limite para Faturamento no Mês Seguinte
+                    </span>
+                    <input name='limitDay' class= "mini"/>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="clearfix">
+              <label for="limitDay"></label>
+              <div class="input">
+                <span class="help-block">A partir do dia limite os lançamento serão projetados para o mês subsequente.</span>
+              </div>
+            </div>                       
+          </div>          
+        </div>          
+      </form>
+    </div>
+  </div>

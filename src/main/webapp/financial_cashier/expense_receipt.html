@@ -1,0 +1,228 @@
+<div id="main" class="lift:surround?with=clear;at=content">
+  <script src="/js/reports.js"></script>
+  <script src="/js/jquery.tablesorter.pager.js"></script>
+  <script type="text/javascript">
+  $(function(){
+    var idcustomer1;
+    $("#start").val("1");
+    $("#end").val(new Date().getDate());    
+    var fields = [];
+    fields[0] = "none";
+    fields[1] = "none";
+    fields[2] = "none";
+    fields[3] = "none";
+    fields[4] = "none";
+    fields[5] = "none";
+    fields[6] = "none";
+    fields[7] = "none";
+    fields[8] = "none";
+    fields[9] = "none";
+    fields[10] = "none";
+    fields[11] = "none";
+    fields[12] = "none";
+    fields[13] = "none";
+    fields[14] = "none";
+    fields[15] = "none";
+    fields[16] = "none";
+    fields[17] = "none";
+    fields[18] = "none";
+    fields[23] = "none";
+    fields[24] = "none";
+    fields[25] = "none";
+    fields[26] = "none";
+    var url = "/treatments/receipt_customer_unit";
+    $("#command").html(gup("command"));
+    var date =  gup("date") || getDateBr(new Date());
+    $("#date").html(date);
+    //$("#week_day").html(i18n_days[new Date().getDay()]);
+    var request = function(){
+      renderReport(url,fields,{command:gup("command"), date: date },"#grid",function(data){
+        var document_company = data[0][10];
+        $("#document_company").html(document_company);
+        // não é exeibido usado para envio de email
+        idcustomer1 = data[0][26];
+        var customer = data[0][0];
+        $("#customer").html(customer);
+        var phone = data[0][1];
+        $("#phone").html(phone);
+        var document = data[0][2];
+        $("#document").html(document);
+        var cstreet = data[0][3];
+        $("#cstreet").html(cstreet);
+        var cnumber_c = data[0][4];
+        $("#cnumber_c").html(cnumber_c);
+        var ccomplement = data[0][5];
+        $("#ccomplement").html(ccomplement);
+        var cdistrict = data[0][6];
+        $("#cdistrict").html(cdistrict);
+        var cpostal_code = data[0][7];
+        $("#cpostal_code").html(cpostal_code);
+        var cextenso = data[0][8];
+        $("#cextenso").html(cextenso);
+        var ccity = data[0][24];
+        $("#ccity").html(ccity);
+        var cstate = data[0][25];
+        $("#cstate").html(cstate);
+        var ctotal = data[0][23];
+        $("#ctotal").html(ctotal);
+        var uname = data[0][9];
+        $("#uname").html(uname);
+        var udoc = data[0][10];
+        $("#udoc").html(udoc);
+        var ucity = data[0][16];
+        $("#ucity").html(ucity);
+        var ustate = data[0][17];
+        $("#ustate").html(ustate);
+        var udate = data[0][18];
+        $("#udate").html(udate);
+        //window.print();
+      });
+
+    }
+    var fields_pay = [];
+    fields_pay[2] = "date";
+    var url_pay = "/treatments/receipt_payments";
+    var request_pay = function(){
+      renderReport(url_pay,fields_pay,{command:gup("command"), date: date },"#grid_payments",function(data){
+        window.print(); // aqui já acabou
+      });
+    }
+    request();
+    request_pay();
+    //setTimeout(function(){    
+    //  alert ($("#grid").html()+$("#grid_payments").html()+$("#grid_unit").html())
+    //},600);
+    var sendReceiptEmailCustomer = function(customer){
+      var mail = $("#grid").html()+$("#grid_payments").html()+$("#grid_unit").html()
+      if(confirm("Tem certeza que deseja enviar um e-mail para o cliente?")){
+        var url = "/social/treatments/receipt_customer"
+        //+customer+"/"+encodeURIComponent(mail);
+        $.ajax(url,{"type": "post", "data" : {id : customer, body : mail }, "success" : function(){
+          alert("Enviado com sucesso!");
+        }, "error" : function(response){
+          alert("Erro ao enviar E-mail!");
+        }});
+      } 
+    }
+    $(".send_email_customer").click(function(){
+      sendReceiptEmailCustomer(idcustomer1);
+    });
+    // window.print(); aqui nao garante que o dado tá pronto
+  });  
+  </script>  
+  <table id="grid" class="zebra-striped print_command_table">
+      <thead>
+        <tr>
+          <td colspan="6">
+            <span class="lift:CompanySnippet.logo"> </span>
+            <center>
+              <style>
+                h3 {color:black;}
+              </style>
+              <h3><span class="lift:CompanySnippet.name"> </span></h3>
+              <p></p>
+              <p><h3><span class="lift:CompanySnippet.phone"> </span></h3></p>
+              <p><h3><span id="document_company"></span></h3></p>
+            </center>
+          </td>
+        </tr>
+        <tr>
+          <td colspan="6">
+            <span>Recebemos de </span>
+            <input type="hidden" id="idcustomer" >
+            <span id="customer"></span> - <span id="phone"></span>
+            <br>
+            Cpf : <span id="document"></span>
+            <span id="cstreet"></span>, <span id="cnumber_c"></span> <span id="ccomplement"></span>
+            <br>
+            <span id="cdistrict"></span> - <span id="cpostal_code"></span>
+            <br>
+            <span id="ccity"></span> - <span id="cstate"></span><br/>
+            <br/>
+            <span style="font-size:18px;">
+            O Valor de R$ <span id="ctotal"></span>
+            (<span id="cextenso"></span>)<br/><br/>
+            </span>
+            Referente a Comanda : <span id="command"></span> - <span id="week_day"></span>  <span id="date"></span>
+          </td>
+        </tr>
+<!--
+        <tr>
+          <td colspan="6">
+              <div class="input">
+                <textarea style="font-size:14px; color:black;" class="xlarge" id="message1" name="message1" size="150"></textarea>
+              </div>
+          </td>
+-->
+        </tr>
+        <tr>
+          <td>Produtos/<span data-i18n='Serviços'></span></td>
+          <td>Qtde</td>
+          <td>Preço</td>
+          <td>Total</td>
+        </tr>
+      </thead>
+      <tbody>
+      </tbody>
+  </table>
+  <table id="grid_payments" class="zebra-striped print_command_table">
+      <thead>
+        <tr>
+          <td colspan="6">
+            <span> </span>
+          </td>
+        </tr>
+        <tr>
+          <td colspan="6">
+            <span>Pagos da seguinte forma: </span>
+          </td>
+        </tr>
+        <tr>
+          <td>Forma Pagto</td>
+          <td>Valor</td>
+          <td>Data</td>
+        </tr>
+      </thead>
+      <tbody>
+      </tbody>
+  </table>
+  <table id="grid_unit" class="zebra-striped print_command_table">
+      <thead>
+        <tr>
+        </tr>
+        <tr>
+          <td colspan="6">
+            <center>
+            <br/><br/><br/>
+            __________________________________________________<br/> 
+            Local: <span id="ucity"></span> - <span id="ustate"></span><br/>
+            Data : <span id="udate"></span><br/>
+            <span id="uname"></span> - <span id="udoc"></span>
+            <br>
+            </center>
+          </td>
+        </tr>
+      </thead>
+      <tbody>
+      </tbody>
+  </table>
+  <!--
+    <form method="post">
+      <div class="well">
+          <span class="span16">
+            <div class="clearfix">
+              <label for="name">Termo</label>
+               <div class="input">
+                  <textarea class="xlarge" id="message1" name="message1" size="30"></textarea>
+               </div>
+            </div>
+          </span>
+      </div>
+    </form>
+  -->
+  <a type="button" class="btn primary send_email_customer">
+    <img width="16px" src="/images/messages_forward.png">
+    Notificar <span data-i18n='Cliente'></span>
+  </a>
+</div>
+

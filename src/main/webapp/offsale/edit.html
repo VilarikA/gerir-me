@@ -1,0 +1,402 @@
+<div id="main" class="lift:surround?with=bootstrap_large&at=content">
+  <span>
+    <form   class="lift:OffSaleSnippet.maintain">
+      <div class="well">
+        <label for="btn"></label>
+        <a class="btn primary" href="/offsale/list">Lista</a>
+        <input class="btn success" type="submit" value="Salvar">
+        <a class="btn primary" href="/offsale/edit">Inserir novo</a>
+      </div>
+      <div>
+        <span id="user_form">
+          <div class="clearfix">
+            <label for="name">Nome</label>        
+            <div class="input">
+              <div class='inline-inputs'>
+                <div class="input-prepend" style='float:left; padding-right:10px'>
+                  <input class="large" id="name" name="name" size="30" type="text"/>
+                </div>
+                <div class="input-prepend">
+                  <input class="medium" id="short_name" name="short_name" size="30" type="text"/>
+                  <a data-original-title="Informação" data-content="clique para abrir a documentação" data-help-url='/docs/name.html' rel="popover" class="_popover_basic _help">
+                    <img src="/images/info.gif" width="20">
+                  </a>
+                </div>
+                <span class="help-block">Nome completo e nome reduzido</span>
+              </div>
+            </div>
+          </div>
+          <div class="clearfix">
+            <label for="status">Status</label>
+            <div class="input">
+              <select class="medium" id="status" name="status" >
+              </select>
+              <a data-original-title="Informação" data-content="clique para abrir a documentação" data-help-url='/docs/status.html' rel="popover" class="_popover_basic _help">
+                <img src="/images/info.gif" width="20">
+              </a>
+              <span class="help-block">Status do convênio</span>
+            </div>
+          </div>          
+          <div class="clearfix lift:SecuritySnippet.isMedicalSystem">
+            <label for="document_ans">Nro ANS</label>
+            <div class="input">
+              <div class='inline-inputs'>
+                <input class="large" id="document_ans" name="document_ans" size="30" type="text"/>
+              </div>
+            </div>
+          </div>
+          <div class="clearfix">
+            <label for="document_offsale">Nro Conv</label>
+            <div class="input">
+              <div class='inline-inputs'>
+                <input class="large" id="document_offsale" name="document_offsale" size="30" type="text"/>
+              </div>
+            </div>
+          </div>
+          <div class="clearfix">
+            <label for="xmlname">Nome arq Xml</label>
+            <div class="input">
+              <div class='inline-inputs'>
+                <input class="medium" id="xmlname" name="xmlname" size="30" type="text"/>
+              </div>
+              <span class="help-block">Nome concatenado no aquivo xml</span>
+              <span class="help-block">não use /, ' ', nem outros caracteres especiais</span>
+            </div>
+          </div>
+          <div class="clearfix">
+              <label for="phone">Telefones</label>        
+              <div class="input">
+                  <div class='inline-inputs'>
+                      <div class="input-prepend" style='float:left; padding-right:10px'>
+                          <span class="add-on"><img src='/images/phone.png'/></span> 
+                          <input class="medium phone" id="phone" name="phone" size="30" type="text"/>
+                      </div>
+                      <div class="input-prepend" style='float:left; padding-right:10px'>
+                          <span class="add-on"><img src='/images/mobile_phone.png'/></span>                   
+                          <input class="medium phone" id="mobilePhone" name="mobilePhone" size="30" type="text"/>
+                      </div>
+                      <div class="input-prepend">
+                          <span class="add-on"><img src='/images/mobile_phone.png'/></span>                   
+                          <input class="medium phone" id="email_alternative" name="email_alternative" size="30" type="text"/>
+                      </div>
+                      <span class="help-block">Telefone fixo e celulares, importantes para envio de SMS</span>
+                  </div>
+              </div>
+          </div>
+          <div class="clearfix">
+              <label for="obs">Observação</label>
+              <div class="input">
+                  <input class="large" id="obs" name="obs" size="30" type="textarea"/>
+                  <span class="help-block">Observação</span>
+              </div>
+          </div>
+      </div>
+      <div class="well">
+        <label for="btn"></label>
+        <a class="btn primary" href="/offsale/list">Lista</a>
+        <input class="btn success" type="submit" value="Salvar">
+        <a class="btn primary" href="/offsale/edit">Inserir novo</a>
+      </div>
+      <span>
+        <ul class="tabs">
+          <li class="active tab"><a href="#address">Endereço</a></li>
+          <li class="lift:SecuritySnippet.IsGerirmeSystem tab"><a href="#indic">Indicadores</a></li>
+          <li class="lift:SecuritySnippet.hasPortalModule tab"><a href="#site">Portal</a></li>
+          <li class="tab"><a href="#osactivity">Serviços</a></li>
+          <li class="tab"><a href="#osproduct">Produtos</a></li>
+          <li class="tab"><a href="#photo">Foto</a></li>
+        </ul>
+        <div class="pill-content">
+          <div class="active tab_content row" id="address">
+            <div class='span8'>
+              <div class="clearfix">
+                <label for="name">Rua</label>
+                <div class="input">
+                  <div class='inline-inputs'>
+                    <input class="xlarge" id="street" name="street" size="30" type="text"/>
+                    <input class="mini" id="number" name="number" size="5 " type="text"/>           
+                  </div>
+                  <span class="help-block">Rua/Número</span>
+                </div>
+              </div>
+              <div class="clearfix">
+                <label for="document">Complemento</label>
+                <div class="input">
+                  <input class="xlarge" id="complement" name="complement" size="30" type="text"/>
+                  <span class="help-block">Casa / Ap:402 Bl:1</span>
+                </div>
+              </div>                          
+              <div class="clearfix">
+                <label for="district">Bairro</label>
+                <div class="input">
+                  <div class='inline-inputs'>
+                    <input class="xlarge" id="district" name="district" size="30" type="text"/>           
+                  </div>
+                  <span class="help-block">Bairro</span>
+                </div>
+              </div>
+              <div class="clearfix">
+                <label for="city">Uf / Cidade</label>
+                <div class="input">
+                  <div class='inline-inputs'>
+                    <span>
+                        <span class='hidden'>
+                          <input class="mini state_field_value" id="state_ref" name="state_ref" size="5 " type="text" />
+                        </span>
+                        <select class="state_field">
+                        </select>
+                    </span>
+                    <span>
+                        <span class='hidden'>
+                          <input class="city_field_value" id="city_ref" name="city_ref"/>
+                        </span>
+                        <select class="xlarge city_field">
+                        </select>
+                    </span>
+                  </div>
+                  <span class="help-block">UF / Cidade</span>
+                </div>
+              </div>
+              <div class="clearfix">
+                <label for="postal_code">CEP</label>
+                <div class="input">
+                  <div class='inline-inputs'>
+                    <input class="small cep" id="postal_code" name="postal_code" size="15" type="text"/>           
+                  </div>
+                  <span class="help-block">CEP</span>
+                </div>
+              </div>      
+            </div>
+            <div class='span8'>
+              <span class='map_class'>
+                <span style="display: none">
+                  <input id="lng" name="lng" type="hidden"/>
+                  <input id="lat" name="lat" type="hidden"/>
+                </span>
+                <div id="map_canvas" style="width:100%; height: 302px"></div>
+                <script>
+                  var imageToMap = "/images/home_big.png";
+                </script>
+                <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=true"></script>
+                <script  type="text/javascript" src='/js/map.js'></script>
+              </span>
+            </div>
+          </div>
+          <div class="tab_content row" id="indic">
+            <div class='span8'>
+              <div class="clearfix">
+                <label for="indic1">Indicadores</label>
+                <div class="input">
+                  <div style="float:left; padding-right:10px" class="input-prepend">
+                    <input class="mini currency" id="indic1" name="indic1" size="30" type="text" placeholder="Armazenagem"/>
+                  </div>
+                </div>
+              </div>
+              <div class="clearfix">
+                <label for="indic2">Indicadores</label>
+                <div class="input">
+                  <div style="float:left; padding-right:10px" class="input-prepend">
+                    <input class="mini currency" id="indic2" name="indic2" size="30" type="text" placeholder="Embalagem"/>
+                  </div>
+                </div>
+              </div>
+              <div class="clearfix">
+                <label for="indic3">Indicadores</label>
+                <div class="input">
+                  <div style="float:left; padding-right:10px" class="input-prepend">
+                    <input class="mini currency" id="indic3" name="indic3" size="30" type="text" placeholder="Markup"/>
+                  </div>
+                </div>
+              </div>
+              <div class="clearfix">
+                <label for="indic4">Indicadores</label>
+                <div class="input">
+                  <div style="float:left; padding-right:10px" class="input-prepend">
+                    <input class="mini currency" id="indic4" name="indic4" size="30" type="text" placeholder="Simples+Cartão"/>
+                  </div>
+                </div>
+              </div>
+              <div class="clearfix">
+                <label for="indic5">Indicadores</label>
+                <div class="input">
+                  <div style="float:left; padding-right:10px" class="input-prepend">
+                    <input class="mini currency" id="indic5" name="indic5" size="30" type="text" placeholder="Indic5"/>
+                  </div>
+                </div>
+              </div>
+          </div>
+          <div class="tab_content row" id="site">
+            <div class='span12'>
+              <div class="clearfix">
+                <label for="allowshowonsite">Mostrar no Site</label>
+                <div class="input">
+                  <div class='inline-inputs'>
+                    <div class="input-prepend" style='float:left; padding-right:10px'>
+                      <input type="checkbox" name="allowshowonsite">
+                    </div>
+                    <div class="input-prepend" style='float:left; padding-right:20px'>
+                      <label for="allowshowonsite">Mostrar no Portal</label>
+                    </div>
+                    <div class="input-prepend" style='float:left; padding-right:10px'>
+                      <input type="checkbox" name="allowshowonportal">
+                    </div>
+                  </div>
+                </div>
+              </div>                     
+              <div class="lift:SecuritySnippet.isSuperAdmin clearfix">
+                <label for="moderatedportal">Aprovado Moderador</label>
+                <div class="input">
+                  <input type="checkbox" name="moderatedportal">
+                  <span class="help-block">Se foi aprovado pelo moderador do portal do ebelle</span>
+                </div>
+              </div>                     
+              <div class="clearfix">
+                <label for="sitetitle">Título Público</label>        
+                <div class="input">
+                  <input class="large" id="sitetitle" name="sitetitle" size="30" type="text"/>
+                  <span class="help-block">Título como aparecerá no site/portal</span>
+                </div>
+              </div>
+              <div class="clearfix">
+                <label for="sitedescription">Descrição Pública</label>
+                <div class="input">
+                  <div class="input-prepend">
+                    <textarea class="xlarge" id="sitedescription" name="sitedescription" size="16"></textarea>
+                    <a data-original-title="Informação" data-content="clique para abrir a documentação" data-help-url='/docs/portal.html' rel="popover" class="_popover_basic _help">
+                      <img src="/images/info.gif" width="20">
+                    </a>
+                    <span class="help-block">Descrição como aparecerá no site/portal</span>
+                  </div>
+                </div>
+              </div>              
+            </div>
+          </span>          
+          </div>
+        </div>
+      </span>
+    </form>        
+    <script>
+      $(function(){
+        //$('#sitedescription').jqte();
+      });
+    </script>
+  </span>    
+  <div class="tab_content" id='photo'>
+    <div class="lift:OffSaleSnippet.thumbToShow">
+    </div>
+    <form class="lift:OffSaleSnippet.render?form=post;multipart=true">
+      <div class="clearfix">
+        <input class="large url_parameter" id="id" name="id" type="hidden" />
+        <label for="name">Alterar Logomarca</label>
+        <div class="input">
+          <input type="text" name='file' id='file'/>
+          <span class="help-block">Selecione sua logomarca</span>
+        </div>
+      </div>
+      <div class="clearfix">
+        <label for="name"></label>
+        <div class="input">
+          <div class="input-prepend">
+            <input type="submit" value="Enviar" id='submit' class="btn success"/>
+          </div>
+        </div>
+      </div>
+    </form>    
+  </div>
+  <div id="osactivity" class='tab_content'>
+      <div class='span8'>
+          <div class="clearfix">
+            <label for="product">Serviço</label>
+            <div class="input">
+                <select class="xlarge" id="osactivity_activity" name="osactivity_activity">
+                </select>
+                <span class="help-block">Serviço</span>
+            </div>
+          </div>
+          <div class="clearfix">
+            <label for="osactivity_offprice">Preço Item Convênio</label>
+            <div class="input">
+              <div class="input-prepend">
+                <span class="add-on"><img src="/images/dre.png" width="16"></span>
+                <input class="mini currency" id="osactivity_offprice" name="osactivity_offprice" size="30" type="text"/>
+                <span class="help-block">Valor de venda do item no convênio</span>
+              </div>
+            </div>
+          </div>
+          <div class="clearfix">
+              <label for="text">Obs</label>
+              <div class="input">
+                  <input class="xlarge" id="osactivity_obs" size="30" type="textarea"/>
+              </div>
+          </div>
+          <div class="clearfix">
+              <label for="btn"></label>
+              <input class="btn success" id="osactivity_add" type="button" value="Adicionar">
+          </div>
+      </div>
+      <table id="grid_osactivity" class="bordered-table zebra-striped">
+          <thead>
+              <th>Serviço</th>
+              <th>Preço</th>
+              <th>Obs</th>
+              <th>Código</th>
+              <th></th>
+          </thead>
+          <tbody>
+          </tbody>
+      </table>
+  </div>
+  <div id="osproduct" class='tab_content'>
+      <div class='span8'>
+          <div class="clearfix">
+            <label for="product">Produtos</label>
+            <div class="input">
+                <select class="xlarge" id="osproduct_product" name="osproduct_product">
+                </select>
+            </div>
+          </div>
+          <div class="clearfix">
+            <label for="osproduct_offprice">Preço Item Convênio</label>
+            <div class="input">
+              <div class="input-prepend">
+                <span class="add-on"><img src="/images/dre.png" width="16"></span>
+                <input class="mini currency" id="osproduct_offprice" name="osproduct_offprice" size="30" type="text"/>
+                <span class="help-block">Valor de venda do item no convênio</span>
+              </div>
+            </div>
+          </div>
+          <div class="clearfix">
+              <label for="text">Obs</label>
+              <div class="input">
+                  <input class="xlarge" id="osproduct_obs" size="30" type="textarea"/>
+              </div>
+          </div>
+          <div class="clearfix">
+              <label for="btn"></label>
+              <input class="btn success" id="osproduct_add" type="button" value="Adicionar">
+          </div>
+      </div>
+      <table id="grid_osproduct" class="bordered-table zebra-striped">
+          <thead>
+              <th>Produto</th>
+              <th>Preço</th>
+              <th>Obs</th>
+              <th>Pacote</th>
+              <th>Código</th>
+              <th></th>
+          </thead>
+          <tbody>
+          </tbody>
+      </table>
+  </div>
+  <script type="text/javascript" src="/js/jquery.tablesorter.pager.js"></script>
+  <script type="text/javascript" src="/js/reports.js"></script>
+  <script src="/js/offsale_crud.js?sensor=true"></script>
+  <script type="text/javascript">
+    $(function () {
+        $("#osactivity_activity").activityField(true);
+        $("#osproduct_product").productField(true);
+    });
+  </script>
+</div>
+

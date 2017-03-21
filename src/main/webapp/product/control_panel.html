@@ -1,0 +1,158 @@
+<div id="main" class="lift:surround?with=inventory;at=content">
+    <script type="text/javascript" src="/js/product_line.js"></script>
+    <script type="text/javascript" src="/js/jquery.tablesorter.pager.js"></script>
+    <script type="text/javascript" src="/js/product_control_panel.js">
+    </script>
+	<div class="well">
+        <label for="btn"></label>
+		<a class="btn primary" alt="Movimentações: entrada, saída, transferência" href="/product_admin/inventory">
+			<img src="/images/register_movement.png" width="16px">
+			Movimentações
+		</a>
+		<a class="btn primary" alt="Cadastro de produtos" href="/product/list">
+			<img src="/images/product.png" width="16px">
+			Produtos
+		</a>
+		<a class="btn primary" alt="Solicitação de Compras" href="/product_admin/inventory?causeh=9">
+			<img src="/images/register_movement.png" width="16px">
+			Solicitação de Compras
+		</a>
+	</div>
+	<div class='filter block-message success"'>
+		<span class="filter_form">
+		<script type="text/javascript">
+			$(function(){
+				$(".name_customer").val(gup("name"))
+			});
+		</script>
+			<form action=''>
+				<div class="clearfix">
+					<label for="units">Produto </label>
+					<span class="add-on"></span>
+					<input class="id url_parameter product_select_thuch xlarge" name="id" size="30" type="text"/>
+				</div>
+	            <div class="clearfix">
+	                <label for="units">Unidades  </label>
+	                <div class="input">
+	                    <select multiple="multiple" name='units' class="units url_parameter" id="units"></select>
+	                </div>
+	            </div>
+	            <div class="clearfix">
+	                <label for="brands">Fabricantes  </label>
+	                <div class="input">
+	                    <select multiple="multiple" name='brands' class="brands url_parameter" id="brands"></select>
+	                </div>
+	            </div>				
+		        <div class="clearfix">
+		            <label for="lines">Linhas</label>
+		            <div class="input">
+						<select multiple="multiple" id="lines" class="line_select url_parameter" name="line_select">
+						</select>
+		        	</div>
+		        </div>
+		        <div class="clearfix">
+		            <label for="category_select">Tipos</label>
+		            <div class="input">
+						<select multiple="multiple" id="category_select" class="category_select url_parameter" name="category_select"></select>
+		        	</div>
+		        </div>
+		        <div class="clearfix">
+		            <label for="line_select">Quantidade</label>
+		            <div class="input">
+		            	De <input class="mini qtd local_storage" id="qtd_start" name="qtd_start" size="30" type="text" placeholder="Mínimo"/> até <input class="mini qtd local_storage" id="qtd_end" name="qtd_end" size="30" type="text" placeholder="Máximo"/>
+		        	</div>
+		        </div>
+		        <!--
+			        <div class="clearfix">
+			            <label for="">Preço de compra</label>
+			            <div class="input">
+			            	De <input class="mini  url_parameter currency" name="price_start" size="30" type="text" placeholder="Minimo"/> ate <input class="mini url_parameter currency" name="price_end" size="30" type="text" placeholder="Maximo"/>
+			        	</div>
+			        </div>
+		    	-->
+	            <div class="clearfix">
+	              <label for="buscar"></label>
+	              <div class="input">
+					<input class="btn success" type="submit" id="send_submit" value="Buscar">
+				  </div>
+				</div>
+			</form>
+		</span>
+	</div>
+<table class="bordered-table zebra-striped">
+		<thead>
+			<th>Id</th>
+			<th>Ext. Cod</th>
+			<th>Nome</th>
+			<th>Preço de Compra</th>
+			<th>Preço de Venda</th>
+			<th>Tipo</th>
+			<th>Total</th>
+			<th>P/ Unit</th>
+			<th>Estoque Min</th>
+			<th>Status</th>
+			<th>Observação</th>
+			<th class="lift:SecuritySnippet.isInventoryManager">Ações</th>
+		</thead>
+		<tbody>
+			<tr class="lift:InventorySnippet:products">
+				<td>
+					<f:id></f:id>
+				</td>
+				<td>
+					<f:ex_id></f:ex_id>
+				</td>				
+				<td>
+					<f:name></f:name>
+				</td>
+				<td>
+					<f:purchaseprice></f:purchaseprice>
+				</td>
+				<td>
+					<f:saleprice></f:saleprice>
+				</td>
+				<td>
+					<f:type></f:type>
+				</td>
+				<td>
+					<f:totalcurrentstock></f:totalcurrentstock>
+				</td>
+				<td>
+					<f:currentstock></f:currentstock>
+				</td>
+				<td>
+					<f:minstock></f:minstock>
+				</td>
+				<td>
+					<f:status></f:status>
+				</td>
+				<td>
+					<f:obs></f:obs>
+				</td>
+				<td class="lift:SecuritySnippet.isInventoryManager">
+					<form method="post">
+						<span>
+							<f:actions></f:actions>
+						</span>
+						<span style="display:none">
+							<f:_id></f:_id>
+						</span>
+					</form>
+				</td>
+			</tr>
+		</tbody>
+</table>
+<span class='lift:InventorySnippet.paginate'>
+	<ul class='pagination'>
+		<li class="fisrt"><nav:first/></li>
+		<li class="prev"><nav:prev/></li>
+		<li class="next"><nav:zoomedpages/></li>
+		<li class="next"><nav:next/></li>
+		<li class="last"><nav:last/></li>
+	</ul>
+</span>
+  <div>
+    <br>
+    Apenas os produtos com o campo <b>controlar estoque</b> marcados são exibidos
+  </div>
+</div>

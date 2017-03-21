@@ -1,0 +1,307 @@
+<div id="main" class="lift:surround?with=calendar;at=content">
+  <link rel="stylesheet" type="text/css" href="/select2/select2.css" />
+  <script src="/select2/select2.js"></script><script src="/select2/select2_locale_pt-BR.js"></script>
+  <script src="/js/reports.js"></script>
+  <script src="/js/default/date.js"></script>
+  <script src="/js/jquery.tablesorter.pager.js"></script>
+  <script type="text/javascript">
+  $(function(){
+    $("#account").accountField(false);
+    $("#start").val(getDateBr(new Date().getStartOfMonth()));
+    var fields = [];
+    fields[0] = {
+      type : "format",
+      decode: function(name, row) {
+        return "<input type='checkbox' class='account_payable' value='" + 
+            row[0] + "'/>"
+      }
+    }
+    fields[1] = "date";
+    fields[2] = "date";
+    fields[6] = {
+      type : "format",
+      decode: function(name, row) {
+        return "<img src=\"/images/" + 
+            (row[6] == 0 ? 'add' : 'remove') + ".png\"/>"
+      }
+    }
+    fields[7] = "realNull";
+    fields[8] = "realNull";
+    fields[9] = {
+      type : "format",
+      decode: function(name, row) {
+        return "<img src=\"/images/" + 
+            (row[9] == "true" ? 'good' : 'bad') + ".png\"/></td>"
+      }
+    }
+    fields[10] = {
+      type : "format",
+      decode: function(name, row) {
+        return "<img width='16px' src=\"/images/" + 
+            (row[10] == "0" ? 'audit' : (row[10] == "1" ? 'tick' : 'consolidate')) + ".png\" title=\"" + 
+            (row[10] == "0" ? 'em aberto' : (row[10] == "1" ? 'conciliado' : 'consolidado')) + "\"/></td>"
+      }
+    }
+    fields[11] = {
+      type : "format",
+      decode: function(name, row) {
+        return "<a href='#' data-id='" + row [11] + "' class='action_conciliate'><img title='conciliar' src='/images/tick.png'></a>" 
+      }
+    }
+    fields[12] = {
+      type : "format",
+      decode: function(name, row) {
+        return "<a href='#' data-id='" + row [12] + "' class='action_consolidate'><img title='consolidar' width='16px' src='/images/consolidate.png'></a>"
+      }
+    }
+    var url = "/report/account_conciliation";
+    var total_to_pay = 0.00;
+    var conciliated = 0.0
+    var request = function(){
+      conciliated = parseFloat($('#start_value').val());//0.00;
+      var account = $('#account').val()
+
+      var d = new Date();
+      var from = $("#end").val().split("/");
+      var f = new Date(from[2], from[1] - 1, from[0]);      
+      if (f > d) {
+        alert ("A data fim não pode ser superior a Hoje!")
+        return 
+      }
+
+      if (!account) {
+        alert("Conta inválida!")
+        return
+      }
+      renderReport(url,fields,$("#form_report").serializeObject(),"#grid", function(data){
+        data.forEach(function(row){
+          //alert ("vaiiii " + parseFloat(row[6]) + "   " + parseFloat(row[7]))
+          if (row[10] != 0) {
+            if (row[6] == 0) {
+              conciliated += parseFloat(row[7]);
+            } else {
+              conciliated -= parseFloat(row[8]);
+            }
+          }
+        });
+        $("#conciliated").val((conciliated).formatMoney());
+        total_gap = ($('#end_value').val()-conciliated);
+        $("#total_gap").val((total_gap).formatMoney());
+        $(".action_conciliate").click(function() {
+          return conciliateOne($(this).attr("data-id"));
+        });
+        $(".action_consolidate").click(function() {
+    //      alert ("vaiii =======================")
+          return consolidateOne($(this).attr("data-id"));
+        });
+
+      });
+    }
+
+    var conciliateOne = function(id) {
+      if (confirm("Tem certeza que deseja conciliar o lançamento?")) {
+        return $.get("/accountpayable/conciliate/" + id, function(results) {
+          if(results === 1 || results == "1"){
+            alert("Lançamento conciliado com sucesso!");  
+          }else{
+            alert(eval(results));
+          }
+          request();
+        });
+      }
+    };
+
+    var consolidateOne = function(id) {
+      if (confirm("Tem certeza que deseja consolidar o lançamento?")) {
+        return $.get("/accountpayable/consolidate/" + id, function(results) {
+          if(results === 1 || results == "1"){
+            alert("Lançamento consoliado com sucesso!");  
+          }else{
+            alert(eval(results));
+          }
+          request();
+        });
+      }
+    };
+
+    $("#mark_as_conciliated").click(function() {
+      var checkeds, idsToMark;
+      checkeds = $('.account_payable:checked').toArray();
+      idsToMark = checkeds.map(function(item) {
+        return $(item).val();
+      });
+      if (idsToMark.length < 1) {
+         return alert("Não há nenhum lançamento marcado!");
+      }
+      if (confirm("Tem certeza que deseja marcar este(s) " + idsToMark.length + " laçamento(s) como conciliados?")) {
+        return $.post("/accountpayable/mark_as_conciliated", {
+          "ids": idsToMark.join(',')
+        }, function(t) {
+          if (t=="1" || t==1) {
+            alert("Lançamento(s) marcado(s) com sucesso!");
+            request();
+          } else {
+            eval("var obj = " + t)
+            return alert("Erro ao marcar lançamentos como conciliados!\n\n"+obj);
+          }
+        });
+      }
+    });
+    $("#consolidate").click(function() {
+      var checkeds, idsToMark;
+      checkeds = $('.account_payable:checked').toArray();
+      idsToMark = checkeds.map(function(item) {
+        return $(item).val();
+      });
+      if (idsToMark.length < 1) {
+         return alert("Não há nenhum lançamento marcado!");
+      }
+      if (confirm("Tem certeza que deseja marcar este(s) " + idsToMark.length + " laçamento(s) como conciliados?")) {
+        return $.post("/accountpayable/consolidate", {
+          "ids": idsToMark.join(',')
+        }, function(t) {
+          if (t=="1" || t==1) {
+            alert("Lançamento(s) marcado(s) com sucesso!");
+            request();
+          } else {
+            eval("var obj = " + t)
+            return alert("Erro ao marcar lançamentos como conciliados!\n\n"+obj);
+          }
+        });
+      }
+    });
+    $("#consolidateTotal").click(function() {
+      if (confirm("Tem certeza que deseja consolidar a conta?")) {
+        var url = "/accountpayable/consolidateTotal/"
+        url = url + encodeURIComponent($("#end").val()) + "/" + $("#account").val()+"/"+$("#total_gap").val()
+        return $.get(url, function(t) {
+          if (t=="1" || t==1) {
+            alert("Conta consolidada com sucesso!");
+            request();
+          } else {
+            eval("var obj = " + t)
+            return alert("Erro ao marcar lançamentos como conciliados! \n\n" + obj);
+          }
+        });
+      }
+    });
+
+    $("#check_all").click(function() {
+      if ($(this).is(":checked")) {
+        return $('.account_payable').attr("checked", true);
+      } else {
+        return $('.account_payable').removeAttr("checked");
+      }
+    });
+    $("#send").click(request);
+    //request();
+  });  
+  </script>
+  <div>
+    <form id="form_report" class="well  form-search" method='get'>
+      <h1>
+        <span class="lift:CompanySnippet.thumb"> </span>
+        <input class="report_title local_storage" id="title_account_conciliation" name="title_account_account_conciliation" size="30" type="text" value="Relatório de Conciliação de Conta"/>
+      </h1>
+      <div class="row">
+        <div class="span8">
+          <div class="clearfix">
+            <label for="type_category">Intervalo</label>
+              <div class="input">
+                <div class="inline-inputs">
+                  <div class="input-prepend" style="float:left; padding-right:10px">
+                    <span class="add-on"><img width="16" src="/images/calendar_addon.png"></span>
+                    <input type="text" class="input-small date" id='start' name="start" placeholder="Início"/>
+                  </div>
+                  <div class="input-prepend" style="float:left; padding-right:10px">
+                    <span class="add-on"><img width="16" src="/images/calendar_addon.png"></span>
+                    <input type="text" class="input-small date to_day" id='end' name="end" placeholder="Fim"/>
+                  </div>
+                </div>
+              </div>
+          </div>
+          <div class="clearfix">
+            <label for="start">Saldo Inicial/Final</label>
+              <div class="input">
+                <div class="inline-inputs">
+                  <div style="float:left; padding-right:10px" class="input-prepend">
+                    <span class="add-on"><img width="16" src="/images/money.png"></span>
+                    <input type="text" class="input-small currency" id='start_value' name="start_value" placeholder="Inicial" value="100"/>
+                  </div>
+                  <div style="float:left; padding-right:10px" class="input-prepend">
+                    <span class="add-on"><img width="16" src="/images/money.png"></span>
+                    <input type="text" class="input-small currency" id='end_value' name="end_value" placeholder="Final" value="500"/>
+                  </div>
+                </div>
+              </div>
+          </div>
+        </div>
+        <div class="span8">
+          <div class="clearfix">
+              <label for="account">Conta</label>
+              <div class="input">
+                  <select class="local_storage" name='account' id="account"></select>
+              </div>
+          </div>            
+          <div class="clearfix">
+            <label for="conciliated">Conciliado/Diferença </label>
+            <div class="input">
+              <div class="inline-inputs">
+                <div class="lift:SecuritySnippet.isShowSalesToUser input-prepend" style="float:left; padding-right:10px">
+                  <span class="add-on"><img src="/images/money.png" width="16"></span>
+                  <input class="small" id="conciliated" name="conciliated" size="19" placeholder="0.00" type="text" disabled>
+                  <span class="help-block">Conciliado</span>
+                </div>
+                <div class="input-prepend" style="float:left; padding-right:10px">
+                  <span class="add-on"><img src="/images/user.png" width="16"></span>
+                  <input class="small" id="total_gap" name="total_gap" size="19" placeholder="0.00" type="text" disabled>
+                  <span class="help-block">Diferença</span>
+                </div>
+              </div>
+            </div>
+          </div>                      
+        </div>
+      </div>  
+      <div class="clearfix">
+        <label for="send"></label>
+          <div class="input">
+              <a  id="send" class="btn success">
+                <img src="/images/search.png" width="16">
+                Buscar
+              </a>            
+              <a id="mark_as_conciliated" class="btn" title="Marcar todos os itens selecionados como conciliados">
+                <img src="/images/money.png" width="16">
+                Conciliar
+              </a>              
+              <a id="consolidate" class="btn" title="Marcar todos os itens selecionados como conciliados">
+                <img src="/images/money.png" width="16">
+                Consolidar
+              </a>              
+              <a id="consolidateTotal" class="btn danger" title="Consolidar e atualizar o saldo">
+                <img src="/images/money.png" width="16">
+                Consolidar
+              </a>              
+          </div>
+      </div>
+    </form>
+  </div>
+
+  <table id="grid" class="bordered-table zebra-striped">
+      <thead>
+        <th><input type="checkbox" id='check_all'/></th>
+        <th>Vencimento</th>
+        <th>Pagamento</th>
+        <th>Categoria</th>
+        <th>Parceiro</th>
+        <th>Obs</th>
+        <th>Tipo</th>
+        <th>Entrada</th>
+        <th>Saída</th>
+        <th>Pago</th>
+        <th>Status</th>
+        <th></th>
+      </thead>
+      <tbody>
+      </tbody>
+  </table>
+ </div>

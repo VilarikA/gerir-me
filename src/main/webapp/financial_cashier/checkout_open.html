@@ -1,0 +1,64 @@
+<div id="main" class="lift:surround?with=financial;at=content">
+  <span id="cash_form">
+  	<script type="text/javascript" src="/js/checkout_open.js"></script>
+    <form id='checkoutOpen_form' onsubmit='callApi();return false;' action="/cash/checkoutOpen">
+      <div class="well">
+        <label for="btn"></label>
+        <input class="btn success" type="submit" value="Abrir">
+      </div>                    
+      <div class="row">
+        <div class="span7">
+          <div class="clearfix">
+            <label for="birthday">Data da Abertura</label>
+            <div class="input">
+              <div class="inline-inputs">
+                <div style="float:left; padding-right:10px" class="input-prepend">
+                  <span class="add-on"><img width="16" src="/images/calendar_addon.png"></span> 
+                  <input type="text" size="19" name="opener_date" id="opener_date" class="input-small date">
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="clearfix lift:SecuritySnippet.hasUnitModule">
+            <label for="unit">Unidade</label>
+            <div class="input">
+              <div class="input-prepend">
+                <select class="medium" id="unit" name="unit" >
+                </select>
+                <a href="" class="_popover_basic" rel="popover" data-content="Normalmente o caixa é aberto na sua unidade, a que está no seu cadastro, e neste caso não precisa ser informada. Selecione uma unidade diferente da sua caso você queira abrir o caixa em outra unidade." data-original-title="Informação">
+                  <img width='20' src="/images/info.gif"/>
+                </a>
+
+              </div>
+              <span class="help-block">Unidade do caixa</span>
+              <span class="help-block">Informe apenas para abrir o caixa numa unidade diferente da sua original</span>
+            </div>
+          </div>
+          <div class="clearfix">
+            <label for="price">Valor de Abertura</label>
+            <div class="input">
+              <div class="input-prepend">
+                <span class="add-on"><img src="/images/dre.png" width="16"></span>             
+                <input class="mini currency" id="start_value" name="start_value" size="30" type="text"/>
+                <span class="help-block">Valor de abertura de caixa</span>
+              </div>
+            </div>
+          </div>                                                           
+          <div class="clearfix">
+            <label for="name">Observação</label>
+             <div class="input">
+                <div class="inline-inputs">
+                  <textarea name="obs" id="obs" class="large "></textarea>
+                  <span class="help-block">Descrição do caixa - opcional</span>
+                </div>
+              </div>                
+          </div>
+        </div>
+      </div>                    
+      <div class="well">
+        <label for="btn"></label>
+        <input class="btn success" type="submit" value="Abrir">
+      </div>                    
+    </form>     
+  </span>
+</div>

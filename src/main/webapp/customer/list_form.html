@@ -1,0 +1,238 @@
+<div id="main" class="lift:surround?with=dashboard_customer;at=content">
+    <script>
+        $(function(){
+          $('#obscomplement').jqte();
+        });
+    </script>
+	<script type="text/javascript">
+		var lastCustomerSerach = localStorage.getItem('lastCustomerSerach');
+		if(lastCustomerSerach && document.location.href.indexOf('name_customer_origin') === -1){
+			document.location.href += '?'+lastCustomerSerach;
+		}
+		localStorage.setItem('lastCustomerSerach', document.location.href.split('?')[1] || '');
+		$(function(){
+			$("#id").keypress(function(e){
+			  if(e.keyCode ==13){
+			    $(this).change();
+			    return false;
+			  }    
+			});			
+			$(".name_customer").val(gup("name"))
+			$("#mapIcon").mapIcon(true);
+			$(".document").val(gup("document"))
+			$("#id").change(function(){
+				window.document.location.href="/customer/edit?id="+$(this).val();
+			});
+			if(gup("all")){
+				$("#all").attr("checked", "checked");
+			}
+		});
+	</script>
+	<div class="well">
+        <label for="btn"></label>
+		<a class="btn primary" href="/customer/edit">Inserir novo</a>
+	</div>
+	<div class='filter block-message success"'>
+		<img style='float:left' src="/images/filter.png"/>
+		<span class="filter_form">
+			<form action=''>
+            	<div class="clearfix">
+					<div class="lift:SecuritySnippet.isEgrexSystem input">
+						<input type='checkbox' class='local_storage' name="member" id="check_box_member"/> 
+						Membros? 
+					</div>
+					<div class="input">
+						<input type='checkbox'  class='local_storage' name="customer" id="check_box_customer"/> 
+						Clientes? 
+						<span class="lift:SecuritySnippet.isNotEgrexSystem">
+						<input type='checkbox'  class='local_storage' name="prospect" id="check_box_prospect"/> Prospects? 
+						</span>
+						<span class="lift:SecuritySnippet.isNotEgrexSystem">
+						<input type='checkbox'  class='local_storage' name="suplier" id="check_box_suplier"/> Fornecedores? 
+						</span>
+						<input type='checkbox'  class='local_storage' name="employee" id="check_box_employee"/> <span data-i18n='Profissionais'></span>? 
+						<input type='checkbox'  class='local_storage' name="user" id="check_box_user"/> Usuários?
+						<input type='checkbox' class='local_storage' name="person" id="check_box_person"/> Pessoa Física?
+					</div>
+				</div>			
+            	<div class="clearfix">
+					<label for="customer">
+						<img src="/images/search.png" width="24" class="customer_search_button">  
+					</label>
+					<div class="input">
+					  <div class="inline-inputs">
+					    <span>
+					      <input name="id" id="id" class="mini id_customer_search"/>
+					      <input placeholder="Nome" type="text" size="30" name="name_customer_origin" class="name_customer_search normal_name"/>
+					    </span>
+					    <span class='label-inline'>
+					    	Icone
+					    </span>
+					    <span class='select-inline'>
+					      <select size="30" id="mapIcon" class='local_storage' name="mapIcon">
+					      </select>					       						    
+					    </span>
+					    <span class='label-inline'>
+					    	Itens por Página
+					    </span>
+					    <span class='select-inline'>
+					      <input class="mini local_storage" id="itenspp_customer" name="itenspp_customer" value="20">
+						</span>
+					  </div>
+					</div>
+	            </div>         				
+				<div class="clearfix">
+					<label>
+					</label>
+					<div class="input">
+						<input class="local_storage xlarge name_customer" id = "name_customer" name="name" size="30" type="text" placeholder="Nome"/>
+						<input class="document" name="document" size="30" type="text" placeholder="Telefone"/>
+						<input class="email" name="email" size="30" type="text" placeholder="email"/>
+						<input class="all" id="all" name="all" type="checkbox"/> Mostrar todos?
+						<input class="btn success" id='search_submit' type="submit" value="Buscar">
+					</div>
+				</div>
+			</form>
+		</span>		
+	</div>
+<table class="bordered-table zebra-striped print_form_table">
+		<thead>
+			<th></th>
+		</thead>
+		<tbody>
+			<tr class="lift:CustomerSnippet:customers">
+				<td>
+				<span id="user_form">
+				<span class="quebrapagina">
+				</span>
+	<div class="well">
+        <label for="btn"></label>
+		<a class="btn primary" href="/customer/edit">Inserir novo</a>
+	</div>
+                <span class='row'>
+                    <span class='span18'>
+                        <div class="clearfix">
+                            <span for="name"><b>Código : </b><f:idforcompany></f:idforcompany></span>
+                        </div>
+                        <br/>
+                        <br/>
+                        <div class="clearfix">
+                            <span for="name"><b>Nome : </b><f:name></f:name></span>
+                        </div>
+                        <br/>
+                        <br/>
+                        <div class="clearfix">
+                            <span for="short_name"><b>Apelido : </b><f:short_name></f:short_name></span>
+                        </div>
+                    </span>
+                    <span class='span18'>
+                        <br/>
+                        <br/>
+                        <div class="clearfix">
+                            <span ><b>Observação : </b><f:obs></f:obs> </span>
+                        </div>                        
+                        <br/>
+                        <br/>
+                        <div class="clearfix">
+                            <span for="phone"><b>Telefones : </b><f:phone></f:phone></span>
+                        </div>
+                        <br/>
+                        <br/>
+                        <div class="clearfix">
+                            <span ><b>Dt Aniversário : </b><f:birthday></f:birthday> </span>
+                        </div>
+                        <br/>
+                        <br/>
+                        <div class="clearfix">
+                            <span ><b>Sexo : </b><f:sex></f:sex> </span>
+                        </div>                        
+                        <br/>
+                        <br/>
+                        <div class="clearfix">
+                            <span ><b>Estado Civil : </b><f:civilstatus></f:civilstatus> </span>
+                        </div>
+                        <br/>
+                        <br/>
+                        <div class="clearfix">
+                            <span ><b>Ícone : </b><f:mapicon></f:mapicon> </span>
+                        </div>                        
+                        <br/>
+                        <br/>
+                        <div class="clearfix">
+                            <span ><b>Email : </b><f:email></f:email> </span>
+                        </div>                        
+                        <br/>
+                        <br/>
+                        <div class="lift:SecuritySnippet.isNotEgrexSystem clearfix">
+                            <span ><b>Cpf / RG : </b><f:document></f:document> </span>
+                        </div>                        
+                        <br/>
+                        <br/>
+                        <div class="clearfix">
+                            <span ><b>G Instrução : </b><f:instructiondegree></f:instructiondegree> </span>
+                        </div>
+                        <br/>
+                        <br/>
+                        <div class="clearfix">
+                            <span ><b>Ocupação : </b><f:occupation></f:occupation> </span>
+                        </div>                        
+                        <br/>
+                        <br/>
+                        <div class="clearfix">
+                            <span ><b>Detalhes : </b><f:obscomplement></f:obscomplement> </span>
+                        </div>                        
+                        <br/>
+                        <br/>
+                        <div class="clearfix">
+                            <span ><b>Rua : </b><f:street></f:street> </span>
+                        </div>                        
+                        <br/>
+                        <br/>
+                        <div class="clearfix">
+                            <span ><b>Nro : </b><f:number></f:number> </span>
+                        </div>                        
+                        <br/>
+                        <br/>
+                        <div class="clearfix">
+                            <span ><b>Compl : </b><f:complement></f:complement> </span>
+                        </div>                        
+                        <br/>
+                        <br/>
+                        <div class="clearfix">
+                            <span ><b>Bairro : </b><f:district></f:district> </span>
+                        </div>                        
+                        <br/>
+                        <br/>
+                        <div class="clearfix">
+                            <span ><b>Cidade : </b><f:cityname></f:cityname> </span>
+                        </div>                        
+                        <br/>
+                        <br/>
+                        <div class="clearfix">
+                            <span ><b>Estado : </b><f:statename></f:statename> </span>
+                        </div>                        
+                        <br/>
+                        <br/>
+                        <div class="clearfix">
+                            <span ><b>Cep : </b><f:postal_code></f:postal_code> </span>
+                        </div>                        
+                        <br/>
+                        <br/>
+                    </span>
+                    <span class='span9'>
+                    </span>
+                </span>
+            </span>
+				</td>
+		</tbody>
+	</table>
+	<span class='lift:CustomerSnippet.paginate'>
+		<ul class='pagination'>
+			<li class="fisrt"><nav:first/></li>
+			<li class="prev"><nav:prev/></li>
+			<li class="next"><nav:zoomedpages/></li>
+			<li class="next"><nav:next/></li>
+			<li class="last"><nav:last/></li>
+		</ul>
+	</span>
+</div>

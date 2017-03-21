@@ -1,0 +1,48 @@
+<div id="main" class="lift:surround?with=calendar;at=content">
+    <form method="post">
+      <div class="well">
+	  	  <h1><span class="lift:CompanySnippet.thumb"> </span>Comandos Sql</h1>
+        <label for="btn"></label>
+        <a class="btn primary" href="/company_log/list_sqlcommand">Lista</a>
+        <input class="btn success lift:SecuritySnippet.isSuperAdmin" type="submit" value="Salvar">
+        <a class="btn primary" href="/company_log/sql_command">Inserir novo</a>
+      </div>
+      <span class="lift:SqlCommandSnippet.maintain">
+        <div class="clearfix">
+          <label for="name">Nome</label>
+           <div class="input">
+              <input class="medium" id="name" name="name" size="30" type="text"/>
+              <span class="help-block">Nome completo</span>
+           </div>
+        </div>
+        <div class="clearfix">
+          <label for="name">Observação</label>
+           <div class="input">
+              <input class="medium" id="obs" name="obs" size="30" type="text"/>
+              <span class="help-block">Descrição do comando sql</span>
+           </div>
+        </div>
+        <div class="clearfix">
+          <label for="sqlcmd">Sql</label>
+           <div class="input">
+            <div class="inline-inputs">
+              <textarea id="sqlcmd" name="sqlcmd" style = "width: 1000px; height: 300px"></textarea>
+              <span class="help-block">Comando sql</span>
+            </div>
+           </div>
+        </div>
+        <div class="clearfix">
+          <label for="status">Status</label>
+          <div class="input">
+            <div class="input-prepend">
+              <select class="medium" id="status" name="status" >
+              </select>
+              <a data-original-title="Informação" data-content="clique para abrir a documentação" data-help-url='/docs/status.html' rel="popover" class="_popover_basic _help">
+                <img src="/images/info.gif" width="20">
+              </a>
+            </div>
+          </div>
+        </div>                       
+      </span>
+    </form>
+</div>  

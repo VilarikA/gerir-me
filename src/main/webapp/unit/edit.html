@@ -1,0 +1,321 @@
+<div id="main" class="lift:surround?with=bootstrap_large&at=content">
+  <span>
+    <form   class="lift:UnitSnippet.maintain">
+      <div class="well">
+        <label for="btn"></label>
+        <a class="btn primary" href="/unit/list">Lista</a>
+        <input class="btn success" type="submit" value="Salvar">
+        <a class="btn primary" href="/unit/edit">Inserir novo</a>
+      </div>
+      <div>
+        <span id="user_form">
+          <div class="clearfix">
+            <label for="name">Nome</label>        
+            <div class="input">
+              <div class='inline-inputs'>
+                <div class="input-prepend" style='float:left; padding-right:10px'>
+                  <input class="large" id="name" name="name" size="30" type="text"/>
+                </div>
+                <div class="input-prepend">
+                  <input class="medium" id="short_name" name="short_name" size="30" type="text"/>
+                  <a data-original-title="Informação" data-content="clique para abrir a documentação" data-help-url='/docs/name.html' rel="popover" class="_popover_basic _help">
+                    <img src="/images/info.gif" width="20">
+                  </a>
+                </div>
+                <span class="help-block">Nome completo e nome reduzido</span>
+              </div>
+            </div>
+          </div>
+          <div class="clearfix">
+            <label for="status">Status</label>
+            <div class="input">
+              <select class="medium" id="status" name="status" >
+              </select>
+              <a data-original-title="Informação" data-content="clique para abrir a documentação" data-help-url='/docs/status.html' rel="popover" class="_popover_basic _help">
+                <img src="/images/info.gif" width="20">
+              </a>
+              <span class="help-block">Status da unidade</span>
+            </div>
+          </div>          
+          <div class="clearfix">
+            <label for="name">Agenda</label>
+            <div class="input">
+              <input type="checkbox" name="showInCalendar">
+              <span class="help-block">Mostrar unidade na agenda?</span>
+            </div>
+          </div>
+          <div class="clearfix">
+            <label for="name">DDD padrão</label>
+            <div class="input">
+              <input type="text" class="mini" name="defaultDDD">
+              <span class="help-block"></span>
+            </div>
+          </div>         
+          <div class="clearfix">
+            <label for="name">Sexo padrão</label>
+            <div class="input">
+              <div class="input-prepend" style='float:left; padding-right:10px'>
+                <span class="add-on"><img src='/images/sex.png'/></span> 
+                <select id="defaultSex" name="defaultSex" ></select>
+                <span class="help-block">Sexo atribuido aos novos cadastrados</span>
+              </div>
+            </div>
+          </div>         
+          <div class="clearfix">
+            <label for="name">Usa caixa único?</label>
+            <div class="input">
+              <input type="checkbox" name="useSingleCashier">
+            </div>
+          </div>          
+          <div class="clearfix">
+            <label for="costcenter">Centro de Custo</label>
+            <div class="input">
+              <select id='costcenter' class="costcenter" name='costcenter'></select>
+              <span class="help-block">Centro de custo para financeiro no fechamento de caixa</span>
+            </div>
+          </div>
+          <div class="clearfix">
+              <label for="phone">Telefones</label>        
+              <div class="input">
+                  <div class='inline-inputs'>
+                      <div class="input-prepend" style='float:left; padding-right:10px'>
+                          <span class="add-on"><img src='/images/phone.png'/></span> 
+                          <input class="medium phone" id="phone" name="phone" size="30" type="text"/>
+                      </div>
+                      <div class="input-prepend" style='float:left; padding-right:10px'>
+                          <span class="add-on"><img src='/images/mobile_phone.png'/></span>                   
+                          <input class="medium phone" id="mobilePhone" name="mobilePhone" size="30" type="text"/>
+                      </div>
+                      <div class="input-prepend">
+                          <span class="add-on"><img src='/images/mobile_phone.png'/></span>                   
+                          <input class="medium phone" id="email_alternative" name="email_alternative" size="30" type="text"/>
+                      </div>
+                      <span class="help-block">Telefone fixo e celulares</span>
+                  </div>
+              </div>
+          </div>
+          <div class="clearfix">
+              <label for="document_company">CNPJ / Razão Social</label>
+              <div class="input">
+                  <div class='inline-inputs'>
+                      <div class="input-prepend" style='float:left; padding-right:10px'>
+                          <input class="medium cnpj" id="document_company" name="document_company" size="30" type="text"/>
+                          <span class="help-block">CNPJ</span>
+                      </div>
+                  </div>
+                  <div class='inline-inputs'>
+                      <div class="input-prepend" style='float:left; padding-right:10px'>
+                          <input class="xlarge" id="company_name" name="company_name" size="30" type="text"/>
+                          <span class="help-block">Razão social</span>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+      <div class="well">
+        <label for="btn"></label>
+        <a class="btn primary" href="/unit/list">Lista</a>
+        <input class="btn success" type="submit" value="Salvar">
+        <a class="btn primary" href="/unit/edit">Inserir novo</a>
+      </div>
+      <span>
+        <ul class="tabs">
+          <li class="active tab"><a href="#address">Endereço</a></li>
+          <li class="lift:SecuritySnippet.hasPortalModule tab"><a href="#site">Portal</a></li>
+          <li class="tab"><a href="#email">E-mail</a></li>
+          <li class="tab"><a href="#photo">Foto</a></li>
+        </ul>
+        <div class="pill-content">
+          <div class="active tab_content row" id="address">
+            <div class='span8'>
+              <div class="clearfix">
+                <label for="name">Rua</label>
+                <div class="input">
+                  <div class='inline-inputs'>
+                    <input class="xlarge" id="street" name="street" size="30" type="text"/>
+                    <input class="mini" id="number" name="number" size="5 " type="text"/>           
+                  </div>
+                  <span class="help-block">Rua/Número</span>
+                </div>
+              </div>
+              <div class="clearfix">
+                <label for="document">Complemento</label>
+                <div class="input">
+                  <input class="xlarge" id="complement" name="complement" size="30" type="text"/>
+                  <span class="help-block">Casa / Ap:402 Bl:1</span>
+                </div>
+              </div>                          
+              <div class="clearfix">
+                <label for="district">Bairro</label>
+                <div class="input">
+                  <div class='inline-inputs'>
+                    <input class="xlarge" id="district" name="district" size="30" type="text"/>           
+                  </div>
+                  <span class="help-block">Bairro</span>
+                </div>
+              </div>
+              <div class="clearfix">
+                <label for="city">Uf / Cidade</label>
+                <div class="input">
+                  <div class='inline-inputs'>
+                    <span>
+                        <span class='hidden'>
+                          <input class="mini state_field_value" id="state_ref" name="state_ref" size="5 " type="text" />
+                        </span>
+                        <select class="state_field">
+                        </select>
+                    </span>
+                    <span>
+                        <span class='hidden'>
+                          <input class="city_field_value" id="city_ref" name="city_ref"/>
+                        </span>
+                        <select class="xlarge city_field">
+                        </select>
+                    </span>
+                  </div>
+                  <span class="help-block">UF / Cidade</span>
+                </div>
+              </div>
+              <div class="clearfix">
+                <label for="postal_code">CEP</label>
+                <div class="input">
+                  <div class='inline-inputs'>
+                    <input class="small cep" id="postal_code" name="postal_code" size="15" type="text"/>           
+                  </div>
+                  <span class="help-block">CEP</span>
+                </div>
+              </div>      
+            </div>
+            <div class='span8'>
+              <span class='map_class'>
+                <span style="display: none">
+                  <input id="lng" name="lng" type="hidden"/>
+                  <input id="lat" name="lat" type="hidden"/>
+                </span>
+                <div id="map_canvas" style="width:100%; height: 302px"></div>
+                <script>
+                  var imageToMap = "/images/home_big.png";
+                </script>
+                <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=true"></script>
+                <script  type="text/javascript" src='/js/map.js'></script>
+              </span>
+            </div>
+          </div>
+          <div class="tab_content row" id="site">
+            <div class='span12'>
+              <div class="clearfix">
+                <label for="allowshowonsite">Mostrar no Site</label>
+                <div class="input">
+                  <div class='inline-inputs'>
+                    <div class="input-prepend" style='float:left; padding-right:10px'>
+                      <input type="checkbox" name="allowshowonsite">
+                    </div>
+                    <div class="input-prepend" style='float:left; padding-right:20px'>
+                      <label for="allowshowonsite">Mostrar no Portal</label>
+                    </div>
+                    <div class="input-prepend" style='float:left; padding-right:10px'>
+                      <input type="checkbox" name="allowshowonportal">
+                    </div>
+                  </div>
+                </div>
+              </div>                     
+              <div class="lift:SecuritySnippet.isSuperAdmin clearfix">
+                <label for="moderatedportal">Aprovado Moderador</label>
+                <div class="input">
+                  <input type="checkbox" name="moderatedportal">
+                  <span class="help-block">Se foi aprovado pelo moderador do portal do ebelle</span>
+                </div>
+              </div>                     
+              <div class="clearfix">
+                <label for="sitetitle">Título Público</label>        
+                <div class="input">
+                  <input class="large" id="sitetitle" name="sitetitle" size="30" type="text"/>
+                  <span class="help-block">Título como aparecerá no site/portal</span>
+                </div>
+              </div>
+              <div class="clearfix">
+                <label for="sitedescription">Descrição Pública</label>
+                <div class="input">
+                  <div class="input-prepend">
+                    <textarea class="xlarge" id="sitedescription" name="sitedescription" size="16"></textarea>
+                    <a data-original-title="Informação" data-content="clique para abrir a documentação" data-help-url='/docs/portal.html' rel="popover" class="_popover_basic _help">
+                      <img src="/images/info.gif" width="20">
+                    </a>
+                    <span class="help-block">Descrição como aparecerá no site/portal</span>
+                  </div>
+                </div>
+              </div>              
+            </div>
+          </div>              
+          <div class="tab_content row" id="email">
+            <div class='span8'>
+              <div class="clearfix">
+                <label for="name">SMTP Server</label>
+                <div class="input">
+                  <input class="medium" id="smtpServer" name="smtpServer" size="30" type="text"/>
+                  <span class="help-block">Servidor de SMTP,para @gmail use smtp.gmail.com, para @hotmail use smtp.live.com</span>
+                </div>
+              </div>
+              <div class="clearfix">
+                <label for="name">SMTP Port</label>
+                <div class="input">
+                  <input class="small" id="port" name="port" size="30" type="text"/>
+                  <span class="help-block">SMTP Porta, para @gmail use 465, para @hotmail use 587</span>
+                </div>
+              </div> 
+              <div class="clearfix">
+                <label for="name">SSL</label>
+                <div class="input">
+                  <input type="checkbox" name="useSsl">
+                  <span class="help-block">Usa SSL, marque para @gmail, não marque para @hotmail</span>
+                </div>
+              </div>                     
+              <div class="clearfix">
+                <label for="name">SMTP User</label>
+                <div class="input">
+                  <input class="large" id="userSmtp" name="userSmtp" size="30" type="text"/>
+                  <span class="help-block">User de SMTP, email que fará o envio</span>
+                </div>
+              </div>          
+              <div class="clearfix">
+                <label for="name">SMTP Password</label>
+                <div class="input">
+                  <input class="medium" id="passwordSmtp" name="passwordSmtp" size="30" type="text"/>
+                  <span class="help-block">Password / Senha do email que fará o envio</span>
+                </div>
+              </div>
+            </div>
+          </span>          
+          </div>
+        </div>
+      </span>
+    </form>        
+    <script>
+      $(function(){
+        $('#sitedescription').jqte();
+      });
+    </script>
+  </span>    
+  <div class="tab_content" id='photo'>
+    <div class="lift:UnitSnippet.thumbToShow">
+    </div>
+    <form class="lift:UnitSnippet.render?form=post;multipart=true">
+      <div class="clearfix">
+        <input class="large url_parameter" id="id" name="id" type="hidden" />
+        <label for="name">Alterar Logomarca</label>
+        <div class="input">
+          <input type="text" name='file' id='file'/>
+          <span class="help-block">Selecione sua logomarca</span>
+        </div>
+      </div>
+      <div class="clearfix">
+        <label for="name"></label>
+        <div class="input">
+          <div class="input-prepend">
+            <input type="submit" value="Enviar" id='submit' class="btn success"/>
+          </div>
+        </div>
+      </div>
+    </form>    
+  </div>
+</div>

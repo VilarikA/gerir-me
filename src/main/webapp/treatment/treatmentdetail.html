@@ -1,0 +1,119 @@
+<div id="main" class="lift:surround?with=dashboard_customer;at=content">
+  <span class=' lift:TreatmentDetailSnippet.maintain'>
+    <form  class="lift:form.ajax">
+      <div class="well">
+        <label for="btn"></label>
+        <input class="btn success" type="submit" value="Salvar">
+        <a class="btn primary" href="/treatment/treatmentdetail?treatment=##" id="add_td">Inserir novo</a>
+      </div>
+      <div>
+        <span id="treatmentDetail_form">
+          <span class="row">
+            <span class="span18">
+              <div class="clearfix">
+              </div>
+            </span>
+            <span class="span7">
+              <div class="clearfix">
+                <label for="treatment">Atendimento</label>
+                <div class="input">
+                  <span>
+                    <input class='mini url_parameter' data-url-name='treatment' id='treatment' name='treatment'/> 
+                </div>
+              </div>
+              <div class="clearfix">
+                <label for="activity">Serviço </label>
+                <div class="input">
+                  <div class="inline-inputs">
+                      <div style="float:left; padding-right:10px" class="input-prepend">
+                        <span class="add-on"><img width="16" src="/images/cut.png"></span> 
+                        <select class="notselect2" name="activity" id='activity'></select>
+                      </div>
+                  </div>
+                </div>
+              </div>              
+              <div class="clearfix lift:SecuritySnippet.hasAuxiliarModule">
+                <label for="auxiliar"><span data-i18n='Assistente'></label>
+                  <div class="input">
+                    <div class="inline-inputs">
+                      <select id='auxiliar' name='auxiliar'></select>
+                    </div>
+                  </div>
+              </div>
+            </span>
+            <span class="span9">
+              <div class="clearfix">
+                <label for="name">Produto</label>
+                <div class="input">
+                  <div class="inline-inputs">
+                    <div style="float:left; padding-right:10px" class="input-prepend">
+                          <span class="add-on"></span> 
+                          <input class="xlarge process_product_field" name="product" id='product'/>
+                    </div>                                                    
+                  </div>
+                </div>
+              </div>
+              <div class="clearfix">
+                <label for="opener_date">Estoque Atual</label>
+                <div class="input">
+                  <div class="inline-inputs">
+                    <div style="float:left; padding-right:10px" class="input-prepend">
+                      <span class="add-on"><img width="16" src="/images/categorie.png"></span> 
+                      <input type="text" size="19" name="current_stock" id="current_stock" disabled='true' class="mini disabled inventory_product_search">
+                       <span class="help-block">Quantidade atual do produto em estoque</span>
+                    </div>
+                  </div>
+                </div>
+              </div>      
+              <div class="clearfix">
+                <label for="external_id">Código</label>
+                <div class="input">
+                  <text class="xlarge" id="external_id" name="external_id" >
+                  </text>
+                </div>
+              </div>
+            </span>
+            <span class="span18">
+              <div class="lift:SecuritySnippet.IsEdoctusSystem clearfix">
+                <label for="wayofaccess">Via de Acesso</label>
+                <div class="input">
+                  <text class="xlarge" id="wayofaccess" name="wayofaccess" >
+                  </text>
+                </div>
+              </div>
+              <div class="clearfix">
+                <label for="price">Valor/Qtde</label>
+                  <div class="input">
+                    <div class="inline-inputs">
+                        <div style="float:left; padding-right:10px" class="input-prepend">
+                          <span class="add-on"><img width="16" src="/images/money.png"></span>
+                          <input type="text" size="19" name="price" id="price" class="mini currency"/>
+                        </div>
+                        <div style="float:left; padding-right:10px" class="input-prepend">
+                          <span class="add-on"><img width="16" src="/images/add.png"></span>
+                          <input type="number" step='1' min='0' size="19" name="amount" id="amount" class="mini" value="1"/>
+                        </div>
+                    </div>
+                  </div>
+              </div>
+              <div class="clearfix">
+                <label for="Obs">Obs</label>
+                <div class="input">
+                  <textarea class="large" id="obs" name="obs" size="30"></textarea>
+                  <span class="help-block">Observações</span>
+                </div>
+              </div>
+            </span>
+          </span>
+        </span>
+      </div>
+      <div class="well">
+        <label for="btn"></label>
+        <input class="btn success" type="submit" value="Salvar">
+        <a class="btn primary" href="/treatment/treatmentdetail?treatment=##" id ="add_td1">Inserir novo</a>
+      </div>
+    </form>
+    <script type="text/javascript" src="/js/treatmentdetails.js"></script>
+  </span>
+</div>
+</div>

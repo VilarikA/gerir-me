@@ -1,0 +1,101 @@
+<div id="main" class="lift:surround?with=calendar;at=content">
+  <link rel="stylesheet" type="text/css" href="/select2/select2.css" />
+  <script src="/select2/select2.js"></script><script src="/select2/select2_locale_pt-BR.js"></script>
+  <script src="/js/reports.js"></script>
+  <script src="/js/jquery.tablesorter.pager.js"></script>
+  <script type="text/javascript">
+  $(function(){
+    $("#unit").unitField(true);
+    $("#start").val(getDateBr(new Date().getAYearAgo()));
+    $("#end").val(getDateBr(new Date()));
+    var hasUnitModule = $('.has-unit-module').length > 0;
+    var start = function(){
+      return  encodeURIComponent($("#start").val() != "" ? $("#start").val() : getDateBr(new Date().getStartOfMonth()));
+    }
+    var end = function(){
+      return encodeURIComponent($("#end").val() != "" ? $("#end").val() : getDateBr(new Date()));
+    }     
+    var fields = [];
+    fields[1] = "int";
+    fields[2] = "none";
+    var url = "/report/indications_ranking";
+    var request = function(){
+      renderReport(url,fields,$("#form_report").serializeObject(),"#grid",function(data){
+        drawChart(data);
+      });
+    }
+    $("#send").click(request);
+//    request();
+  });  
+  </script>
+ <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+ <script type="text/javascript">
+      google.load("visualization", "1", {packages:["corechart"]});
+      function drawChart(data) {
+        data = data.map(function(item){
+          item[1]= window.parseInt(item[1]);
+          return item;
+        })
+        data = jQuery.merge([["Nome","Indicações"]],data);
+        data = google.visualization.arrayToDataTable(data);
+        var options = {
+          title: 'Ranking de Indicações',
+          hAxis: {title: 'Nome', titleTextStyle: {color: 'red'}, minValue : 1}
+        };
+
+        var chart = new google.visualization.ColumnChart(document.getElementById('chart_div'));
+        chart.draw(data, options);
+      }
+  </script>  
+    <form id="form_report" class="well  form-search" method='get'>
+    <h1>
+      <span class="lift:CompanySnippet.thumb"> </span>Relatório Ranking de Indicações
+    </h1>
+    <div class="span9">
+        <div class="clearfix">
+          <label for="opener_date">Intervalo</label>
+            <div class="input">
+              <div class="inline-inputs">
+                  <div class="input-prepend" style="float:left; padding-right:10px">
+                    <span class="add-on"><img width="16" src="/images/calendar_addon.png"></span>
+                    <input type="text" class="input-small date url_parameter" id='start' name="start" placeholder="Início"/>
+                  </div>
+                  <div class="input-prepend" style="float:left; padding-right:10px">
+                    <span class="add-on"><img width="16" src="/images/calendar_addon.png"></span>
+                    <input type="text" class="input-small date url_parameter to_day" id='end' name="end" placeholder="Fim"/>
+                  </div>
+              </div>
+            </div>
+        </div>
+        <input type="hidden" class="has-unit-module lift:SecuritySnippet.hasUnitModule" value="1">
+        <div class="clearfix lift:SecuritySnippet.hasUnitModule">
+          <label for="unit">Unidade</label>
+           <div class="input">
+              <select class="local_storage xlarg url_parameter" name="unit" id='unit'></select>
+           </div>
+        </div>
+        <div class="clearfix">
+          <label for="maxcli">Limite Clientes</label>
+          <div class="input">
+            <input id = "maxcli" name="maxcli" class="mini" type="text" value = "20"/>
+            <span class="help-block">Quantidade limite de clientes no ranking</span>
+          </div>
+        </div>            
+      <div class="clearfix">
+        <label for="send"></label>
+          <div class="input">
+              <button type="button" id="send" class="btn success">Buscar</button>
+          </div>
+      </div>
+    </div>
+    </form>
+    <div id="chart_div" style="width: 900px; height: 500px;"></div>
+    <table id="grid" class="bordered-table zebra-striped">
+      <thead>
+        <th>Nome</th>
+        <th>Indicações</th>
+      </thead>
+      <tbody>
+      </tbody>
+  </table>
+ </div>

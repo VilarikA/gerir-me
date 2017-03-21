@@ -1,0 +1,102 @@
+<div id="main" class="lift:surround?with=calendar;at=content">
+  <link rel="stylesheet" type="text/css" href="/select2/select2.css" />
+  <style type="text/css">
+    @import url('/css/tree_data.css');
+  </style>
+  <script src="/select2/select2.js"></script><script src="/select2/select2_locale_pt-BR.js"></script>
+  <script src="/js/reports.js"></script>
+  <script src="/js/jquery.tablesorter.pager.js"></script>
+  <script type="text/javascript" src='/js/dre_report.js'></script>
+  <script type="text/javascript">
+    $(function(){
+      $("#unit").unitField(true);
+      $("#costcenters").costcenterField(true);
+      $("#accounts").categoryAccountField(true, false, true, true);
+      $("#start").val(getDateBr(new Date().getStartOfMonth()));
+      $("#end").val(getDateBr(new Date()));
+      $("#send").click(function(){
+       requestDreData($("#unit").val(),$("#costcenters").val(),$("#accounts").val(),$("#dttype").val(), $("#start").val(), $("#end").val());
+      });
+    });
+  </script>
+  <div class="span17">
+      <form id="form_report" class="well form-search" method='get'>
+          <h1>
+            <span class="lift:CompanySnippet.thumb"></span>
+            Relatório DRE
+          </h1>
+          <span class='row'>
+            <span class='span8'>
+              <div class="clearfix">
+                <label for="dttype">Tipo Data lanc</label>
+                  <div class="input">
+                    <div class="inline-inputs">
+                        <select class="local_storage" name="dttype" id="dttype">
+                            <option value='0'>Vencimento</option>
+                            <option value='1'>Competência</option>
+                            <option value='2'>Pagamento</option>
+                        </select>
+                        <a href="" class="_popover_basic" rel="popover" data-content="Determina se os lançamentos financeiros serão acessados pela data de Vencimento, Pagamento ou Competência" data-original-title="Informação">
+                          <img width='20' src="/images/info.gif"/>
+                        </a>
+                    </div>
+                  </div>
+              </div>
+              <div class="clearfix">
+                <label for="total">Intervalo</label>
+                <div class="input">
+                  <div class="inline-inputs">
+                    <div class="input-prepend" style="float:left; padding-right:10px">
+                      <span class="add-on"><img width="16" src="/images/calendar_addon.png"></span>
+                      <input type="text" class="input-small date" id='start' name="start" placeholder="Início"/>
+                    </div>
+                    <div class="input-prepend" style="float:left; padding-right:10px">
+                      <span class="add-on"><img width="16" src="/images/calendar_addon.png"></span>
+                      <input type="text" class="input-small date" id='end' name="end" placeholder="Fim"/><br/>            
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="clearfix lift:SecuritySnippet.hasUnitModule">
+                <label for="unit">Unidade</label>
+                 <div class="input">
+                    <select name="unit" id='unit'></select>
+                 </div>
+              </div>
+            </span>
+            <span class='span6'>
+              <div class="clearfix">
+                <label for="total">Categorias</label>
+                <div class="input">
+                  <div class="inline-inputs">
+                    <select name="accounts" id="accounts" multiple="true"></select>
+                  </div>
+                </div>
+              </div>
+              <div class="clearfix">
+                  <label for="costcenters">Centros de custo</label>
+                  <div class="input">
+                    <select id='costcenters' multiple="true" name='costcenters'>
+                    </select>
+                  </div>
+              </div>
+            </span>
+          </span>
+          <div class="clearfix">
+            <label for="buscar"></label>
+            <div class="input">
+              <button type="button" id="send" class="btn success">Buscar</button>
+            </div>
+          </div>
+      </form>
+  </div>
+  <div id="grid_dre" class="bordered-table zebra-striped">
+
+  </div>
+  <div>
+    <br>
+    Este relatório inclui apenas lançamentos financeiros marcadas como <b>pagos</b>, <br>
+    portanto lançamentos planejados <b>não são consideradas</b>, <br>
+    diferente da visão de DRE na tela principal do financeiro
+  </div>
+ </div>

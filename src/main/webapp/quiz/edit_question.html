@@ -1,0 +1,79 @@
+<div id="main" class="lift:surround?with=quiz&at=content">
+    <form   class="lift:form.ajax">
+      <div class="well">
+        <label for="btn"></label>
+        <a class="btn primary" href="/quiz/list_question">Lista</a>
+        <input class="btn success" type="submit" value="Salvar">
+        <a class="btn primary" href="/quiz/edit_question">Inserir novo</a>
+      </div>
+      <div class="lift:QuizSnippet.maintainQuestion">
+        <span id="quiz_form">
+          <div class="clearfix">
+            <label for="name">Nome</label>        
+             <div class="input">
+                <div class='inline-inputs'>
+                  <div class="input-prepend" style='float:left; padding-right:10px'>
+                    <input class="large" id="name" name="name" size="30" type="text"/>
+                  </div>
+                  <div class="input-prepend">
+                    <input class="medium" id="short_name" name="short_name" size="30" type="text"/>
+                    <a data-original-title="Informação" data-content="clique para abrir a documentação" data-help-url='/docs/name.html' rel="popover" class="_popover_basic _help">
+                    <img src="/images/info.gif" width="20">
+                    </a>
+                  </div>
+                  <span class="help-block">Nome completo e nome reduzido, este último usado em alguns relatórios</span>
+              </div>
+             </div>
+          </div>
+          <div class="clearfix">
+            <label for="quizSection">Seção</label>
+            <div class="input">
+              <select id='quizSection' class="xlarge" name='quizSection'></select>
+              <span class="help-block">Seção a qual pertence</span>
+            </div>
+          </div>
+          <div class="clearfix">
+            <label for="quizDomain">Domínio</label>
+            <div class="input">
+              <select id='quizDomain' class="xlarge" name='quizDomain'></select>
+              <span class="help-block">Domínio para resposta</span>
+            </div>
+          </div>
+          <div class="clearfix">
+            <label for="quizQuestionType">Tipo Resposta</label>
+            <div class="input">
+              <input class="mini" id="quizQuestionType" name="quizQuestionType" size="5 " value = "10" type="text"/>
+              <span class="help-block">0-Texto 1-Parágrafo 2-lista 3-múltipla escolha 4-pode vários</span>
+            </div>
+          </div>
+          <div class="clearfix">
+            <label for="orderinsection">Ordem</label>
+            <div class="input">
+              <input class="mini" id="orderinsection" name="orderinsection" size="5 " value = "10" type="text"/>
+              <span class="help-block">Ordem na seção</span>
+            </div>
+          </div>
+          <div class="clearfix">
+              <label for="obs">Observação</label>
+              <div class="input">
+                <div class="input-prepend">
+                  <textarea class="xlarge" id="obs" name="obs" size="16"></textarea>
+                </div>
+              </div>
+          </div>
+          <div class="clearfix">
+            <label for="status">Status</label>
+            <div class="input">
+              <div class="input-prepend">
+                <select class="medium" id="status" name="status" >
+                </select>
+                <a data-original-title="Informação" data-content="clique para abrir a documentação" data-help-url='/docs/status.html' rel="popover" class="_popover_basic _help">
+                  <img src="/images/info.gif" width="20">
+                </a>
+              </div>
+            </div>
+          </div>                       
+        </span>
+      </div>
+    </form>
+</div>

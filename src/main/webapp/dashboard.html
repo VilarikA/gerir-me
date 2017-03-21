@@ -1,0 +1,71 @@
+<div id="main" class="lift:surround?with=dashboard&at=content">
+	<style>
+		.column { width: 300px; float: left; padding-bottom: 100px; }
+		.portlet { margin: 0 1em 1em 0; }
+		.portlet-header { margin: 0.3em; padding-bottom: 4px; padding-left: 0.2em; }
+		.portlet-header .ui-icon { float: right; }
+		.portlet-content { padding: 0.4em; }
+		.ui-sortable-placeholder { border: 1px dotted black; visibility: visible !important; height: 50px !important; }
+		.ui-sortable-placeholder * { visibility: hidden; }
+	</style>
+	<script type="text/javascript" src="/js/reports.js"></script>
+	<script type="text/javascript" src="/js/dashboard.js"></script>
+	<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+	<script type="text/javascript">
+		google.load('visualization', '1.0', {'packages':['corechart']});
+	</script>
+	<div class="demo">
+	       <h1>
+            <span class="lift:CompanySnippet.thumb"> </span> Painel de Controle
+          </h1>
+	<div class="column">
+		<div class="portlet">
+			<div class="portlet-header">Gra. Semana</div>
+			<div class="portlet-content">
+				<div id="frequency_chart_div"></div>
+			</div>
+		</div>
+		<div class="portlet" id="cheque_dash">
+			<div class="portlet-header"><a href="/financial_admin/control_panel">Cheques</a></div>
+			<div class="portlet-content">
+				<span>
+					<table class="bordered-table zebra-striped">
+			        <thead>
+			          <tr>
+						<th>Id</th>
+			            <th>Num</th>
+			            <th>Valor</th>
+			            <th>Data</th>
+			          </tr>
+			        </thead>
+			        <tbody>
+			        </tbody>
+			      </table>
+				</span>
+			</div>
+		</div>
+
+	</div>
+	<div class="column">
+		<div class="portlet">
+			<div class="portlet-header">Atendimentos do Dia</div>
+			<div class="portlet-content">
+				<div id="chart_div"></div>
+			</div>
+		</div>
+		<div class="portlet">
+			<div class="portlet-header">DRE</div>
+			<div class="portlet-content">
+				<span>
+					<table id="account_dash">
+						<tbody>
+							
+						</tbody>
+					</table>
+				</span>
+			</div>
+		</div>
+	</div>
+
+	</div>
+	<!-- Modal -->

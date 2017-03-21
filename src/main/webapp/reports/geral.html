@@ -1,0 +1,32 @@
+<div id="main" class="lift:surround?with=calendar;at=content">
+  <link rel="stylesheet" type="text/css" href="/select2/select2.css" />
+  <script src="/select2/select2.js"></script><script src="/select2/select2_locale_pt-BR.js"></script>
+  <script src="/js/reports.js"></script>
+  <script src="/js/jquery.tablesorter.pager.js"></script>
+  <script type="text/javascript">
+  $(function(){
+    var request = function(){
+      renderReport("/report/geral",[],{});
+    }
+    request();
+  });  
+  </script>
+<div class="page-header">
+  <h1>
+    <span class="lift:CompanySnippet.thumb"> </span>Relatório Geral
+  </h1>
+</div>  
+  <table id="grid" class="bordered-table zebra-striped">
+      <thead>
+        <th>Tot Cli</th>
+        <th>Cli Ultimo este mes</th>
+        <th>Tot Prof</th>
+        <th>Tot Prods</th>
+        <th>Tot Serv</th>
+        <th>Tot. Atend</th>
+        <th>Atend Este mes</th>
+      </thead>
+      <tbody>
+      </tbody>
+  </table>
+ </div>

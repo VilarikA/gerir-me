@@ -1,0 +1,181 @@
+<div id="main" class="lift:surround?with=user;at=content">
+  <span ng-app='PayrollEventModule' ng-controller='PayrollEventController'>
+    <div class="well">
+      <div class="clearfix">
+        <label for="btn"></label>
+        <div class="input">
+          <a class="btn primary" id="new_account" title="Adicionar nova verba para <span data-i18n='Profissional'></span>">
+          <img width="15px" src="/images/new.png"/>
+          Inserir Novo
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class='filter block-message success"'>
+      <span class="filter_form">
+        <form action="">
+          <div class="row">
+            <div class="span8">
+              <div class="clearfix">
+                <label for="type_category">Intervalo</label>
+                <div class="input">
+                  <div class="inline-inputs">
+                    <div style="float:left; padding-right:10px" class="input-prepend">
+                      <span class="add-on"><img width="16" src="/images/calendar_addon.png"></span>
+                      <input type="text" class="input-small date to_day" id='start' name="start" placeholder="Início"/>
+                    </div>
+                    <div style="float:left; padding-right:10px" class="input-prepend">
+                      <span class="add-on"><img width="16" src="/images/calendar_addon.png"></span>
+                      <input type="text" class="input-small date to_day" id='end' name="end" placeholder="Fim"/>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="clearfix">
+                <label for="user"><span data-i18n='Profissionais'></span></label>
+                <div class="input">
+                  <select name='user' class="user alow_all" id="user" multiple="multiple"></select>
+                </div>
+              </div>
+              <div class="clearfix">
+                <label for="user">Verbas</label>
+                <div class="input">
+                  <select name='events_filter' class="user alow_all" id="events_filter" multiple="multiple"></select>
+                </div>
+             </div>
+            </div>
+          </div>
+          <div class="well">
+            <div class="clearfix">
+              <label for="btn"></label>
+              <input value="Buscar" type="button" id="search" class="btn success">
+            </div>
+          </div>
+          <div class="clearfix">
+            <label for="name">Total </label>
+            <div class="input">
+              <div class="input-prepend">
+                <span class="add-on"><img src="/images/money.png" width="16"></span>
+                <input disabled='true' class="mini currency" type="text" name='total' ng-model='total' id='total' value="00.00">
+             </div>
+            </div>
+          </div>
+        </form>
+      </span>
+    </div>
+    <a onclick="return ExcellentExport.excel(this, 'grid', 'data');"
+      href="#" download="data.xls" class="btn excel_buttton"
+      title="Exportar para excel">
+      <img style="width: 16px;" src="/images/excel.png" />
+    </a>  
+    <a onclick="return ExcellentExport.csv(this, 'grid', ';');"
+      href="#" download="data.csv" class="btn excel_buttton"
+      title="Exportar para csv">
+      <img style="width: 16px;" src="/images/generate.png" />
+    </a>  
+    <a id="hide_grid_payments" onclick="$('#grid').toggle();return false;" 
+      href="#" class="btn excel_buttton" 
+      title="Ocultar tabela">
+      <img style="width: 16px;" src="/images/collapse.png" />
+    </a>  
+    <table id="grid" class="bordered-table zebra-striped" >
+      <thead>
+        <tr>
+          <th></th>
+          <th title="Data de referencia">Dt Ref</th>
+          <th>Verba</th>
+          <th>Descrição</th>
+          <th><span data-i18n='Profissional'></span></th>
+          <th>Valor</th>
+          <th title="Editar" ><img src='/images/edit.png' /></th>
+          <th title="Excluir"><img src='/images/delete.png'/></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr ng-repeat=' event in payrollEvents'>
+          <td>{{event.id}}</td>
+          <td>{{event.date | date:'dd/MM/yyyy' }}</td>
+          <td>{{event.eventName}}</td>
+          <td>{{event.obs}}</td>
+          <td>{{event.name}}</td>
+          <td>{{event.value.toFixed(2)}}</td>
+          <td alt="Editar" ><a href='#' ng-click='edit(event)'><img src='/images/edit.png' /></a></td>
+          <td alt="Excluir"><a href='#' ng-click='remove(event)'><img src='/images/delete.png'/></a></td>
+        </tr>
+      </tbody>
+    </table>
+    <div id="account_modal" class="modal hide" style="width: 90%; left: 5%; margin: auto auto auto auto; top: 5%;     height: 100%; max-height: 100%;">
+      <div class="modal-header">
+        <a href="#" class="close">&times;</a>
+        <h3>Folha de Pagamento</h3>
+      </div>
+      <span>
+        <form id="cash_form">
+          <div class="span18">
+            <div class="well">
+              <input class="btn success b_add_account" id="b_add_account" type="button" value="Salvar">
+            </div>
+            <div class="clearfix">
+              <label for="event">Verba</label>
+              <div class="input">
+                <div class="inline-inputs">
+                  <select id='event' class="notselect2 event url_parameter" name='event'></select>
+                </div>
+              </div>
+            </div>
+            <div class="clearfix">
+              <label for="user_select"><span data-i18n='Profissional'></span></label>
+              <div class="input">
+                <div class="inline-inputs">
+                  <select class="url_parameter" id='user_select' name='user_select'>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div class="clearfix">
+              <label for="name">Observação</label>
+              <div class="input">
+                <input class="medium url_parameter" id="obs" name="obs" size="30" type="text"/>
+                <span class="help-block">Descrição do lançamento</span>
+              </div>
+            </div>
+            <div class="clearfix">
+              <label for="birthday">Data de Referência</label>
+              <div class="input">
+                <div class="inline-inputs">
+                  <div style="float:left; padding-right:10px" class="input-prepend">
+                    <span class="add-on"><img width="16" src="/images/calendar_addon.png"></span>
+                    <input type="text" size="19" name="date" id="date" class="input-small date url_parameter">
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="clearfix">
+              <label for="price">Valor</label>
+              <div class="input">
+                <div class="input-prepend">
+                  <span class="add-on"><img src="/images/dre.png" width="16"></span>
+                  <input class="mini currency url_parameter" id="value" name="value" size="30" type="text"/>
+                </div>
+              </div>
+            </div>
+            <div class="clearfix">
+              <label for="price">Quantidade</label>
+              <div class="input">
+                <input class="mini url_parameter" id="qtd" name="qtd" size="30" type="number"/>
+              </div>
+            </div>
+            <div class="well">
+              <input  id="id" value="0" name="id" size="30" type="hidden"/>
+              <input class="btn success b_add_account" id="b_add_account" type="button" value="Salvar">
+            </div>
+          </div>
+        </form>
+      </span>
+      <script src="/js/angular.js">
+      </script>
+      <script type="text/javascript" src="/js/event_payroll_register.js"></script>
+      <script type="text/javascript" src="/js/jquery.tablesorter.pager.js"></script>
+    </div>
+  </span>
+</div>

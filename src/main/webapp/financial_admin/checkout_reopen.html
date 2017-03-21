@@ -1,0 +1,89 @@
+<div id="main" class="lift:surround?with=financial;at=content">
+  <span id="cash_form">
+  	<script type="text/javascript">
+      var cashiersObj = {};
+      var cashierValuesObj = {};
+      $(function(){
+        $('#cashiers_select').cashierField(true, 'closed');
+        $('#cashiers_select').change(function(){
+          var cashierId = $(this).val();
+          for(i in cashiersObj){
+            cashier = cashiersObj[i];
+            if(cashierId == cashier.idForCompany){
+              $("#start_value").val(cashier.startValue);
+              $("#opener_date").val(getDateBr(new Date(parseInt(cashier.openerDate))));
+              return;
+            }           
+          }
+          $("#start_value").val("");
+          $("#opener_date").val("");
+          return;           
+        });
+      })
+      var callApiReopen = function(){
+        url = $('#checkoutReopen_form').attr('action');
+        var cashier = $('#cashiers_select').val() || $('#number').val();
+        var isIdForCompany =  !!$('#cashiers_select').val();
+        var startValue = $("#start_value").val() || '0';
+        if (!cashier){
+           alert("Caixa inválido!")
+        } else {
+          url +="/checkoutReopen/"+cashier+"/"+isIdForCompany + "/" + startValue;
+          $.get(url, function(t){
+            eval("var obj = "+t)
+            if(obj.status =='success'){
+              alert("Caixa ["+obj.id+"] reaberto com sucesso ! ") 
+            }else{
+              if(obj.message){
+                alert(obj.message)
+              }else{
+               alert("Erro ao reabrir o caixa. Verifique os campos e tente novamente!") 
+              }
+            }
+          })
+        }
+      }
+  	</script>
+    <form id='checkoutReopen_form' action="/cash/">
+      <div>
+          <div>
+            <div class="span16">
+              <div class="well">
+    		        <label for="btn"></label>
+                <input class="btn primary" onclick='callApiReopen()' type="button" value="Reabrir">
+              </div>                    
+              <div class="clearfix">
+                <label for="birthday">Caixas Fechados</label>
+                  <div class="input">
+                    <div class="inline-inputs">
+                      <div class="input-prepend" style='float:left; padding-right:10px'>
+                        <select class="xlarge" id='cashiers_select'  name="cashiers"></select>
+                        <span class="help-block">Selecione um caixa na lista ou digite o número</span>
+                      </div>
+                      <div class="input-prepend">
+                        <input class="mini" id="number" name="number" size="5 " type="text"/>           
+                      </div>
+                    </div>
+                  </div>
+              </div>
+            <div class="clearfix">
+              <label for="price">Novo Valor de Abertura</label>
+               <div class="input">
+                  <div class="input-prepend">
+                    <span class="add-on"><img src="/images/dre.png" width="16"></span>             
+                    <input class="mini currency" id="start_value" name="start_value" size="30" type="text"/>
+                    <span class="help-block">Preencher apenas se for alterar o valor de abertura</span>
+                  </div>
+               </div>
+            </div>                                                                    
+            <div class="well">
+              <label for="btn"></label>
+              <input class="btn primary" onclick='callApiReopen()' type="button" value="Reabrir">
+            </div>                    
+            
+           </div>
+          </div>                    
+      </div>
+    </form>     
+  </span>
+</div>

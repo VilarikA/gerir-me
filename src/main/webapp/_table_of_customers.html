@@ -1,0 +1,22 @@
+<thead>
+	<tr>
+		<th>Nome</th>
+		<th>Documento</th>
+		<th>Selecione</th>
+	</tr>
+</thead>			
+<tbody>
+{
+customers.map(d => (
+		<tr>
+			<td>{d.name}</td>
+			<td>{d.document}</td>
+			<td>
+				<img 
+					src="/images/select.png"
+					width="20"
+					onclick={"selectCustomer('"+d.id+"','"+d.name+"')"}></img>
+			</td>
+		</tr>))
+	}
+</tbody>

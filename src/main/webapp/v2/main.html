@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en" data-ng-app='EbelleApp' data-ng-controller='App'>
+	<head>
+		<meta charset="utf-8" />
+		<title>{{page_title}}</title>
+
+		<meta name="description" content="3 styles with inline editable feature" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+		<!-- basic styles -->
+
+		<link href="../new_templates/assets/css/bootstrap.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="../new_templates/assets/css/font-awesome.min.css" />
+
+		<!--[if IE 7]>
+		  <link rel="stylesheet" href="../new_templates/assets/css/font-awesome-ie7.min.css" />
+		<![endif]-->
+
+		<!-- page specific plugin styles -->
+
+		<link rel="stylesheet" href="../new_templates/assets/css/jquery-ui-1.10.3.custom.min.css" />
+		<link rel="stylesheet" href="../new_templates/assets/css/jquery.gritter.css" />
+		<link rel="stylesheet" href="../new_templates/assets/css/select2.css" />
+		<link rel="stylesheet" href="../new_templates/assets/css/bootstrap-editable.css" />
+		<link rel="stylesheet" href="../new_templates/assets/css/bootstrap-timepicker.css" />
+
+		<!-- fonts -->
+
+		<link rel="stylesheet" href="../new_templates/assets/css/ace-fonts.css" />
+
+		<!-- ace styles -->
+
+		<link rel="stylesheet" href="../new_templates/assets/css/ace.min.css" />
+		<link rel="stylesheet" href="../new_templates/assets/css/ace-rtl.min.css" />
+		<link rel="stylesheet" href="../new_templates/assets/css/ace-skins.min.css" />
+		<style type="text/css" media="screen">
+			.main-content{
+				margin-left:0px;
+			}
+		</style>
+
+		<!--[if lte IE 8]>
+		  <link rel="stylesheet" href="../new_templates/assets/css/ace-ie.min.css" />
+		<![endif]-->
+
+		<!-- inline styles related to this page -->
+
+		<!-- ace settings handler -->
+
+		<script src="../new_templates/assets/js/ace-extra.min.js"></script>
+
+		<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+
+		<!--[if lt IE 9]>
+		<script src="../new_templates/assets/js/html5shiv.js"></script>
+		<script src="../new_templates/assets/js/respond.min.js"></script>
+		<![endif]-->
+	</head>
+
+	<body >
+		<div class="main-container" id="main-container">
+			<script type="text/javascript">
+				try{ace.settings.check('main-container' , 'fixed')}catch(e){}
+			</script>
+
+			<div class="main-container-inner">
+				<div class="main-content" >
+				<!-- To User
+					<div class="breadcrumbs" id="breadcrumbs">
+						<ul class="breadcrumb">
+							<li>
+								<i class="icon-home home-icon"></i>
+								<a href="">Home</a>
+							</li>
+							<li class="active" data-ng-bind='Profissional'></li>
+						</ul>
+
+						<div class="nav-search" id="nav-search">
+							<form class="form-search">
+								<span class="input-icon">
+									<input type="text" placeholder="Search..." class="nav-search-input" id="nav-search-input" autocomplete="off" />
+									<i class="icon-search nav-search-icon"></i>
+								</span>
+							</form>
+						</div>
+					</div>
+				breadcrumb -->
+
+					<div class="page-content" data-ng-view>
+						
+					</div><!-- /.page-content -->
+				</div><!-- /.main-content -->
+			</div><!-- /.main-container-inner -->
+
+			<a href="#" id="btn-scroll-up" class="btn-scroll-up btn btn-sm btn-inverse">
+				<i class="icon-double-angle-up icon-only bigger-110"></i>
+			</a>
+		</div><!-- /.main-container -->
+
+		<!-- basic scripts -->
+
+		<!--[if !IE]> -->
+
+		<script type="text/javascript">
+			window.jQuery || document.write("<script src='../new_templates/assets/js/jquery-2.0.3.min.js'>"+"<"+"/script>");
+		</script>
+
+		<!-- <![endif]-->
+
+		<!--[if IE]>
+<script type="text/javascript">
+ window.jQuery || document.write("<script src='../new_templates/assets/js/jquery-1.10.2.min.js'>"+"<"+"/script>");
+</script>
+<![endif]-->
+
+		<script type="text/javascript">
+			if("ontouchend" in document) document.write("<script src='../new_templates/assets/js/jquery.mobile.custom.min.js'>"+"<"+"/script>");
+		</script>
+		
+		<script src="dist/libs.min.js"></script>
+		<script src="libs/angular-br/br.js"></script>
+			<script language="javascript" src="/js/default/global.js"></script>
+	<script language="javascript" src="/js/default/date.js"></script>
+	<script language="javascript" src="/js/default/js_increment.js"></script>
+	<script language="javascript" src="/js/default/data_manager.js"></script>
+	<script language="javascript" src="/js/default/manager.js"></script>
+	<script language="javascript" src="/js/default/langs.i18n.js"></script><script language="javascript" src="/js/default/util.js"></script>
+
+	<script language="javascript" src="/js/default/jquery_fields.js"></script>
+	<script language="javascript" src="/js/default/jquery_plugins.js"></script>
+	<script language="javascript" src="/js/default/customer_select.js"></script>
+	<script language="javascript" src="/js/default/startup.js"></script>
+	<script language="javascript" src="/js/default/mouse_trap.js"></script>
+	<script language="javascript" src="/js/default/bar_code_controller.js"></script>
+		
+
+		<!-- page specific plugin scripts -->
+
+		<!--[if lte IE 8]>
+		  <script src="../new_templates/assets/js/excanvas.min.js"></script>
+		<![endif]-->
+		
+		<script src="dist/main.js"></script>
+
+		
+		<!-- inline scripts related to this page -->
+
+		<script type="text/javascript">
+		</script>
+	</body>
+</html>

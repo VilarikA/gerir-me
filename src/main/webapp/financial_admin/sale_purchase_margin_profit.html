@@ -1,0 +1,214 @@
+<div id="main" class="lift:surround?with=calendar;at=content">
+  <link rel="stylesheet" type="text/css" href="/select2/select2.css" />
+  <script src="/select2/select2.js"></script><script src="/select2/select2_locale_pt-BR.js"></script>
+  <script src="/js/reports.js"></script>
+  <script src="/js/jquery.tablesorter.pager.js"></script>
+  <script type="text/javascript">
+  var customers = [];
+  $(function(){
+    var fields = [];
+    var purchase = 0;
+    var margin = 0;
+    var sale = 0;
+    var amount = 0;
+    var profit = 0;
+    fields[0] = "int";
+    fields[2] = {
+      type : "format",
+      decode : function(value){
+        var floatValue = parseFloat(value);
+        if(!isNaN(floatValue)) {
+           purchase += floatValue;
+        }
+        return floatValue.formatMoney();
+      }
+    };
+    fields[3] = {
+      type : "format",
+      decode : function(value){
+        var floatValue = parseFloat(value);
+        if(!isNaN(floatValue)) {
+           margin += floatValue;
+        }
+        return floatValue.formatMoney();
+      }
+    };
+    fields[4] = {
+      type : "format",
+      decode : function(value){
+        var floatValue = parseFloat(value);
+        if(!isNaN(floatValue)) {
+           sale += floatValue;
+        }
+        return floatValue.formatMoney();
+      }
+    };
+    fields[5] = {
+      type : "format",
+      decode : function(value){
+        var floatValue = parseFloat(value);
+        if(!isNaN(floatValue)) {
+           amount += floatValue;
+        }
+        return floatValue.formatMoney();
+      }
+    };
+    fields[6] = {
+      type : "format",
+      decode : function(value){
+        var floatValue = parseFloat(value);
+        if(!isNaN(floatValue)) {
+          profit += floatValue;
+        }
+        return floatValue.formatMoney();
+      }
+    };
+    $("#unit").unitField(true,false);
+    var url = "/report/sales_purchase_margin";
+    var request = function(){
+      customers = [];
+
+      renderReport(url,fields,$("#form_report").serializeObject(), "#grid", function(){
+        $('#purchase').val(purchase.formatMoney());
+        $('#margin').val(margin.formatMoney());
+        $('#sale').val(sale.formatMoney());
+        $('#amount').val(amount.formatMoney());
+        $('#profit').val(profit.formatMoney());
+      });
+    }
+    $("#send").click(request);
+    DataManager.getUsers(function(userObj){
+      user_str = "";
+      for(var i in userObj){
+            user_str += "<option value='"+userObj[i].id+"'>"+userObj[i].name+"</option>";
+        }
+        $("#user").html(user_str);     
+    });
+    //request();
+  });  
+  </script>
+    <div>
+      <form id="form_report" class="well form-search" method='get'>
+        <h1><span class="lift:CompanySnippet.thumb"> </span>Relatório de Vendas e Comissões</h1>
+        <div class="row">
+          <div class="span8">
+            <div class="clearfix">
+              <label for="type_category">Intervalo</label>
+              <div class="input">
+                <div class="inline-inputs">
+                  <div class="input-prepend" style="float:left; padding-right:10px">
+                    <span class="add-on"><img width="16" src="/images/calendar_addon.png"></span>
+                    <input type="text" class="input-small date start_of_month" id='start' name="start" placeholder="Início"/>
+                  </div>
+                  <div class="input-prepend" style="float:left; padding-right:10px">
+                    <span class="add-on"><img width="16" src="/images/calendar_addon.png"></span>
+                    <input type="text" class="input-small date to_day" id='end' name="end" placeholder="Fim"/>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="clearfix">
+                <label for="user"><span data-i18n='Profissionais'></span></label>
+                <div class="input">
+                <select multiple="multiple"  id='user' name="user">
+                </select>
+              </div>
+            </div>
+            <div class="clearfix">
+              <label for="unit">Unidade </label>
+                <div class="input">
+                  <div class="inline-inputs">
+                    <select id="unit" name="unit"></select>
+                    <span class="help-block">Unidade do atendimento, mesmo que o <span data-i18n='Profissional'></span> tenha outra unidade no cadastro
+                    </span>
+                  </div>
+                </div>
+            </div>
+            <div class="clearfix">
+              <label for=""></label>
+               <div class="input">
+                  <button type="button" id="send" class="btn success">Buscar</button>
+               </div>
+            </div>                        
+          </div>
+          <div class="span7">
+            <div class="clearfix">
+              <label for="type">Tipo</label>
+                <div class="input">
+                  <div class="inline-inputs">
+                      <select class="local_storage" name="type" id="type">
+                          <option value='1,0'>Todos</option>
+                          <option value='1'>Produtos</option>
+                          <option value='0'>Serviços</option>
+                       </select>
+                       <span class="help-block"></span>
+                  </div>
+                </div>
+            </div>
+            <div class="clearfix">
+              <label for="start">Margem</label>
+                <div class="input">
+                  <div class="inline-inputs">
+                    <div style="float:left; padding-right:10px" class="input-prepend">
+                      <span class="add-on"><img width="16" src="/images/money.png"></span>
+                      <input type="text" class="local_storage input-mini currency" id='margin_value' name="margin_value" placeholder="Margem" value="0.1"/>
+                    </div>
+                  </div>
+                </div>
+            </div>
+          </div>
+          <div class="span18">
+            <div class="clearfix">
+              <label for="start_date">Totais </label>
+              <div class="input">
+                <div class="inline-inputs">
+                  <div class="input-prepend" style="float:left; padding-right:10px">
+                    <div class="input-prepend" style="float:left; padding-right:10px">
+                      <span class="add-on"><img src="/images/money.png" width="16"></span>
+                      <input class="small" id="purchase" name="purchase" size="19" placeholder="0.00" type="text">
+                      <span class="help-block">Compra</span>
+                    </div>
+                    <div class="input-prepend" style="float:left; padding-right:10px">
+                      <span class="add-on"><img src="/images/money.png" width="16"></span>
+                      <input class="small" id="margin" name="margin" size="19" placeholder="0.00" type="text">
+                      <span class="help-block">Margem</span>
+                    </div>
+                    <div class="input-prepend" style="float:left; padding-right:10px">
+                      <span class="add-on"><img src="/images/money.png" width="16"></span>
+                      <input class="small" id="sale" name="sale" size="19" placeholder="0.00" type="text">
+                      <span class="help-block">Venda</span>
+                    </div>
+                    <div class="input-prepend" style="float:left; padding-right:10px">
+                      <span class="add-on"><img src="/images/money.png" width="16"></span>
+                      <input class="small" id="amount" name="amount" size="19" placeholder="0.00" type="text">
+                      <span class="help-block">Qtde</span>
+                    </div>
+                    <div class="input-prepend" style="float:left; padding-right:10px">
+                      <span class="add-on"><img src="/images/money.png" width="16"></span>
+                      <input class="small" id="profit" name="profit" size="19" placeholder="0.00" type="text">
+                      <span class="help-block">lucro</span>
+                    </div>
+                  </div>
+                </div>
+              </div>                      
+            </div>
+          </div>
+        </div>
+      </form>
+      <form action="">
+    </form>      
+  </div>
+  <table id="grid" class="bordered-table zebra-striped">
+      <thead>
+        <th>Id</th>
+        <th>Nome</th>
+        <th>Compra</th>
+        <th>Margem</th>
+        <th>Venda</th>
+        <th>Qtde</th>
+        <th>Lucro</th>
+      </thead>
+      <tbody>
+      </tbody>
+  </table>
+ </div>

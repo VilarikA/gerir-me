@@ -1,0 +1,149 @@
+<div id="main" class="lift:surround?with=calendar;at=content">
+  <script type="text/javascript" src="/js/total_to_payment.js"></script>  
+  <script type="text/javascript">
+  $(function(){
+    $("#terms").termsField();
+  });  
+  </script>
+  <form class="well form-search" method='get'>
+    <h1>
+      <span class="lift:CompanySnippet.thumb"> </span>Relatório de Comissões - Totais
+    </h1>
+    <div class="row">
+      <div class="span8">
+        <label for="type_category">Dias</label>
+        <div class="clearfix">
+          <div class="input">
+            <div class="inline-inputs">
+              <div class="input-prepend" style="float:left; padding-right:10px">
+                <span class="add-on"><img width="16" src="/images/calendar_addon.png"></span>
+                <input type="text" class="input-small date" id='startDate' name="startDate" placeholder="Início">
+              </div>
+              <div class="input-prepend" style="float:left; padding-right:10px">
+                <span class="add-on"><img width="16" src="/images/calendar_addon.png"></span>
+                <input type="text" class="input-small date" id='endDate' name="endDate" placeholder="Fim">
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="clearfix">
+          <label for="user"><span data-i18n='Profissional'></span></label>
+            <div class="input">
+              <div class="inline-inputs">
+                  <select class="local_storage" name="user" id="user"></select>
+              </div>
+            </div>
+        </div>
+        <input type="hidden" class="has-unit-module lift:SecuritySnippet.hasUnitModule" value="1">
+        <div class="clearfix lift:SecuritySnippet.hasUnitModule">
+          <label for="unit">Unidade</label>
+           <div class="input">
+              <select class="local_storage xlarg url_parameter" name="unit" id='unit'></select>
+           </div>
+        </div>
+      </div>
+      <div class="span8">
+        <div class="clearfix">
+          <label for="type_category">Tipo</label>
+            <div class="input">
+              <div class="inline-inputs">
+                  <select class="local_storage" name="type" id="type">
+                      <option value='1,0'>Todos</option>
+                      <option value='1'>Produtos</option>
+                      <option value='0'>Serviços</option>
+                   </select>
+                   <span class="help-block">Tipos de Comissões (ex: Prod / Ser)</span>
+              </div>
+            </div>
+        </div>
+        <div class="clearfix">
+          <label for="dttype">Tipo Data lanc</label>
+            <div class="input">
+              <div class="inline-inputs">
+                  <select class="local_storage" name="dttype" id="dttype">
+                      <option value='0'>Vencimento</option>
+                      <option value='1'>Competência</option>
+                      <option value='2'>Pagamento</option>
+                  </select>
+                  <a href="" class="_popover_basic" rel="popover" data-content="Determina se os lançamentos financeiros serão acessados pela data de Vencimento, Pagamento ou Competência" data-original-title="Informação">
+                    <img width='20' src="/images/info.gif"/>
+                  </a>
+              </div>
+            </div>
+        </div>
+        <div class="clearfix">
+          <label for="terms">Termos</label>
+            <div class="input">
+              <div class="inline-inputs">
+                  <select class="local_storage" name="terms" id="terms"></select>
+              </div>
+            </div>
+        </div>
+      </div>
+    </div>
+    <div class="clearfix">
+      <label for="send"></label>
+      <div class="input">
+        <button type="button" id='send' class="btn success">Buscar</button>
+      </div>
+    </div>
+    <a onclick="return ExcellentExport.excel(this, 'grid', 'data');"
+      href="#" download="data.xls" class="btn excel_buttton"
+      title="Exportar para excel">
+      <img style="width: 16px;" src="/images/excel.png" />
+    </a>  
+    <a onclick="return ExcellentExport.csv(this, 'grid', ';');"
+      href="#" download="data.csv" class="btn excel_buttton"
+      title="Exportar para csv">
+      <img style="width: 16px;" src="/images/generate.png" />
+    </a>  
+    <a id="hide_grid" onclick="$('#grid').toggle();return false;" 
+      href="#" class="btn excel_buttton" 
+      title="Ocultar tabela">
+      <img style="width: 16px;" src="/images/collapse.png" />
+    </a>  
+    <table id="grid" class="bordered-table zebra-striped">
+        <thead>
+          <th>Data de Pagamento</th>
+          <th class="clearfix lift:SecuritySnippet.hasUnitModule">Unidade</th>
+          <th class='lift:SecuritySnippet.isShowSalesToUser'>Caixa</th>
+          <th class='lift:SecuritySnippet.isShowSalesToUser'>Conta</th>
+          <th>Categoria</th>
+          <th>Descrição</th>
+          <th>Valor</th>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+    <div class="clearfix">
+      <label for="total">Total de Comissão</label>
+      <div class="input">
+        <div class="input-prepend">
+          <span class="add-on"><img src="/images/add.png" width="16"></span>
+          <input class="mini disabled" disabled='true' id="total" name="total" size="30" type="text"/>
+          <span class="help-block">Valor total de comissão do <span data-i18n='Profissional'></span></span>
+        </div>
+      </div>
+    </div>
+    <div class="clearfix">
+      <label for="total">Total já pago</label>
+      <div class="input">
+        <div class="input-prepend">
+          <span class="add-on"><img src="/images/cheque.png" width="16"></span>
+          <input class="mini disabled" disabled='true' id="total_paid" name="total_paid" size="30" type="text"/>
+          <span class="help-block">Valor que já foi pago ao <span data-i18n='Profissional'></span></span>
+        </div>
+      </div>
+    </div>
+    <div class="clearfix">
+      <label for="total">Total a pagar</label>
+      <div class="input">
+        <div class="input-prepend">
+          <span class="add-on"><img src="/images/money.png" width="16"></span>
+          <input class="mini disabled" disabled='true' id="to_pay" name="to_pay" size="30" type="text"/>
+          <span class="help-block">Valor que deve ser pago ao <span data-i18n='Profissional'></span></span>
+        </div>
+      </div>
+    </div>            
+  </form>
+ </div>

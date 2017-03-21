@@ -1,0 +1,9 @@
+{
+  "dependencies": {
+    "jenkins-api": "^0.2.6",
+    "nginx-conf": "^0.2.3",
+    "q": "^1.1.2",
+    "request": "^2.42.0",
+    "request-promise": "^0.1.3"
+  }
+}

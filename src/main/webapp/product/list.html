@@ -1,0 +1,128 @@
+<div id="main" class="lift:surround?with=inventory;at=content">
+	<div class="well">
+        <label for="btn"></label>
+		<a class="btn primary" href="/product_admin/edit">
+			<img src="/images/new.png" width="16px">
+		Inserir novo
+		</a>
+		<a class="btn primary" alt="Cadastro de tipo de produtos" href="/product/list_type">
+			<img src="/images/categorie.png" width="16px">
+		Tipos
+		</a>
+		<a class="btn primary" alt="Cadastro de linhas de produto" href="/product/list_line">
+			<img src="/images/lines.png" width="16px">
+		Linhas
+		</a>
+	</div>
+
+	<div class='filter block-message success"'>
+		<img style='float:left' src="/images/filter.png"/>
+		<span class="filter_form">
+		<script type="text/javascript">
+			$(function(){
+				$('.product_select_thuch').productSearch({createName:false, iconElement:".add-on", userThuch:true}).change(function(){
+					var id = $(this).val();
+					document.location.href="/product_admin/edit?id="+id;
+				});
+				$(".name_product").val(gup("name"))
+				$("#productType").productTypeField(true);
+				if(gup("all")){
+					$("#all").attr("checked", "checked");
+				}				
+			});
+		</script>
+			<form action=''>
+            	<div class="clearfix">
+					<div class="input">
+						<input id="inventory_control" name="inventory_control" type="checkbox"/> Ctrl Estoque?
+						<input id="discount" name="discount" type="checkbox"/> Desconto?
+						<input id="bom" name="bom" type="checkbox"/> Pacotes?
+					</div>
+				</div>
+				<div class="clearfix">
+					<label for="units">Produto </label>
+					<span class="add-on"></span>
+					<input class="product_select_thuch xlarge" name="id" size="30" type="text"/>
+				</div>			
+				<input class="local_storage xlarge name_product" id="name_product" name="name" size="30" type="text" placeholder="Nome"/>
+			    <span class='label-inline'>
+			    	Tipo
+			    </span>
+			    <span class='select-inline'>
+			      <select size="30" id="productType" class='local_storage' name="productType">
+			      </select>					       						    
+			    </span>
+				<input class="all" id="all" name="all" type="checkbox"/> Mostrar todos?
+				<input class="btn success" type="submit" value="Buscar">
+			</form>
+		</span>
+	</div>
+<table class="bordered-table zebra-striped">
+		<thead>
+			<th>Id</th>
+			<th>Foto</th>
+			<th>Ext. Cod</th>
+			<th>Nome</th>
+			<th>Preço de Venda</th>
+			<th class="lift:SecuritySnippet.isInventoryManager">Comissão</th>
+			<th>Tipo</th>
+			<th>Estoque Corrente</th>
+			<th>Observação</th>
+			<th>Ações</th>
+		</thead>
+		<tbody>
+			<tr class="lift:ProductSnippet:products">
+				<td>
+					<f:id></f:id>
+				</td>
+				<td>
+					<f:thumb></f:thumb>
+				</td>
+				<td>
+					<f:ext_id></f:ext_id>
+				</td>				
+				<td>
+					<f:name></f:name>
+				</td>
+				<td>
+					<f:salePrice></f:saleprice>
+				</td>
+				<td class="lift:SecuritySnippet.isInventoryManager">
+					<f:commission></f:commission>
+				</td>
+				<td>
+					<f:type></f:type>
+				</td>
+				<td>
+					<f:currentstock></f:currentstock>
+				</td>
+				<td>
+					<f:obs></f:obs>
+				</td>
+
+				<td>
+					<form method="post">
+						<span>
+							<f:actions></f:actions>
+						</span>
+						<span>
+							<f:delete></f:delete>
+						</span>
+						<span style="display:none">
+							<f:_id></f:_id>
+						</span>
+					</form>
+				</td>
+			</tr>
+		</tbody>
+</table>
+<span class='lift:ProductSnippet.paginate'>
+	<ul class='pagination'>
+		<li class="fisrt"><nav:first/></li>
+		<li class="prev"><nav:prev/></li>
+		<li class="next"><nav:zoomedpages/></li>
+		<li class="next"><nav:next/></li>
+		<li class="last"><nav:last/></li>
+	</ul>
+</span>
+</div>

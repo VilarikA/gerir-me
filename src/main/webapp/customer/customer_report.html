@@ -1,0 +1,240 @@
+<div id="main" class="lift:surround?with=calendar;at=content">
+  <link rel="stylesheet" type="text/css" href="/select2/select2.css" />
+  <script src="/select2/select2.js"></script><script src="/select2/select2_locale_pt-BR.js"></script>
+  <script src="/js/reports.js"></script>
+  <script src="/js/jquery.tablesorter.pager.js"></script>
+  <script type="text/javascript">
+  var customers = [];
+  $(function(){
+    $("#user").userField(true);
+    $("#offsale").offSaleField(true);
+    $("#unit").unitField(true,false);
+    // rigel trouxe do treatments_conference.js 23/07/2014
+    DataManager.getUsers(function(userObj){
+      user_str = "";
+      user_str += "<option value=''>Todos</option>";
+      for(var i in userObj){
+            user_str += "<option value='"+userObj[i].id+"'>"+userObj[i].name+"</option>";
+        }
+        $("#user").html(user_str);
+        $("#user").val("");
+    });
+    $("#send_message").notificationField(true);
+    $("#activity").activityField();
+    $("#activity_type").activityTypeField();
+    $("#start").val(new Date().getStartOfMonth().getDateBr());
+    $("#end").val(new Date().getDateBr());
+    var total = 0;
+    var fields = [];
+    //fields[0] = "int";
+    fields[0] = {
+      type : "format",
+      decode : function(value){
+        var intValue = parseInt(value);
+        if(!isNaN(intValue)) {
+          total += 1;
+        }
+        return intValue;
+      }
+    }
+    fields[1] = {
+      type: "format",
+      decode: function(name, row) {
+        return "<a href='/customer/edit?id=" + row[0] + "' target='_customer_maste'>" + name + "</a>";
+      }
+    }
+    fields[4] = "date";
+    fields[5] = "date";
+    fields[6] = {
+      type : "format",
+      decode : function(id){
+        customers.push(id);
+        return "<a class='btn' href='/customer/edit?id="+id+"' target='_customer_maste'>Ir</a>"
+      }
+    };
+    var url = "/report/customers";
+    var request = function(){
+      total = 0.00;
+      customers = [];
+      renderReport(url,fields,$("#form_report").serializeObject(), "#grid", function(){
+        $('#total').val(total);
+      });
+    }
+    $("#send").click(request);
+    $("#send_notifications").click(function(){
+      var message = $("#send_message").val();
+      if(confirm("Deseja enviar esta mensagem aos clientes?")){
+          $.get("/notification/messagesend/"+customers.join(",")+"/"+message,function(r){
+            if(r === '1'){
+              alert("Enviado com sucesso!");
+            }else {
+              alert(r);
+            }
+          }).error(function(){
+            alert("Erro ao enviar!")
+          }); 
+      }
+    });
+    //request();
+  });  
+  </script>
+  <div class="">
+    <form id="form_report" class="well form-search" method='get'>
+      <h1>
+        <span class="lift:CompanySnippet.thumb"> </span>Relatório de Clientes
+      </h1>
+      <div class="row">
+        <div class="span8">
+          <div class="clearfix">
+            <label for="start">Criados</label>
+             <div class="input">
+               <div class="inline-inputs">
+                  <div class="input-prepend" style="float:left; padding-right:10px">
+                   <span class="add-on"><img width="16" src="/images/calendar_addon.png"></span>
+                   <input type="text" class="input-small date" id='start' name="start" placeholder="Início">
+                  </div>
+                  <div class="input-prepend" style="float:left; padding-right:10px">
+                   <span class="add-on"><img width="16" src="/images/calendar_addon.png"></span>
+                   <input type="text" class="input-small date" id='end' name="end" placeholder="Fim">
+                  </div>
+                </div>
+                <span class="help-block">Criados entre </span>
+             </div>
+          </div>
+          <div class="clearfix">
+            <label for="">Atendidos</label>
+             <div class="input">
+                <div class="inline-inputs">
+                  <div class="input-prepend" style="float:left; padding-right:10px">
+                     <span class="add-on"><img width="16" src="/images/calendar_addon.png"></span>
+                     <input type="text" class="input-small date" id='start_treatment' name="start_treatment" placeholder="Início">
+                  </div>
+                  <div class="input-prepend" style="float:left; padding-right:10px">
+                     <span class="add-on"><img width="16" src="/images/calendar_addon.png"></span>
+                     <input type="text" class="input-small date" id='end_treatment' name="end_treatment" placeholder="Fim">
+                  </div>
+                </div>
+                <span class="help-block">Atendidos entre</span>
+             </div>
+          </div>
+          <div class="clearfix">
+             <label for="">Não Atendidos</label>
+             <div class="input">
+                <div class="inline-inputs">
+                  <div class="input-prepend" style="float:left; padding-right:10px">
+                     <span class="add-on"><img width="16" src="/images/calendar_addon.png"></span>
+                     <input type="text" class="input-small date" id='start_absence' name="start_absence" placeholder="Início ausência">
+                  </div>
+                  <div class="input-prepend" style="float:left; padding-right:10px">
+                     <span class="add-on"><img width="16" src="/images/calendar_addon.png"></span>
+                     <input type="text" class="input-small date" id='end_absence' name="end_absence" placeholder="Fim ausência">
+                  </div>
+                </div>
+                <span class="help-block">Ausentes/não atendidos entre</span>
+             </div>
+          </div>
+          <div class="clearfix">
+            <label for="">Tipos</label>
+             <div class="input">
+                <select multiple="multiple" class="url_parameter" name="activity_type" id='activity_type'></select>
+                <span class="help-block"></span>
+             </div>
+          </div>            
+          <div class="clearfix">
+            <label for="">Serviços</label>
+             <div class="input">
+                <select multiple="multiple" class="url_parameter" name="activity" id='activity'></select>
+                <span class="help-block">Que compraram</span>
+             </div>
+          </div>
+        </div>
+        <div class="span8">
+          <div class="clearfix">
+            <label for="user"><span data-i18n='Profissionais'></span></label>
+            <div class="input">
+              <div class="inline-inputs">
+                <select multiple="multiple" class="url_parameter" name="user" id='user'></select>
+                <span class="help-block"><span data-i18n='Profissionais'></span></span>
+              </div>
+            </div>
+          </div>
+          <div class="clearfix lift:SecuritySnippet.hasUnitModule">
+            <label for="unit">Unidade </label>
+              <div class="input">
+                <div class="inline-inputs">
+                  <select id="unit" name="unit"></select>
+                  <span class="help-block">Unidade do cadastro do <span data-i18n='Cliente'></span>, mesmo que ele tenha sido atendido em outra unidade
+                  </span>
+                </div>
+              </div>
+          </div>
+          <div class="clearfix lift:SecuritySnippet.hasOffSaleModule">
+            <label for="offsale">Convênio</label>
+            <div class="input">
+              <div class="inline-inputs">
+                <div style="float:left; padding-right:10px" class="input-prepend">
+                  <span class="add-on"><img width="16" src="/images/agreement.png"></span> 
+                  <select class= 'local_storage xlarge' id='offsale'  name="offsale"></select>
+                </div>
+              </div>
+            </div>
+          </div>
+          <fieldset>
+            <legend>Envio de E-mail</legend>
+            <div class="clearfix">
+              <label for="">Notificação</label>
+               <div class="input">
+                  <select name="send_message" id="send_message"></select>
+                  <span class="help-block">Selecione uma mensagem para enviar aos <span data-i18n='Clientes'></span></span>
+               </div>
+            </div>
+            <div class="clearfix">
+              <label for=""></label>
+               <div class="input">
+                  <a type="button" id="send_notifications" class="btn primary">
+                    <img width="16px" src="/images/mail.png"/>
+                    Enviar
+                  </a>
+               </div>
+            </div>
+          </fieldset>
+        </div>
+      </div>
+      <div class="clearfix">
+        <label for=""></label>
+        <div class="input">
+          <button type="button" id="send" class="btn success">Buscar</button>
+        </div>
+      </div>
+      <div class="span18">
+        <div class="clearfix">
+          <label for="total">Total </label>
+          <div class="input">
+            <div class="inline-inputs">
+              <div class="input-prepend" style="float:left; padding-right:10px">
+                <div style="float:left; padding-right:10px" class="input-prepend">
+                  <span class="add-on"><img src="/images/count.png" width="16"></span>
+                  <input class="small" id="total" name="total" size="19" placeholder="0" type="text">
+                  <span class="help-block">Total</span>
+                </div>
+              </div>
+            </div>
+          </div>                      
+        </div>
+      </div>
+    </form>
+  </div>
+  <table id="grid" class="bordered-table zebra-striped">
+      <thead>
+        <th>Id</th>
+        <th>Nome</th>
+        <th>Telefone............</th>
+        <th>E-mail</th>
+        <th>Nascimento</th>
+        <th>Dt Criado</th>
+        <th>Cad</th>
+      </thead>
+      <tbody>
+      </tbody>
+  </table>
+ </div>

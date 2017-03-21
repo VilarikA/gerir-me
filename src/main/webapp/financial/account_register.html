@@ -1,0 +1,628 @@
+<div id="main" class="lift:surround?with=financial;at=content">
+  <style type="text/css">
+    @import url('/css/tree_data.css');
+  </style>
+  <script type="text/javascript" src="/js/account_register.js?_2"></script>
+  <script type="text/javascript" src="/js/dre_report.js"></script>
+  <script type="text/javascript" src="/js/jquery.tablesorter.pager.js"></script>
+  <div class="hide_on_print">
+    <div class="well">
+      <label for="btn"></label>
+      <a class="btn primary new_account" id="new_account" alt="Novo lançamento de conta a pagar/receber">
+        <img width="15px" src="/images/new.png"/>
+        Inserir novo
+      </a>
+      <a  id="search2" class="btn success">
+        <img src="/images/search.png" width="16">
+        Buscar
+      </a>            
+      <a class="btn primary" href="/financial/upload_banck_file" alt="Importar arquivo do Banco(Conta corrente)"><img width="15px" src="/images/extract.png"/> Importar OFX</a>
+    </div>
+  </div>
+  <div class='filter block-message success"'>
+    <span class="filter_form">
+      <form class="well form-search" method='get' action="">
+        <input type="hidden" id='ids'/>
+        <div class="row">
+          <div class="span8">
+            <div class="clearfix">
+              <label for="dttype">Tipo Data lanc</label>
+                <div class="input">
+                  <div class="inline-inputs">
+                      <select class="local_storage" name="dttype" id="dttype">
+                          <option value='0'>Vencimento</option>
+                          <option value='1'>Competência</option>
+                          <option value='2'>Pagamento</option>
+                      </select>
+                      <a href="" class="_popover_basic" rel="popover" data-content="Determina se os lançamentos financeiros serão acessados pela data de Vencimento, Pagamento ou Competência" data-original-title="Informação">
+                        <img width='20' src="/images/info.gif"/>
+                      </a>
+                  </div>
+                </div>
+            </div>
+            <div class="clearfix">
+              <label for="start_date">Intervalo</label>
+                <div class="input">
+                  <div class="inline-inputs">
+                      <div style="float:left; padding-right:10px" class="input-prepend">
+                        <span class="add-on"><img width="16" src="/images/calendar_addon.png"></span>
+                        <input type="text" placeholder="De" size="19" name="start_date" id="start_date" class="small date url_parameter">
+                      </div>
+                      <div style="float:left; padding-right:10px" class="input-prepend">
+                        <span class="add-on"><img width="16" src="/images/calendar_addon.png"></span>
+                        <input type="text" placeholder="Ate" size="19" name="end_date" id="end_date" class="small date url_parameter">
+                      </div>
+                  </div>
+                </div>
+            </div>          
+            <div class="clearfix">
+                <label for="account_categories_filter">Categorias</label>
+                <div class="input">
+                  <div class="inline-inputs">
+                    <div style="float:left; padding-right:10px" class="input-prepend">
+                      <select name='account_categories_filter' class="category_select alow_all url_parameter" id="account_categories_filter" multiple="multiple"></select>
+                      <input name='account_categories_filter1' class="url_parameter" id="account_categories_filter1" type="hidden">Trans
+                      <input class="local_storage url_parameter" name="showtransfer_filter" id='showtransfer_filter' type='checkbox' />
+                    </div>
+                  </div>
+                </div>
+            </div>
+            <div class="clearfix">
+                <label for="account_account_filter">Contas</label>
+                <div class="input">
+                    <select name='account_account_filter' class="account_select" id="account_account_filter" multiple="multiple"></select>
+                </div>
+            </div>            
+            <div class="clearfix">
+              <label for="start">Valores</label>
+                <div class="input">
+                  <div class="inline-inputs">
+                    <div style="float:left; padding-right:10px" class="input-prepend">
+                      <span class="add-on"><img width="16" src="/images/money.png"></span>
+                      <input type="text" class="input-mini currency" id='start_value' name="start_value" placeholder="Mínimo"/>
+                    </div>
+                    <div style="float:left; padding-right:10px" class="input-prepend">
+                      <span class="add-on"><img width="16" src="/images/money.png"></span>
+                      <input type="text" class="input-mini currency" id='end_value' name="end_value" placeholder="Máximo"/>
+                    </div>
+                  </div>
+                </div>
+            </div>
+            <div class="clearfix">
+                <label for="status_select_filter">Status</label>
+                <div class="input">
+                  <select id='status_select_filter' multiple="multiple" name='status_select_filter'>
+                      <option selected="selected" value='true'>Pagos</option>
+                      <option selected="selected" value='false'>Planejados</option>
+                  </select>
+                </div>
+            </div>
+            <div class="clearfix">
+                <label for="type_select_filter">Tipos</label>
+                <div class="input">
+                  <select id='type_select_filter' multiple="multiple" name='type_select_filter'>
+                      <option selected="selected" value='0'>Entrada</option>
+                      <option selected="selected" value='1'>Saída</option>
+                  </select>
+                </div>
+            </div>
+            <div class="clearfix">
+                <label for="status_select_filter">Observação</label>
+                <div class="input">
+                  <input type="text" id='obs_search' name="obs_search" placeholder="Contendo"/>
+                </div>
+            </div>
+            <div class="clearfix">
+                <label for="user"><span data-i18n='Profissional'></span></label>
+                <div class="input">
+                    <select name='user' class="user" id="user" multiple="multiple"></select>
+                </div>
+            </div>
+          </div>
+          <div class="span8">
+            <div class="clearfix">
+              <label for="created" alt="Lançadas entre">Dt Lancto</label>
+                <div class="input">
+                  <div class="inline-inputs">
+                      <div style="float:left; padding-right:10px" class="input-prepend">
+                        <span class="add-on"><img width="16" src="/images/calendar_addon.png"></span>
+                        <input type="text" placeholder="De" size="19" name="start_create_date" id="start_create_date" class="small date">
+                      </div>
+                      <div style="float:left; padding-right:10px" class="input-prepend">
+                        <span class="add-on"><img width="16" src="/images/calendar_addon.png"></span>
+                        <input type="text" placeholder="Ate" size="19" name="end_create_date" id="end_create_date" class="small date">
+                      </div>
+                  </div>
+                </div>
+            </div>            
+            <input type="hidden" class="has-unit-module lift:SecuritySnippet.hasUnitModule" value="1">
+            <div class="clearfix lift:SecuritySnippet.hasUnitModule">
+                <label for="units">Unidades</label>
+                <div class="input">
+                    <select name='unit' class="unit" id="unit" multiple="multiple"></select>
+                </div>
+            </div>          
+            <div class="clearfix">
+                <label for="cashier">Caixas</label>
+                <div class="input">
+                    <select name='cashier' class="cashier xlarge" id="cashier" multiple="multiple"></select>
+                </div>
+            </div>
+            <div class="clearfix">
+                <label for="user">Parceiro</label>
+                <div class="input">
+                  <span>
+                    <input id="customer" name="customer" class="mini id_customer_search"/>
+                    <input placeholder="Nome" type="text" size="30" name="name_user" id="name_user"  class="name_customer_search normal_name"/>
+                  </span>
+                  <span class="help-block">
+                        <span data-i18n='Profissional'></span> / Parceiro
+                        <img alt="Cadastro rápido" src="/images/add.png" width="24" id="customer_add_button">
+                  </span>
+                </div>
+            </div>
+            <div class="clearfix">
+                <label for="type_select_filter">Centros de custo</label>
+                <div class="input">
+                  <select id='costcenter_select_filter' multiple="true" name='costcenter_select_filter'>
+                  </select>
+                </div>
+            </div>
+            <div class="clearfix">
+                <label for="type_select_filter">Formas de Pagamento</label>
+                <div class="input">
+                  <select id='paymenttype_select_filter' multiple="true" name='paymenttype_select_filter'>
+                  </select>
+                </div>
+            </div>
+          </div>
+          </div>
+        </form>
+      </span>
+      <div class="hide_on_print">
+        <div class="well">
+          <div class="clearfix">
+            <label for="send"></label>
+            <div class="input">
+              <a class="btn primary new_account" id="new_account" alt="Novo lançamento de conta a pagar/receber">
+                <img width="15px" src="/images/new.png"/>
+                Inserir novo
+              </a>
+              <a  id="search" class="btn success">
+                <img src="/images/search.png" width="16">
+                Buscar
+              </a>            
+              <a id="dre_send" class="btn success">
+                <img src="/images/category.png" width="16">
+                Ver DRE
+              </a>
+              <a id="remove_checked" class="btn danger" alt="Excluir as contas marcadas">
+                <img src="/images/delete.png" width="16">
+                Excluir
+              </a>
+              <a id="mark_as_paid" class="btn" alt="Marcar todos os itens selecionados como pagos">
+                <img src="/images/money.png" width="16">
+                Pagar
+              </a>              
+            </div>
+          </div>
+        </div>
+      </div>
+      <form action="">
+        <div class="clearfix lift:SecuritySnippet.isFinancialUser">
+          <label for="total">Totais </label>
+          <div class="input">
+            <div class="inline-inputs">
+              <div class="input-prepend" style="float:left; padding-right:10px">
+                <span class="add-on"><img src="/images/add.png" width="16"></span>
+                <input class="small" id="credit" name="credit" size="19" placeholder="0.00" type="text">
+                <span class="help-block">Receitas</span>
+              </div>
+              <div class="input-prepend" style="float:left; padding-right:10px">
+                <span class="add-on"><img src="/images/remove.png" width="16"></span>
+                <input class="small" id="debit" name="debit" size="19" placeholder="0.00" type="text">
+                <span class="help-block">Despesas</span>
+              </div>
+              <div class="input-prepend" style="float:left; padding-right:10px">
+                <span class="add-on"><img src="/images/money.png" width="16"></span>
+                <input class="small" id="total" name="total" size="19" placeholder="0.00" type="text">
+                <span class="help-block">Saldo</span>
+              </div>
+            </div>
+          </div>
+        </div>                      
+      </form>
+  </div>
+  <a onclick="return ExcellentExport.excel(this, 'grid', 'data');"
+    href="#" download="data.xls" class="btn excel_buttton"
+    title="Exportar para excel">
+    <img style="width: 16px;" src="/images/excel.png" />
+  </a>  
+  <a onclick="return ExcellentExport.csv(this, 'grid', ';');"
+    href="#" download="data.csv" class="btn excel_buttton"
+    title="Exportar para csv">
+    <img style="width: 16px;" src="/images/generate.png" />
+  </a>  
+  <a id="hide_grid_payments" onclick="$('#grid').toggle();return false;" 
+    href="#" class="btn excel_buttton" 
+    title="Ocultar tabela">
+    <img style="width: 16px;" src="/images/collapse.png" />
+  </a>  
+  <table id="grid" class="bordered-table zebra-striped">
+    <thead>
+      <tr>
+        <th><input type="checkbox" id='check_all'/></th>
+        <th>Id</th>
+        <th title="Data de vencimento">Dt Venc</th>
+        <th>Categoria</th>
+        <th>Descrição</th>
+        <th>Valor</th>
+        <th>Tipo</th>
+        <th>Paga?</th>
+        <th title="Cliente, profissional, fornecedor">Parc</th>
+        <th class="lift:SecuritySnippet.hasUnitModule">Unidade</th>
+        <th title="Caixa">Cx</th>
+        <th>Conta</th>
+        <th title="Centro de custo">Ccusto</th>
+        <th title="Forma de pagamento">Fpagto</th>
+        <th title="Editar registro" ><img src='/images/edit.png' /></th>
+        <th title="Excluir registro"><img src='/images/delete.png'/></th>
+      </tr>
+    </thead>
+    <tbody>
+    </tbody>
+</table>
+  <div class="hide_on_print">
+    <div class="well">
+      <label for="btn"></label>
+      <a class="btn primary new_account" id="new_account" alt="Novo lançamento de conta a pagar/receber">
+        <img width="15px" src="/images/new.png"/>
+        Inserir novo
+      </a>
+      <a  id="search1" class="btn success">
+        <img src="/images/search.png" width="16">
+        Buscar
+      </a>            
+    </div>
+  </div>
+  
+  <div id="dre_modal" class="modal hide" style="width: 90%; left: 5%; margin: auto auto auto auto; top: 5%; height: 90%; max-height: 90%;">
+      <div class="modal-header">
+        <a href="#" class="close">&times;</a>
+        <h3>DRE</h3>
+      </div>
+      <span id="grid_dre">
+      </span>
+      <div>
+        <br>
+        Este relatório inclui <b>todos</b> os lançamentos financeiros que estão na tabela,<br>
+        diferente da visão de DRE nos relatórios que exibe só os efetivamente pagos.
+      </div>
+  </div>
+  <div id="account_modal" class="modal hide" style="width: 90%; left: 5%; margin: auto auto auto auto; top: 5%; height: 100%; max-height: 100%;">
+
+    <div class="modal-header">
+      <a href="#" class="close">&times;</a>
+      <h3>Lançamento de Contas a Pagar/Receber</h3>
+    </div>
+    <span id="cash_form">
+      <form id='AccountPayableForm' action="/account/">
+        <div>
+            <div>
+              <div class="well">
+                <input class="btn success b_add_account" id="b_add_account" type="button" value="Salvar">
+              </div>
+              <div class="span18 row">
+                <div class="span8">             
+                  <div class="clearfix">
+                    <label for="category_select">Categoria</label>
+                    <div class="input">
+                      <div class="inline-inputs">
+                        <select id='category_select' class="category_select url_parameter" name='category'></select>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="clearfix">
+                    <label for="account_select">Conta</label>
+                    <div class="input">
+                      <div class="inline-inputs">
+                        <span class='account_to'>De </span>
+                          <select id='account_select' class="account_select url_parameter" name='account'>
+                          </select>
+                        <span class='account_to'>
+                          Para 
+                          <select id='account_select_to' class="account_select url_parameter" name='account_to'>
+                          </select>
+                        </span>
+                        <span class="help-block">
+                          Conta que será debitada ou creditada
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="clearfix cashier_select_span">
+                    <label for="cashiers_select">Caixa</label>
+                     <div class="input">
+                        <div class="inline-inputs">
+                            <select class="xlarge" name="cashiers_select" id='cashiers_select'>
+                            </select>
+                            <input type="text" name="cashier_number" id="cashier_number" value="" />
+                        </div>
+                        <span class="help-block">Caixas abertos</span>
+                     </div>
+                  </div>
+                  <div class="clearfix">
+                    <label for="birthday">Data de Vencimento</label>
+                      <div class="input">
+                        <div class="inline-inputs">
+                            <div style="float:left; padding-right:10px" class="input-prepend">
+                              <span class="add-on"><img width="16" src="/images/calendar_addon.png"></span>
+                              <input type="text" size="19" name="date" id="date" class="input-small date url_parameter to_day">
+                            </div>
+                            <div style="float:left; padding-right:10px" class="input-prepend">
+                              <span class="add-on"><img width="16" src="/images/calendar_addon.png"></span>
+                              <input type="text" placeholder="Pagamento" size="19" name="paymentDate" id="paymentDate" class="small date">
+                            </div>
+                        </div>
+                      </div>
+                  </div>                  
+                  <div class="clearfix">
+                    <label for="user">
+                      <span data-i18n='Profissional'></span> / Parceiro
+                      <img src="/images/search.png" width="24" class="customer_search_button">  
+                    </label>
+                    <div class="input">
+                      <div class="inline-inputs">
+                        <span>
+                          <input id="user_select" name="user_select" class="mini id_customer_search"/>
+                          <input placeholder="Nome" type="text" size="30" name="name_customer" id="name_customer"  class="name_customer_search normal_name"/>
+                        </span>
+                        <span class="help-block">
+                              <span data-i18n='Profissional'></span> / Parceiro
+                              <img alt="Cadastro rápido" src="/images/add.png" width="24" id="customer_add_button">
+                        </span>
+                      </div>
+                    </div>
+                  </div>                   
+                  <!--
+                  <div class="clearfix user_select_span">
+                    <label for="user_select">Profissional</label>
+                      <div class="input">
+                        <div class="inline-inputs">
+                          <select class="url_parameter" id='user_select' name='user_select'>
+                          </select>
+                        </div>
+                      </div>
+                  </div>
+                  -->                 
+                  <div class="clearfix">
+                    <label for="name">Observação</label>
+                     <div class="input">
+                        <div class="inline-inputs">
+                          <textarea name="obs_account" id="obs_account" class="large "></textarea>
+                          <span class="help-block">Descrição do lançamento</span>
+                        </div>
+                      </div>                
+                  </div>
+                  <div class="clearfix">
+                    <label for="value">Valor</label>
+                    <div class="input">
+                      <div class="input-prepend">
+                        <span class="add-on"><img src='/images/dre.png' width="16"/></span> 
+                        <input class="mini currency" id="value" name="value" size="30" type="text"/>
+                        <span class="help-block">Valor total do lançamento</span>
+                      </div>
+                    </div>
+                  </div> 
+                  <div class="clearfix">
+                    <label for="start">Parcelar em</label>
+                      <div class="input">
+                        <div class="inline-inputs">
+                          <div style="float:left; padding-right:10px" class="input-prepend">
+                            <input class="mini" value="1" id="user_parcels"/>
+                            <span class="help-block">Divide o valor informado criando parcelas menores</span>
+                          </div>
+                        </div>
+                      </div>
+                  </div>                  
+                  <div class="clearfix">
+                    <label></label>
+                    <div class="input">
+                      <div class="input-prepend"> 
+                        Já foi pago ? <input type="checkbox" checked="true" name="paid" id="paid" class= "url_parameter">
+                      </div>
+                    </div>
+                  </div> 
+                  <div class="clearfix">
+                    <label for="recurrence"></label>
+                     <div class="input">
+                          Recorrente ?
+                          <input type="checkbox" name="recurrence" id="recurrence">
+                          <a data-original-title="Informação" data-content="clique para abrir a documentação" data-help-url='/docs/recurrence.html' rel="popover" class="_popover_basic _help">
+                            <img src="/images/info.gif" width="20">
+                          </a>
+                          <span class="help-block">Este lançamento se repete de forma recorrente?</span>
+                     </div>
+                  </div>                  
+                  <span class='recurenc_container'>
+                    <div class="clearfix">
+                      <label for="recurrence_type">Tipo</label>
+                        <div class="input">
+                          <div class="inline-inputs">
+                            <select id='recurrence_type' name='recurrence_type'>
+                              <option selected="selected" value='2'>Mensal</option>
+                              <option value='3'>Anual</option>
+                              <option value='1'>Semanal</option>
+                            </select>
+                          </div>
+                        </div>
+                    </div>
+                    <div class="clearfix">
+                      <label for="recurrence_term_type">Repetição</label>
+                        <div class="input">
+                          <div class="inline-inputs">
+                            <select id='recurrence_term_type' name='recurrence_term_type'>
+                              <option selected="selected" value='1'>Fixa</option>
+                              <option value='2'>Parcelada</option>
+                            </select>
+                          </div>
+                        </div>
+                    </div>
+
+                    <div class="clearfix">
+                      <label for="price">Número de Parcelas</label>
+                       <div class="input">
+                          <input class="mini" id="recurrence_term" name="recurrence_term" size="30" value="0" type="number"/>
+                          <span class="help-block">Repete o valor informado n vezes</span>
+                       </div>
+                    </div>
+                  </span>                  
+                </div>
+                <div class="span8">
+                  <div class="clearfix">
+                    <label for="type_select">Tipo</label>
+                      <div class="input">
+                        <div class="inline-inputs">
+                          <select id='type_select' name='type_select' class="notselect2 url_parameter">
+                            <option selected="selected" value='0'>Entrada</option>
+                            <option value='1'>Saída</option>
+                            <option value='2' data-transfer='true' data-show='account_to'>Transferência</option>
+                        </select>                          
+                        </div>
+                      </div>                               
+                  </div>
+                  <div class="clearfix recurrence_exists">
+                    <label style ="font-weight:bold; color: #FF0000;" for="recurrence">Este é um lançamento recorrente</label>
+                     <div class="input">
+                          <input type="radio" checked="true" name='recurrence_just_this' id="recurrence_just_this">
+                          <span class="help-block">Alterar apenas este lançamento?</span>
+                     </div>
+                     <div class="input">
+                          <input type="radio" name='recurrence_all' id="recurrence_all">
+                          <span class="help-block">Alterar todos os lançamentos seguintes?</span>
+                     </div>                     
+                  </div>                   
+                  <div class="clearfix">
+                    <label for="costcenter_select">Centro de Custo</label>
+                      <div class="input">
+                        <div class="inline-inputs">
+                          <select id='costcenter_select' class="costcenter_select url_parameter" name='costcenter'></select>
+                          <span class="help-block">Centro de custo do lançamento</span>
+                        </div>
+                      </div>
+                  </div>                     
+                  <div class="clearfix">
+                    <label for="paymenttype_select">Forma de Pagamento</label>
+                      <div class="input">
+                        <div class="inline-inputs">
+                          <select id='paymenttype_select' class="paymenttype_select url_parameter" name='paymenttype'></select>
+                          <span class="help-block">Forma de pagamento do lançamento</span>
+                        </div>
+                      </div>
+                  </div>                     
+                  <div class="clearfix">
+                    <label for="cheque_select">Cheque</label>
+                      <div class="input">
+                        <div class="inline-inputs">
+                          <select id='cheque_select' class="cheque_select url_parameter xlarge" name='cheque'></select>
+                          <span class="help-block">Cheque</span>
+                        </div>
+                      </div>
+                  </div>                     
+                  <div class="clearfix">
+                    <label for="birthday">Data de Competência</label>
+                      <div class="input">
+                        <div class="inline-inputs">
+                            <div style="float:left; padding-right:10px" class="input-prepend">
+                              <span class="add-on"><img width="16" src="/images/calendar_addon.png"></span>
+                              <input type="text" size="19" name="exerciseDate" id="exerciseDate" class="input-small date url_parameter to_day">
+                            </div>
+                        </div>
+                      </div>
+                  </div>
+                  <div class="clearfix">
+                    <label for="birthday">Parcelas</label>
+                      <div class="input">
+                        <div class="inline-inputs">
+                            <input class="mini" value="1" id="parcelnum"/> de 
+                            <input class="mini" value="1" id="parceltot"/>
+                            <span class="help-block">Número desta parcela e total</span>
+                        </div>
+                      </div>
+                  </div>
+                  <div class="clearfix">
+                    <label for="amount">Quantidade</label>
+                    <div class="input">
+                      <div class="input-prepend">
+                        <input class="mini currency" id="amount" name="amount" value="1" size="30" type="text"/>
+                        <span class="help-block">
+                          Quantidade do lançamento
+                        </span>
+                      </div>
+                    </div>
+                   </div>
+                  <div class="clearfix">
+                    <label for="unitvalue">Valor Unitário</label>
+                    <div class="input">
+                      <div class="input-prepend">
+                        <span class="add-on"><img src='/images/dre.png' width="16"/></span> 
+                        <input class="mini currency disabled" disabled="true"  name="unitvalue" id="unitvalue" size="30" type="text"/>
+                        <span class="help-block">
+                          Calculado com base no valor dividio pela quantidade
+                        </span>
+                      </div>
+                    </div>
+                   </div>                   
+                  <div class="clearfix">
+                    <label for="name">Complemento</label>
+                     <div class="input">
+                        <div class="inline-inputs">
+                          <textarea name="complement_account" id="complement_account" class="large "></textarea>
+                          <span class="help-block">Descrição complementar do lançamento</span>
+                        </div>
+                      </div>                
+                  </div>
+                </div>
+                <span class='span12'>
+                  <div class="clearfix lift:SecuritySnippet.hasAuditModule">
+                      <label for="createdAt">Criado/Alterado</label>
+                      <div class="input">
+                        <div class='inline-inputs'>
+                          <div class="input-prepend" style='float:left; padding-right:10px'>
+                            <span class="add-on"><img width="16" src='/images/calendar_addon.png'/></span> 
+                            <input class="input-medium datetime disabled" disabled="true" id="createdAt" name="createdAt" size="19" type="text"/>
+                          </div>
+                          <div class="input-prepend" style='float:left; padding-right:10px'>
+                            <span class="add-on"><img width="16" src='/images/calendar_addon.png'/></span> 
+                            <input class="input-medium datetime disabled" disabled="true" id="updatedAt" name="updatedAt" size="19" type="text"/>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="input">
+                        <div class='inline-inputs'>
+                          <div class="input-prepend" style='float:left; padding-right:10px'>
+                            <span class="add-on"><img src='/images/sex.png'/></span> 
+                            <input class="input-medium disabled" disabled="true" id="createdby" name="createdby" size="19" type="text"/>
+                          </div>
+                          <div class="input-prepend" style='float:left; padding-right:10px'>
+                            <span class="add-on"><img src='/images/sex.png'/></span> 
+                            <input class="input-medium disabled" disabled="true" id="updatedby" name="updatedby" size="19" type="text"/>
+                          </div>
+                        </div>
+                      </div>                            
+                  </div>                    
+                </span>
+              </div>
+              <span>
+                <input type="hidden" name="recurrence_id" id='recurrence_id'>
+              </span>
+              <div class="well">
+                <input class="btn success b_add_account" id="b_add_account" type="button" value="Salvar">
+              </div>
+             </div>
+            </div>
+        </div>
+      </form>
+    </span>
+</div>
+</div>

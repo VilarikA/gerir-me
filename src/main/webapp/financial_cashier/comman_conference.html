@@ -1,0 +1,246 @@
+<div id="main" class="lift:surround?with=calendar;at=content">
+      <script type="text/javascript" src="/js/reports.js"></script>
+      <script src="/js/out_of_cashier.js"></script>
+      <script src="/js/jquery.tablesorter.pager.js"></script>
+      <div>
+        <form id="form_help"  action="/cash/"></form>
+        <form id="form_search" class="well form-search" method='get'>
+          <h1><span class="lift:CompanySnippet.thumb"> </span>Relatório de Conferência de Comanda</h1>
+            <div class="row">
+                  <div class="span8">
+                    <div class="clearfix">
+                      <label for="cashier">Caixa  </label>
+                      <div class="input">
+                        <select class="xlarge url_parameter" name="cashier" multiple="multiple" id='cashier'></select>
+                        <span class="help-block">Selecione um caixa na lista ou digite o número</span>
+                      </div>
+                      <div class="input">
+                          <input class="mini url_parameter" id="number" name="number" size="5 " type="text"/>           
+                      </div>
+                    </div>
+                    <div class="clearfix">
+                      <label for="opener_date">Intervalo</label>
+                        <div class="input">
+                          <div class="inline-inputs">
+                              <div class="input-prepend" style="float:left; padding-right:10px">
+                                <span class="add-on"><img width="16" src="/images/calendar_addon.png"></span>
+                                <input type="text" class="input-small date url_parameter" 
+                                id='startDate' name="startDate" placeholder="Início"/>
+                              </div>
+                              <div class="input-prepend" style="float:left; padding-right:10px">
+                                <span class="add-on"><img width="16" src="/images/calendar_addon.png"></span>
+                                <input type="text" class="input-small date url_parameter" id='endDate' name="endDate" placeholder="Fim"/>
+                              </div>
+                          </div>
+                        </div>
+                    </div>
+                    <div class="clearfix">
+                      <label for="type_category">Tipo</label>
+                        <div class="input">
+                          <div class="inline-inputs">
+                              <select class="url_parameter" name="type_category" id="type_category">
+                                  <option value='1,0'>Todos</option>
+                                  <option value='1'>Produtos</option>
+                                  <option value='0'>Serviços</option>
+                               </select>
+                               <span class="help-block">Tipos de comissões (ex: Prod / Ser)</span>
+                          </div>
+                        </div>
+                    </div>
+                  </div>
+                  <div class="span7">
+                    <div class="clearfix">
+                      <label for="user">
+                        <span data-i18n='Profissionais'></span>
+                      </label>
+                        <div class="input">
+                          <div class="inline-inputs">
+                            <select class="url_parameter" name="user" id='user'></select>
+                            <span class="help-block"><span data-i18n='Profissionais'></span></span>
+                          </div>
+                        </div>
+                    </div>
+                    <div class="clearfix">
+                      <label for="cashier">Comandas Pagas </label>
+                      <div class="input">
+                        <div class="inline-inputs">
+                          <input id="commands" class="url_parameter" name="commands">
+                          <span class="help-block">Comandas <b>pagas</b> separado por <b>,</b></span>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="clearfix">
+                      <label for="user">
+                        Formas de Pagamento
+                      </label>
+                        <div class="input">
+                          <div class="inline-inputs">
+                            <select class="url_parameter alow_all" multiple="multiple" name="payment_type" id='payment_type'>
+                            </select>
+                            <span class="help-block">Formas de pagamento</span>
+                          </div>
+                        </div>
+                    </div> 
+                 </div>
+            </div>
+            <div class="clearfix">
+              <label for="send"></label>
+              <div class="input">
+                <button type="submit" class="btn success">Buscar</button>
+                <button  id ="detail_print" class="btn primary">Detalhar</button>
+              </div>
+            </div>                        
+            <div class="clearfix">
+              <label for="total">Totais </label>
+              <div class="input">
+                <div class="inline-inputs">
+                  <div class="input-prepend" style="float:left; padding-right:10px">
+                    <span class="add-on"><img src="/images/money.png" width="16"></span>
+                    <input class="small" id="total" name="total" size="19" placeholder="0.00" type="text">
+                    <span class="help-block">Total de serviços</span>
+                  </div>
+                  <div class="input-prepend" style="float:left; padding-right:10px">
+                    <span class="add-on"><img src="/images/remove.png" width="16"></span>
+                    <input class="small" id="total_out" name="total_out" size="19" placeholder="0.00" type="text">
+                    <span class="help-block">Saídas</span>
+                    <a href="" class="_popover_basic" rel="popover" data-content="Este relatório pode ser usado para conferência de comandas, acessado através do menu ou do atalho K, ou para conferência detalhada do caixa, acessado através da tela de fechamento. As saídas e o respectivo total, só são exibidos nesta segunda opção." data-original-title="Informação">
+                      <img width='20' src="/images/info.gif"/>
+                    </a>
+                  </div>
+                  <div class="input-prepend" style="float:left; padding-right:10px">
+                    <span class="add-on"><img src="/images/add.png" width="16"></span>
+                    <input class="small" id="total_in" name="total_in" size="19" placeholder="0.00" type="text">
+                    <span class="help-block">Entradas</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+        </form>
+      </div>
+	    <h1>Entradas/Recebimentos</h1>
+      <a onclick="return ExcellentExport.excel(this, 'in_commands', 'data');"
+        href="#" download="data.xls" class="btn excel_buttton"
+        title="Exportar para excel">
+        <img style="width: 16px;" src="/images/excel.png" />
+      </a>  
+      <a onclick="return ExcellentExport.csv(this, 'in_commands', ';');"
+        href="#" download="data.csv" class="btn excel_buttton"
+        title="Exportar para csv">
+        <img style="width: 16px;" src="/images/generate.png" />
+      </a>  
+      <a id="hide_grid_payments" onclick="$('#in_commands').toggle();return false;" 
+        href="#" class="btn excel_buttton" 
+        title="Ocultar tabela">
+        <img style="width: 16px;" src="/images/collapse.png" />
+      </a>  
+    <table id="in_commands" class="bordered-table zebra-striped">
+      <thead>
+        <th>
+          Caixa
+        </th>
+        <th>
+          Data
+        </th>
+        <th>
+          Id
+        </th>
+        <th>
+          Nome <span data-i18n='Cliente'></span>
+        </th>
+        <th>
+          Comanda
+        </th>
+        <th>
+          <span data-i18n='Profissional'></span>
+        </th>
+        <th>
+          Serv/Prod
+        </th>
+        <th>
+          F Pagto
+        </th>
+        <th>
+          Total Pago
+        </th>
+        <th>Comissão</th>
+        <th>Comanda</th>
+        <th>Ticket</th>
+        <th>Recibo</th>
+      </tr>
+    </thead>
+      <!--<tr class="lift:ReportSales:reportCommandConference"> -->
+      <tr class="lift:ReportSales:simpleReportCommandConference">
+        <td>
+          <f:cashier></f:cashier>
+        </td>
+        <td class="translate_date">
+          <f:date></f:date>
+        </td>
+        <td>
+          <f:customerid></f:customerId>
+        </td>
+        <td>
+          <f:customername></f:customerName>
+        </td>
+        <td>
+          <f:command></f:command>
+        </td>
+        <td>
+          <f:user></f:user>
+        </td>
+        <td>
+          <f:treatments></f:treatments>
+        </td>
+        <td>
+          <f:payments></f:payments>
+        </td>
+        <td>
+          <f:total></f:total>
+        </td>
+        <td>
+          <div class="hide_on_print">
+            <f:link></f:link>
+          </div>
+        </td>
+        <td>
+          <div class="hide_on_print">
+            <f:commandprint></f:commandprint>
+          </div>
+        </td>
+        <td>
+          <div class="hide_on_print">
+            <f:ticket></f:ticket>
+          </div>
+        </td>
+        <td>
+          <div class="hide_on_print">
+            <f:receipt></f:receipt>
+          </div>
+        </td>
+      </tr>
+    </table>
+     <h1>Saídas/Entradas</h1>
+    <table id="grid_outs" class="bordered-table zebra-striped">
+        <thead>
+          <th>Data</th>
+          <th>Categoria</th>
+          <th>Desc</th>
+          <th>Valor</th>
+          <th>Tipo</th>
+          <th><span data-i18n='Profissional'></span></th>
+          <th>Caixa</th>
+          <th>Conta</th>
+          <th title ="Para o caso de retirada em cheque">Cheque <span data-i18n='Cliente'></span></th>
+          <th>Banco</th>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>     
+    <script type="text/javascript" src="/js/comman_conference.js"></script>
+    <script type="text/javascript">
+      $(function(){
+        $("#in_commands").tablesorter();
+      });
+    </script>
+ </div>
+ 

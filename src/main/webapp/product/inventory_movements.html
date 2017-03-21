@@ -1,0 +1,187 @@
+<div id="main" class="lift:surround?with=calendar;at=content">
+    <link rel="stylesheet" type="text/css" href="/select2/select2.css" />
+    <script src="/select2/select2.js"></script><script src="/select2/select2_locale_pt-BR.js"></script>
+    <script src="/js/jquery.tablesorter.pager.js"></script>
+    <script type="text/javascript" src="/js/product_line.js">
+    </script>
+    <script type="text/javascript" src="/js/product_control_panel.js">
+    </script>
+    <script type="text/javascript" src="/js/inventory_movements.js">
+    </script>
+    <div class='filter block-message success"'>
+      <span class="filter_form">
+        <form id="filter_form" class="well form-search" action=''>
+          <h1>
+            <span class="lift:CompanySnippet.thumb"> </span>
+            <input class="report_title local_storage" id="title_inventory_movements" name="title_inventory_movements" size="30" type="text" value="Relatório de Movimentação de Estoque"/>
+          </h1>
+          <div class="row">
+            <div class="span8">
+              <div class="clearfix">
+                <label for="customer">
+                  Parceiro 
+                  <img src="/images/search.png" width="24" class="customer_search_button">  
+                </label>
+                <div class="input">
+                  <div class="inline-inputs">
+                  <span>
+                    <input name="customer" class="mini id_customer_search"> 
+                    <input placeholder="Nome" type="text" size="30" name="name_customer" class="name_customer_search normal_name"/>
+                  </span>  
+                  <span class="help-block">Parceiro: Cliente/Profissional/Fornecedor</span>
+                  </div>
+                </div>
+              </div>
+              <div class="clearfix">
+                  <label for="units">Produto</label>
+                  <div class="input">          
+                    <input class="span6 id url_parameter product_select" name="id" id='id_product' size="30" type="text" placeholder="Digite o nome ou código do produto"/>
+                    <input type="hidden" class="has-inventory-manager lift:SecuritySnippet.isInventoryManager" value="1">
+                  </div>
+              </div>
+              <div class="clearfix">
+                  <label for="units">Unidades</label>
+                  <div class="input">
+                    <select multiple="multiple" id="units" class="units url_parameter" name="units"></select>
+                  </div>
+              </div>
+              <div class="clearfix">
+                  <label for="lines">Linhas</label>
+                  <div class="input">
+              <select multiple="multiple" id="lines" class="line_select url_parameter" name="line_select">
+              </select>
+                </div>
+              </div>
+              <div class="clearfix">
+                <label for="category_select">Tipos</label>
+                <div class="input">
+                  <select multiple="multiple" id="category_select" class="category_select url_parameter" name="category_select"></select>
+                </div>
+              </div>
+            </div>
+            <div class="span8">
+              <div class="clearfix">
+                  <label for="line_select">Quantidade</label>
+                  <div class="input">
+                    De <input class="mini qtd url_parameter" name="qtd_start" size="30" type="text" placeholder="Mínimo"/> até <input class="mini qtd url_parameter" name="qtd_end" size="30" type="text" placeholder="Máximo"/>
+                </div>
+              </div>
+              <div class="clearfix">
+                <label for="opener_date">Intervalo</label>
+                  <div class="input">
+                    <div class="inline-inputs">
+                        <div class="input-prepend" style="float:left; padding-right:10px">
+                          <span class="add-on"><img width="16" src="/images/calendar_addon.png"></span>
+                          <input type="text" class="input-small date url_parameter to_day" id='start_date' name="start_date" placeholder="Início"/>
+                        </div>
+                        <div class="input-prepend" style="float:left; padding-right:10px">
+                          <span class="add-on"><img width="16" src="/images/calendar_addon.png"></span>
+                          <input type="text" class="input-small date url_parameter to_day" id='end_date' name="end_date" placeholder="Fim"/>
+                        </div>
+                    </div>
+                  </div>
+              </div>
+              <div class="clearfix">
+                  <label for="causes">Motivos</label>
+                  <input name='causeh' class="url_parameter" id="causeh" type="hidden">
+                  <div class="input">
+                    <select multiple="multiple" id="causes" class="causes url_parameter alow_all" name="causes"></select>
+                  </div>
+              </div>
+              <div class="clearfix">
+                <label for="type">Tipo</label>
+                 <div class="input">
+                    <select multiple="multiple" class="type" name="types" id="types">
+                      <option selected="true" value="In">Entrada</option>
+                      <option selected="true" value="Out">Saída</option>
+                    </select>
+                    <span class="help-block">Entrada / Saída</span>
+                 </div>
+              </div>              
+                  <!--
+                    <div class="clearfix">
+                        <label for="line_select">Preço de compra</label>
+                        <div class="input">
+                          De <input class="mini  url_parameter currency" name="price_start" size="30" type="text" placeholder="Minimo"/> ate <input class="mini url_parameter currency" name="price_end" size="30" type="text" placeholder="Maximo"/>
+                      </div>
+                    </div>
+                -->
+            </div>
+          </div>
+          <div class="clearfix">
+            <label for="buscar"></label>
+            <div class="input">
+              <input class="btn success" type="button" id="filter" value="Buscar">
+            </div>
+          </div>
+          <div class="clearfix">
+            <label for="start_date">Totais </label>
+            <div class="input">
+              <div class="inline-inputs">
+                <div class="input-prepend" style="float:left; padding-right:10px">
+                  <div style="float:left; padding-right:10px" class="input-prepend">
+                    <span class="add-on"><img src="/images/add.png" width="16"></span>
+                    <input class="small disabled" id="entradas" name="entradas" size="19" placeholder="0.00" type="text" disabled="true">
+                    <span class="help-block">Entradas</span>
+                  </div>
+                  <div style="float:left; padding-right:10px" class="input-prepend">
+                    <span class="add-on"><img src="/images/remove.png" width="16"></span>
+                    <input class="small disabled" id="saidas" name="saidas" size="19" placeholder="0.00" type="text" disabled="true">
+                    <span class="help-block">Saídas</span>
+                  </div>
+                  <div style="float:left; padding-right:10px" class="input-prepend">
+                    <span class="add-on"><img src="/images/money.png" width="16"></span>
+                    <input class="small disabled" id="total" name="total" size="19" placeholder="0.00" type="text" disabled="true">
+                    <span class="help-block">Saldo</span>
+                  </div>
+                  <div style="float:left; padding-right:10px" class="input-prepend lift:SecuritySnippet.isInventoryManager">
+                    <span class="add-on"><img src="/images/money.png" width="16"></span>
+                    <input class="small disabled" id="totalPurchase" name="totalPurchase" size="19" placeholder="0.00" type="text" disabled="true">
+                    <span class="help-block">Total Compra</span>
+                  </div>
+                  <div style="float:left; padding-right:10px" class="input-prepend">
+                    <span class="add-on"><img src="/images/money.png" width="16"></span>
+                    <input class="small disabled" id="totalSale" name="totalSale" size="19" placeholder="0.00" type="text" disabled="true">
+                    <span class="help-block">Total Venda</span>
+                  </div>
+                </div>
+              </div>
+            </div>                      
+          </div>
+        </form>
+      </span>
+    </div>
+  <a onclick="return ExcellentExport.excel(this, 'grid', 'data');"
+    href="#" download="data.xls" class="btn excel_buttton"
+    title="Exportar para excel">
+    <img style="width: 16px;" src="/images/excel.png" />
+  </a>  
+  <a onclick="return ExcellentExport.csv(this, 'grid', ';');"
+    href="#" download="data.csv" class="btn excel_buttton"
+    title="Exportar para csv">
+    <img style="width: 16px;" src="/images/generate.png" />
+  </a>  
+  <a id="hide_grid_payments" onclick="$('#grid').toggle();return false;" 
+    href="#" class="btn excel_buttton" 
+    title="Ocultar tabela">
+    <img style="width: 16px;" src="/images/collapse.png" />
+  </a>  
+  <table id="grid" class="bordered-table zebra-striped">
+      <thead>
+        <th>Unidade</th>
+        <th>Cod Prod</th>
+        <th>Nome</th>
+        <th>Parc</th>
+        <th>Nota Fiscal</th>
+        <th>Quantidade</th>
+        <th class="lift:SecuritySnippet.isInventoryManager">Compra</th>
+        <th>Venda</th>
+        <th>Obs</th>
+        <th>Tipo</th>
+        <th>Motivo</th>
+        <th>Data</th>
+      </thead>
+      <tbody>
+      </tbody>
+  </table>
+ </div>

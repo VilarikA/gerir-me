@@ -1,0 +1,41 @@
+<div id="main" class="lift:surround?with=event;at=content">
+	<div class="well">
+        <label for="btn"></label>
+		<a class="btn primary" href="/project/edit_type">Inserir novo</a>
+	    <a class="btn primary" alt="Cadastro de projetos" href="/project/list_event"><span data-i18n='Evento'></span></a>
+	</div>
+<table class="bordered-table zebra-striped">
+		<thead>
+			<th>Id</th>
+			<th>Nome</th>
+			<th>Observação</th>
+			<th>Ações</th>			
+		</thead>
+		<tbody>
+			<tr class="lift:ProjectSnippet:types">
+				<td>
+					<f:id></f:id>
+				</td>
+				<td>
+					<f:name></f:name>
+				</td>			
+				<td>
+					<f:obs></f:obs>
+				</td>								
+				<td>
+					<form method="post">
+						<span>
+							<f:actions></f:actions>
+						</span>
+						<span>
+							<f:delete></f:delete>
+						</span>
+						<span style="display:none">
+							<f:_id></f:_id>
+						</span>
+					</form>
+				</td>				
+			</tr>
+		</tbody>
+</table>		
+</div>

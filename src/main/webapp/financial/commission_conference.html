@@ -1,0 +1,160 @@
+﻿<div id="main" class="lift:surround?with=calendar;at=content">
+    <a id="hide_arguments" onclick="$('#form_report').toggle();return false;" 
+      href="#" class="btn excel_buttton" 
+      title="Ocultar argumentos">
+      <img style="width: 16px;" src="/images/collapse.png" />
+    </a>  
+    <form id="form_report" class="well form-search" method='get'>
+    <h2>
+          Este relatório será descontinuado em 28/02/2017 <br/>
+          Caso você faça uso habitual do mesmo procure nosso suporte.<br/><br/>
+      </h2>
+     </form>
+   	<form class="well form-search" method='get'>
+		<h1>
+	        <span class="lift:CompanySnippet.thumb"> </span>Relatório de Comissões
+	    </h1>
+	    <div class="span9">
+            <div class="clearfix">
+              <label for="user"><span data-i18n='Profissional'></span></label>
+              <div class="input">
+                <select class="local_storage" name="user" id="user" >
+                </select>            
+              </div>
+            </div>
+            <div class="clearfix">
+              <label for="start">Intervalo</label>
+              <div class="input">
+                <div class="inline-inputs">
+                  <div class="input-prepend" style="float:left; padding-right:10px">
+                    <span class="add-on"><img width="16" src="/images/calendar_addon.png"></span>
+                    <input type="text" class="input-small date" id='startDate' name="startDate" placeholder="Início">
+                  </div>
+                  <div class="input-prepend" style="float:left; padding-right:10px">
+                    <span class="add-on"><img width="16" src="/images/calendar_addon.png"></span>
+                    <input type="text" class="input-small date" id='endDate' name="endDate" placeholder="Fim">
+                  </div>
+                </div>
+              </div>
+             </div> 
+            <div class="clearfix">
+              <label for="buscar"></label>
+              <div class="input">
+                <button type="submit" class="btn success">Buscar</button>
+                <input type="hidden" id="send"> 
+              </div>
+            </div>
+	      </div>
+    </form>
+    <table id="grid" class="bordered-table zebra-striped">
+        <thead>
+          <th>Data de Pagamento</th>
+          <th class='lift:SecuritySnippet.isShowSalesToUser'>Nro Caixa</th>
+          <th class='lift:SecuritySnippet.isShowSalesToUser'>Conta</th>
+          <th>Categoria</th>
+          <th>Descrição</th>
+          <th>Valor</th>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+    <div class="clearfix">
+      <label for="total">Total de Comissão</label>
+      <div class="input">
+        <div class="input-prepend">
+          <span class="add-on"><img src="/images/add.png" width="16"></span>
+          <input class="mini disabled" disabled='true' id="total" name="total" size="30" type="text"/>
+          <span class="help-block">Valor que deve ser pago ao <span data-i18n='Profissional'></span></span>
+        </div>
+      </div>
+    </div>
+    <div class="clearfix">
+      <label for="total">Total já pago</label>
+      <div class="input">
+        <div class="input-prepend">
+          <span class="add-on"><img src="/images/cheque.png" width="16"></span>
+          <input class="mini disabled" disabled='true' id="total_paid" name="total_paid" size="30" type="text"/>
+          <span class="help-block">Valor que já foi pago ao <span data-i18n='Profissional'></span></span>
+        </div>
+      </div>
+    </div>
+    <div class="clearfix">
+      <label for="total">Total a pagar</label>
+      <div class="input">
+        <div class="input-prepend">
+          <span class="add-on"><img src="/images/money.png" width="16"></span>
+          <input class="mini disabled" disabled='true' id="to_pay" name="to_pay" size="30" type="text"/>
+          <span class="help-block">Valor que deve ser pago ao <span data-i18n='Profissional'></span></span>
+        </div>
+      </div>
+    </div>
+    <br/>
+    Detalhes comissão.
+
+    <table class="bordered-table zebra-striped">
+        <thead>
+          <th>
+             Comanda
+          </th>
+          <th>
+             id
+          </th>        
+          <th>
+             Cliente
+          </th>
+          <th>
+              Data Atendimento
+          </th>
+          <th  class="span8">
+            <table>
+              <tbody>
+                  <tr>
+                    <td class='span3'>Produtos / <span data-i18n='Serviços'></span></td>
+                    <td class='span2'>Qtde</td>
+                    <td class='lift:SecuritySnippet.isShowSalesToUser span2'>Valor Total</td>
+                    <td class='span2'>Comissão</td>
+                  </tr>
+              </tbody>
+            </table>
+          </th>
+          <th class="span8">
+            <table>
+              <tbody>
+                  <tr>
+                    <td title="O valor aqui pode conter serviços/produtos sem comissão ou feitos/vendidos por outros profissionais"class="span3">T Pagamento</td>
+                    <td class="span2">Valor</td>
+                    <td class="span2">Comissão</td>
+                  </tr>
+              </tbody>
+            </table>            
+          </th>
+        </thead>
+        <tbody>
+          <tr class="lift:ReportCommission:report">
+            <td >
+                <f:command></f:command>
+            </td>
+            <td>
+                <f:customer_cod></f:customer_cod> 
+            </td>        
+            <td>
+                <f:customer_name></f:customer_name>
+            </td>
+            <td>
+                <span><span class="translate_date"><f:date></f:date></span></span>
+            </td>
+            <td>
+              <f:treatments></f:treatments>
+            </td>
+            <td>
+              <f:payments></f:payments>
+            </td>
+          </tr>
+        </tbody>
+    </table>
+  <script src="/js/jquery.tablesorter.pager.js"></script>
+	<script type="text/javascript" src="/js/total_to_payment.js"></script>
+	<script type="text/javascript">
+	$(".translate_money").each(function(){$(this).html(parseFloat($(this).text()).formatMoney())});
+	</script>
+</div>

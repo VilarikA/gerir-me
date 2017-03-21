@@ -1,0 +1,83 @@
+<div id="main" class="lift:surround?with=calendar;at=content">
+  <link rel="stylesheet" type="text/css" href="/select2/select2.css" />
+  <script src="/select2/select2.js"></script><script src="/select2/select2_locale_pt-BR.js"></script>
+  <script src="/js/reports.js"></script>
+  <script src="/js/jquery.tablesorter.pager.js"></script>
+  <script type="text/javascript">
+  $(function(){
+    var fields = [];
+    fields[3] = "real";
+    fields[4] = "real";
+    fields[5] = "real";
+    fields[6] = "real";
+    fields[7] = "real";
+    fields[8] = "real";
+    var url = "/report/prof_services";
+    var request = function(){
+      renderReport(url,fields,$("#form_report").serializeObject());
+    }
+    $("#send").click(request);
+    DataManager.getUsers(function(userObj){
+      user_str = "";
+      for(var i in userObj){
+            user_str += "<option value='"+userObj[i].id+"'>"+userObj[i].name+"</option>";
+        }
+        $("#user").html(user_str);     
+    });
+    DataManager.getActivities(function(userObj){
+      user_str = "";
+      for(var i in userObj){
+            user_str += "<option value='"+userObj[i].id+"'>"+userObj[i].name+"</option>";
+        }
+        $("#product").html(user_str);     
+    });    
+    
+  });  
+  </script>
+  <form id="form_report" class="well form-search" method='get'>
+    <h1><span class="lift:CompanySnippet.thumb"> </span>Relatório Profissionais / Serviços</h1>
+	<div class="span8">
+		<div class="clearfix">
+		    <label for="type_category">Profissionais</label>
+		    <div class="input">
+				<select multiple="multiple"  id='user' name="user">
+				</select>
+			</div>
+		</div>
+		<div class="clearfix">
+		    <label for="type_category">Serviços</label>
+		    <div class="input">
+		        <select multiple="multiple"  id='product' name="product">
+		        </select>
+		    </div>
+		</div>
+		<div class="clearfix">
+		    <label for="type_category">Tipo Detalhe</label>
+		    <div class="input">
+		        <select name="type_category" id="type_category">
+		            <option value='1'>Todos</option>
+		            <option value='0'>Exceções</option>
+		        </select>
+			    <span class="help-block">Todos / Execeções (preço, comissão, ou duração diferentes)</span>
+		    </div>
+		</div>
+        <input class="btn success" id="send" type="button" value="Buscar">
+	</div>
+  </form>
+  <table id="grid" class="bordered-table zebra-striped">
+      <thead>
+        <th><span data-i18n='Serviço'></span></th>
+        <th>Duração</th>
+        <th>D Prof</th>
+        <th>Preço</th>
+        <th>P Prof</th>
+        <th>Comissão</th>
+        <th>C Prof</th>
+        <th>Com Abs</th>
+        <th>C A Prof</th>
+        <th><span data-i18n='Profissional'></span></th>             
+      </thead>
+      <tbody>
+      </tbody>
+  </table>
+ </div>

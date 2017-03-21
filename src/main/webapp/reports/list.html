@@ -1,0 +1,40 @@
+<div id="main" class="lift:surround?with=system;at=content">
+    <div class="span9">
+        <form class="well form-search" method='post'>
+          <input type="text" class="input-small date" name="startDate" placeholder="Início">
+          <input type="text" class="input-small date" name="endDate"  placeholder="Fim">
+          <button type="submit" class="btn">Ir</button>
+        </form>
+    </div>
+<table class="bordered-table zebra-striped">
+		<thead>
+			<th><span data-i18n='Cliente'></span></th>
+			<th><span data-i18n='Profissional'></span></th>
+			<th><span data-i18n='Serviços'></span></th>
+			<th>Valor</th>
+			<th>Início</th>
+			<th>Fim</th>
+		</thead>
+		<tbody>
+			<tr class="lift:ReportSales:report">
+				<td>
+					<f:name_customer></f:name_customer>
+				</td>
+				<td>
+					<f:name_user></f:name_user>
+				</td>
+				<td>
+					<f:details></f:details>
+				</td>
+				<td>
+					<f:total></f:total>
+				</td>
+				<td>
+					<f:start></f:start>
+				</td>
+				<td>
+					<f:end></f:end>
+				</td>
+		</tbody>
+</table>
+</div>

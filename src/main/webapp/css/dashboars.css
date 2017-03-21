@@ -1,0 +1,33 @@
+.dashboar_container{
+  float: left;
+  width: 50% !important;
+}
+.dashboar_data {
+  margin-top: 10px;
+  margin-right: 10px;
+  margin-bottom: 10px;
+  margin-left: 10px;
+  border-right-width: 1px;
+  border-right-style: solid;
+  border-right-color: black;
+  height: 50px;
+}
+.text_dashboar{
+  color: #222;
+  display: block;
+  font-size: 13px;
+  font-weight: normal;
+}
+.value_dashboar{
+  color: #222;
+  font-size: 24px;
+  max-width: 160px;
+  min-width: 65px;
+  word-wrap: break-word;
+}
+#treatments_stats{
+  position: relative;
+  float: left;
+  margin: 10px;
+  width: 45%;
+}

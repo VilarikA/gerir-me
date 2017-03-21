@@ -1,0 +1,157 @@
+<div id="main" class="lift:surround?with=calendar;at=content">
+  <link rel="stylesheet" type="text/css" href="/select2/select2.css" />
+  <script src="/select2/select2.js"></script><script src="/select2/select2_locale_pt-BR.js"></script>
+  <script src="/js/reports.js"></script>
+  <script src="/js/jquery.tablesorter.pager.js"></script>
+
+  <script type="text/javascript">
+  $(function(){
+    var fields = [];
+      fields.push("text");
+      fields.push("text");
+      $("#data_venda").val();
+      fields.push("date");
+      
+      $("#produto").val();
+      fields.push("text");
+      
+      $("#preco_original").val();
+      fields.push("text");
+      
+      $("#preco_venda").val();
+      fields.push("real");
+      
+      $("#diferenca_unit").val();
+      fields.push("real");
+      
+      $("#diferenca_total").val();
+      fields.push("real");
+      
+      $("#percentual").val();
+      fields.push("text");
+      
+      $("#quantidade").val();
+      fields.push("text");
+      
+      $("#cliente_profissional").val();
+      fields.push("text");
+      
+      $("#is_employee").val();
+      fields.push("boolean");
+    var url = "/report/EB_rel_produtos_c_desconto";
+    var request = function(){
+      var total_diferenca_total = 0.00;
+      var total_over = 0.00;
+      var total_discount = 0.00;
+      renderReport(url,fields,$("#form_report").serializeObject(),"#grid", function(data){
+        data.forEach(function(row){
+          var floatValue = parseFloat(row[7]);
+          total_diferenca_total += parseFloat(floatValue);
+          if (floatValue > 0.0) {
+            total_over += floatValue
+          } else {
+            total_discount -= floatValue
+          }
+          
+        });
+        $("#total_diferenca_total").val(total_diferenca_total.formatMoney());
+        $("#total_over").val(total_over.formatMoney());
+        $("#total_discount").val(total_discount.formatMoney());
+      });
+    }
+    $("#cashier").cashierField(true,"all");    
+    $("#send").click(request);
+    // nem entra buscando nem faz auto quando altera data - Rigel out/2014
+    //$("#start, #end").change(request);
+    //request();
+  });  
+  </script>
+  <form id="form_report">
+      <h1>
+        <span class="lift:CompanySnippet.thumb"> </span>Vendas com Desconto
+      </h1>
+      <div class="clearfix">
+        <label for="customer">Intervalo</label>
+          <div class="input">
+            <div class="input-prepend">
+              <div class="input-prepend" style="float:left; padding-right:10px">
+                <span class="add-on"><img width="16" src="/images/calendar_addon.png"></span>
+                <input type="text" class="input-small date to_day" id='start' name="start" placeholder="Início">
+              </div>
+              <div class="input-prepend" style="float:left; padding-right:10px">
+                <span class="add-on"><img width="16" src="/images/calendar_addon.png"></span>
+                <input type="text" class="input-small date to_day" id='end' name="end" placeholder="Fim">
+              </div>
+            </div>
+          </div>
+      </div>  
+      <div class="clearfix">
+        <label for="customer"> Caixa </label>
+          <div class="input">
+            <div class="input-prepend">
+              <span class="add-on"><img width="16" src="/images/movement_cash.png"></span> 
+                <select name="cashier" class="xlarge" id="cashier"></select>
+               <span class="help-block">Selecione um caixa</span>
+            </div>
+          </div>
+      </div>
+      <div class="clearfix">
+        <label for="type_category">Tipo</label>
+          <div class="input">
+            <div class="inline-inputs">
+                <select name="type_category" id="type_category">
+                    <option value='1,0'>Todos</option>
+                    <option value='1'>Produtos</option>
+                    <option value='0'>Serviços</option>
+                 </select>
+                 <span class="help-block">Tipos de comissões (ex: Prod / Ser)</span>
+            </div>
+          </div>
+      </div>
+      <div class="clearfix">
+          <div class="input">
+            <input type='button' class="btn success" value="Buscar" id='send' />
+          </div>
+      </div>
+      <div class="clearfix">
+        <label for="start_date">Total </label>
+        <div class="input">
+            <div class="input-prepend" style="float:left; padding-right:10px">
+              <span class="add-on"><img src="/images/add.png" width="16"></span>
+              <input class="small" id="total_over" name="total_over" size="19" placeholder="0.00" type="text">
+              <span class="help-block">Sobre preço</span>
+            </div>
+            <div class="input-prepend" style="float:left; padding-right:10px">
+              <span class="add-on"><img src="/images/remove.png" width="16"></span>
+              <input class="small" id="total_discount" name="total_discount" size="19" placeholder="0.00" type="text">
+              <span class="help-block">Descontos</span>
+            </div>
+          <div class="input-prepend" style="float:left; padding-right:10px">
+            <span class="add-on"><img src="/images/money.png" width="16"></span>
+            <input class="small" id="total_diferenca_total" name="total_diferenca_total" size="19" placeholder="0.00" type="text">
+              <span class="help-block">Total de descontos</span>
+          </div>
+        </div>
+      </div>
+  </form>
+  <table id="grid" class="bordered-table zebra-striped">
+      <thead>
+        <th>Caixa</th>
+        <th>Comanda</th>
+        <th>Data</th>
+        <th>Produto</th>
+        <th>Preço Original</th>
+        <th>Preço Venda</th>
+        <th>Dif Unitária</th>
+        <th>Dif Total</th>
+        <th>Percentual</th>
+        <th>Quantidade</th>
+        <th><span data-i18n='Cliente'></span>/<span data-i18n='Profissional'></span></th>
+        <th title='Indica se o cliente na compra é também um profissional'></th>
+      </thead>
+      <tbody>
+      </tbody>
+  </table>
+ </div>
+
+ 

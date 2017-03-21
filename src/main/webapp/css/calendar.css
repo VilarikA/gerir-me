@@ -1,0 +1,85 @@
+#keep_with_customer_text{
+	color: white;
+}
+.ui-corner-top{
+	min-height: 20px !important;
+	overflow : overlay;
+}
+body {
+	font-family: "Lucida Grande",Helvetica,Arial,Verdana,sans-serif;
+	margin: 0;
+	}
+			
+h1 {
+	margin:0 0 2em;
+	padding: 0.5em;
+	font-size: 1.3em;
+	} 
+			
+p.description {
+	font-size: 0.8em;
+	padding: 1em;
+	position: absolute;
+	top: 1.2em;
+	margin-right: 400px;
+	}
+#calendar {
+	top: -23px;
+	position: relative;
+	min-width: 100%;
+}
+.image_users {
+	height: 36px;
+	width: 36px;
+	margin: auto;
+	overflow: hidden;
+	display: block;
+}
+#calendar_selection {
+	font-size: 0.7em;
+	position: absolute;
+	top: 1em; 
+	right: 1em;
+	padding: 1em;
+	background: #ffc;
+	border: 1px solid #dda;
+	width: 270px;
+	}
+			
+#message {
+	font-size: 0.7em;
+	position: absolute;
+	top: 1em; 
+	right: 320px;
+	padding: 1em;
+	background: #ddf;
+	border: 1px solid #aad;
+	width: 270px;
+}
+.event{
+	font-size: 11px;
+	font-weight: bold;
+	color: #000000;
+}
+/*
+.wc-grid-row-events > .wc-grid-timeslot-header{
+	position: fixed;
+}
+*/
+.horus{
+	font-size: 12px;
+	/*opacity:0.1;*/
+}
+.horus_slot {
+	height : 60px;
+	/*opacity:0.1;*/
+	text-align: center;
+}
+.calendar-filter{
+	margin-left: 10px;
+}
+.calendar-filter .label-calendar{
+	margin-left: 1px;
+	top: -10px;
+	position: relative;
+}

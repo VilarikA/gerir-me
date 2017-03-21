@@ -1,0 +1,1 @@
+update company set allowrepeatcommand=true where id<>35;

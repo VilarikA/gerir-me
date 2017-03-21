@@ -1,0 +1,1 @@
+var i18n_days_obj = {Mon:"Segunda",Tue:"Terça",Wed:"Quarta",Thu:"Quinta",Fri:"Sexta",Sat:"Sábado",Sun:"Domingo",All:"Todos",Wordays:"Dias de Semana"};

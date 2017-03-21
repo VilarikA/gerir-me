@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content="text/html; charset=UTF-8" http-equiv="content-type" />
+    <title>Home</title>
+  </head>
+  <body class="lift:content_id=main">
+    <div id="main" class="lift:surround?with=fluid;at=content">    
+      <p>
+      <div class="contentbottombox right width100 float-left">
+          <div class="module">
+            <div>
+              <div>
+                <div style="min-height: 80px; ">
+				  <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+				    <script type="text/javascript" src="/js/monitoring.js"></script>
+				    <script type="text/javascript">
+				    	$(function(){
+								var media = 0;
+								var count = 0;
+								new Monitor(['Hora', 'Time','Media'],"chart_div",30,"Server Performance",10000,function(data,onEnd){
+									var start = new Date().getTime();
+								  	$.ajax({
+								  			url:"/system/test",
+								  			success:function(t){
+								  			$("body").css("backgroundColor","rgb(238, 238, 238)");
+									  			end  = new Date().getTime();
+									  			diff = end - start ;
+									  			count++;
+									  			total = 0;
+									  			for (var i = data.length - 1; i >= 1; i--) {
+									  				total+=data[i][1];
+									  			};
+									  			media = total / data.length
+									  			var date = new Date();
+									  			data.push([getHourBr(date)+":"+date.getSeconds(),diff,media]);
+									  			onEnd();
+								  			},
+								  			error:function(){
+								  				$("body").css("backgroundColor","#ff0000")
+								  			}
+								  		});
+								}).start();
+								new Monitor(['Label', 'Value'],"chart_div_memory",10,"Server Memory",10000,function(data,onEnd){
+								  	$.ajax({
+								  			url:"/system/memory",
+								  			success:function(t){
+									  			eval("r = "+t)
+									  			var date = new Date();
+									  			free = parseInt(r.free/r.total*100)
+										  		data.splice(0, data.length-1);
+										  		data.push(["Livre",free])
+										  		onEnd();
+								  			},
+								  			error:function(){
+								  				$("body").css("backgroundColor","#ff0000")
+								  			}
+								  		});
+								},'gauge',{redFrom:0, redTo: 20,yellowFrom:21, yellowTo: 50,minorTicks: 2}).start();
+
+								new Monitor(['Hora', 'Total'],"chart_div_thead",30,"Server Active theads",10000,function(data,onEnd){
+								  	$.ajax({
+								  			url:"/system/theads",
+								  			success:function(t){
+									  			eval("r = "+t)
+									  			var date = new Date();
+										  		data.push([getHourBr(date)+":"+date.getSeconds(),r.active]);
+										  		onEnd();
+								  			},
+								  			error:function(){
+								  				$("body").css("backgroundColor","#ff0000")
+								  			}
+								  		});
+								}).start();						
+								new Monitor(['Livre','Usado'],"chart_div_disk",30,"Server Disk",20000,function(data,onEnd){
+								  	$.ajax({
+								  			url:"/system/disk",
+								  			success:function(t){
+									  			eval("r = "+t)
+									  			data.splice(0, data.length-1);
+										  		data.push(["Livre",r.free]);
+										  		data.push(["Usado",r.total-r.free]);
+										  		onEnd();
+								  			},
+								  			error:function(){
+								  				$("body").css("backgroundColor","#ff0000")
+								  			}
+								  		});
+								},"pie").start();	
+								new Monitor(['Hora', "Conexões"],"chart_div_db",30,"Server DB",10000,function(data,onEnd){
+								  	$.ajax({
+								  			url:"/system/database",
+								  			success:function(t){
+									  			eval("r = "+t)
+									  			var date = new Date();
+										  		data.push([getHourBr(date)+":"+date.getSeconds(),r.total]);
+										  		onEnd();
+								  			},
+								  			error:function(){
+								  				$("body").css("backgroundColor","#ff0000")
+								  			}
+								  		});
+								}).start();
+								$('.tabs').tabs();
+							})	
+				    </script>
+					<div class="row">
+			          <div class="span10">
+			            <h2>Request</h2>
+						  <div id="chart_div" class="span9" style="height:200px">
+						  </div>			            
+			          </div>
+			          <div class="span5">
+			            <h2>Memory</h2>
+			            <div id="chart_div_memory" class="span4" style="height:200px">
+						</div>
+			         </div>
+			          <div class="span5">
+			            <h2>Disk</h2>
+			            <div id="chart_div_disk" class="span4" style="height:200px">
+						</div>
+			         </div>			         
+			        </div>
+					<div class="row">
+			          <div class="span6">
+			            <h2>Database</h2>
+						  <div id="chart_div_db" class="span5" style="height:200px">
+						  </div>			            
+			          </div>
+			          <div class="span5">
+			            <h2>Theads</h2>
+			            <div id="chart_div_thead" class="span5" style="height:200px">
+						</div>
+			          </div>
+			        </div>			        
+              </div>
+            </div>
+          </div>            
+      </div>      
+          <br/>
+          <hr/>
+      </p>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<title>Login - VilarikA Gestão integrada</title>
+		<link rel="shortcut icon" href="/images/logo_ftr_ebelle.ico" type="image/x-icon" />
+		<meta name="description" content="User login page" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+		<!-- basic styles -->
+
+		<link href="../new_templates/assets/css/bootstrap.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="../new_templates/assets/css/font-awesome.min.css" />
+
+		<!--[if IE 7]>
+		  <link rel="stylesheet" href="../new_templates/assets/css/font-awesome-ie7.min.css" />
+		<![endif]-->
+
+		<!-- page specific plugin styles -->
+
+		<!-- fonts -->
+
+		<link rel="stylesheet" href="../new_templates/assets/css/ace-fonts.css" />
+
+		<!-- ace styles -->
+
+		<link rel="stylesheet" href="../new_templates/assets/css/ace.min.css" />
+		<link rel="stylesheet" href="../new_templates/assets/css/ace-rtl.min.css" />
+
+		<!--[if lte IE 8]>
+		  <link rel="stylesheet" href="../new_templates/assets/css/ace-ie.min.css" />
+		<![endif]-->
+
+		<!-- inline styles related to this page -->
+
+		<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+
+		<!--[if lt IE 9]>
+		<script src="../new_templates/assets/js/html5shiv.js"></script>
+		<script src="../new_templates/assets/js/respond.min.js"></script>
+		<![endif]-->
+		<script src="libs/angular/angular.js" type="text/javascript"></script>
+		<script src="libs/angular-br/br.js" type="text/javascript"></script>
+		<script src="../js/loginController.js"></script>
+		<script src="../js/registerController.js"></script>
+		
+        <script type="text/javascript" src="/js/face_prepare.js"></script>
+        <script type="text/javascript" src="/js/q.min.js"></script>
+        <script type="text/javascript" src="/js/ebelle_face.js"></script>
+	    <script type="text/javascript">
+/*
+	      var LHCChatOptions = {};
+	      LHCChatOptions.opt = {widget_height:340,widget_width:300,popup_height:520,popup_width:500};
+	      (function() {
+	      var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+	      var refferer = (document.referrer) ? encodeURIComponent(document.referrer.substr(document.referrer.indexOf('://')+1)) : '';
+	      var location  = (document.location) ? encodeURIComponent(window.location.href.substring(window.location.protocol.length)) : '';
+	      po.src = '//nb.transitobh.com.br/livehelperchat/lhc_web/index.php/por/chat/getstatus/(click)/internal/(position)/bottom_right/(ma)/br/(top)/350/(units)/pixels/(leaveamessage)/true/(department)/1/(operator)/1?r='+refferer+'&l='+location;
+	      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+	      })();
+*/
+	    </script>        
+	</head>
+
+	<body class="login-layout" style='background-color: #e4e6e9'>
+		<div class="main-container">
+			<div class="main-content">
+				<div class="row" data-ng-app='LoginModule'  data-ng-controller='LoginController' >
+					<div class="col-sm-10 col-sm-offset-1">
+						<div class="login-container">
+							<div class="center">
+								<h1>
+									<a href="/">
+										<img src="/images/logo.png" border="0"/>
+									</a>
+								</h1>
+								<a href="http://www.vilarika.com.br/"><h4 class="blue">&copy; VilarikA</a></h4>
+							</div>
+
+							<div class="space-6"></div>
+
+							<div class="position-relative">
+								<div id="login-box" class="login-box visible widget-box no-border">
+									<div class="widget-body">
+										<div class="widget-main">
+											<h4 class="header blue lighter bigger">
+												Entrar
+											</h4>
+
+											<div class="space-6"></div>
+
+											<form>
+												<fieldset>
+													<label class="block clearfix">
+														<span class="block input-icon input-icon-right">
+															<input type="text" id='email'  autocomplete="on"  data-ng-model='email' data-br.local-storage-field class="form-control" placeholder="E-mail"
+															autofocus />
+															<i class="icon-user"></i>
+														</span>
+													</label>
+
+													<label class="block clearfix">
+														<span class="block input-icon input-icon-right">
+															<input type="password" autocomplete="off" data-ng-model='password' class="form-control" placeholder="Senha" data-ng-keypress=' $event.keyCode !== 13 || login(email, password)' />
+															<i class="icon-lock"></i>
+														</span>
+													</label>
+
+													<div class="space"></div>
+
+													<div class="clearfix">
+														<label class="inline">
+															<input type="checkbox" class="ace" />
+															<span class="lbl"> Lembrar-me</span>
+														</label>
+
+														<button type="button" data-ng-click='login(email, password)' class="width-35 pull-right btn btn-sm btn-success">
+															<i class="icon-key"></i>
+															Entrar
+														</button>
+													</div>
+							                        <ul>
+							                          <li data-ng-repeat='company in companys'>
+							                           <a href="#" class="_popover" data-ng-click='loginWithCompany(company.id, email, password)' rel="popover" data-content="Acessar empresa {{company.name}}" data-original-title="{{company.name}}">
+							                              <img width='64' ng-src="{{company.logo}}"/>{{company.name}}
+							                           </a>
+							                          </li>                                   
+							                        </ul>
+													<div class="space-4"></div>
+												</fieldset>
+											</form>
+
+											<div class="social-or-login center">
+												<span class="bigger-110">Ou</span>
+											</div>
+											<div class="social-login center">
+												<a class="btn btn-primary" data-ng-click='loginWithFacebook()'>
+													<i class="icon-facebook"></i>
+												</a>
+											<!--
+												<a class="btn btn-info">
+													<i class="icon-twitter"></i>
+												</a>
+
+												<a class="btn btn-danger">
+													<i class="icon-google-plus"></i>
+												</a>
+												-->
+											</div>
+											
+										</div><!-- /widget-main -->
+
+										<div class="toolbar clearfix">
+											<div>
+												<a href="#" onclick="show_box('forgot-box'); return false;" class="forgot-password-link">
+													<i class="icon-arrow-left"></i>
+													Esqueci minha senha
+												</a>
+											</div>
+
+											<div>
+												<a href="/new_company/add" class="user-signup-link">
+													Quero me registrar
+													<i class="icon-arrow-right"></i>
+												</a>
+											</div>
+										</div>
+									</div><!-- /widget-body -->
+								</div><!-- /login-box -->
+
+								<div id="forgot-box" class="forgot-box widget-box no-border">
+									<div class="widget-body">
+										<div class="widget-main">
+											<h4 class="header red lighter bigger">
+												<i class="icon-key"></i>
+												Recuperar minha senha
+											</h4>
+
+											<div class="space-6"></div>
+											<p>
+												Por favor entre com seu email para receber instruções
+											</p>
+
+											<form>
+												<fieldset>
+													<label class="block clearfix">
+														<span class="block input-icon input-icon-right">
+															<input type="text" class="form-control" data-ng-model='email' placeholder="E-mail" />
+															<i class="icon-envelope"></i>
+														</span>
+													</label>
+
+													<div class="clearfix">
+														<button type="button" data-ng-click='rememberPassword(email)' class="width-35 pull-right btn btn-sm btn-danger">
+															<i class="icon-lightbulb"></i>
+															Envie-me!
+														</button>
+													</div>
+												</fieldset>
+											</form>
+										</div><!-- /widget-main -->
+
+										<div class="toolbar center">
+											<a href="#" onclick="show_box('login-box'); return false;" class="back-to-login-link">
+												Voltar para o login
+												<i class="icon-arrow-right"></i>
+											</a>
+										</div>
+									</div><!-- /widget-body -->
+								</div><!-- /forgot-box -->
+							</div><!-- /position-relative -->
+							<div class="center">
+								<img src="/images/natal.png" id='natal' style="width: 227px; display:none;" />
+							</div>							
+						</div>
+
+					</div><!-- /.col -->				
+				</div><!-- /.row -->
+			</div>
+		</div><!-- /.main-container -->
+
+		<!-- basic scripts -->
+
+		<!--[if !IE]> -->
+
+		<script type="text/javascript">
+			window.jQuery || document.write("<script src='../new_templates/assets/js/jquery-2.0.3.min.js'>"+"<"+"/script>");
+		</script>
+
+		<!-- <![endif]-->
+
+		<!--[if IE]>
+<script type="text/javascript">
+ window.jQuery || document.write("<script src='../new_templates/assets/js/jquery-1.10.2.min.js'>"+"<"+"/script>");
+</script>
+<![endif]-->
+
+		<script type="text/javascript">
+			if("ontouchend" in document) document.write("<script src='../new_templates/assets/js/jquery.mobile.custom.min.js'>"+"<"+"/script>");
+		</script>
+
+		<!-- inline scripts related to this page -->
+
+		<script type="text/javascript">
+			function show_box(id) {
+			 jQuery('.widget-box.visible').removeClass('visible');
+			 jQuery('#'+id).addClass('visible');
+			}
+		</script>
+		<!--
+        <script type='text/javascript'>
+
+        var date = new Date();
+        var isNatal = ((date.getDate() >= 1 && date.getMonth()==11) ||  (date.getDate() <= 4 && date.getMonth()==0));
+        if(isNatal){
+            sflakesMax = 0.15;
+            sflakesMaxActive = 110;
+            svMaxX = 1;
+            svMaxY = 1;
+            ssnowStick = 0;
+            sfollowMouse = 1;
+            sitePath = 'http://vanessaluiza.com/_utilidades/script/let-it-snow/';
+          }
+			if(isNatal){
+				$('#natal').show();
+			}          
+
+        </script> 
+        <script type='text/javascript' src='http://categoriabloggeruplod.webs.com/JavaScript/neve.js'>
+        -->
+        </script>
+        <script type="text/javascript" src="/js/default/langs.i18n.js"></script>
+        <script type="text/javascript" src="/js/default/change_system.js"></script>
+	</body>
+</html>
+

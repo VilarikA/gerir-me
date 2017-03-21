@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="selenium.base" href="http://ebelle.vilarika.com.br/" />
+<title>ebelle_navegation</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">ebelle_navegation</td></tr>
+</thead><tbody>
+<tr>
+	<td>open</td>
+	<td>/</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=_userForLogin</td>
+	<td>mateus</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=_userForLogin</td>
+	<td>mateus</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=_passwrodForLogin</td>
+	<td>1234</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=_passwrodForLogin</td>
+	<td>1234</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=_companyForLogin</td>
+	<td>8</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=_companyForLogin</td>
+	<td>8</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=_btnIn</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>id=_btnIn</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Relatórios</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Home</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Profissionais</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Clientes</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Serviços</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Agenda</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Estoque</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Financeiro</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Relatórios</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>css=a._popover &gt; img</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//div[@id='main']/span/span/ul/li[2]/a/img</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=Mateus</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Alterar Senha</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=Mateus</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Mensalidade</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=Mateus</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Configuração</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=Mateus</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=menu_messages_hided</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//body/div[4]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=Mateus</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=menu_messages</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//body/div[5]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=Mateus</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Forma Pagamento</td>
+	<td></td>
+</tr>
+
+</tbody></table>
+</body>
+</html>

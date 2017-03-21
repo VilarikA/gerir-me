@@ -1,0 +1,370 @@
+<div id="main" class="lift:surround?with=bootstrap;at=content">
+	<div class="well">
+		<div class='filter block-message success"'>
+			<span class="filter_form">
+				<h1>Agendamento Periódico
+                <a data-original-title="Informação" data-content="clique para abrir a documentação" data-help-url='/docs/scheduling.html' rel="popover" class="_popover_basic _help">
+                  <img src="/images/info.gif" width="20">
+                </a>
+                </h1>
+				<form action=''>
+		              <div class="clearfix">
+		                <label for="name"><span data-i18n='Cliente'></span></label>
+		                 <div class="input">
+		                    <div class='inline-inputs'>
+			                    <img class="customer_search_button" width='24' src="/images/search.png"/>
+								<input class='mini id_customer_search' id='customer_for_seach' /> 
+								<input class="disabled name_customer_search" name="name_customer" size="30" type="text" placeholder="Nome" disabled=""/>	      
+			                </div>
+		                 </div>
+		              </div>
+		              <div class="clearfix">
+		                <label for="name"><span data-i18n='Profissionais'></span></label>
+		                 <div class="input">
+		                    <div class='inline-inputs'>
+		                    	<select class="xlarge notselect2 local_storage" id="user" name="user"></select>
+			                </div>
+			                <span class="lift:SecuritySnippet.hasUnitModule label important"><b><span data-i18n='Profissionais'></span> da unidade corrente</b></span>
+			                <span class="lift:SecuritySnippet.hasUnitModule help-block">Para alterar a unidade faça a seleção na agenda</span>
+		                 </div>
+		              </div>
+		              <div class="clearfix">
+		                <label for=""><span data-i18n='Serviço'></span></label>
+		                 <div class="input">
+		                    <div class='inline-inputs'>
+		                    	<select class="xlarge notselect2 local_storage" id="activity" name="activity"></select>
+			                </div>
+		                 </div>
+		              </div>		              
+					  <div class="lift:SecuritySnippet.isGerirmeSystem clearfix">
+						  <label for="price">Valor/Qtde</label>
+						    <div class="input">
+						      <div class="inline-inputs">
+						          <div style="float:left; padding-right:10px" class="input-prepend">
+						            <span class="add-on"><img width="16" src="/images/money.png"></span>
+						            <input type="text" size="19" name="price" id="price" class="mini currency"/>
+						          </div>
+						          <div style="float:left; padding-right:10px" class="input-prepend">
+						            <span class="add-on"><img width="16" src="/images/add.png"></span>
+						            <input type="number" step='1' min='0' size="19" name="amount" id="amount" class="mini" value="1"/>
+						          </div>
+						      </div>
+						    </div>
+					  </div>
+		              <div class="clearfix">
+		                <label for="name">Datas</label>
+		                 <div class="input">
+		                    <div class='inline-inputs'>
+                              <div class="input-prepend" style="float:left; padding-right:10px">
+                                <span class="add-on"><img width="16" src="/images/calendar_addon.png"></span>
+		                    	<input placeholder="Início" class="date small to_day" id="date_start"/>
+		                      </div>
+                              <div class="input-prepend" style="float:left; padding-right:10px">
+                                <span class="add-on"><img width="16" src="/images/calendar_addon.png"></span>
+		                    	<input placeholder="Fim" class="date small" id="date_end"/>
+		                      </div>
+		                 	  Qtde Limite: <input id='num_max' class='mini' value="0"/>
+								<a data-original-title="Informação" data-content="clique para abrir a documentação" data-help-url='/docs/scheduling.html#num_max' rel="popover" class="_popover_basic _help">
+								<img src="/images/info.gif" width="20">
+								</a>
+		                 	</div>
+		                 </div>
+		              </div>
+		              <div class="clearfix">
+		                <label for="name">Hora</label>
+		                 <div class="input">
+		                    <div class='inline-inputs'>
+		                    	<input placeholder="Início" class="time mini local_storage" id="hour_start"/>
+		                    	<input placeholder="Fim" class="time mini" id="hour_end"/>
+								<a data-original-title="Informação" data-content="clique para abrir a documentação" data-help-url='/docs/scheduling.html#hour_start' rel="popover" class="_popover_basic _help">
+								<img src="/images/info.gif" width="20">
+								</a>
+			                </div>
+		                 </div>
+		              </div>		              
+					  <div class="clearfix">
+					    <label>Obs </label>
+					    <div class="input">
+					      <div class="inline-inputs">
+					      		<textarea name="obs" id="obs_treatment"></textarea>
+					      </div>
+					    </div>
+					  </div>						         
+			          <input type="hidden" class="is-ephysio-system lift:SecuritySnippet.isEphysioSystem" value="1">
+			          <input type="hidden" class="is-gerirme-system lift:SecuritySnippet.isGerirmeSystem" value="1">
+		              <div class="clearfix">
+		                <label for="name">Tipo</label>
+		                 <div class="input">
+	                      <div class="inline-inputs">
+		                 	<select class="xlarge notselect2" id="type" name="type">
+		                 		<option value='7'>Semana</option>
+		                 		<option value='14'>Bisemanal</option>
+		                 		<option value='monthly'>Mes</option>
+		                 		<option value='-'>Outro</option>
+		                 		<option value='week'>Dias da semana</option>
+		                 	</select>
+		                 	Dias : <input id='num_dias' class='mini' disabled="true" value="7"/>                     
+	                      </div>		                 	
+		                 </div>
+		              </div>
+		              <div class="clearfix week_days_conf">
+		                <label for="week_days">Dias da semana</label>
+		                 <div class="input">
+		                    <div class='inline-inputs'>
+		                    	<select class="xlarge" multiple="multiple" id="week_days" name="week_days"></select>
+			                </div>
+		                 </div>
+		              </div>		              
+		              <div class="clearfix">
+		                 <div class="input">
+		                 	<input type="button" id="generate" class="btn success" value="Gerar">
+		                 	<input type="button" id="clear" class="btn danger" value="Limpar">
+		                 </div>
+		              </div>
+		              <div class="clearfix">
+		                 <div class="input">
+					  Confira os agendamentos gerados na tabela abaixo antes de <b>salvar</b>.
+					  	 </div>
+					  </div>
+		              <div class="clearfix">
+		                 <div class="input">
+		                 	<input type="button" id="process" class="btn success" value="Salvar">
+		                 </div>
+		              </div>		              			              		              
+				</form>
+			</span>
+		</div>
+	</div>
+	<table id="grid_scheduling" class="bordered-table zebra-striped">
+		<thead>
+			<th></th>
+			<th>Início</th>
+			<th>Fim</th>
+			<th>Dia</th>
+			<th><span data-i18n='Serviço'></span></th>
+			<th><span data-i18n='Profissional'></span></th>
+			<th>Mensagem</th>		
+			<th>Ações</th>
+		</thead>
+		<tbody>
+		</tbody>
+	</table>
+	<script type="text/javascript">
+	    var isEphysioSystem = $('.is-ephysio-system').length > 0;
+	    var isGerirmeSystem = $('.is-gerirme-system').length > 0;
+		var treatments = [];
+		var clear = function(){
+			treatments = [];
+			render(treatments);
+		}
+		var process = function(){
+			if(treatments.length <= 0){
+				alert("Não há o que salvar, os agendamentos devem aparecer na tabela abaixo antes de serem salvos.")
+				return;
+			}
+
+			$.post("/treatment/util/scheduling",{data : JSON.stringify(treatments)}, function(r){
+				eval("var dataset ="+r);
+				dataset.filter(function(item){
+					return item.valid;
+				}).forEach(function(item){
+					removeTreatment(item.id);
+				});
+
+				var invalids = dataset.filter(function(item){
+					return !item.valid;
+				});
+				invalids.forEach(function(item){
+					var t = getTreatmentById(item.id);
+					t.message = item.message;
+				});
+				render(treatments);
+				if(invalids.length > 0){
+					alert(invalids.length+" atendimento(s) na tabela abaixo encontra(m)-se com problema")
+				}else{
+					alert("Agendamento efetuado com sucesso!")
+				}
+			});
+
+		}
+		var getTreatmentById  = function(id){
+			return treatments.filter(function(t){
+				return t.id==id;
+			})[0];
+		}
+		var generate_treatments = function(type, start, end, hour_start, hour_end,service, service_name,customer,user, obs_treatment, allowDays, user_name, num_max, price, amount){
+
+			//user_name
+			start.ajustDaylightSavingPrevent();
+			if (num_max == 0){
+				num_max = 999; // 999 evita que por erro o usario gere 99999;
+								// como era antes e 999 corresponde a 19 anos 
+								// se a geracao for semanal
+			}
+			if(!end){
+				alert("Selecione uma data fim, mesmo que seja informada uma quantidade limite, forçando o término antes desta data fim se for o caso");
+				return;
+			}else{
+				end.ajustDaylightSavingPrevent();
+			}
+			if(!hour_start){
+				alert("Selecione um horário de início");
+				return;
+			}
+			if(!price){
+				price = 0
+			}
+			if(!amount){
+				amount = 1
+			}
+			if(!hour_end){
+				hour_end = sumHours(hour_start, getActivity(service).duration);
+			}
+			if(!allowDays){
+				allowDays = Array(0,1,2,3,4,5,6);
+			}else{
+				allowDays = allowDays.map(function(i){ return parseInt(i);})
+			}
+			if(!user){
+				alert("Selecione um profissional");
+				return;
+			}
+			if(!service){
+				alert("Selecione um serviço");
+				return;
+			}
+			if(!customer){
+				alert("Selecione um cliente");
+				return;
+			}
+			current = start;
+			var days = type*24*60*60*1000;
+			var day = 24*60*60*1000;
+			var i = 0;
+			var day_orig = current.getDate();
+			do{
+				if(allowDays.indexOf(current.getDay()) !== -1){
+					treatments.push({user : user,customer : customer ,id: treatments.length+ (new Date().getTime()), service :service, service_name : service_name, date: new Date(current.getTime()), start: getDateBr(current)+" "+hour_start, end: getDateBr(current)+" "+hour_end, valid: true, obs : obs_treatment+" - Periódico", user_name : user_name,
+						price : price, amount : amount
+						});
+					i ++;
+				}
+				if(type === 'monthly'){
+					current.setMonth(current.getMonth()+1);
+					// só reduz o dia em relacao ao original se origem for 31 30 29
+					// se reduziu muito é pq virou o mes - por isso o + 15
+					// se reduziu pouco é pq voltou a um mes que tem mais dias 
+					// ai seta o dia original de volta
+					if ((current.getDate() + 15) < day_orig) {
+						current.setDate((day_orig - current.getDate()))
+						current.setMonth(current.getMonth()-1)
+					} else if (current.getDate() < day_orig) {
+						current.setDate(day_orig)
+					}
+				}else{
+					current.setTime(current.getTime()+days);
+				}
+			}while ((current.getTime() <= end.getTime()+day) && (i < num_max));
+			render(treatments);
+		}
+		var render = function(treatments){
+			var j = 0
+			$("#grid_scheduling tbody").html(treatments.map(function(item){
+				if(!item.message){
+					item.message = "";
+				}
+				j ++;
+				return "<tr><td>"+j+"</td><td>"+item.start+"</td><td>"+item.end+"</td><td>"+i18n_days[item.date.getDay()]+"</td><td>"+item.service_name+"</td><td>"+item.user_name+"</td><td>"+item.message+"</td><td><input type='button' onclick='removeTreatment("+item.id+")' class='btn danger' value='Excluir'></td></tr>"
+			}).join());
+		};
+		var removeTreatment = function(id){
+			treatments = treatments.filter(function(item){
+				return item.id != id;
+			});
+			render(treatments);
+		}
+
+		if (isEphysioSystem) {
+			$("#type").val('week');
+			$(".week_days_conf").show();
+			$("#num_dias").val(1);
+		} else if (isGerirmeSystem) {
+			$("#type").val('monthly');
+			$(".week_days_conf").hide();
+			$("#num_dias").val('monthly');
+			$("#num_dias").hide();
+		} else {
+			$(".week_days_conf").hide();
+		}
+
+		$("#process").click(process);
+		$("#clear").click(clear);
+		$('#generate').click(function(){
+			var days = $("#type").val() =="week" ? $("#week_days").val() : false;
+			generate_treatments($('#num_dias').val(),$("#date_start").datepicker("getDate"), $("#date_end").datepicker("getDate"), $('#hour_start').val(), $('#hour_end').val(), 
+				$("#activity").val(), $("#activity option:selected").text(),
+				$('#customer_for_seach').val(), $('#user').val(), $('#obs_treatment').val(), days, 
+				$("#user option:selected").text(),
+				$('#num_max').val(),
+				$('#price').val(),
+				$('#amount').val()
+				);
+		});
+		$("#week_days").weekDaysField();
+		DataManager.getUsers(function(userObj){
+			user_str = "<option value='' selected=true>Selecione um profissional</option>";
+			for(var i in userObj){
+	      		user_str += "<option value='"+userObj[i].id+"'>"+userObj[i].name+"</option>";
+	    	}
+	    	$("#user").html(user_str);			
+		});
+
+		$("#activity").change(function(){
+// já alterei o cashapi mas ta dando erro na propriedade bpmonthly aqui			
+			if(getActivity($(this).val()).bpmonthly==true) {
+				//alert("é mensalidade");
+			}else{
+				//alert("né não");
+			}
+		});
+		$("#type").change(function(){
+			if($(this).val()=="-"){
+				$("#num_dias").removeClass('disabled');
+				$("#num_dias").attr('disabled',false);
+			}else{
+				$("#num_dias").addClass('disabled');
+				$("#num_dias").val($(this).val());
+				$("#num_dias").attr('disabled',true);
+			}
+			if($(this).val()=="monthly"){
+				$("#num_dias").hide();
+			}else{
+				$("#num_dias").show();
+			}
+			if($(this).val()=="week"){
+				$(".week_days_conf").show();
+				$("#num_dias").val(1);
+			}else{
+				$(".week_days_conf").hide();
+			}
+		});
+		var getActivity = function(id){
+			return global_activitiesObj.filter(function(item){
+				return item.id == id;
+			})[0];
+		};
+		var getActivities = function(){
+		      DataManager.getActivities($("#user").val(), function(activitysObj){
+		        global_activitiesObj = activitysObj;
+		        $('#activity option').remove();
+		        var ret ="<option value=''>Selecione um serviço</option>";
+		        for(var i in activitysObj){
+		          ret +="<option value='"+activitysObj[i].id+"'>"+activitysObj[i].name+"</option>";
+		        }
+		        $('#activity').append(ret);
+		        $('#activity').change();
+		      });
+		  	};
+		$("#user").change(getActivities);		
+	</script>
+</div>

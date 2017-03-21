@@ -1,0 +1,217 @@
+<div id="main" class="lift:surround?with=dashboard_customer;at=content">
+  <script type="text/javascript" charset="utf-8">
+    $(function(){
+      var str = $("#weekDays_text_id input").val();
+      $("#weekDays").weekDaysField();
+      $("#weekDays").val(str.split(",")).change();
+    })
+    setTimeout(function(){
+      if($("#business_pattern").val() && $("#business_pattern").val() != '0'){
+        $("#business_pattern").change();
+      }
+    }, 500);    
+  </script>
+  <span class=' lift:BpMonthlySnippet.maintain'>
+    <form  class="lift:form.ajax">
+      <div class="well">
+        <label for="btn"></label>
+        <a class="btn primary" href="/bpmonthly/list_bpmonthly">Lista</a>
+        <input class="btn success" type="submit" value="Salvar">
+        <a class="btn primary" href="/bpmonthly/bpmonthly">Inserir novo</a>
+      </div>
+      <div>
+        <span id="bpmonthly_form">
+          <span class="row">
+            <span class="span18">
+              <div class="clearfix">
+                <label for="business_pattern"><span data-i18n='Cliente'></span></label>
+                <div class="input">
+                  <span>
+                    <img class="customer_search_button" width='24' src="/images/search.png"/>
+                    <input class='mini id_customer_search url_parameter' data-url-name='business_pattern'  id='business_pattern' name="business_pattern" /> 
+                    <input class="name_customer_search" name="business_patternname" id="business_patternname"  size="30" type="text" placeholder="Nome"/>    
+                  </span>
+                </div>
+              </div>
+            </span>
+            <span class="span7">
+              <div class="clearfix">
+                <label for="startat">Início</label>
+                <div class="input">
+                  <div class='inline-inputs'>
+                    <div class="input-prepend" style='float:left; padding-right:10px'>
+                      <span class="add-on"><img width="16" src='/images/calendar_addon.png'/></span> 
+                      <input class="input-small date" id="startat" name="startat" size="19" type="text"/>
+                    </div>
+                  </div>
+                </div>
+              </div>                     
+              <div class="clearfix">
+                <label for="product">Serviço</label>
+                <div class="input">
+                  <select id='product' class="relationship" name='product'></select>
+                </div>
+              </div>
+              <div class="clearfix">
+                <label for="value">Valor</label>
+                <div class="input">
+                  <div class="input-prepend">
+                    <span class="add-on"><img src='/images/dre.png' width="16"/></span> 
+                    <input class="mini currency" id="value" name="value" size="30" type="text"/>
+                    <span class="help-block">Valor da mensalidade do serviço</span>
+                  </div>
+                </div>
+              </div>
+              <div class="clearfix">
+                <label for="valueSession">Valor Sessão</label>
+                <div class="input">
+                  <div class="input-prepend">
+                    <span class="add-on"><img src='/images/dre.png' width="16"/></span> 
+                    <input class="mini currency" id="valueSession" name="valueSession" size="30" type="text"/>
+                    <span class="help-block">Valor da sessão</span>
+                  </div>
+                </div>
+              </div>
+              <div class="clearfix">
+                <label for="fixValueSession">Aceita Val Sessão</label>
+                <div class="input">
+                  <select name="fixValueSession"></select>
+                  <span class="help-block">Aceita valor sessão informado sem recalculá-lo em função do número</span>
+                </div>
+              </div>          
+              <div class="lift:SecuritySnippet.hasUnitModule clearfix">
+                <label for="unit">Unidade</label>
+                <div class="input">
+                  <select class="medium" id="unit" name="unit" >
+                  </select>
+                </div>
+              </div>
+              <div class="clearfix">
+                <label for="canceled">Cancelado</label>
+                <div class="input">
+                  <select name="canceled"></select>
+                  <span class="help-block">Indica que a mensalidade não deve ocorrer no mês seguinte</span>
+                </div>
+              </div>          
+            </span>
+            <span class="span7">
+              <div class="clearfix">
+                <label for="startat">Fim</label>
+                <div class="input">
+                  <div class='inline-inputs'>
+                    <div class="input-prepend" style='float:left; padding-right:10px'>
+                      <span class="add-on"><img width="16" src='/images/calendar_addon.png'/></span> 
+                      <input class="input-small date" id="endat" name="endat" size="19" type="text"/>
+                    </div>
+                  </div>
+                </div>
+              </div>                     
+              <div class="clearfix">
+                <label for="status">Status</label>
+                <div class="input">
+                  <select class="medium" id="status" name="status" >
+                  </select>
+                  <a data-original-title="Informação" data-content="clique para abrir a documentação" data-help-url='/docs/status.html' rel="popover" class="_popover_basic _help">
+                    <img src="/images/info.gif" width="20">
+                  </a>
+                </div>
+              </div>
+              <div class="clearfix">
+                <label for="valueDiscount">Valor c Descontos</label>
+                <div class="input">
+                  <div class="input-prepend">
+                    <span class="add-on"><img src='/images/dre.png' width="16"/></span> 
+                    <input class="mini currency" id="valueDiscount" name="valueDiscount" size="30" type="text"/>
+                    <span class="help-block">Valor com descontos</span>
+                  </div>
+                </div>
+              </div>
+              <div class="clearfix">
+                <label for="numSession">Número Sessões</label>
+                <div class="input">
+                  <div class="input-prepend">
+                    <span class="add-on"><img src='/images/expand.gif' width="16"/></span> 
+                    <input class="mini" id="numSession" name="numSession" size="30" type="text"/>
+                    <span class="help-block">Número de Sessões no intervalo</span>
+                  </div>
+                </div>
+              </div>
+              <div class="clearfix">
+                <label for="fixNumSession">Aceita Num Sessões</label>
+                <div class="input">
+                  <select name="fixNumSession"></select>
+                  <span class="help-block">Aceita número sessões informado sem recalculá-lo em função dos dias de semana</span>
+                </div>
+              </div>          
+              <div class="clearfix">
+                <label for="bpmCount">Qtde Meses</label>
+                <div class="input">
+                  <div class="input-prepend">
+                    <span class="add-on"><img src='/images/expand.gif' width="16"/></span> 
+                    <input class="mini" id="bpmCount" name="bpmCount" size="30" type="text"/>
+                    <span class="help-block">Número de meses correspondente ao plano</span>
+                  </div>
+                </div>
+              </div>
+            </span>
+            <span class="span18">
+              <span id='weekDays_text_id' class="hide">
+                <input name="weekDays_text"/>
+              </span>
+              <div class="clearfix">
+                <label for="weekDays">Dias da semana</label>
+                <div class="input">
+                  <select multiple="multiple" class="medium" id="weekDays" name="weekDays" >
+                  </select>
+                </div>
+              </div>
+              <div class="clearfix">
+                <label for="Obs">Obs</label>
+                <div class="input">
+                  <textarea class="large" id="obs" name="obs" size="30"></textarea>
+                  <span class="help-block">Observações</span>
+                </div>
+              </div>
+            </span>
+            <span class='span12'>
+              <div class="clearfix lift:SecuritySnippet.hasAuditModule">
+                  <label for="createdAt">Criado/Alterado</label>
+                  <div class="input">
+                    <div class='inline-inputs'>
+                      <div class="input-prepend" style='float:left; padding-right:10px'>
+                        <span class="add-on"><img width="16" src='/images/calendar_addon.png'/></span> 
+                        <input class="input-medium datetime disabled" disabled="true" id="createdAt" name="createdAt" size="19" type="text"/>
+                      </div>
+                      <div class="input-prepend" style='float:left; padding-right:10px'>
+                        <span class="add-on"><img width="16" src='/images/calendar_addon.png'/></span> 
+                        <input class="input-medium datetime disabled" disabled="true" id="updatedAt" name="updatedAt" size="19" type="text"/>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="input">
+                    <div class='inline-inputs'>
+                      <div class="input-prepend" style='float:left; padding-right:10px'>
+                        <span class="add-on"><img src='/images/sex.png'/></span> 
+                        <input class="input-medium disabled" disabled="true" id="createdby" name="createdby" size="19" type="text"/>
+                      </div>
+                      <div class="input-prepend" style='float:left; padding-right:10px'>
+                        <span class="add-on"><img src='/images/sex.png'/></span> 
+                        <input class="input-medium disabled" disabled="true" id="updatedby" name="updatedby" size="19" type="text"/>
+                      </div>
+                    </div>
+                  </div>                            
+              </div>   
+            </span>                  
+          </span>
+        </span>
+      </div>
+      <div class="well">
+        <label for="btn"></label>
+        <a class="btn primary" href="/bpmonthly/list_bpmonthly">Lista</a>
+        <input class="btn success" type="submit" value="Salvar">
+        <a class="btn primary" href="/bpmonthly/bpmonthly">Inserir novo</a>
+      </div>
+    </form>
+  </span>
+</div>
+</div>

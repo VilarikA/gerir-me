@@ -1,0 +1,990 @@
+<div id="main" class="lift:surround?with=dashboard_customer&at=content">
+    <div class="lift:CustomerSnippet.maintain">
+        <form class="crud_form lift:form.ajax" id="customer_form">
+            <div class="well">
+                <label for="btn"></label>
+                <a class="btn primary" href="/customer/list">Lista</a>
+                <input class="btn success lift:SecuritySnippet.isNotAdminRead" type="submit" value="Salvar">
+                <a class="btn primary" href="/customer/edit">Inserir novo</a>
+                <a class="btn primary lift:SecuritySnippet.hasEventModule " id="event_link" target="eventpage" alt= "Adicionar novo evento" href="/project/event?bp_sponsor=##"><span data-i18n='Evento'></span></a>
+                <a class="btn primary lift:SecuritySnippet.hasRelationModule " id="bprelationship_link" target="relationshippage" alt= "Adicionar novo relacionamento" href="/bprelationship/bprelationship?business_pattern=##">Relacionamento</a>
+                <a class="btn primary lift:SecuritySnippet.isEbellepetSystem " id="pet_link" target="_animal_maste" alt= "Adicionar novo pet" href="/animal/edit_animal?bp_manager=##"><span data-i18n='Pet'></span></a>
+                <!-- antigo link que inseria como indicação
+                <a class="btn primary lift:SecuritySnippet.isEbellepetSystem " id="pet_indic_link" target="_animal_maste" alt= "Adicionar novo pet" href="/animal/edit_animal?bp_indicatedby=##">Pet Indic</a>
+                -->
+                <input type="hidden" class="has-pet-system lift:SecuritySnippet.isEbellepetSystem" value="1">
+                <input type="hidden" class="has-medical-system lift:SecuritySnippet.isMedicalSystem" value="1">
+                <input type="hidden" class="has-edoctus-system lift:SecuritySnippet.isEdoctusSystem" value="1">
+                <input type="hidden" class="has-ephysio-system lift:SecuritySnippet.isEphysioSystem" value="1">
+                <input type="hidden" class="has-gerirme-system lift:SecuritySnippet.isGerirmeSystem" value="1">
+            </div>
+            <span id="user_form">
+                <span class='row'>
+                    <span class='span12'>
+                        <div class="clearfix">
+                            <label for="idforcompany">Código</label>        
+                            <div class="input">
+                                <div class='inline-inputs'>
+                                    <div class="input-prepend" style='float:left; padding-right:10px'>
+                                        <input class="lift:SecuritySnippet.DoNoteditBpIdfC small" id="idForCompany" name="idForCompany" size="10" type="text" disabled="" />
+                                        <input class="lift:SecuritySnippet.editBpIdfC small" id="idForCompany" name="idForCompany" size="10" type="text" />
+                                        <span class="lift:SecuritySnippet.editBpIdfC">
+                                        <button type="button" id="generate-id" title ="Gera código, se fizer por engano não salve o registro"class="btn primary lift:SecuritySnippet.editBpIdfC">Gerar</button>
+                                        </span>
+                                    </div>
+                                    <div class="input-prepend">
+                                        <select class="medium" id="status" name="status" >
+                                        </select>
+                                        <a data-original-title="Informação" data-content="clique para abrir a documentação" data-help-url='/docs/status.html' rel="popover" class="_popover_basic _help">
+                                        <img src="/images/info.gif" width="20">
+                                        </a>
+                                    </div>
+                                    <span class="help-block">Código sequencial do <span data-i18n='Cliente'></span> / Status do <span data-i18n='Cliente'></span></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="clearfix lift:SecuritySnippet.hasAnvisaModule ">
+                            <label for="barcode">Prontuário</label>
+                            <div class="input">
+                                <input class="medium" id="barcode" name="barcode" size="30" type="text"/>
+                            </div>
+                        </div>
+                        <div class="clearfix">
+                            <label for="name">Nome</label>        
+                            <div class="input">
+                                <div class='inline-inputs'>
+                                  <div class="input-prepend" style='float:left; padding-right:10px'>
+                                    <span>
+                                        <input class="large" id="name" name="name" size="30" type="text"/>
+                                    </span>
+                                    <span class='label-inline'>
+                                        Apelido
+                                    </span>
+                                    <span>
+                                        <input class="medium" id="short_name" name="short_name" size="30" type="text"/>
+                                        <a data-original-title="Informação" data-content="clique para abrir a documentação" data-help-url='/docs/name.html' rel="popover" class="_popover_basic _help">
+                                        <img src="/images/info.gif" width="20">
+                                        </a>
+                                    </span>
+                                  </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="clearfix lift:SecuritySnippet.isSuperAdmin">
+                          <label for="name">Migração *</label>        
+                          <div class="input">
+                                <input class="mini" id="external_id" name="external_id" size="30" type="text"/>
+                          </div>
+                        </div>
+                        <div class="clearfix lift:SecuritySnippet.isNotEgrexSystem ">
+                            <label for="obs">Observação</label>
+                            <div class="input">
+                                <input class="large" id="obs" name="obs" size="30" type="textarea"/>
+                                <span class="help-block">Observação</span>
+                            </div>
+                        </div>
+                        <div class="clearfix lift:SecuritySnippet.hasCrmModule">
+                            <label for="bp_manager">Responsável</label>
+                            <div class="input">
+                                <span>
+                                <img class="customer_search_button" width='24' src="/images/search.png"/>
+                                <input class='mini id_customer_search url_parameter' id='bp_manager' name="bp_manager" /> 
+                                <input class="name_customer_search" name="manager" id="manager"  size="30" type="text" placeholder="Nome"/>    
+                                </span>
+                            </div>
+                        </div>
+                        <!-- tirar quando estabilizar os 2 change 
+                        <div class="clearfix lift:SecuritySnippet.hasCrmModule">
+                            <label for="bp_manager"></label>
+                            <div class="input">
+                                <input name="namemanager" id="namemanager"  size="30" type="text" placeholder="Nome"/>    
+                            </div>
+                        </div>
+                        -->
+                        <div class="clearfix">
+                            <label for="phone">Telefones</label>        
+                            <div class="input">
+                                <div class='inline-inputs'>
+                                    <div class="input-prepend" style='float:left; padding-right:10px'>
+                                        <span class="add-on"><img src='/images/phone.png'/></span> 
+                                        <input class="medium phone" id="phone" name="phone" size="30" type="text"/>
+                                    </div>
+                                    <div class="input-prepend" style='float:left; padding-right:10px'>
+                                        <span class="add-on"><img src='/images/mobile_phone.png'/></span>                   
+                                        <input class="medium phone" id="mobilePhone" name="mobilePhone" size="30" type="text"/>
+                                    </div>
+                                    <div class="input-prepend" style='float:left; padding-right:10px'>
+                                        <select class="medium" name="mobilePhoneOp" id='mobilePhoneOp'></select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="clearfix">
+                            <label for="phone">Telefones</label>        
+                            <div class="input">
+                                <div class='inline-inputs'>
+                                    <div class="input-prepend">
+                                        <span class="add-on"><img src='/images/mobile_phone.png'/></span>                   
+                                        <input class="medium phone" id="email_alternative" name="email_alternative" size="30" type="text"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="clearfix">
+                            <label for="birthday">Data de Aniversário</label>
+                            <div class="input">
+                                <div class='inline-inputs'>
+                                    <div class="input-prepend" style='float:left; padding-right:10px'>
+                                        <span class="add-on"><img src='/images/birthday.png'/></span> 
+                                        <input class="input-small date" id="birthday" name="birthday" size="19" type="text"/>
+                                    </div>
+                                    <div class="input-prepend lift:SecuritySnippet.isEdoctusSystem" >
+                                        <div class="input">
+                                        <input name="ageBirth" id="ageBirth" disabled="true" class = "medium"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="clearfix">
+                            <label for="sex">Sexo</label>
+                            <div class="input">
+                                <div class="input-prepend" >
+                                    <span class="add-on"><img src='/images/sex.png'/></span> 
+                                    <select class = "medium" id="sex" name="sex" ></select>
+                                    <span class="help-inline">Sexo</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="clearfix">
+                            <label for="birthday">Estado Civíl</label>
+                            <div class="input">
+                                <div class='inline-inputs'>
+                                    <div class="input-prepend" style='float:left; padding-right:10px'>
+                                        <span class="add-on"><img src='/images/sex.png'/></span> 
+                                        <select id="civilstatus" name="civilstatus" ></select>
+                                        <span class="help-block">Estado civil</span>
+                                    </div>
+                                    <div class="input-prepend" style='float:left; padding-right:10px'>
+                                        <span class="add-on"><img src='/images/sex.png'/></span> 
+                                        <select id="mapicon" name="mapicon" ></select>
+                                        <span class="help-block">Icone</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="clearfix">
+                            <label for="email">E-mail</label>
+                            <div class="input">
+                                <div class="input-prepend">
+                                    <span class="add-on">@</span>
+                                    <input class="xlarge" id="email" name="email" size="16" type="text">
+                                    <span class="help-inline">E-mail de contato</span>
+                                </div>
+                                <span class="lift:SecuritySnippet.isNotEgrexSystem help-block"><a href="#" onclick="startLogin()">Facebook</a></span>
+                            </div>
+                        </div>
+                        <div class="clearfix lift:SecuritySnippet.isEgrexSystem ">
+                            <label for="begindate">Na CCZS desde</label>
+                            <div class="input">
+                                <div class='inline-inputs'>
+                                    <div class="input-prepend" style='float:left; padding-right:10px'>
+                                        <span class="add-on"><img src='/images/birthday.png'/></span> 
+                                        <input class="input-small date" id="begindate" name="begindate" size="19" type="text"/>
+                                    </div>
+                                    <div class="input-prepend" style='float:left; padding-right:10px'>
+                                        <span class='label-inline'>Membro</span>
+                                        <input name="is_member" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="lift:SecuritySnippet.isNotEgrexSystem clearfix">
+                            <label for="document">CPF / RG</label>
+                            <div class="input">
+                                <div class='inline-inputs'>
+                                    <div class="input-prepend" style='float:left; padding-right:10px'>
+                                        <input class="medium cpf" id="document" name="document" size="30" type="text"/>
+                                        <span class="help-block">CPF</span>
+                                    </div>
+                                    <div class="input-prepend" style='float:left; padding-right:10px'>
+                                        <input class="medium" id="document_identity" name="document_identity" size="30" type="text"/>
+                                        <span class="help-block">RG ou carteira de identidade</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="clearfix">
+                            <label for="document">Instrução/profissão</label>
+                            <div class="input">
+                                <div class='inline-inputs'>
+                                    <div class="input-prepend" style='float:left; padding-right:10px'>
+                                        <select class="large" name="instructiondegree" id='instructiondegree'></select>
+                                        <span class="help-block">Grau de Instrução</span>
+                                    </div>
+                                    <div class="input-prepend" style='float:left; padding-right:10px'>
+                                        <select class="large" name="occupation" id='occupation'></select>
+                                        <span class="help-block">Profissão</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="lift:SecuritySnippet.isNotEgrexSystem clearfix">
+                            <label for="document_company">CNPJ / Razão Social</label>
+                            <div class="input">
+                                <div class='inline-inputs'>
+                                    <div class="input-prepend" style='float:left; padding-right:10px'>
+                                        <input class="medium cnpj" id="document_company" name="document_company" size="30" type="text"/>
+                                        <span class="help-block">CNPJ</span>
+                                    </div>
+                                </div>
+                                <div class='inline-inputs'>
+                                    <div class="input-prepend" style='float:left; padding-right:10px'>
+                                        <input class="xlarge" id="company_name" name="company_name" size="30" type="text"/>
+                                        <span class="help-block">Razão social</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="lift:SecuritySnippet.isGerirmeSystem clearfix">
+                            <label for="document_city">Insc Municip / Estad</label>
+                            <div class="input">
+                                <div class='inline-inputs'>
+                                    <div class="input-prepend" style='float:left; padding-right:10px'>
+                                        <input class="medium" id="document_city" name="document_city" size="30" type="text"/>
+                                        <span class="help-block">Inscrição municipal</span>
+                                    </div>
+                                </div>
+                                <div class='inline-inputs'>
+                                    <div class="input-prepend" style='float:left; padding-right:10px'>
+                                        <input class="medium" id="document_state" name="document_state" size="30" type="text"/>
+                                        <span class="help-block">Inscrição estadual</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="lift:SecuritySnippet.isGerirmeSystem clearfix">
+                            <label for="website">Web Site</label>
+                            <div class="input">
+                                <div class="input-prepend">
+                                    <span class="add-on">@</span>
+                                    <input class="xlarge" id="website" name="website" size="16" type="text">
+                                </div>
+                                <span class="help-block">Web site </span>
+                            </div>
+                        </div>
+                        <div class="lift:SecuritySnippet.isGerirmeSystem clearfix">
+                            <div>
+                                <label for="obscomplement">Detalhes</label>
+                                <div class="input">
+                                    <textarea class="large" id="obscomplement" name="obscomplement" size="30"></textarea>
+                                    <span class="help-block">Observações detalhadas</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="lift:SecuritySnippet.isEgrexSystem clearfix">
+                            <div>
+                                <label for="obscomplement">Detalhes</label>
+                                <div class="input">
+                                    <textarea class="large" id="obscomplement" name="obscomplement" size="30"></textarea>
+                                    <span class="help-block">Observações detalhadas</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="clearfix lift:SecuritySnippet.hasUnitModule">
+                            <label for="unit">Unidade</label>
+                            <div class="input">
+                                <div class="input-prepend">
+                                    <select class="medium" id="unit" name="unit" >
+                                    </select>
+                                </div>
+                                <span class="help-block">Unidade do cliente</span>
+                            </div>
+                        </div>
+                        <div class="clearfix lift:SecuritySnippet.hasOffSaleModule">
+                            <label for="offsale">Convênio </label>
+                            <div class="input">
+                                <select name="offsale" id='offsale'></select>
+                                <span class="help-block">Convênio</span>
+                            </div>
+                        </div>
+                        <div class="clearfix lift:SecuritySnippet.hasTissModule">
+                            <label for="document_offsale">Nro convênio</label>
+                            <div class="input">
+                                <div class='inline-inputs'>
+                                    <div class="input-prepend" style='float:left; padding-right:10px'>
+                                        <input class="medium" id="document_offsale" name="document_offsale" size="30" type="text"/>
+                                        <span class="help-block">Nro no convênio</span>
+                                    </div>
+                                </div>
+                                <div class='inline-inputs'>
+                                    <div class="input-prepend" style='float:left; padding-right:10px'>
+                                        <span class="add-on"><img width="16" src='/images/calendar_addon.png'/></span> 
+                                        <input class="input-small date" id="date_offsale" name="date_offsale" size="19" type="text"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="clearfix lift:SecuritySnippet.hasReferralModule">
+                            <label for="indicatedby">Indicado por?</label>
+                            <div class="input">
+                                <span>
+                                <img class="customer_search_button" width='24' src="/images/search.png"/>
+                                <input class='mini id_customer_search' id='bp_indicatedby' name="bp_indicatedby" /> 
+                                <input class="name_customer_search" name="indicatedby" id="indicatedby"  size="30" type="text" placeholder="Nome"/>    
+                                </span>
+                            </div>
+                        </div>
+                        <div class="clearfix lift:SecuritySnippet.hasAuditModule">
+                            <label for="createdAt">Criado/Alterado</label>
+                            <div class="input">
+                              <div class='inline-inputs'>
+                                <div class="input-prepend" style='float:left; padding-right:10px'>
+                                  <span class="add-on"><img width="16" src='/images/calendar_addon.png'/></span> 
+                                  <input class="input-medium datetime disabled" disabled="true" id="createdAt" name="createdAt" size="19" type="text"/>
+                                </div>
+                                <div class="input-prepend" style='float:left; padding-right:10px'>
+                                  <span class="add-on"><img width="16" src='/images/calendar_addon.png'/></span> 
+                                  <input class="input-medium datetime disabled" disabled="true" id="updatedAt" name="updatedAt" size="19" type="text"/>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="input">
+                              <div class='inline-inputs'>
+                                <div class="input-prepend" style='float:left; padding-right:10px'>
+                                  <span class="add-on"><img src='/images/sex.png'/></span> 
+                                  <input class="input-medium disabled" disabled="true" id="createdby" name="createdby" size="19" type="text"/>
+                                </div>
+                                <div class="input-prepend" style='float:left; padding-right:10px'>
+                                  <span class="add-on"><img src='/images/sex.png'/></span> 
+                                  <input class="input-medium disabled" disabled="true" id="updatedby" name="updatedby" size="19" type="text"/>
+                                </div>
+                              </div>
+                            </div>                            
+                        </div>                     
+                    </span>
+                    <span class='span4'>
+                        <img id='img_mapicon' alt=""/>
+                        <img id='img_customer' alt=""/>
+                    </span>                    
+                </span>
+            </span>
+            <div class="well">
+                <label for="btn"></label>
+                <a class="btn primary" href="/customer/list">Lista</a>
+                <input class="btn success lift:SecuritySnippet.isNotAdminRead" type="submit" value="Salvar">
+                <a class="btn primary" href="/customer/edit">Inserir novo</a>
+            </div>
+            <ul class="tabs">
+                <li class="active tab"><a href="#address">Endereço</a></li>
+                <li class="lift:SecuritySnippet.hasFidelityModule tab"><a href="#fidelity">Fidelidade</a></li>
+                <li class="lift:SecuritySnippet.hasGalleryModule tab"><a href="#images">Imagens</a></li>
+                <li class="lift:SecuritySnippet.isNotEgrexSystem tab"><a href="#account">Conta cliente</a></li>
+                <li class="lift:SecuritySnippet.hasPackageModule tab"><a href="#package">Pacotes</a></li>
+                <li class="lift:SecuritySnippet.isNotEgrexSystem tab"><a href="#history">Histórico</a></li>
+                <li class="lift:SecuritySnippet.hasReferralModule tab"><a href="#indications">Indicações</a></li>
+                <li class="tab"><a href="#considerations">Alertas</a></li>
+                <li class="lift:SecuritySnippet.isShowQuizToUser tab"><a href="#quiz"><span data-i18n='Questionários'></span></a></li>
+                <li class="lift:SecuritySnippet.hasBpmonthlyModule tab"><a href="#bpmonthly">Mensalidades</a></li>
+                <li class="lift:SecuritySnippet.isNotEgrexSystem tab"><a href="#bankaccount">Contas Bancárias</a></li>
+                <li class="lift:SecuritySnippet.hasRelationModule tab"><a href="#relationship">Relacionamentos</a></li>
+                <li class="lift:SecuritySnippet.hasEventModule tab"><a href="#event"><span data-i18n='Eventos'></span></a></li>
+                <li class="lift:SecuritySnippet.isEgrexSystem tab"><a href="#classes">Formação</a></li>
+                <li class="tab"><a href="#pattern">Propriedades</a></li>
+                <li class="tab"><a href="#photo">Foto</a></li>
+            </ul>
+            <div class="pill-content">
+                <div class="active tab_content row" id="address">
+                    <div class='span8'>
+                        <div class="clearfix">
+                            <label for="name">Rua</label>
+                            <div class="input">
+                                <div class='inline-inputs'>
+                                    <input class="xlarge" id="street" name="street" size="30" type="text"/>
+                                    <input class="mini" id="number" name="number" size="5 " type="text"/>           
+                                </div>
+                                <span class="help-block">Rua/Número</span>
+                            </div>
+                        </div>
+                        <div class="clearfix">
+                            <label for="document">Complemento</label>
+                            <div class="input">
+                                <input class="xlarge" id="complement" name="complement" size="30" type="text"/>
+                                <span class="help-block">Casa / Ap:402 Bl:1</span>
+                            </div>
+                        </div>
+                        <div class="clearfix">
+                            <label for="district">Bairro</label>
+                            <div class="input">
+                                <div class='inline-inputs'>
+                                    <input class="xlarge" id="district" name="district" size="30" type="text"/>           
+                                </div>
+                                <span class="help-block">Bairro</span>
+                            </div>
+                        </div>
+                        <div class="clearfix">
+                            <label for="city">Uf / Cidade</label>
+                            <div class="input">
+                                <div class='inline-inputs'>
+                                    <span>
+                                    <span class='hidden'>
+                                    <input class="mini state_field_value" id="state_ref" name="state_ref" size="5 " type="text" />
+                                    </span>
+                                    <select class="state_field">
+                                    </select>
+                                    </span>
+                                    <a href="" class="_popover_basic" rel="popover" data-content="Os valores iniciais dos campos estado e cidade aqui no cadastro do cliente vêm do endereço da unidade corrente. O ddd sugerido para os telefones também é um campo cadastrado na unidade" data-original-title="Informação">
+                                    <img width='20' src="/images/info.gif"/>
+                                    </a>
+                                    <span>
+                                    <span class='hidden'>
+                                    <input class="city_field_value" id="city_ref" name="city_ref"/>
+                                    </span>
+                                    <select class="xlarge city_field">
+                                    </select>
+                                    </span>
+                                </div>
+                                <span class="help-block">UF / Cidade</span>
+                            </div>
+                        </div>
+                        <div class="clearfix lift:SecuritySnippet.isSuperAdmin">
+                            <label for="city">Cidade</label>
+                            <div class="input">
+                                <div class='inline-inputs'>
+                                    <input class="xlarge disabled" disabled='true' id="city" name="city" size="30" type="text"/>
+                                    <input class="mini disabled" disabled='true' id="state" name="state" size="5 " type="text"/>           
+                                </div>
+                                <span class="help-block">Cidade/UF</span>
+                            </div>
+                        </div>
+                        <div class="clearfix">
+                            <label for="postal_code">CEP</label>
+                            <div class="input">
+                                <div class='inline-inputs'>
+                                    <input class="small cep" id="postal_code" name="postal_code" size="15" type="text"/>           
+                                </div>
+                                <span class="help-block">CEP</span>
+                            </div>
+                        </div>
+                        <div class="clearfix lift:SecuritySnippet.isGerirmeSystem">
+                            <label for="pointofreference">Ponto de referência</label>
+                            <div class="input">
+                                <input class="xlarge " id="pointofreference" name="pointofreference" size="30" type="textarea"/>
+                                <span class="help-block">Ponto de referência para o endereço</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class='span8'>
+                        <span class='map_class'>
+                            <script>
+                                var imageToMap = "";
+                            </script>
+                            <span style="display: none">
+                            <input id="lng" name="lng" type="hidden"/>
+                            <input id="lat" name="lat" type="hidden"/>
+                            </span>
+                            <div id="map_canvas" style="width:100%; height: 302px"></div>
+                            <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=true"></script>
+                            <script  type="text/javascript" src='/js/map.js'></script>
+                        </span>
+                    </div>
+                </div>
+                <div class="tab_content row" style='display:none' id="pattern">
+                    <div class='span8'>
+                        <div class="clearfix">
+                            <label for="is_customer">É Cliente</label>
+                            <div class="input">
+                                <input name="is_customer" id="is_customer"/>
+                                <span class="help-block">Indica que este parceiro é um cliente</span>
+                            </div>
+                        </div>
+                        <div class="clearfix">
+                            <label for="is_person">É Pessoa</label>
+                            <div class="input">
+                                <select name="is_person"></select>
+                                <span class="help-block">Indica que este parceiro é uma pessoa física</span>
+                            </div>
+                        </div>
+                        <div class="clearfix">
+                            <label for="is_prospect">É Prospect</label>
+                            <div class="input">
+                                <select name="is_prospect"></select>
+                                <span class="help-block">Indica que este parceiro é um prospect</span>
+                            </div>
+                        </div>
+                        <div class="clearfix">
+                            <label for="is_suplier">É Fornecedor</label>
+                            <div class="input">
+                                <select name="is_suplier"></select>
+                                <span class="help-block">Indica que este parceiro é um fornecedor</span>
+                            </div>
+                        </div>
+                        <div class="clearfix">
+                            <label for="is_brand">É Fabricante</label>
+                            <div class="input">
+                                <select name="is_brand"></select>
+                                <span class="help-block">Indica que este parceiro é um fabricante de produtos</span>
+                            </div>
+                        </div>
+                        <div class="clearfix">
+                            <label for="is_employee">É <span data-i18n='Profissional'></span></label>
+                            <div class="input">
+                                <select name="is_employee"></select>
+                                <span class="help-block">Indica que este parceiro é um <span data-i18n='Profissional'></span> da empresa</span>
+                            </div>
+                        </div>
+                        <div class="clearfix">
+                            <label for="is_employee">Status <span data-i18n='Profissional'></span></label>
+                            <div class="input">
+                                <select id="userstatus" name="userstatus" size="5 ">
+                                </select>
+                                <span class="help-block">Status do <span data-i18n='Profissional'></span></span>
+                            </div>
+                        </div>
+                        <div class="clearfix">
+                            <label for="is_user">É Usuário</label>
+                            <div class="input">
+                                <select name="is_user"></select>
+                                <span class="help-block">Indica que este parceiro é um usuário que acessa o <span class='system-name'></span></span>
+                            </div>
+                        </div>
+                        <div class="lift:SecuritySnippet.hasAuxiliarModule clearfix">
+                            <label for="is_auxiliar">É <span data-i18n='Assistente'></span></label>
+                            <div class="input">
+                                <select name="is_auxiliar"></select>
+                                <span class="help-block">Indica que este parceiro é um <span data-i18n='Assistente'></span></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab_content row" id="fidelity">
+                    <div class='span8'>
+                        <div class="clearfix">
+                            <label for="name">Saldo em Pontos</label>
+                            <div class="input">
+                                <div class='inline-inputs'>
+                                    <input class="mini" id="valueinpoints" name="valueinpoints" size="5 " type="text"/>
+                                </div>
+                                <span class="help-block"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <script>
+            $(function(){
+              $('#obscomplement').jqte();
+            });
+        </script>
+    </div>
+    <div class="pill-content">
+        <div id="images" class='tab_content'>
+            <form id="MyForm" action="http://api2.transloadit.com/assemblies" enctype="multipart/form-data" method="POST">
+                <input type="hidden" name="params" value="{&quot;auth&quot;:{&quot;key&quot;:&quot;7f81cf59322e4238adec65c94cdcfe5b&quot;},&quot;template_id&quot;:&quot;49786b3752fe43a59ba5dc06d92d80ff&quot;,&quot;redirect_url&quot;:&quot;#&quot;}" />
+                <input type="file" name="my_file" />
+                <input type="submit" class="btn success" value="Enviar">
+            </form>
+            <script type="text/javascript" src="//assets.transloadit.com/js/jquery.transloadit2.js"></script>
+            <script type="text/javascript">
+                // We call .transloadit() after the DOM is initialized:
+                $(document).ready(function() {
+                 try{
+                  $('#MyForm').transloadit({
+                   wait: true
+                 });
+                }catch(e){
+                
+                }
+                });
+            </script>
+            <span class="lift:CustomerSnippet.imageList"></span>
+        </div>
+        <div id="account" class='tab_content'>
+            <div class="clearfix">
+                <label for="value">Saldo</label>
+                <div class="input">
+                    <div class="input-prepend">
+                        <span class="add-on"><img src='/images/dre.png' width="16"/></span> 
+                        <input class="mini disabled" disabled='true' id="value" name="value" size="30" type="text"/>
+                        <span class="help-block">Valor total do saldo do cliente!</span>
+                    </div>
+                </div>
+            </div>
+            <div class="clearfix">
+                <label for="value"></label>
+                <div class="input">
+                    <a data-original-title="Informação" data-content="clique para abrir a documentação" data-help-url='/docs/customer_account.html' rel="popover" class="_popover_basic _help">
+                        <img src="/images/info.gif" width="20">
+                    </a>
+                </div>
+            </div>
+            <table id="grid" class="bordered-table zebra-striped">
+                <thead>
+                    <th>Data de Transação</th>
+                    <th>Valor</th>
+                    <th>Tipo</th>
+                    <th>Comanda</th>
+                    <th>Acessar comanda</th>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+        <div id="package" class='tab_content'>
+              <a onclick="return ExcellentExport.excel(this, 'grid_package', 'data');"
+                href="#" download="data.xls" class="btn excel_buttton"
+                title="Exportar para excel">
+                <img style="width: 16px;" src="/images/excel.png" />
+              </a>  
+              <a onclick="return ExcellentExport.csv(this, 'grid_package', ';');"
+                href="#" download="data.csv" class="btn excel_buttton"
+                title="Exportar para csv">
+                <img style="width: 16px;" src="/images/generate.png" />
+              </a>  
+              <a id="hide_grid_payments" onclick="$('#grid_package').toggle();return false;" 
+                href="#" class="btn excel_buttton" 
+                title="Ocultar tabela">
+                <img style="width: 16px;" src="/images/collapse.png" />
+              </a>  
+            <table id="grid_package" class="bordered-table zebra-striped">
+                <thead>
+                    <th>Pacote</th>
+                    <th>Data da Compra</th>
+                    <th>Serviço / Produto</th>
+                    <th>Caixa</th>
+                    <th>Comanda</th>
+                    <th>Valor</th>
+                    <th>Total</th>
+                    <th>Usados</th>
+                    <th>Restantes</th>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+        <div id="indications" class='tab_content'>
+            <table id="grid_indications" class="bordered-table zebra-striped">
+                <thead>
+                    <th>Id</th>
+                    <th>Nome</th>
+                    <th>Data</th>
+                    <th>Ir</th>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+        <div id="history" class='tab_content'>
+            <form>
+            <div class="clearfix">
+                <label for="history_startDate">Intervalo</label>
+                <div class="input">
+                    <div class='inline-inputs'>
+                        <div class="input-prepend" style='float:left; padding-right:10px'>
+                            <span class="add-on"><img src='/images/calendar_addon.png' width="16"/></span> 
+                            <input class="input-small date" id="history_startDate" name="history_startDate" size="19" type="text"/>
+                        </div>
+                        <div class="input-prepend" style='float:left; padding-right:10px'>
+                            <span class="add-on"><img src='/images/calendar_addon.png' width="16"/></span> 
+                            <input class="input-small date" id="history_endDate" name="history_endDate" size="19" type="text"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </form>
+            <table id="grid_history" class="bordered-table zebra-striped">
+                <thead>
+                    <th>Início</th>
+                    <th>Obs</th>
+                    <th><span data-i18n='Profissional'></span></th>
+                    <th>Unidade</th>
+                    <th>Status</th>
+                    <th>Total</th>
+                    <th>Detalhes</th>
+                    <th>Pagamento</th>
+                    <th>Comanda</th>
+                    <th>Caixa</th>
+                    <th>Id Atend</th>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+        <div id="considerations" class='tab_content'>
+            <div class='span8'>
+                <div class="clearfix">
+                    <label for="text">Alerta</label>
+                    <div class="input">
+                        <input class="xlarge" id="considerations_obs" size="30" type="textarea"/>
+                    </div>
+                </div>
+                <div class="clearfix">
+                    <label for="text">Tipo</label>
+                    <div class="input">
+                        <select id="considerations_notification_type"  size="30">
+                            <option selected="true" value="1">Alertar sempre</option>
+                            <option value="2">Alertar uma vez</option>
+                            <option value="3">Não alertar</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="clearfix">
+                    <label for="btn"></label>
+                    <input class="btn success" id="considerations_add" type="button" value="Adicionar">
+                </div>
+            </div>
+            <table id="grid_considerations" class="bordered-table zebra-striped">
+                <thead>
+                    <th>Mensagem</th>
+                    <th>Tipo</th>
+                    <th>Data</th>
+                    <th></th>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+        <div id="quiz" class='tab_content'>
+            <div class='span8'>
+                <div class="clearfix">
+                    <label for="text">Data</label>
+                    <div class="input">
+                        <input type="text" class="input-small date to_day" id='quiz_date' name="quiz_date" placeholder="Data"/>
+                    </div>
+                </div>
+                <div class="clearfix">
+                    <label for="text"><span data-i18n='Questionário'></span></label>
+                    <div class="input">
+                        <select class="large" id="quiz_quiz" size="30" type="text">
+                        </select>
+                    </div>
+                </div>
+                <div class="clearfix">
+                    <label for="text">Observação</label>
+                    <div class="input">
+                        <input class="xlarge" id="quiz_obs" size="30" type="textarea"/>
+                    </div>
+                </div>
+                <div class="clearfix">
+                    <label for="btn"></label>
+                    <input class="btn success" id="quiz_add" type="button" value="Adicionar">
+                </div>
+            </div>
+            <table id="grid_quiz" class="bordered-table zebra-striped">
+                <thead>
+                    <th>Data</th>
+                    <th><span data-i18n='Questionário'></span></th>
+                    <th>Obs</th>
+                    <th>Grupo</th>
+                    <th></th>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+            <div>
+                <div class="input">
+                    <div class="input" id="message_total1">
+                    </div>
+                    <textarea type="hidden" class="mini disabled" id="message_total" name="message_total" size="30" disabled='true'></textarea>
+                    <input class="btn primary" type="button" id='print_message' value='Imprimir' />
+                    <span class="help-block">_</span>
+                </div>
+            </div>
+        </div>
+        <div id="bpmonthly" class='tab_content'>
+            <div class='span8'>
+                <div class="clearfix">
+                    <label for="text"><span data-i18n='Serviço'></span></label>
+                    <div class="input">
+                        <select class="large" id="bpmonthly_product" size="30" type="text">
+                        </select>
+                    </div>
+                </div>
+                <div class="clearfix">
+                    <label for="text">Observação</label>
+                    <div class="input">
+                        <input class="xlarge" id="bpmonthly_obs" size="30" type="textarea"/>
+                    </div>
+                </div>
+                <div class="clearfix">
+                    <label for="btn"></label>
+                    <input class="btn success" id="bpmonthly_add" type="button" value="Adicionar">
+                </div>
+            </div>
+            <table id="grid_bpmonthly" class="bordered-table zebra-striped">
+                <thead>
+                    <th><span data-i18n='Serviço'></span>/Produto</th>
+                    <th>Obs</th>
+                    <th>Início</th>
+                    <th>Fim</th>
+                    <th>Valor</th>
+                    <th>Valor Desc</th>
+                    <th>Sessão</th>
+                    <th>Qtde</th>
+                    <th></th>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+        <div id="bankaccount" class='tab_content'>
+            <form class='row'>
+                <div class='span6'>
+                    <div class="clearfix">
+                        <label for="text">Agência</label>
+                        <div class="input">
+                            <input class="small" id="bankaccount_agency" size="30" type="text"/>
+                        </div>
+                    </div>
+                    <div class="clearfix">
+                        <label for="text">Conta</label>
+                        <div class="input">
+                            <input class="small" id="bankaccount_account" size="30" type="text"/>
+                        </div>
+                    </div>
+                </div>
+                <div class='span8'>
+                    <div class="clearfix">
+                        <label for="text">Banco</label>
+                        <div class="input">
+                            <select class="medium" id="bankaccount_bank" size="30" type="text">
+                            </select>
+                        </div>
+                    </div>
+                    <div class="clearfix">
+                        <label for="text">Obs</label>
+                        <div class="input">
+                            <input class="xlarge" id="bankaccount_obs" size="30" type="text"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="span16">
+                    <div class="clearfix">
+                        <label for="btn"></label>
+                        <input class="btn success" id="bankaccount_add" type="button" value="Adicionar">
+                    </div>
+                </div>
+            </form>
+            <table id="grid_bankaccount" class="bordered-table zebra-striped">
+                <thead>
+                    <th>Banco</th>
+                    <th>Agência</th>
+                    <th>Conta</th>
+                    <th>Obs</th>
+                    <th></th>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+        <!--</script>        -->                    
+        <div id="relationship" class='tab_content'>
+            <form>
+            <div class="clearfix">
+                <label for="btn"></label>
+                <a class="btn primary " id="bprelationship_link1" target="relationshippage" alt= "Adicionar novo relacionamento" href="/bprelationship/bprelationship?business_pattern=##">Relacionamento</a>
+            </div>
+            </form>
+            <table id="grid_relationship" class="bordered-table zebra-striped">
+                <thead>
+                    <th>Relacionamento</th>
+                    <th>Nome</th>
+                    <th>Início</th>
+                    <th>Obs</th>
+                    <th></th>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+        <div id="event" class='tab_content'>
+            <form>
+            <div class="clearfix">
+                <label>
+                </label>
+                <div class="input">
+                    <div class='inline-inputs'>
+                        <div class="input-prepend" style='float:left; padding-right:10px'>
+                            <a class="btn primary" id="stakeholder_link" target="stakeholderpage" alt= "Adicionar participação" href="/project/edit_stakeholder?business_pattern=##">Participante</a>
+                        </div>
+                        <div class="input-prepend" style='float:left; padding-right:10px'>
+                            <input class="all" id="event_all" name="event_all" type="checkbox"/> Mostrar todos?
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </form>
+            <table id="grid_event" class="bordered-table zebra-striped">
+                <thead>
+                    <th><span data-i18n='Evento'></span></th>
+                    <th>Particip</th>
+                    <th>Início</th>
+                    <th>Obs</th>
+                    <th></th>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+        <div id="classes" class='tab_content'>
+            <table id="grid_class" class="bordered-table zebra-striped">
+                <thead>
+                    <th><span data-i18n='Evento'></span></th>
+                    <th>Particip</th>
+                    <th>Início</th>
+                    <th>Obs</th>
+                    <th>Aprovado</th>
+                    <th></th>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+        <div id="photo" class='tab_content'>
+            <div class="lift:CustomerSnippet.thumbToShow">
+              
+            </div>
+            <form class="lift:UploadImage?form=post;multipart=true">
+                <input type="hidden" name='id' id="id_user_image"/>
+                <div class="clearfix">
+                    <label for="name">Foto Cliente</label>
+                    <div class="input">
+                        <input type="text" name='file' id='file'/>
+                        <span class="help-block">Selecione a foto do cliente</span>
+                    </div>
+                </div>
+                <div class="clearfix">
+                    <label for="name"></label>
+                    <div class="input-prepend">
+                        <input type="submit" value="Enviar" id='submit'/>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <script type="text/javascript" src="/js/jquery.tablesorter.pager.js"></script>
+    <script type="text/javascript" src="/js/reports.js"></script>
+    <script src="/js/datetimepicker/jquery.datetimepicker.js"></script>
+    <style>
+        @import url("/js/datetimepicker/jquery.datetimepicker.css");
+    </style>
+    <script src="/js/customer_crud.js?sensor=true"></script>
+    <div id="fb-root"></div>
+    <script type="text/javascript" src="/js/face_prepare.js"></script>
+    <script type="text/javascript" src="/js/facebook_login.js"></script>
+    <script type="text/javascript" src="/js/q.min.js"></script>
+    <script type="text/javascript" src="/js/ebelle_face.js"></script>
+    <script type='text/javascript'>
+        $(function() {
+         $("#id_user_image").val(gup("id"));
+         $("#generate-id").on('click', function() {
+            $.get('/customer/next_id', function(r) {
+                eval("obj=" + r);
+                $('#idForCompany').val(obj.id);
+            });
+         });
+        });        
+    </script>
+</div>
+</div>
