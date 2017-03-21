@@ -1,1 +1,0 @@
-update business_pattern set cancreatecalendarevents=true, candeletecalendarevents = true,canmovecalendarevents=true,caneditcalendarevents = true;

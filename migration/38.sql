@@ -1,1 +1,0 @@
-update company set image = logo, imagethumb=thumb;

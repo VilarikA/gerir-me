@@ -1,1 +1,0 @@
-update account set balancecontrol = true;;

@@ -1,1 +1,0 @@
-update company set user_c = (select id from business_pattern where is_employee = true and business_pattern.company = company.id limit 1 )

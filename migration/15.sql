@@ -1,1 +1,0 @@
-update treatment set treatmentconflit = 0 where treatmentconflit isnull;

@@ -1,1 +1,0 @@
-update usergroup set showincalendar=true;

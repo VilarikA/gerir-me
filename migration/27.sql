@@ -1,1 +1,0 @@
-update business_pattern set short_name=substring(name, 0, 15)  where is_employee=false or is_user=false;

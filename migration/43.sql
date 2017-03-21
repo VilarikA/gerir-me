@@ -1,1 +1,0 @@
-update product SET gender ='A';

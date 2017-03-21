@@ -1,1 +1,0 @@
-update cashier set valuetoconference=0;
