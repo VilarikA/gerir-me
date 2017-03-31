@@ -52,8 +52,22 @@ object TreatmentApi extends RestHelper with net.liftweb.common.Logger {
 			}
 		}
 		case "treatment" :: id :: Nil Delete _ =>{
+/*
 			TreatmentService.delete(id)
 			JInt(1)
+*/
+			try {
+				TreatmentService.delete(id)
+				JInt(1)
+			}catch{
+				case e:RuntimeException  => {
+					JsObj(("status","error"),("message",e.getMessage))
+				}
+				case e:Exception => {
+					e.printStackTrace
+					JString(e.getMessage())
+				}
+			}
 		}	
 		case "treatment" :: id :: Nil Post _ =>{
 			try{

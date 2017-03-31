@@ -66,8 +66,10 @@ object PermissionModule extends PermissionModule with LongKeyedMapperPerCompany[
 
 	def serviceManager_? = PermissionModule.countInCompany(By(PermissionModule.name,PermissionModule.CRUDE_MODULE_NAME)) > 0 && AuthUtil.user.isServiceManager
 
-	def treatment_? = PermissionModule.countInCompany(By(PermissionModule.name,PermissionModule.TREATMENT_MODULE_NAME)) > 0  && (AuthUtil.user.isServiceUser || 
-		AuthUtil.user.isCalendarUser || AuthUtil.user.isSimpleUserCalendar || AuthUtil.user.isCommandUser || AuthUtil.user.isCommandPwd)
+	def treatment_? = PermissionModule.countInCompany(By(PermissionModule.name,PermissionModule.TREATMENT_MODULE_NAME)) > 0  && 
+	(AuthUtil.user.isServiceUser || AuthUtil.user.isCalendarUser || 
+	 AuthUtil.user.isSimpleUserCalendar || AuthUtil.user.isSimpleUserCalendarView || 
+	 AuthUtil.user.isCommandUser || AuthUtil.user.isCommandPwd)
 
 	def calendar_? = PermissionModule.countInCompany(By(PermissionModule.name,PermissionModule.TREATMENT_MODULE_NAME)) > 0  && AuthUtil.user.isCalendarUser
 
@@ -122,6 +124,7 @@ object UserGroupPermission{
 	lazy val COMMAND_PWD = 18;
 	lazy val RECORDS = 19; // prontuário
 	lazy val COMMAND_USER = 20;
+	lazy val SIMPLE_USER_CALENDAR_VIEW = 21;
 	lazy val SUPER_ADMIN = 1000;
 }
 

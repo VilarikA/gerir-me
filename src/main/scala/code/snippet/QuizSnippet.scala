@@ -336,7 +336,7 @@ class  QuizSnippet extends BootstrapPaginatorSnippet[Quiz] {
 				try {
 					ac.company(AuthUtil.company)
 					ac.save
-				   	S.notice("Aplicação " + Quiz.quizLabel + " salva com sucesso!")
+				   	S.notice("Aplicação " + Quiz.quizLabel + " salva com sucesso! " + ac.message.length + " de um máximo de 40.000 caracteres")
 		   		}catch{
 					case (e:net.liftweb.http.ResponseShortcutException) =>{
 						throw e
@@ -373,9 +373,18 @@ class  QuizSnippet extends BootstrapPaginatorSnippet[Quiz] {
 		try{
 			var ac:Quiz = getQuiz
 			def process(): JsCmd= {
-				ac.company(AuthUtil.company)
-				ac.save
-			   	S.notice(Quiz.quizLabel + " salvo(a) com sucesso!")
+				try {
+					ac.company(AuthUtil.company)
+					ac.save
+				   	S.notice(Quiz.quizLabel + " salvo(a) com sucesso! " + ac.message.length + " de um máximo de 40.000 caracteres")
+		   		}catch{
+					case (e:net.liftweb.http.ResponseShortcutException) =>{
+						throw e
+					}
+					case (e:Exception) => {
+						S.error(e.getMessage)
+					}
+				}
 			}
 		    "name=name" #> (SHtml.text(ac.name.is, ac.name(_)))&
 		    "name=short_name" #> (SHtml.text(ac.short_name.is, ac.short_name(_)))&

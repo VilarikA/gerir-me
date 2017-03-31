@@ -29,9 +29,12 @@
         return intValue;
       }
     };
+    fields[6] = "date";
     if (!hasUnitModule) {
-      fields[6] = "none";
+      fields[12] = "none";
     }
+    fields[13] = "none";
+    /*
     fields[8] = {
       type : "format",
       decode : function(id){
@@ -39,6 +42,7 @@
         return "<a class='btn' href='/customer/edit?id="+id+"' target='_customer_maste'>Ir</a>"
       }
     };
+    */
     $("#mapIcon").mapIcon(true);
     $("#unit").unitField(true,false);
     var url = "/report/customer_list";
@@ -249,9 +253,13 @@
         <th>E-mail</th>
         <th>Estado Civil</th>
         <th>Idade</th>
-        <th class ='clearfix lift:SecuritySnippet.hasUnitModule'>Unidade</th>
+        <th>Dt Nasc</th>
+        <th>Sexo</th>
         <th>Ícone</th>
-        <th>Cadastro</th>
+        <th>Profissão</th>
+        <th>Instrução</th>
+        <th>Endereço</th>
+        <th class ='clearfix lift:SecuritySnippet.hasUnitModule'>Unidade</th>
       </thead>
       <tbody>
       </tbody>

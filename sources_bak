@@ -1,5 +1,10 @@
 sources_bak
 
+link para funcao de distancia entre coordenadas para ver que está dentr do raio
+
+fazer função no banco
+http://pt.stackoverflow.com/questions/9128/como-obter-dist%C3%A2ncia-dadas-as-coordenadas-usando-sql/9142#9142
+
 Botão submit com imagem
 Let's say your image is a 16x16 .png icon called icon.png Use the power of CSS!
 
@@ -14,3 +19,16 @@ HTML:
 
 <input type="submit" id="image-button" value="Text"></input>
 This will put the image to the left of the text.
+
+
+
+align="left"
+margin-bottom: 0px;
+line-height: normal;
+margin: 0px;
+font-stretch: normal;
+color="#000000"
+mso-bidi-font-weight:normal
+font-size-adjust: none;
+border-color: rgb(0, 0, 0);
+border-image: none;

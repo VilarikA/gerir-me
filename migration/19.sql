@@ -1,0 +1,1 @@
+update companyunit set status=1;

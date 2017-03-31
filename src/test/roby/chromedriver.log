@@ -1,0 +1,6 @@
+[0601/211534:INFO:chromedriver_server.cc(76)] Handling request: /session {"desiredCapabilities":{"nativeEvents":false,"chromeOptions":{"detach":true},"version":"","chrome.detach":true,"rotatable":false,"cssSelectorsEnabled":true,"browserName":"chrome","takesScreenshot":false,"javascriptEnabled":true,"platform":"ANY"}}
+[0601/211534:INFO:chromedriver_server.cc(81)] Done handling request: 200 {"sessionId":"","status":13,"value":{"message":"unknown error: unrecognized chrome option: detach\n  (Driver info: chromedriver=0.8,platform=Linux 3.2.0-41-generic x86_64)"}}
+[0601/211534:INFO:chromedriver_server.cc(76)] Handling request: /session/url {"url":"http://localhost:7171"}
+[0601/211534:INFO:chromedriver_server.cc(81)] Done handling request: 404 unknown command: session/url
+[0601/211534:INFO:chromedriver_server.cc(76)] Handling request: /shutdown 
+[0601/211534:INFO:chromedriver_server.cc(81)] Done handling request: 200 {"sessionId":"","status":0,"value":null}

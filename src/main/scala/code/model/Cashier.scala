@@ -161,6 +161,12 @@ class Cashier extends LongKeyedMapper[Cashier]  with PerCompany with PerUnit wit
         this
     }
 
+    def unitsToShowSql = if (AuthUtil.user.isAdmin) {
+      " 1 = 1 "
+    } else {
+      " (ca.unit = %s or (ca.unit in (select uu.unit from usercompanyunit uu where uu.user_c = %s and uu.company = %s))) ".format(AuthUtil.user.unit, AuthUtil.user.id, AuthUtil.user.company)
+    }
+
     def openerAt(oDate:Date) = openerDate(oDate)
 
     def unitName ={

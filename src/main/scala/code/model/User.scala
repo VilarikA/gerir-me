@@ -372,6 +372,8 @@ class User extends  BusinessPattern[User] with UserIdAsString{
 
     def isSimpleUserCalendar = groupPermissionList.filter(_==UserGroupPermission.SIMPLE_USER_CALENDAR).size > 0
 
+    def isSimpleUserCalendarView = groupPermissionList.filter(_==UserGroupPermission.SIMPLE_USER_CALENDAR_VIEW).size > 0
+
     def isSimpleUserCommission = groupPermissionList.filter(_==UserGroupPermission.SIMPLE_USER_COMMISSION).size > 0
 
     def isSimpleUserCommand = groupPermissionList.filter(_==UserGroupPermission.SIMPLE_USER_COMMAND).size > 0
@@ -529,6 +531,16 @@ class User extends  BusinessPattern[User] with UserIdAsString{
         """
         strXml
     }
+
+    def thumbUser = imagethumb.is match {
+                case img:String if(img!="") => <a href={"/user/edit?id="+id.is.toString} target='_user_maste'> 
+                    <img href={"/user/edit?id="+id.is.toString} target='_user_maste' style="width:24px" src={thumbPath}/>
+                    </a>
+        case _ => <span/>
+    }
+
+    override def thumbAndName = "<div class='image_users'>"+thumbUser+"</div><a href=/user/edit?id="+id.is.toString+" target='_user_maste'>"+friendlyName+"</a>"
+
     
 } 
 

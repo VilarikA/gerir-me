@@ -1,0 +1,1 @@
+update accountcategory set status=1 where status is null;

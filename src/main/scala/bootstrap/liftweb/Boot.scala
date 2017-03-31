@@ -173,7 +173,9 @@ class Boot {
                           )    
 
     val calendarAccess = If(
-                            ()=> (AuthUtil.? && ( PermissionModule.calendar_? || AuthUtil.user.isSimpleUserCalendar ) ),
+                            ()=> (AuthUtil.? && ( PermissionModule.calendar_? || 
+                              AuthUtil.user.isSimpleUserCalendar ||
+                              AuthUtil.user.isSimpleUserCalendarView) ),
                             ()=> toAccessDenied
                           )
 

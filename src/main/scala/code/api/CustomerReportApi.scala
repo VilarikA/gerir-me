@@ -80,7 +80,7 @@ object CustomerReportApi extends RestHelper with ReportRest {
 				}
 				val sql_treat = """
 				union
-				select dateevent, age(date(now()), dateevent), pr.name, tr.obs, icd.namecomp, null, null, false, 
+				select dateevent, age(date(now()), dateevent), pr.name, tr.obs, icd.namecomp, tr.id, null, false, 
 				trim (COALESCE (icd.namecomp,'') || ' </span><br></span>' || tr.obs || '</span><br></span>' || td.obs || '</span><br></span>' || ted.obs || '</span><br></span>'),
 				pr.showinrecords, bp.name
 				from treatment tr 
@@ -108,7 +108,7 @@ object CustomerReportApi extends RestHelper with ReportRest {
 					    %s)
 					--order by bp.id, qa.applydate desc
 					%s
-				) as data1 order by 1 desc
+				) as data1 order by 1 desc, 6 asc
 				"""
 				if (AuthUtil.company.isMedical) {
 					toResponse(sql_quiz.format(issuperadm, sql_treat),List(AuthUtil.company.id.is, customer, 

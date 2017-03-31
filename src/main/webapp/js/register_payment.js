@@ -393,7 +393,11 @@
     if (gatDateTreatmentIni() != gatDateTreatmentOr0()) {
       url = "/cash/getTreatment/" + "0" + '/' + $('#customer').val() + '/' +gatDateTreatmentIni() + '/' + gatDateTreatmentOr0();
     } else {
-      url = "/cash/getTreatment/" + $('#command').val() + '/' + "0" + '/' +gatDateTreatmentIni() + '/' + gatDateTreatmentOr0();
+      if ($('#command').val() != "0") {
+        url = "/cash/getTreatment/" + $('#command').val() + '/' + "0" + '/' +gatDateTreatmentIni() + '/' + gatDateTreatmentOr0();
+      } else {
+        url = "/cash/getTreatment/" + "0" + '/' + $('#customer').val() + '/' +gatDateTreatmentIni() + '/' + gatDateTreatmentOr0();
+      }        
     }
     $.get(url, function(t) {
       eval("var resultCommandCall = " + t);

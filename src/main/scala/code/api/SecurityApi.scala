@@ -105,7 +105,9 @@ object SecurityApi extends RestHelper with net.liftweb.common.Logger {
             } else {
               "/financial/account_register"
             }
-          } else if (PermissionModule.treatment_? && (AuthUtil.user.isSimpleUserCalendar || AuthUtil.user.isCalendarUser)) {
+          } else if (PermissionModule.treatment_? && 
+             (AuthUtil.user.isSimpleUserCalendar || AuthUtil.user.isCalendarUser ||
+              AuthUtil.user.isSimpleUserCalendarView)) {
             "/calendar"
           } else if (PermissionModule.command_? && (AuthUtil.user.isCommandUser || AuthUtil.user.isCommandPwd)) {
             "/command_full/user_command_full"
@@ -147,7 +149,9 @@ object SecurityApi extends RestHelper with net.liftweb.common.Logger {
           } else {
             "/financial/account_register"
           }
-        } else if (PermissionModule.treatment_? && (AuthUtil.user.isSimpleUserCalendar || AuthUtil.user.isCalendarUser)) {
+        } else if (PermissionModule.treatment_? && 
+          (AuthUtil.user.isSimpleUserCalendar || AuthUtil.user.isCalendarUser ||
+           AuthUtil.user.isSimpleUserCalendarView)) {
           "/calendar"
         } else if (PermissionModule.command_? && (AuthUtil.user.isCommandUser || AuthUtil.user.isCommandPwd)) {
           "/command_full/user_command_full"

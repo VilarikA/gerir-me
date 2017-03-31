@@ -366,7 +366,7 @@ class Treatment extends UserEvent with LogicalDelete[Treatment] with PerCompany 
                         t.status.is != Treatment.TreatmentStatus.Missed &&
                         t.status.is != Treatment.TreatmentStatus.ReSchedule
                     )
-                    ::: BusyEvent.constraintDate(userObj,st)
+                    ::: BusyEvent.constraintDate(userObj,st, AuthUtil.unit)
                 )
                 .map((a:UserEvent) => {
                     TreatmentValidations.validateBetween(a,this) :: 

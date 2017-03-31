@@ -240,7 +240,7 @@ object InventoryMovement extends InventoryMovement with LongKeyedMapperPerCompan
     where pr.company = ? and ic.unit=?
     and pr.productclass = 1 and pr.is_inentory_control = true
     and pr.status = 1
-    --and ic.currentstock > 0
+    %s
     and %s and %s and %s
     order by u.name, pr.brand, pr.name
     """
@@ -253,7 +253,7 @@ object InventoryMovement extends InventoryMovement with LongKeyedMapperPerCompan
     where pr.company = ?
     and pr.productclass = 1 and pr.is_inentory_control = true
     and pr.status = 1
-    --and ic.currentstock > 0
+    %s
     and %s and %s and %s
     order by pr.name, u.name, pr.brand
     """    

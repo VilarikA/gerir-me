@@ -251,10 +251,17 @@ var TreatmentManger = {
 		}
 		$.ajax(url, {
 			"type": "DELETE",
-			"success": function() {
-				//alert("Excluído com sucesso!");
-				if (calendar)
-					calendar.weekCalendar('removeEvent', calEvent.id);
+			"success": function(response) {
+				//alert ("vaiii sucess " + response)
+				eval("var obj = " + response)
+				if (obj.status == "error") {
+					alert (obj.message)
+				} else {
+					//alert("Excluído com sucesso!");
+					if (calendar) {
+						calendar.weekCalendar('removeEvent', calEvent.id);
+					}
+				}
 			},
 			"error": function(response) {
 				alert("Erro ao exluir atendimento!\n Verifique se o atendimento não foi pago!");

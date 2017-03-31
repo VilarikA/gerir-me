@@ -34,7 +34,9 @@ object SecuritySnippet {
                 AuthUtil << loginStatus.user
                 if (AuthUtil.company.appType.isEgrex) {
                   S.redirectTo("/customer/list")
-                } else if(PermissionModule.treatment_? && (AuthUtil.user.isSimpleUserCalendar || AuthUtil.user.isCalendarUser)){
+                } else if(PermissionModule.treatment_? && 
+                  (AuthUtil.user.isSimpleUserCalendar || AuthUtil.user.isCalendarUser ||
+                   AuthUtil.user.isSimpleUserCalendarView)) {
                   S.redirectTo("/calendar")
                 } else if(PermissionModule.treatment_? && (AuthUtil.user.isSimpleUserCommand || AuthUtil.user.isCommandUser  || AuthUtil.user.isCommandPwd)){
                   S.redirectTo("/command/user_command")

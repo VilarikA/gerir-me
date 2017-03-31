@@ -61,6 +61,10 @@ class QuizApplying extends Audited[QuizApplying] with PerCompany with IdPK with 
             }
         }
 
+        if (this.message.length >= 40000) {
+            throw new RuntimeException("Texto muito grande, verifique se o conteúdo nao foi truncado! " + this.message.length + " de um máximo de 40.000 caracteres")
+        }
+
         // fazer um try para salvar o prontuário
 /*        Treatment.findAll(By(Treatment.customer,this.business_pattern.is),
                           By(Treatment.hasDetail,true),

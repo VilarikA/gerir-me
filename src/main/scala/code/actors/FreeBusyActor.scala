@@ -103,7 +103,9 @@ object FreeBusyActor extends LiftActor with net.liftweb.common.Logger  {
                         }
                         def saveEndDelay = {
                           if(endHour != u._7){
-                            BusyEvent.create.is_employee_lanche_?(true)
+                            BusyEvent
+                            .create
+                            .is_employee_lanche_?(true)
                             .company(company)
                             .start(new Date(assertedTime(freeBusy.start,u._7,n)) )
                             .end( new Date(assertedTime(freeBusy.start,"0"+realEndCompany+":00",n)) )
@@ -145,20 +147,29 @@ object FreeBusyActor extends LiftActor with net.liftweb.common.Logger  {
                   wasChanged = true
                   //info("Something change Here folga")
                   var iu = 0;
+                  println ("vaiii ================== " + u.name.is)
                   def units = CompanyUnit.findAllOfUser(
                     company.id.is,u.id.is)
                     units.foreach((cu)=>{
-                      //println ("vaiiii ========= unidade " + cu.name.is)
-                      BusyEvent
-                      .create
-                      .is_employee_lanche_?(true)
-                      .company(company)
-                      .start(new Date(assertedTime(freeBusy.start,"0"+realStartCompany+":00",0)) )
-                      .end( new Date(assertedTime(freeBusy.start,"0"+realEndCompany+":00",0)))
-                      .user(u.id.is)
-                      .unit(cu.id.is) // vaiii teria que criar para as outras unidades do cara
-                      .description("Não trabalha folga".format(u.name.is))
-                      .save;
+                      println ("vaiiii ========= unidade " + cu.name.is)
+                      val ct = BusyEvent.countBE (
+                      company,
+                      new Date(assertedTime(freeBusy.start,"0"+realStartCompany+":00",0)), 
+                      new Date(assertedTime(freeBusy.start,"0"+realEndCompany+":00",0)),
+                      u.id.is,
+                      cu.id.is) // vaiii teria que criar para as outras unidades do cara
+                      if (ct < 1) {
+                        BusyEvent
+                        .create
+                        .is_employee_lanche_?(true)
+                        .company(company)
+                        .start(new Date(assertedTime(freeBusy.start,"0"+realStartCompany+":00",0)) )
+                        .end( new Date(assertedTime(freeBusy.start,"0"+realEndCompany+":00",0)))
+                        .user(u.id.is)
+                        .unit(cu.id.is) // vaiii teria que criar para as outras unidades do cara
+                        .description("Não trabalha folga".format(u.name.is))
+                        .save;
+                      }
                       iu += 1;
                     })
                     if (iu == 0) {

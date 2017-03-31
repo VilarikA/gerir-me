@@ -1,0 +1,1 @@
+update business_pattern set facebookId=null where facebookId is not null;

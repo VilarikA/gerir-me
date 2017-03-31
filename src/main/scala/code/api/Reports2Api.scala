@@ -1411,11 +1411,21 @@ order by date_c, 2
 				cs.name,
 				trunc ((((DATE_PART('year', now()) - DATE_PART('year', birthday)) * 12) 
 					+ (DATE_PART('month', date (now())) - DATE_PART('month', birthday)))/12) as anos,
-				cu.name, mi.short_name, bp.id
+				birthday, sex,
+				mi.short_name, 
+				oc.name, id.name,
+				trim (trim (bp.street || ', ' || bp.number_c || ' ' || bp.complement)
+				|| ', ' || bp.district || ', ' || ci.name || '-' || st.short_name || ', ' || postal_code),
+				cu.name, 
+				bp.id
 				from business_pattern bp  
 				left join companyunit cu on cu.id = bp.unit
 				left join mapicon mi on mi.id = bp.mapicon
 				left join civilstatus cs on cs.id = bp.civilstatus
+				left join occupation oc on oc.id = bp.occupation
+				left join instructiondegree id on id.id = bp.instructiondegree
+				left join city ci on ci.id = bp.cityref
+				left join state st on st.id = bp.stateref
 				where (case when birthday is not null then ((DATE_PART('year', now()) - DATE_PART('year', birthday)) * 12) 
 					+ (DATE_PART('month', date (now())) - DATE_PART('month', birthday))
 					when birthday is null then 0 end) between ?*12 and ?*12 and bp.company=? 

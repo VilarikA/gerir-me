@@ -46,7 +46,7 @@ class Quiz extends Audited[Quiz] with PerCompany with IdPK with CreatedUpdated w
 
     override def delete_! = {
         if(QuizApplying.count(By(QuizApplying.quiz,this.id)) > 0){
-            throw new RuntimeException("Existe aplicação deste avaliação!")
+            throw new RuntimeException("Existe aplicação desta avaliação!")
         }
         if(QuizSection.count(By(QuizSection.quiz,this.id)) > 0){
             throw new RuntimeException("Existe seção nesta avaliação!")
@@ -56,7 +56,10 @@ class Quiz extends Audited[Quiz] with PerCompany with IdPK with CreatedUpdated w
     }
 
     override def save() = {
-        super.save  
+        if (this.message.length >= 40000) {
+            throw new RuntimeException("Texto muito grande, verifique se o conteúdo nao foi truncado! " + this.message.length + " de um máximo de 40.000 caracteres")
+        }
+
         if(QuizSection.count(By(QuizSection.quiz,this.id)) < 1){
             val ac = QuizSection.createInCompany.
             quiz(this.id).

@@ -181,6 +181,15 @@ object  TreatmentService extends net.liftweb.common.Logger {
 		lazy val endDate = Project.strToDate(date+" "+hour_end)
 		lazy val customer = loadCustomer(customerCode)
 		lazy val conflitLong = if(conflit != "") conflit.toLong else 0
+
+		if ((AuthUtil.user.id.is != userCode.toLong) && 
+			AuthUtil.user.isSimpleUserCalendarView) {
+			// evita que atendimento pago seja alterado gerava erro de comissao se o atend
+			// fosse moviedo para outro usuario
+//			TratmentServer ! TreatmentMessage("SaveUpdateTratment",end)		
+  	        throw new RuntimeException("Você não tem permissão para inserir atendimentos para outros profissionais!")
+		}
+
 		def commandInt:String = if(command.isEmpty() || command == "0"){
 				val treatments = loadTreatmentByCustomerNotPaid(customer,startDate)
 				if(treatments.size >0){
@@ -240,34 +249,42 @@ object  TreatmentService extends net.liftweb.common.Logger {
 			// fosse moviedo para outro usuario
 			TratmentServer ! TreatmentMessage("SaveUpdateTratment",end)		
   	        throw new RuntimeException("Atendimento já foi pago, não pode ser alterado!")
-		} else {
-			treatment.user(user)
-			treatment.start(start)
-			treatment.end(end)
-			if(status == "arrived"){
-				treatment.markAsArrived
-			}else if(status == "missed"){
-				treatment.markAsMissed
-			}else if(status == "reschedule"){
-				treatment.markAsReSchedule
-			}else if(status == "confirmed"){
-				treatment.markAsConfirmed
-			}else if(status == "ready"){
-				treatment.markAsReady
-			}else if(status == "preopen"){
-				treatment.markAsPreOpen
-			}else if(status == "open"){
-				treatment.markAsOpen
-			}
-			if(validate){
-				treatment.save
-			}else{
-				treatment.saveWithoutValidate
-			}
-			
+		} 
+		if ((AuthUtil.user.id.is != user) && 
+			AuthUtil.user.isSimpleUserCalendarView) {
+			// evita que atendimento pago seja alterado gerava erro de comissao se o atend
+			// fosse moviedo para outro usuario
 			TratmentServer ! TreatmentMessage("SaveUpdateTratment",end)		
+  	        throw new RuntimeException("Você não tem permissão para alterar atendimentos de outros profissionais!")
 		}
+
+		treatment.user(user)
+		treatment.start(start)
+		treatment.end(end)
+		if(status == "arrived"){
+			treatment.markAsArrived
+		}else if(status == "missed"){
+			treatment.markAsMissed
+		}else if(status == "reschedule"){
+			treatment.markAsReSchedule
+		}else if(status == "confirmed"){
+			treatment.markAsConfirmed
+		}else if(status == "ready"){
+			treatment.markAsReady
+		}else if(status == "preopen"){
+			treatment.markAsPreOpen
+		}else if(status == "open"){
+			treatment.markAsOpen
+		}
+		if(validate){
+			treatment.save
+		}else{
+			treatment.saveWithoutValidate
+		}
+		
+		TratmentServer ! TreatmentMessage("SaveUpdateTratment",end)		
 	}
+
 	def updateEventHours(id:String,user:Long,start:Date,end:Date) = {
 		var busyEvent = BusyEvent.findByKey(id.toLong).get
 		busyEvent.user(user)
@@ -365,6 +382,14 @@ object  TreatmentService extends net.liftweb.common.Logger {
 	*/
 	def delete(id:String){
 		var treatment = loadTreatment(id)
+		var user = treatment.user.obj.get;
+		if ((AuthUtil.user.id.is != user.id.is) && 
+			AuthUtil.user.isSimpleUserCalendarView) {
+			// evita que atendimento pago seja alterado gerava erro de comissao se o atend
+			// fosse moviedo para outro usuario
+			// TratmentServer ! TreatmentMessage("SaveUpdateTratment",end)		
+  	        throw new RuntimeException("Você não tem permissão para excluir atendimentos de outros profissionais!")
+		}
 		//treatment.details.foreach(_.delete_!);
 		//treatment.details.clear
 		treatment.delete_!;

@@ -1,17 +1,64 @@
+# use glob syntax.
+syntax: glob
+node_modules
+*.ser
 *.class
-*.log
+*~
+*.bak
+*.off
+*.old
+.DS_Store
 
-# sbt specific
-.cache
-.history
-.lib/
-dist/*
-target/
-lib_managed/
-src_managed/
-project/boot/
-project/plugins/project/
+# logs
+derby.log
 
-# Scala-IDE specific
+# eclipse conf file
+.settings
+.classpath
+.project
+.manager
+.externalToolBuilders
+
+# ensime/emacs conf files
+.ensime
 .scala_dependencies
-.worksheet
+
+# building
+target
+null
+tmp*
+dist
+test-output
+
+# sbt
+target
+lib_managed
+src_managed
+project/boot
+project/plugins/project
+project-old/boot
+project-old/plugins/project
+
+# other scm
+.svn
+.CVS
+.hg*
+
+# switch to regexp syntax.
+#  syntax: regexp
+#  ^\.pc/
+
+# IntelliJ
+*.iml
+*.ipr
+*.iws
+.idea
+*.db
+# Pax Runner (for easy OSGi launching)
+runner
+*.txt
+node_modules
+npm-debug.log
+
+# Grunt
+test.logsrc/main/webapp/v2/_SpecRunner.html

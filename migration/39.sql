@@ -1,0 +1,1 @@
+update media set image = logo, imagethumb=thumb;

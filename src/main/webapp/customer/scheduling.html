@@ -194,6 +194,18 @@
 		}
 		var generate_treatments = function(type, start, end, hour_start, hour_end,service, service_name,customer,user, obs_treatment, allowDays, user_name, num_max, price, amount){
 
+			if(!customer){
+				alert("Selecione um cliente");
+				return;
+			}
+			if(!user){
+				alert("Selecione um profissional");
+				return;
+			}
+			if(!service){
+				alert("Selecione um serviço/procedimento");
+				return;
+			}
 			//user_name
 			start.ajustDaylightSavingPrevent();
 			if (num_max == 0){
@@ -219,24 +231,21 @@
 			}
 			if(!hour_end){
 				hour_end = sumHours(hour_start, getActivity(service).duration);
+				$('#hour_end').val(hour_end)			
+			}
+			if (type === 'week' || type === "1"){
+				// dias da semana - antes gerava até domingo - melhor obrigar seleção
+				if(!allowDays){
+					alert ("Selecione os dias da semana")
+					return;
+				}
 			}
 			if(!allowDays){
 				allowDays = Array(0,1,2,3,4,5,6);
 			}else{
 				allowDays = allowDays.map(function(i){ return parseInt(i);})
 			}
-			if(!user){
-				alert("Selecione um profissional");
-				return;
-			}
-			if(!service){
-				alert("Selecione um serviço");
-				return;
-			}
-			if(!customer){
-				alert("Selecione um cliente");
-				return;
-			}
+
 			current = start;
 			var days = type*24*60*60*1000;
 			var day = 24*60*60*1000;

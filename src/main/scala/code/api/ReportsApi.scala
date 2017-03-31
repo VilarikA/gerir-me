@@ -1646,10 +1646,16 @@ object Reports extends RestHelper with ReportRest with net.liftweb.common.Logger
 					"1 =1"
 				}		
 			}
+			val rel_zero:String = S.param("rel_zero") match {
+				case Full(p) if(p != "")=> " " // mostra todos
+				case _ => " and ic.currentstock > 0 " // só estoque mior que zero pierre
+			}			
 
-			toResponse(InventoryMovement.SQL_REPORT_INVENTORY.format(line, brand, category ),List(AuthUtil.company.id.is, unit))
+			toResponse(InventoryMovement.SQL_REPORT_INVENTORY.format(
+				rel_zero, line, brand, category ),List(AuthUtil.company.id.is, unit))
 		}
 		case "report" :: "inventory_control_no_unit" :: Nil Post _ =>{
+
 
 			def line = S.param("line") match {
 				case Full(p) if(p != "") => " pr.id in(select product from productlinetag where line="+p.toLong+") "
@@ -1667,7 +1673,12 @@ object Reports extends RestHelper with ReportRest with net.liftweb.common.Logger
 					"1 =1"
 				}		
 			}
-			toResponse(InventoryMovement.SQL_REPORT_INVENTORY_UNIT_NO_FILTER.format(line, brand, category),List(AuthUtil.company.id.is))
+			val rel_zero:String = S.param("rel_zero") match {
+				case Full(p) if(p != "")=> " " // mostra todos
+				case _ => " and ic.currentstock > 0 " // só estoque mior que zero pierre
+			}			
+			toResponse(InventoryMovement.SQL_REPORT_INVENTORY_UNIT_NO_FILTER.format(
+				rel_zero, line, brand, category),List(AuthUtil.company.id.is))
 		}
 
 		case "report" :: "commission_sumary" :: Nil Post _ =>{
@@ -1821,8 +1832,8 @@ object Reports extends RestHelper with ReportRest with net.liftweb.common.Logger
 		}
 		case "report" :: "paymenttype_summary" :: Nil Post _ => {
 			def units:String = S.param("unit") match {
-				case Full(s) if(s != "") => " and tr.unit = %s".format(s)
-				case _ => " and " + Treatment.unitsToShowSql
+				case Full(s) if(s != "") => " and ca.unit = %s".format(s)
+				case _ => " and " + Cashier.unitsToShowSql
 			}
 
 			def start:Date = S.param("startDate") match {
@@ -1857,7 +1868,7 @@ object Reports extends RestHelper with ReportRest with net.liftweb.common.Logger
 				select pa.datepayment, pt.name, sum (pd.value), count (pt.name) from paymentdetail pd 
 				inner join paymenttype pt on pt.id = pd.typepayment
 				inner join payment pa on pa.id = pd.payment
-				inner join treatment tr on tr.payment = pa.id
+				inner join cashier ca on ca.id = pa.cashier
 				where pd.company = ? and pa.datepayment between ? and ?
 				%s %s %s
 				group by pa.datepayment, pt.name

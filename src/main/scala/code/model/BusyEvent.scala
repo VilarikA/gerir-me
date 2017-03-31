@@ -98,7 +98,13 @@ object BusyEvent extends BusyEvent with LongKeyedMapperPerCompany[BusyEvent] wit
 		By(BusyEvent.unit, unit), // rigel 12/11/2016 
 		By(BusyEvent.user, user), BySql("dateevent=date(?)",IHaveValidatedThisSQL("",""), date)) > 0;
 
-	def constraintDate(user:User, start:Date) = BusyEvent.findAllInCompany(By(BusyEvent.user,user), BySql(" date(?) between date(start_c) and date(end_c)",IHaveValidatedThisSQL("",""),start)) ::: BusyEvent.findAllInCompany( BySql(" ? between start_c and end_c",IHaveValidatedThisSQL("",""),start),By(BusyEvent.status,BusyEvent.StatusEnum.All))
+	def constraintDate(user:User, start:Date, unit:CompanyUnit) = 
+		BusyEvent.findAllInCompany(
+			By(BusyEvent.user,user), 
+			By(BusyEvent.unit,unit), 
+			BySql(" date(?) between date(start_c) and date(end_c)",IHaveValidatedThisSQL("",""),start)) ::: BusyEvent.findAllInCompany( 
+			BySql(" ? between start_c and end_c",IHaveValidatedThisSQL("",""),start),
+			By(BusyEvent.status,BusyEvent.StatusEnum.All))
 
 	def findByDate(start:Date, end:Date, cUnit:CompanyUnit) = BusyEvent.findAllInCompany(
 			OrderBy(BusyEvent.start, Ascending),
@@ -154,4 +160,22 @@ object BusyEvent extends BusyEvent with LongKeyedMapperPerCompany[BusyEvent] wit
 			By(BusyEvent.status,BusyEvent.StatusEnum.All),
 			BySql("dateevent between date(?) and date(?) and unit = ? ",IHaveValidatedThisSQL("",""),start,end, cUnit.id.is)
 		) 
+/*
+                      .is_employee_lanche_?(true)
+                      .company(company)
+                      .start(new Date(assertedTime(freeBusy.start,"0"+realStartCompany+":00",0)) )
+                      .end( new Date(assertedTime(freeBusy.start,"0"+realEndCompany+":00",0)))
+                      .user(u.id.is)
+                      .unit(cu.id.is) // vaiii teria que criar para as outras unidades do cara
+                      .description("Não trabalha folga".format(u.name.is))
+*/
+	def countBE (company:Company, start:Date, end:Date, 
+		user:Long, unit:Long) = {
+		BusyEvent.count (
+			By (BusyEvent.company, company),
+			By (BusyEvent.start, start),
+			By (BusyEvent.end, end),
+			By (BusyEvent.user, user),
+			By (BusyEvent.unit, unit))
+	}
 }
