@@ -3,9 +3,14 @@
 #db.user=mateus
 #db.password=amanda1108
 db.driver=org.postgresql.Driver
-db.url=jdbc:postgresql://localhost/e_belle_ligth_c
-db.user=mateus
-db.password=775072
+#db.url=jdbc:postgresql://localhost/e_belle_ligth_c
+#db.user=mateus
+#db.password=775072
+
+db.url=jdbc:postgresql://localhost/gerir-me
+db.user=gerir-me
+db.password=vilarika@2017
+
 #isPeter=true
 #invalid.email.address = "Email Invalido"
 system.url=http://localhost:7171/
