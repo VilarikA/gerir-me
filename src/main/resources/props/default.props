@@ -10,8 +10,8 @@
 db.user=gerir-me
 db.password=vilarika@2017
 #--------------------
-#db.url=jdbc:postgresql://45.33.99.152/gerir-me
-db.url=jdbc:postgresql://localhost/gerir-me
+db.url=jdbc:postgresql://45.33.99.152/gerir-me
+#db.url=jdbc:postgresql://localhost/gerir-me
 #----------------VELHO
 #db.url=jdbc:postgresql://localhost/e_belle_ligth_c
 #--------------------
