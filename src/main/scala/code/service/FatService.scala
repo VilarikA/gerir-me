@@ -55,7 +55,7 @@ object FatService extends net.liftweb.common.Logger {
 			ReceiveNextMonth
 		else if(!paymentType.receive_?.is)
 			NotReceive
-		else if(paymentType.needChequeInfo_?.is && paymentType.receive_?.is)
+		else if(paymentType.cheque_?.is && paymentType.receive_?.is)
 			ReceiveCheque
 		else if(paymentType.acceptInstallment_?.is && paymentType.receive_?.is){
 			ReceiveParceled
@@ -233,8 +233,16 @@ object ReceiveAddValueToUser extends FatChain{
 					(am)=>{
 							am match {
 								case Full(movement) => {
+									// nesta forma de pagamento se o customer não for profissional
+									// tem que gerar o vale no user do treatment mesmo
+									// 
+									val bp : Long = if (pd.customer.obj.get.is_user_?.is) {
+										pd.customer
+									} else {
+										pd.user.toLong
+									}
 									movement.dueDate(pd.dueDate.is)
-											.user(pd.customer)
+											.user(bp)
 											.typeMovement(AccountPayable.OUT)
 											.paid_?(true)
 											.save

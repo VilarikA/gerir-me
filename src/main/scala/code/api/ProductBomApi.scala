@@ -42,13 +42,23 @@ object ProductBomApi extends RestHelper {
 				 price <- S.param("price") ?~ "qtd param missing" ~> 400
 				 orderinreport <- S.param("orderinreport") ?~ "orderinreport param missing" ~> 400
 			} yield {
-				JBool(ProductBOM.createInCompany.product(product.toLong).product_bom(product_bom.toLong).obs(obs).qtd(qtd.toInt).praceled_?(praceled.toBoolean).salePrice(price.toDouble).orderInReport(orderinreport.toInt).save)
+				JBool(ProductBOM.createInCompany.product(product.toLong).
+					product_bom(product_bom.toLong).
+					obs(obs).qtd(BigDecimal (qtd)).
+					praceled_?(praceled.toBoolean).
+					salePrice(price.toDouble).
+					orderInReport(orderinreport.toInt).save)
 			}
 		}
 		case "product" :: productId:: "product_bom" :: "list" :: Nil JsonGet _ =>{
 			JsArray(
 				ProductBOM.findAllInCompany(By(ProductBOM.product,productId.toLong)).map((pb) =>{
-					JsObj(("id",pb.id.is),("product_name",pb.product_bom.obj.get.name.is),("obs",pb.obs.is), ("qtd",pb.qtd.is), ("price", pb.price.toDouble),("parceled", pb.praceled_?.is), ("orderinreport",pb.orderInReport.is))
+					JsObj(("id",pb.id.is),("product_name",pb.product_bom.obj.get.name.is),
+						("obs",pb.obs.is), 
+						("qtd",pb.qtd.toDouble), 
+						("price", pb.price.toDouble),
+						("parceled", pb.praceled_?.is), 
+						("orderinreport",pb.orderInReport.is))
 				})
 			)
 		}

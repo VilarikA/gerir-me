@@ -1,12 +1,12 @@
 var Q = require('q');
 var jenkinsapi = require('jenkins-api');
-var jenkins = jenkinsapi.init("http://admin:rika775072@ci.transitobh.com.br/");
+var jenkins = jenkinsapi.init("http://admin:rika775072@ciold.vilarika.com.br/");
 var rp = require('request-promise');
 
 var BuildInfo = function(name, port) {
 	var self = this;
 	this.waitToHttpSeriveIsRuning = function(){
-		return waitSystemStart("http://transitobh.com.br:"+port);
+		return waitSystemStart("http://vilarika.com.br:"+port);
 	};
 	var waitSystemStart = function(url, deferR, n){
 		var times = n || 0;

@@ -40,7 +40,7 @@ import net.sf.jasperreports.engine.JasperExportManager
 
 object Reports extends RestHelper with ReportRest with net.liftweb.common.Logger {
 	
-	def listUserProf = S.params("user")
+/*	def listUserProf = S.params("user")
 	def userProf = {
 			if(listUserProf.size > 0) {
 				val listParm = listUserProf.foldLeft("")(_+_)
@@ -49,6 +49,7 @@ object Reports extends RestHelper with ReportRest with net.liftweb.common.Logger
 				"1=1"
 			}
 		}
+*/
 		//inventory_movements.jrxml
 		val reportFile = "/reports/inventory_movements.jasper"
 	 	lazy val cn:Connection = {
@@ -1123,7 +1124,7 @@ object Reports extends RestHelper with ReportRest with net.liftweb.common.Logger
 				def bankFilter = S.param("bank") match {
 					case Full(p) if(p != "") => {
 						 params	= params ::: List(p.toLong) 
-						" and ch.banc = ?"
+						" and ch.bank = ?"
 					}
 					case _ => " " 
 				}
@@ -1134,7 +1135,7 @@ object Reports extends RestHelper with ReportRest with net.liftweb.common.Logger
 									cashier.idforcompany,
 									b.short_name as bank,
 									ch.agency,
-									ch.acount,
+									ch.account,
 									ch.number_c,
 									p.command,
 									ch.received,
@@ -1145,10 +1146,10 @@ object Reports extends RestHelper with ReportRest with net.liftweb.common.Logger
 									from   
 									cheque ch
 									inner join business_pattern cu on(ch.customer = cu.id)
-									inner join bank b on(b.id = ch.banc)
 									inner join paymentdetail pd on(pd.id = ch.paymentdetail)
 									inner join payment p on(pd.payment = p.id)
 									inner join cashier on(cashier.id = p.cashier)
+									left join bank b on(b.id = ch.bank)
 									where ch.company = ? and ch.movementtype = 0
 								"""
 				val sql = {

@@ -67,7 +67,7 @@ object SecuritySnippet {
                 else
                 NodeSeq.Empty
       }  
-      //User permitions
+      //User permissions
       def isSuperAdmin(in:NodeSeq):NodeSeq ={
         if (AuthUtil.user.isSuperAdmin)
         in
@@ -365,6 +365,13 @@ object SecuritySnippet {
           NodeSeq.Empty
       }      
 //
+      def calendarFixed (in:NodeSeq):NodeSeq ={
+        if (AuthUtil.user.calendarFixed_?)
+        in
+        else
+        NodeSeq.Empty
+      }
+
       def editBpIdfC(in:NodeSeq):NodeSeq ={
         if ((AuthUtil.company.bpIdForCompany != 0) || AuthUtil.user.isAdmin)
         in

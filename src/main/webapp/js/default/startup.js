@@ -187,7 +187,7 @@ $(function() {
 		toGerirme();
 	} else if (document.location.href.indexOf("egrex") != -1) {
 		toEgrex();
-	} else if (document.location.href.indexOf("esmile") != -1) {
+	} else if ((document.location.href.indexOf("esmile") != -1) || (document.location.href.indexOf("e-smile") != -1)){
 		toEsmile();
 	} else if (document.location.href.indexOf("edoctus") != -1) {
 		toEdoctus();

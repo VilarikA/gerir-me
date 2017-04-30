@@ -192,6 +192,42 @@
                       </div>
                    </div>
                 </div>
+                <div class="clearfix">
+                  <label for="showInCommand">Comanda? </label>
+                  <div class="input">
+                    <div class='inline-inputs'>
+                      <div class="input-prepend" style='float:left; padding-right:10px'>
+                        <label class="add-on"><input type="checkbox" name="showInCommand"></label>
+                      </div>
+                    </div>
+                  </div>
+                  <label for="showInCashier">Caixa? </label>
+                  <div class="input">
+                    <div class='inline-inputs'>
+                      <div class="input-prepend" style='float:left; padding-right:10px'>
+                        <label class="add-on"><input type="checkbox" name="showInCashier"></label>
+                      </div>
+                    </div>
+                  </div>
+                  <label for="showInCalendarPub">Agenda Pública? </label>
+                  <div class="input">
+                    <div class='inline-inputs'>
+                      <div class="input-prepend" style='float:left; padding-right:10px'>
+                        <label class="add-on"><input type="checkbox" name="showInCalendarPub"></label>
+                      </div>
+                    </div>
+                  </div>
+                  <label for="calendarFixed">Agenda Tam Fixo? </label>
+                  <div class="input">
+                    <div class='inline-inputs'>
+                      <div class="input-prepend" style='float:left; padding-right:10px'>
+                        <label class="add-on"><input type="checkbox" name="calendarFixed"></label>
+                      </div>
+                    </div>
+                    <span class="help-block">Mostrar <span data-i18n='Profissional'></span> na comanda? / no caixa? / na agenda pública? / usar tamanho fixo em dispositivos móveis</span>
+                  </div>
+                </div>
+
                 <div class="lift:SecuritySnippet.hasAuxiliarModule clearfix">
                     <label for="is_auxiliar">É <span data-i18n='Assistente'></span></label>
                     <div class="input">
@@ -227,7 +263,7 @@
                    <div class="input">
                       <div class='inline-inputs'>
                         <div class="input-prepend" style='float:left; padding-right:10px'>
-                          <select multiple="multiple" class="medium" id="groupPermission" name="groupPermission" >
+                          <select multiple="multiple" class="xlarge" id="groupPermission" name="groupPermission" >
                               <option class="lift:SecuritySnippet.isSuperAdmin" value="1000">Super Admin</option>
                               <option value="1">Administrador</option>
                               <option class="lift:SecuritySnippet.isNotEgrexSystem" value="13">Clientes</option>

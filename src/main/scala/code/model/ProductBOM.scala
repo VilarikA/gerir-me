@@ -15,7 +15,7 @@ class ProductBOM extends Audited[ProductBOM] with PerCompany with IdPK with Crea
     def getSingleton = ProductBOM
     object product extends MappedLongForeignKey(this,Product)
     object obs extends MappedPoliteString(this,555)
-    object qtd extends MappedInt(this)
+    object qtd extends MappedDecimal(this,MathContext.DECIMAL64,2)
     object product_bom extends MappedLongForeignKey(this,Product)
 
     object salePrice extends MappedDecimal(this,MathContext.DECIMAL64,2)

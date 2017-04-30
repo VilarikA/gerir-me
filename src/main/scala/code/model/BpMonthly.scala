@@ -41,6 +41,38 @@ class BpMonthly extends Audited[BpMonthly] with PerCompany with IdPK
         }       
     }
     object weekDays extends MappedPoliteString(this,255)
+
+    object user0 extends MappedLong(this) // para associar um profissional e listar as sessões com prof diferente (reposições)
+    object user1 extends MappedLong(this) // para associar um profissional e listar as sessões com prof diferente (reposições)
+    object user2 extends MappedLong(this) // para associar um profissional e listar as sessões com prof diferente (reposições)
+    object user3 extends MappedLong(this) // para associar um profissional e listar as sessões com prof diferente (reposições)
+    object user4 extends MappedLong(this) // para associar um profissional e listar as sessões com prof diferente (reposições)
+    object user5 extends MappedLong(this) // para associar um profissional e listar as sessões com prof diferente (reposições)
+    object user6 extends MappedLong(this) // para associar um profissional e listar as sessões com prof diferente (reposições)
+
+    object start0 extends MappedPoliteString(this, 5) {
+        override def defaultValue = "";
+    }
+    object start1 extends MappedPoliteString(this, 5) {
+        override def defaultValue = "";
+    }
+    object start2 extends MappedPoliteString(this, 5) {
+        override def defaultValue = "";
+    }
+    object start3 extends MappedPoliteString(this, 5) {
+        override def defaultValue = "";
+    }
+    object start4 extends MappedPoliteString(this, 5) {
+        override def defaultValue = "";
+    }
+    object start5 extends MappedPoliteString(this, 5) {
+        override def defaultValue = "";
+    }
+    object start6 extends MappedPoliteString(this, 5) {
+        override def defaultValue = "";
+    }
+
+
     object value extends MappedCurrency(this)
     object valueDiscount extends MappedCurrency(this) // em função de forma de pagamento
     object valueSession extends MappedCurrency(this)  with LifecycleCallbacks { // em função do número de dias
@@ -71,7 +103,7 @@ class BpMonthly extends Audited[BpMonthly] with PerCompany with IdPK
           }  
       } 
     }
-    object user extends MappedLong(this) // para associar um profissional e listar as sessões com prof diferente (reposições)
+    //object user extends MappedLong(this) // para associar um profissional e listar as sessões com prof diferente (reposições)
     object obs extends MappedPoliteString(this,255)
     object canceled_? extends MappedBoolean(this) {
         override def defaultValue = false
@@ -201,7 +233,13 @@ object BpMonthly extends BpMonthly with LongKeyedMapperPerCompany[BpMonthly]
                 .value(value)
                 .valueDiscount(valueDiscount)
                 .unit(unit.id.is)
-                .user(user.id.is)
+                .user0(user.id.is)
+                .user1(user.id.is)
+                .user2(user.id.is)
+                .user3(user.id.is)
+                .user4(user.id.is)
+                .user5(user.id.is)
+                .user6(user.id.is)
                 .obs(obs)
                 .bpmCount(product.bpmCount)
                 .save
@@ -217,12 +255,29 @@ object BpMonthly extends BpMonthly with LongKeyedMapperPerCompany[BpMonthly]
                 .value(value)
                 .valueDiscount(valueDiscount)
                 .unit(unit.id.is)
-                .user(user.id.is)
+                .user0(user.id.is)
+                .user1(user.id.is)
+                .user2(user.id.is)
+                .user3(user.id.is)
+                .user4(user.id.is)
+                .user5(user.id.is)
+                .user6(user.id.is)
                 .obs("")
                 .bpmCount(product.bpmCount)
                 .save
         }
     }     
+ 
+    def findPriceByCustomerProduct(customer:Customer, product:Activity, date:Date) = {
+        BpMonthly.findAllInCompany(
+            By(BpMonthly.business_pattern, customer), 
+            By(BpMonthly.product, product), 
+            BySql("(? between startat and endat)", IHaveValidatedThisSQL("",""), date),
+            OrderBy(BpMonthly.createdAt, Descending) // pra o antigo vir primeiro
+            )
+    }
+
+
     def noficationsNow(business_pattern:Long) = {
 /*        val result = BpMonthly.findAll(By(BpMonthly.business_pattern,business_pattern),
                 NotBy(BpMonthly.canceled_?,true))

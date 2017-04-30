@@ -46,7 +46,10 @@ object CashApi extends RestHelper with net.liftweb.common.Logger  {
 						JsObj(
 							  ("status","success"),
 							  ("id",pt.id.is),("name",pt.name.is),
-							  ("cheque",pt.needChequeInfo_?.is),
+							  ("cheque",pt.cheque_?.is),
+							  ("needChequeInfo",pt.needChequeInfo_?.is),
+							  ("creditCard",pt.creditCard_?.is),
+							  ("needCardInfo",pt.needCardInfo_?.is),
 							  ("numDaysForReceive",pt.numDaysForReceive.is),
 							  ("accept_installment",pt.acceptInstallment_?.is)
 							 )
@@ -406,12 +409,12 @@ object CashApi extends RestHelper with net.liftweb.common.Logger  {
 					// println ("vaiiii ========================= comanda vazia")
 					// 14/02/2017
 					// ainda nao sei o que causa, mas sim contorna antes só tinha o else
-					JsObj(("command",Treatment.nextCommandNumber(dateValue,AuthUtil.company)),("isNew", true))
+					JsObj(("command",Treatment.nextCommandNumber(dateValue,AuthUtil.company, AuthUtil.unit)),("isNew", true))
 				} else {
 					JsObj(("command",TreatmentService.loadTreatmentByCustomerNotPaid(customerObj,dateValue)(0).command.is),("isNew", false))
 				}
 			}catch{
-				case _ => JsObj(("command",Treatment.nextCommandNumber(dateValue,AuthUtil.company)),("isNew", true))
+				case _ => JsObj(("command",Treatment.nextCommandNumber(dateValue,AuthUtil.company, AuthUtil.unit)),("isNew", true))
 			}
 
 		}
@@ -479,7 +482,7 @@ object CashApi extends RestHelper with net.liftweb.common.Logger  {
 				val json = parse(data)
 				val treatments = json.extract[List[TreatmentDTO]]
 				try{
-					PaymentService.processTreatments(treatments,command, Project.strOnlyDateToDate(date),Treatment.TreatmentStatus.Open)
+					PaymentService.processTreatments(treatments,command, Project.strOnlyDateToDate(date),Treatment.TreatmentStatus.Open,"")
 					JsObj(("status","success"))
 				}catch{
 					case e:Exception => {

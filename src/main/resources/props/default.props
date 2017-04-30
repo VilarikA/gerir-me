@@ -2,15 +2,19 @@
 #db.url=jdbc:postgresql://transitobh.com.br/e_belle_ligth_c
 #db.user=mateus
 #db.password=amanda1108
-db.driver=org.postgresql.Driver
-#db.url=jdbc:postgresql://localhost/e_belle_ligth_c
+#db.driver=org.postgresql.Driver
+#-------- ANTIGO
 #db.user=mateus
 #db.password=775072
-
-db.url=jdbc:postgresql://localhost/gerir-me
+#-------- NOVO
 db.user=gerir-me
 db.password=vilarika@2017
-
+#--------------------
+db.url=jdbc:postgresql://45.33.99.152/gerir-me
+#db.url=jdbc:postgresql://localhost/gerir-me
+#----------------VELHO
+#db.url=jdbc:postgresql://localhost/e_belle_ligth_c
+#--------------------
 #isPeter=true
 #invalid.email.address = "Email Invalido"
 system.url=http://localhost:7171/
@@ -36,15 +40,15 @@ mail.port=465
 mail.password=rika775072
 #---------------------------
 photo.path=/var/www/html/images/
-photo.urlbase=http://nb.transitobh.com.br/images/
+photo.urlbase=http://nb.vilarika.com.br/images/
 
 #---------------------------
 tissxml.path=/var/www/html/tissxml/
-tissxml.urlbase=http://nb.transitobh.com.br/tissxml/
+tissxml.urlbase=http://nb.vilarika.com.br/tissxml/
 
 #---------------------------
 remessa.path=/var/www/html/remessa/
-remessa.urlbase=http://nb.transitobh.com.br/remessa/
+remessa.urlbase=http://nb.vilarika.com.br/remessa/
 
 #boleto
 payment.cedenteNome=Vila Rika Solucoes Ltda - ME

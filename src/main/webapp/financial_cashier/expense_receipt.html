@@ -95,9 +95,10 @@
     var sendReceiptEmailCustomer = function(customer){
       var mail = $("#grid").html()+$("#grid_payments").html()+$("#grid_unit").html()
       if(confirm("Tem certeza que deseja enviar um e-mail para o cliente?")){
-        var url = "/social/treatments/receipt_customer"
+        var url = "/social/treatments/email_customer"
         //+customer+"/"+encodeURIComponent(mail);
-        $.ajax(url,{"type": "post", "data" : {id : customer, body : mail }, "success" : function(){
+        var subject = "Recibo ";
+        $.ajax(url,{"type": "post", "data" : {id : customer, body : mail, subject : subject}, "success" : function(){
           alert("Enviado com sucesso!");
         }, "error" : function(response){
           alert("Erro ao enviar E-mail!");

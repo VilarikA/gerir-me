@@ -82,6 +82,7 @@
 			DataManager.getAnimals(animal_id, function(animalsObj) {
 				global_animalsObj = animalsObj;
 				$('#animal option').remove();
+				$('#animal_target option').remove();
 				var ret = "<option value='' selected='true'> Selecione um pet</option>";
 				for (var i in animalsObj) {
 					var relation = ""
@@ -99,11 +100,14 @@
 					ret += "<option value='" + animalsObj[i].id + "'>" + animalsObj[i].name + " " + death + " " + relation + "</option>";
 				}
 				$('#animal').append(ret);
+				$('#animal_target').append(ret);
 				if (animalsObj.length == 1) {
 					// se só tem um pet seta ele de uma vez
 					$('#animal').val(animalsObj[0].id).change();
+					$('#animal_target').val(animalsObj[0].id).change();
 				} else if (animalsObj.length == 0) {
 					$('#animal').val("").change();
+					$('#animal_target').val("").change();
 				}
 			});
 		}

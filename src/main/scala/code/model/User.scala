@@ -94,6 +94,27 @@ class User extends  BusinessPattern[User] with UserIdAsString{
         override def defaultValue = 0
     } 
 
+    // qdo o cliente agenda ele proprio on line
+    object showInCalendarPub_? extends MappedBoolean(this){
+        override def dbColumnName = "showInCalendarPub"
+        override def defaultValue = true
+    }
+
+    object showInCommand_? extends MappedBoolean(this){
+        override def dbColumnName = "showInCommand"
+        override def defaultValue = true
+    }
+
+    object showInCashier_? extends MappedBoolean(this){
+        override def dbColumnName = "showInCashier"
+        override def defaultValue = true
+    }
+
+    object calendarFixed_? extends MappedBoolean(this){
+        override def dbColumnName = "calendarFixed"
+        override def defaultValue = true
+    }
+
 
     def login (userName:String, passWord:String, company:Company):LoginStatus = {
         if(userName != "" && passWord != ""){
@@ -149,13 +170,18 @@ class User extends  BusinessPattern[User] with UserIdAsString{
                 }
             if(listCompany.size == 1){
                 val user = listCompany(0)
-                if (user.groupPermission  == ""){
-                    LoginStatus(false, "Este usuário não possui nenhuma permissão atribuida")
-                }else{
-                    LogActor ! "Login email user company " + user.company.is.toString + "       id " + user.id.is.toString +
-                     "      user " + user.name.is + "       date " +new Date().toString
-                    user.lastLogin(new Date()).insecureSave
-                    LoginStatus(true, "", user, listCompany)
+                val today : String = Project.dateToStr(new Date());
+                if (today == "30/04/2017" && !user.isSuperAdmin) {
+                    LoginStatus(false, "Estamos em manutenção para melhoria de nossa infraestrutura.\n\n O acesso será normalizado a partir de 0h de 01/05/2017")
+                } else {
+                    if (user.groupPermission  == ""){
+                        LoginStatus(false, "Este usuário não possui nenhuma permissão atribuida")
+                    }else{
+                        LogActor ! "Login email user company " + user.company.is.toString + "       id " + user.id.is.toString +
+                         "      user " + user.name.is + "       date " +new Date().toString
+                        user.lastLogin(new Date()).insecureSave
+                        LoginStatus(true, "", user, listCompany)
+                    }
                 }
             } else if(listCompany.size > 1){
                 val user = listCompany(0)
@@ -461,13 +487,16 @@ class User extends  BusinessPattern[User] with UserIdAsString{
             }
         }
         validateDuplicatedEmail
-        // tirei no businesspattern - pq tava gerando prontuario
+/*        // tirei no businesspattern - pq tava gerando prontuario
+        voltei pra lá - provavelmente não usava o insecureSave
+        e tirando de lá não gerava o mapa para unidade e convenio - 02/04/2017
         if(!this.street.is.isEmpty || this.street.is != "") {
             BusinessPatternLocationQueeue.enqueeue(BusinessPatternQueeueDto(this.id.is))
         } else {
             this.lat.set ("");
             this.lng.set ("");
         }
+*/
         super.save
     }
 

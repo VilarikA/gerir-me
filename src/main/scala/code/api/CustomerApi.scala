@@ -68,21 +68,11 @@ object CustomerApi extends RestHelper {
 			case "customer" :: "messages":: customerId :: Nil JsonGet _ => {
 				JsArray(Customer.findByKey(customerId.toLong).get.alerts_messages.map((ms) => JsObj(("message", ms))))
 			}
-			case "customer" :: "unification":: customerSrc :: customerDest :: Nil JsonGet _ => {
+			case "customer" :: "unification":: customerSrc :: customerDest :: bptype :: Nil JsonGet _ => {
 				val customerSource = Customer.findAllInCompany(By(Customer.id, customerSrc.toLong))(0)
 				val customerDestination = Customer.findAllInCompany(By(Customer.id, customerDest.toLong))(0)
 				try {
-					Customer.unificCustomer(customerSource, customerDestination, 0)
-					JInt(1)
-				} catch {
-					case e:Exception => JString(e.getMessage)
-				}
-			}
-			case "customer" :: "userunification":: customerSrc :: customerDest :: Nil JsonGet _ => {
-				val customerSource = Customer.findAllInCompany(By(Customer.id, customerSrc.toLong))(0)
-				val customerDestination = Customer.findAllInCompany(By(Customer.id, customerDest.toLong))(0)
-				try {
-					Customer.unificCustomer(customerSource, customerDestination, 1)
+					Customer.unificCustomer(customerSource, customerDestination, bptype)
 					JInt(1)
 				} catch {
 					case e:Exception => JString(e.getMessage)

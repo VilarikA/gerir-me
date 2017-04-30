@@ -146,7 +146,7 @@ object ProductApi extends RestHelper {
 								(pb) => 
 									JsObj(
 										("price_bom",pb.price.toDouble),
-										("qtd_bom",pb.qtd.is),
+										("qtd_bom",pb.qtd.toDouble),
 										("parceled",pb.praceled_?.is),
 										("product",asJson(pb.product_bom.obj.get)),
 										("order_bom",pb.orderInReport.is)
@@ -172,7 +172,7 @@ object ProductApi extends RestHelper {
 								(pb) => 
 									JsObj(
 										("price_bom",pb.price.toDouble),
-										("qtd_bom",pb.qtd.is),
+										("qtd_bom",(pb.qtd.toDouble)),
 										("parceled",pb.praceled_?.is),
 										("product",asJson(pb.product_bom.obj.get)),
 										("order_bom",pb.orderInReport.is)

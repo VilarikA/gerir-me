@@ -16,6 +16,9 @@
     fields[1] = {
       type: "format",
       decode: function(name, row) {
+        // para envio de email deve aparecer em um decode
+        // tem exemplos de receber um id como parm ai usa push(id) como no birhtdays
+        customers.push(row[0]); 
         return "<a href='/customer/edit?id=" + row[0] + "' target='_customer_maste'>" + name + "</a>";
       }
     }
@@ -60,6 +63,10 @@
     $("#noproject").projectField(true);
     $("#send_notifications").click(function(){
       var message = $("#send_message").val();
+      if (!message) {
+        alert ("É preciso selecionar uma mensagem")
+        return
+      }
       if(confirm("Deseja enviar esta mensagem aos clientes?")){
           $.get("/notification/messagesend/"+customers.join(",")+"/"+message,function(r){
             if(r === '1'){
@@ -77,7 +84,11 @@
   </script>
     <div>
       <form id="form_report" class="well form-search" method='get'>
-        <h1><span class="lift:CompanySnippet.thumb"> </span>Relatório de <span data-i18n='Clientes'></span></h1>
+        <h1>
+          <span class="lift:CompanySnippet.thumb"> </span>
+          <input class="report_title local_storage lift:SecuritySnippet.isNotEgrexSystem" id="title_customer_list_report" name="title_customer_list_report" size="30" type="text" value="Relatório de Clientes"/>
+          <input class="report_title local_storage lift:SecuritySnippet.isEgrexSystem" id="title_customer_list_report" name="title_customer_list_report" size="30" type="text" value="Relatório de Membros"/>
+        </h1>
         <div class="row">
           <div class="span9">
             <div class="clearfix">

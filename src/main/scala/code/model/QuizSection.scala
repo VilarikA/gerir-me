@@ -32,7 +32,8 @@ class QuizSection extends Audited[QuizSection] with PerCompany with IdPK with Cr
     }
 
     def questions = {
-        QuizQuestion.findAll(By(QuizQuestion.quizSection, this.id.is), OrderBy(QuizQuestion.orderInSection, Ascending))
+        QuizQuestion.findAll(By(QuizQuestion.quizSection, this.id.is), 
+            OrderBy(QuizQuestion.orderInSection, Ascending), OrderBy(QuizQuestion.id, Ascending))
     }
 
     override def delete_! = {

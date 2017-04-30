@@ -255,7 +255,7 @@ class  CustomerSnippet extends BootstrapPaginatorSnippet[Customer] with net.lift
 		    "name=obs" #> (SHtml.textarea(ac.obs.is, ac.obs(_)))&
 		    "name=obscomplement" #> (SHtml.textarea(ac.obsComplement.is, ac.obsComplement(_)))&
 		    "name=email" #> (SHtml.text(ac.email.is, ac.email(_))) &
-			"name=senNotifications" #> (SHtml.checkbox(ac.senNotifications_?, ac.senNotifications_?(_)))&
+			"name=senNotifications" #> (SHtml.text(ac.senNotifications.is, ac.senNotifications(_)))&
 		    "name=website" #> (SHtml.text(ac.website.is, ac.website(_))) &
 		    "name=barcode" #> (SHtml.text(ac.barcode.is, ac.barcode(_)))&
 		    "name=phone" #> (SHtml.text(ac.phone.is, ac.phone(_)))&

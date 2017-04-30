@@ -50,7 +50,8 @@ object Reports2 extends RestHelper with ReportRest with net.liftweb.common.Logge
 			}
 		}
 		//inventory_movements.jrxml
-		val reportFile = "/reports/inventory_movements.jasper"
+		//val reportFile = "/reports/inventory_movements.jasper"
+	 	/*
 	 	lazy val cn:Connection = {
 			try {
 			  Class.forName("org.postgresql.Driver")
@@ -62,6 +63,7 @@ object Reports2 extends RestHelper with ReportRest with net.liftweb.common.Logge
 			   }
 			}
 		}
+		*/
 		serve {
 			case "report" :: "session_status" :: Nil Post _ =>{
 				def user = S.param("user") match {
@@ -1280,6 +1282,7 @@ order by date_c, 2
 				toResponse(sql.format (unit, sex, status, civilstatus, mapicon, projectclass, noprojectclass, project, noproject, offsale),
 					List(AuthUtil.company.id.is, agerange, AuthUtil.company.id.is/*,start,end*/))
 			}
+/*
 			case "report" :: "customer_list" :: Nil Post _=> {
 				def customer:String = S.param("customer") match {
 					case Full(p) if(p != "") => " and bp.id =%S".format(p) 
@@ -1434,7 +1437,7 @@ order by date_c, 2
 				toResponse(SQL.format(customer, unit, sex, status, civilstatus, mapicon, projectclass, noprojectclass, project, noproject, offsale),
 					List(start_value, end_value, AuthUtil.company.id.is))
 			}
-
+*/
 			case "report" :: "treatments_simple" :: Nil Post _=> {
 				def user = S.param("user") match {
 					case Full(p) if(p != "")=> " and bp.id in(%s)".format(p)

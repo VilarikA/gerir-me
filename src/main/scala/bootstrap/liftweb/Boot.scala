@@ -234,6 +234,7 @@ class Boot {
     LiftRules.dispatch.append(LocationApi)
     LiftRules.dispatch.append(Reports)
     LiftRules.dispatch.append(Reports2)
+    LiftRules.dispatch.append(Reports3)
     LiftRules.dispatch.append(TreatmentReportApi)
     LiftRules.dispatch.append(InventoryApi)
     LiftRules.dispatch.append(TreatmentApi)

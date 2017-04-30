@@ -30,6 +30,9 @@ class Treatment extends UserEvent with LogicalDelete[Treatment] with PerCompany 
         else
             1000
     }
+    object resource extends MappedLongForeignKey(this.asInstanceOf[MapperType],User){
+        //override def dbIndexed_? = true
+    }
     object obs extends MappedPoliteString(this,555)//dont work 
     object payment extends MappedLongForeignKey(this,Payment)
     object treatmentConflit  extends MappedLongForeignKey(this,Treatment){
@@ -753,10 +756,23 @@ class Treatment extends UserEvent with LogicalDelete[Treatment] with PerCompany 
 */
 
 object Treatment extends Treatment with LongKeyedMapperPerCompany[Treatment] with OnlyCurrentCompany[Treatment]{
-    def nextCommandNumber(date:Date,company:Company):Int = {
+    def nextCommandNumber(date:Date,company:Company, unit:CompanyUnit):Int = {
         try{
             //Status 5 = deleted...
-            val r = DB.performQuery("select max(CAST(nullif(command,'') AS integer)) from treatment where company = ? and dateevent = date(?) and hasDetail=true and status<>5", List(company.id.is,date))
+            val r = if (company.commandControl == Company.CmdDaily) {
+                DB.performQuery("""select max(CAST(nullif(command,'') AS integer)) 
+                from treatment where company = ? and unit = ? 
+                and dateevent = date(?) and hasDetail=true and status<>5""", 
+                List(company.id.is, unit.id.is, date))
+            } else if (company.commandControl == Company.CmdEver) {
+                // sem o dia - otimizar depois
+                DB.performQuery("""select max(CAST(nullif(command,'') AS integer)) 
+                from treatment where company = ? and unit = ? 
+                and hasDetail=true and status<>5""", 
+                List(company.id.is, unit.id.is))
+            } else {
+                throw new RuntimeException("Gerando comanda - Ctrl Inválido " + company.commandControl)
+            }
             r._2(0)(0) match {
                case a:Any => a.toString.toInt+1
                case _ => 1
@@ -766,7 +782,23 @@ object Treatment extends Treatment with LongKeyedMapperPerCompany[Treatment] wit
                 try{
                     //Status 5 = deleted...
                     // se der erro faz sem o cast
-                    val r = DB.performQuery("select max(command) from treatment where company = ? and dateevent = date(?) and hasDetail=true and status<>5 and command is not null and command <> ''", List(company.id.is,date))
+                    val r = if (company.commandControl == Company.CmdDaily) {
+                        DB.performQuery("""select max(command) 
+                            from treatment where company = ? and unit = ?
+                            and dateevent = date(?) 
+                            and hasDetail=true and status<>5 
+                            and command is not null and command <> ''""", 
+                            List(company.id.is, unit.id.is, date))
+                    } else if (company.commandControl == Company.CmdEver) {
+                        // sem o dia - otimizar depois
+                        DB.performQuery("""select max(command) 
+                            from treatment where company = ? and unit = ?
+                            and hasDetail=true and status<>5 
+                            and command is not null and command <> ''""", 
+                            List(company.id.is, unit.id.is))
+                    } else {
+                        throw new RuntimeException("Gerando comanda sem o cast - Ctrl Inválido " + company.commandControl)
+                    }
                     r._2(0)(0) match {
                        case a:Any => {
                             println ("============== comanda resolvida sem o cast integer company " + company.id.is + " comanda " + (a.toString.toInt+1))

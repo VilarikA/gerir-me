@@ -572,7 +572,7 @@ object AccountPayable extends AccountPayable with LongKeyedMapperPerCompany[Acco
         left join account acc on(acc.id = ap.account)
         left join cheque ch on (ch.id = cheque)
         left join business_pattern bc on bc.id = ch.customer
-        left join bank bk on bk.id = ch.banc
+        left join bank bk on bk.id = ch.bank
       WHERE ap.company=? and ap.cashier=? and ap.autocreated = false
     """
 

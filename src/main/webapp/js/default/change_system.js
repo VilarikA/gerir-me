@@ -29,64 +29,69 @@ var toGerirme = function() {
 	I18nManager.changeLang("gerirme");
 	$('title').html('gerir-me ' + $('title').html());
 	$('.system-name').html('gerir-me');
-	$('.brand img').attr('width', '10');
-	$("img[src='/images/logo.png']").attr('src', '/images/logo_gerirme.png');
-	$("img[src='/images/web.jpg']").attr('src', '/images/logo_gerirme.png');
+	$('.brand img').attr('width', '16');
+	$("img[src='/images/logo.png']").attr('src', '/images/logo_ftr_gerirme.png');
+	$("img[src='/images/web.jpg']").attr('src', '/images/logo_ftr_gerirme.png');
 	$('.body').css('background-image', 'url("/images/capa_gerirme.jpg")');
 };
 var toEgrex = function() {
 	I18nManager.changeLang("egrex");
 	$('title').html('e-grex ' + $('title').html());
 	$('.system-name').html('e-grex');
-	$('.brand img').attr('width', '10');
-	$("img[src='/images/logo.png']").attr('src', '/images/logo_egrex.jpg');
-	$("img[src='/images/web.jpg']").attr('src', '/images/logo_egrex.jpg');
+	$('.brand img').attr('width', '16');
+	$("img[src='/images/logo.png']").attr('src', '/images/logo_ftr_egrex.png');
+	$("img[src='/images/web.jpg']").attr('src', '/images/logo_ftr_egrex.png');
 	$('.body').css('background-image', 'url("/images/capa_egrex.jpg")');
 };
 var toEsmile = function() {
 	I18nManager.changeLang("esmile");
 	$('title').html('e-smile ' + $('title').html());
 	$('.system-name').html('e-smile');
-	$('.brand img').attr('width', '10');
+	$('.brand img').attr('width', '16');
 	$("a[href='/pricing']").attr('href', '/pricing_ephysio');
-	$("img[src='/images/logo.png']").attr('src', '/images/logo_esmile.png');
-	$("img[src='/images/web.jpg']").attr('src', '/images/logo_esmile.png');
+	$("img[src='/images/logo.png']").attr('src', '/images/logo_ftr_esmile.png');
+	$("img[src='/images/web.jpg']").attr('src', '/images/logo_ftr_esmile.png');
 	$('.body').css('background-image', 'url("/images/capa_esmile.jpg")');
 };
 var toEdoctus = function() {
 	I18nManager.changeLang("edoctus");
 	$('title').html('e-doctus ' + $('title').html());
 	$('.system-name').html('e-doctus');
-	$('.brand img').attr('width', '10');
+	$('.brand img').attr('width', '16');
 	$("a[href='/pricing']").attr('href', '/pricing_ephysio');
-	$("img[src='/images/logo.png']").attr('src', '/images/logo_edoctus.png');
-	$("img[src='/images/web.jpg']").attr('src', '/images/logo_edoctus.png');
+	$("img[src='/images/logo.png']").attr('src', '/images/logo_ftr_edoctus.png');
+	$("img[src='/images/web.jpg']").attr('src', '/images/logo_ftr_edoctus.png');
 	$('.body').css('background-image', 'url("/images/capa_edoctus.jpg")');
 };
 var toEphysio = function() {
 	I18nManager.changeLang("ephysio");
 	$('title').html('e-physio ' + $('title').html());
 	$('.system-name').html('e-physio');
-	$('.brand img').attr('width', '10');
+	$('.brand img').attr('width', '16');
 	$("a[href='/pricing']").attr('href', '/pricing_ephysio');
-	$("img[src='/images/logo.png']").attr('src', '/images/logo_ephysio.png');
-	$("img[src='/images/web.jpg']").attr('src', '/images/logo_ephysio.png');
+	$("img[src='/images/logo.png']").attr('src', '/images/logo_ftr_ephysio.png');
+	$("img[src='/images/web.jpg']").attr('src', '/images/logo_ftr_ephysio.png');
 	$('.body').css('background-image', 'url("/images/capa_ephysio.jpg")');
 };
 var toEbellepet = function() {
 	I18nManager.changeLang("ebellepet");
 	$('title').html('e-bellepet ' + $('title').html());
 	$('.system-name').html('e-bellepet');
-	$('.brand img').attr('width', '10');
+	$('.brand img').attr('width', '16');
 	$("a[href='/pricing']").attr('href', '/pricing_ephysio');
-	$("img[src='/images/logo.png']").attr('src', '/images/logo_ebellepet.png');
-	$("img[src='/images/web.jpg']").attr('src', '/images/logo_ebellepet.png');
+	$("img[src='/images/logo.png']").attr('src', '/images/logo_ftr_ebellepet.png');
+	$("img[src='/images/web.jpg']").attr('src', '/images/logo_ftr_ebellepet.png');
+	$("img[src='/images/favicon.ico']").attr('src', '/images/logo_ftr_ebellepet.ico');
 	$('.body').css('background-image', 'url("/images/capa_ebellepet.jpg")');
 };
 var toEbelle = function() {
 	I18nManager.changeLang("ebelle");
 	$('title').html('e-belle ' + $('title').html());
 	$('.system-name').html('e-belle');
+	$('.brand img').attr('width', '16');
+	$("img[src='/images/logo.png']").attr('src', '/images/logo_ftr_ebelle.png');
+	$("img[src='/images/web.jpg']").attr('src', '/images/logo_ftr_ebelle.png');
+	$("img[src='/images/favicon.ico']").attr('src', '/images/logo_ftr_ebelle.ico');
 	//$('body').css('background-image','url("/images/capa_ebelle.jpg")');
 };
 $(function(){

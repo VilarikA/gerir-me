@@ -33,6 +33,14 @@ class  QuizSnippet extends BootstrapPaginatorSnippet[Quiz] {
 	def groups = ("0", "Selecione um Grupo") :: UserGroup.
 		findAllInCompany(OrderBy(UserGroup.name, Ascending)).map(t => (t.id.is.toString, t.name.is))
 
+	def questionTypes = (("0", "Texto")::("1", "Parágrafo")::("2", "Lista")::
+		("3", "Multipla escolha")::("4", "Pode vários")::("5", "Valor")::
+		("6", "Data")::
+		Nil).map(t => (t._1,t._2))
+
+	def questionFormats = (("0", "Label - Reduzido")::("1", "Parágrafo - Longo")::
+		Nil).map(t => (t._1,t._2))
+
 	def findForListParamsWithoutOrder: List[QueryParam[Quiz]] = List(Like(Quiz.search_name,"%"+BusinessRulesUtil.clearString(name)+"%"))
 	override def page = {
 		if(!showAll){
@@ -276,7 +284,12 @@ class  QuizSnippet extends BootstrapPaginatorSnippet[Quiz] {
 		    "name=short_name" #> (SHtml.text(ac.short_name.is, ac.short_name(_)))&
 		    "name=quizSection" #> (SHtml.select(sections,Full(ac.quizSection.is.toString),(s:String) => ac.quizSection( s.toLong)))&
 		    "name=quizDomain" #> (SHtml.select(domains,Full(ac.quizDomain.is.toString),(s:String) => ac.quizDomain( s.toLong)))&
-			"name=quizQuestionType" #> (SHtml.text(ac.quizQuestionType.is.toString, (v:String) => ac.quizQuestionType(v.toInt)))&
+		    //"name=gender" #>         (SHtml.select(genders,      Full(ac.gender.is.toString),(v:String) => ac.gender(v)))&
+		    //"name=quizQuestionTypeStr" #> (SHtml.select(questionTypes,Full(ac.quizQuestionTypeStr.is.toString),(v:String) => ac.quizQuestionTypeStr(v)))&
+		    "name=quizQuestionType" #> (SHtml.select(questionTypes,Full(ac.quizQuestionType.is.toString),(v:String) => ac.quizQuestionType(v.toInt)))&
+		    "name=quizQuestionFormat" #> (SHtml.select(questionFormats,Full(ac.quizQuestionFormat.is.toString),(v:String) => ac.quizQuestionFormat(v.toInt)))&
+			"name=history" #> (SHtml.checkbox(ac.history_?, ac.history_?(_)))&
+			"name=rank" #> (SHtml.text(ac.rank.is.toString, (v:String) =>{ if(v !=""){ac.rank(v.toDouble)};}))&
 			"name=orderinsection" #> (SHtml.text(ac.orderInSection.is.toString, (v:String) => ac.orderInSection(v.toInt)))&
 			"name=status" #> (SHtml.select(status,Full(ac.status.is.toString),(v:String) => ac.status(v.toInt)))&			
 			"name=obs" #> (SHtml.textarea(ac.obs.is, ac.obs(_))++SHtml.hidden(process))
@@ -320,6 +333,8 @@ class  QuizSnippet extends BootstrapPaginatorSnippet[Quiz] {
 		    "name=short_name" #> (SHtml.text(ac.short_name.is, ac.short_name(_)))&
 		    "name=quizDomain" #> (SHtml.select(domains,Full(ac.quizDomain.is.toString),(s:String) => ac.quizDomain( s.toLong)))&
 			"name=orderindomain" #> (SHtml.text(ac.orderInDomain.is.toString, (v:String) => ac.orderInDomain(v.toInt)))&
+		    "name=color" #> (SHtml.text(ac.color.is, ac.color(_)))&
+			"name=rank" #> (SHtml.text(ac.rank.is.toString, (v:String) =>{ if(v !=""){ac.rank(v.toDouble)};}))&
 			"name=status" #> (SHtml.select(status,Full(ac.status.is.toString),(v:String) => ac.status(v.toInt)))&			
 			"name=obs" #> (SHtml.textarea(ac.obs.is, ac.obs(_))++SHtml.hidden(process))
 
@@ -377,6 +392,7 @@ class  QuizSnippet extends BootstrapPaginatorSnippet[Quiz] {
 					ac.company(AuthUtil.company)
 					ac.save
 				   	S.notice(Quiz.quizLabel + " salvo(a) com sucesso! " + ac.message.length + " de um máximo de 40.000 caracteres")
+			   		S.redirectTo("/quiz/quiz?id="+ac.id.is)
 		   		}catch{
 					case (e:net.liftweb.http.ResponseShortcutException) =>{
 						throw e
@@ -391,6 +407,7 @@ class  QuizSnippet extends BootstrapPaginatorSnippet[Quiz] {
 		    "name=userGroup" #> (SHtml.select(groups,Full(ac.userGroup.is.toString),(s:String) => ac.userGroup( s.toLong)))&
 		    "name=share" #> (SHtml.checkbox(ac.share_?.is, ac.share_?(_)))&
 		    "name=showInRecords" #> (SHtml.checkbox(ac.showInRecords_?.is, ac.showInRecords_?(_)))&
+			"name=rank" #> (SHtml.text(ac.rank.is.toString, (v:String) =>{ if(v !=""){ac.rank(v.toDouble)};}))&
 			"name=obs" #> (SHtml.textarea(ac.obs.is, ac.obs(_)))&
 		    "name=message" #> (SHtml.textarea(ac.message.is, ac.message(_)))&
 			"name=status" #> (SHtml.select(status,Full(ac.status.is.toString),(v:String) => ac.status(v.toInt))++SHtml.hidden(process))			

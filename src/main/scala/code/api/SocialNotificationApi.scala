@@ -37,10 +37,11 @@ object SocialNotificationApi extends RestHelper with net.liftweb.common.Logger  
 			JInt(1)
 		}
 
-		case "social" :: "treatments" ::  "receipt_customer" :: Nil Post _ =>{
+		case "social" :: "treatments" ::  "email_customer" :: Nil Post _ =>{
 	      def id = S.param("id") openOr ""
 	      def mail = S.param("body") openOr ""
-			DailyReport.sendMailBp(id.toLong, "Recibo ", mail)
+	      def subject = S.param("subject") openOr ""
+			DailyReport.sendMailBp(id.toLong, subject, mail)
 			JInt(1)
 		}
 	}

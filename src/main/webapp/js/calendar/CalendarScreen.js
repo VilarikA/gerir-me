@@ -103,8 +103,10 @@ var CalendarScreen = {
 			"keyboard": true,
 			"backdrop": true
 		});
-		if ((calEvent.command === '' || !calEvent.command) && global_autoincrementcommand) {
-			$.get("/calendar/" + encodeURIComponent(getDateBr(calEvent.start)) + "/getNextCommandId", function(t) {
+		if ((calEvent.command === '' || !calEvent.command) && 
+			global_commandControl == 1 /* daily */) {
+			$.get("/calendar/" + encodeURIComponent(getDateBr(calEvent.start)) + 
+				"/getNextCommandId", function(t) {
 				$($inputs.get(0)).val(t);
 				if (!isNew)
 					$(".command").change();
@@ -151,27 +153,6 @@ var CalendarScreen = {
 			$('#activitys').append(ret);
 		});
 	},
-/*
-	getAnimals: function() {
-		if (!$("#cutomer_id_treatment").val()) {
-			$('#animal option').remove();
-		} else {
-			DataManager.getAnimals($("#cutomer_id_treatment").val(), function(animalsObj) {
-				global_animalsObj = animalsObj;
-				$('#animal option').remove();
-				var ret = "";
-				for (var i in animalsObj) {
-					ret += "<option value='" + animalsObj[i].id + "'>" + animalsObj[i].name + "</option>";
-				}
-				$('#animal').append(ret);
-				if (animalsObj.length == 1) {
-					// se só tem um pet seta ele de uma vez
-					$('#animal').val(animalsObj[0].id).change();
-				}
-			});
-		}
-	},
-*/
 	removeTreatmentShowModal: function() {
 		if (CalendarManager.calendarPermitions.deleteEvent) {
 			$("#treatment_remove").modal({
@@ -199,7 +180,19 @@ var CalendarScreen = {
 			window.open("/financial_cashier/register_payment?command=" + $(".command").val() + "&date=" + encodeURIComponent($(".start_treatment").val()), "payment");
 			CalendarScreen.closeTreatmentPopUp();
 		} else {
-			alert("É necessário inserir o numero da comanda!");
+			if (global_commandControl == 2 /* ever */) {
+				$.get("/calendar/" + encodeURIComponent($(".start_treatment").val()) + 
+					"/getNextCommandId", function(t) {
+					//	$($inputs.get(0)).val(t);
+					$(".command").val(t)
+					$(".command").change();
+					window.open("/financial_cashier/register_payment?command=" + $(".command").val() + "&date=" + encodeURIComponent($(".start_treatment").val()), "payment");
+					CalendarScreen.closeTreatmentPopUp();
+				});
+			} else {
+				// 0 never
+				alert("É necessário inserir o número da comanda!");
+			}
 		}
 	}
 };

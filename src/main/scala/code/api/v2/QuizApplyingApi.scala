@@ -2,6 +2,7 @@ package code
 package api
 
 import code.model._
+import code.util._
 import net.liftweb.common.Full
 import net.liftweb.http.S
 import net.liftweb.http.js.JE._
@@ -73,11 +74,14 @@ object QuizApplyingApi extends RestHelper with net.liftweb.common.Logger {
   }
 
   def quizJson(quizApplyingId: Long) = {
-    val quiz = QuizApplying.findByKey(quizApplyingId).get.quiz.obj.get
-    val bp = QuizApplying.findByKey(quizApplyingId).get.business_pattern.obj.get
+    val qa = QuizApplying.findByKey(quizApplyingId)
+    val quiz = qa.get.quiz.obj.get
+    val bp = qa.get.business_pattern.obj.get
     JsObj(
       ("id", quiz.id.is),
       ("name", quiz.name.is),
+      ("date", Project.dateToStr(qa.get.applyDate.is)),
+      ("obs", quiz.obs.is),
       ("bpName", bp.name.is),
       ("bpId", bp.id.is),
       ("sections", JsArray(quiz.sections.map(sectionJson(_, quizApplyingId)))))
@@ -87,6 +91,7 @@ object QuizApplyingApi extends RestHelper with net.liftweb.common.Logger {
     JsObj(
       ("id", section.id.is),
       ("name", section.name.is),
+      ("obs", section.obs.is),
       ("questions", JsArray(section.questions.map(questionJson(_, quizApplyingId)))))
   }
 
@@ -102,6 +107,7 @@ object QuizApplyingApi extends RestHelper with net.liftweb.common.Logger {
     ("id", question.id.is),
     ("name", question.name.is),
     ("type", question.quizQuestionType.is),
+    ("format", question.quizQuestionFormat.is),
     ("obs", question.obs.is),
     ("domain", JsArray(question.domain.map(domainJson(_)))),
     ("value", value))
@@ -110,6 +116,8 @@ object QuizApplyingApi extends RestHelper with net.liftweb.common.Logger {
   def domainJson(domain: QuizDomainItem) = {
     JsObj(
       ("id", domain.id.is),
-      ("name", domain.name.is))
+      ("name", domain.name.is),
+      ("obs", domain.obs.is),
+      ("color", domain.color.is))
   }
 }

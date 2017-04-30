@@ -460,11 +460,16 @@
           }
           ret += "<tr><td><input type='checkbox' class='account_payable' value='" + 
             obj.id + "'/></td><td style='background-color:" + obj.color + "'>" + 
-            obj.id + "</td><td>" + (getDateBr(new Date(obj.dueDate))) + "</td><td>" + 
-            obj.category + "</td><td>" + obj.obs_trunc + "</td><td>" + 
-            (obj.value.formatMoney()) + "</td><td><img src=\"/images/" + 
+            obj.id + "</td>" + 
+            "<td>" + (getDateBr(new Date(obj.dueDate))) + "</td>" +
+            "<td>" + obj.category + "</td>" +
+            "<td>" + obj.obs_trunc + "</td><td>" + 
+            (obj.value.formatMoney()) + "</td>" + 
+            "<td><img src=\"/images/" + 
             (obj.type === 0 ? 'add' : 'remove') + ".png\"/></td><td><img src=\"/images/" + 
-            (obj.paid ? 'good' : 'bad') + ".png\"/></td><td>" + obj.user_name + "</td></td>" +
+            (obj.paid ? 'good' : 'bad') + ".png\"/></td>" + 
+            //"<td>" + obj.user_name + "</td></td>" +
+            "<td>"+"<a href='/customer/edit?id="+obj.user_id+"' target='_customer_maste'>"+obj.user_name+"</a>"+"</td>" +
             (hasUnitModule ? "<td>" + obj.unit_name + "</td>" : "") + 
             "<td>" + obj.cashier + "</td>" +
             "<td>" + obj.account_name + "</td>" +

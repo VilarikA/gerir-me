@@ -101,6 +101,12 @@ object PermissionModule extends PermissionModule with LongKeyedMapperPerCompany[
 	def quiz_? = PermissionModule.countInCompany(By(PermissionModule.name,PermissionModule.QUIZ_MODULE_NAME)) > 0
 	def bpmonthly_? = PermissionModule.countInCompany(By(PermissionModule.name,PermissionModule.BPMONTHLY_MODULE_NAME)) > 0
 	def crm_? = PermissionModule.countInCompany(By(PermissionModule.name,PermissionModule.CRM_MODULE_NAME)) > 0
+
+	def setModule (company:Company, module:String) = {
+		val pm = PermissionModule.findAll (By(PermissionModule.company, company),
+			By(PermissionModule.name, module))
+		pm(0).status (1).save
+	}
 }
 
 object UserGroupPermission{

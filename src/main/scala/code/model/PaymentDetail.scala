@@ -29,11 +29,19 @@ class PaymentDetail extends LongKeyedMapper[PaymentDetail]  with IdPK with Creat
     }
     def cheque = Cheque.findAll(By(Cheque.paymentDetail,this))(0)
     def percentInTotal = {
-      ((100.00 * value.is) / payment.obj.get.value.is)
+      if (value != 0.0) {
+          ((100.00 * value.is) / payment.obj.get.value.is)
+      } else {
+        0.0
+      }
     }
 
     def percentInTotal(value:Double) = {
-      ((100.00 * value) / payment.obj.get.value.is)
+      if (value != 0.0) {
+        ((100.00 * value) / payment.obj.get.value.is)
+      } else {
+        0.0
+      }
     }
     
     def typePaymentObj = PaymentType.findByKey(typePayment.is)
@@ -48,6 +56,11 @@ class PaymentDetail extends LongKeyedMapper[PaymentDetail]  with IdPK with Creat
       case _ => "Def"
     }
     def treatmentDetailsAsText = payment.obj.get.treatmentDetailsAsText
+
+    // usado para pgto vale profissional feito para cliente
+    // ou seja o cliente neste caso não é profissional
+    // no financeiro não gera vale para o cliente mas sim para o profissional mesmo
+    def user = payment.obj.get.user
     
     def categoryByType (category:AccountCategory) = payment.obj.get.categoryByType (category)
     def discountCategoryByType (category:AccountCategory) = payment.obj.get.discountCategoryByType (category)

@@ -33,6 +33,7 @@ class Monthly extends Audited[Monthly] with LongKeyedMapper[Monthly]
       } 
     }
   object efetiveDate extends EbMappedDate(this)
+  object originalDate extends EbMappedDate(this)
   object dateExpiration extends EbMappedDateTime(this)
   object paid extends MappedBoolean(this)  with LifecycleCallbacks { 
       override def beforeSave() {
@@ -175,6 +176,7 @@ object Monthly extends Monthly with LongKeyedMapperPerCompany[Monthly] with Only
       .value(value)
       .description(description)
       .dateExpiration(dateToPayment)
+      .originalDate(dateToPayment) // rigel 29/04/2017 
       .obs("")
       .paid(false)
       .save

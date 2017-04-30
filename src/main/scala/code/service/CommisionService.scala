@@ -143,7 +143,7 @@ object CommissionService extends net.liftweb.common.Logger  {
     } else if (paymentType.comissionAtSight_?.is) {
       println ("vaiiii ===================== ACHO QUE NUNCA CHEGA AQUI - comissionAtSight_")
       DefaultCommissionCalculator
-    } else if (paymentType.needChequeInfo_?.is) {
+    } else if (paymentType.cheque_?.is) {
       ChequeCommissionCalculator
     } else if (paymentType.numDays.is > 0) {
       FixDaysCommissionCalculator(paymentType.numDays.is)

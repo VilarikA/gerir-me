@@ -15,9 +15,32 @@
                 eval("var result = " + data);
                 $("#quiz-applying-id").val(APPLYING_ID);
                 $("#quiz-title").text(result.name);
+                $("#quiz-date").text(result.date);
+                $("#quiz-obs").text(result.obs);
                 $("#quiz-bpname").text(result.bpName);
+                $("#quiz-bpid").val(result.bpId);
                 result.sections.map(createSection);
                 $("select:not(.notselect2)").select2();
+                // já era feito no startup mas p form ainda não existia
+                // refiz aqui depois do form montado - Rigel 11/03/2017
+                $(".currency").maskMoney({
+                    thousands: ''
+                });
+    $(".date").mask_input("99/99/9999");
+    $(".date").datepicker({
+        beforeShow: function() {
+            setTimeout(function() {
+                $('#ui-datepicker-div').css('z-index', 10000);
+            }, 0);
+        }
+    }).change(function() {
+        if ($(this).datepicker('getDate') && $(this).datepicker('getDate').getYearGap() > 10) {
+            alert('Verifique data futura!');
+        } else if ($(this).datepicker('getDate') && $(this).datepicker('getDate').getYearGap() < -50) {
+            alert('Verifique data passada!');
+        }
+    }); //Validar datas 10 anos para frente 50 anos para traz....
+
             });
 
             FORM.on('submit', function() {
@@ -45,14 +68,26 @@
             var questions = [];
             function setName(element, name) {
                 element.attr('name', name);
+                element.attr('id', name);
                 questions.push(name);
                 $("#quiz-questions").val(questions.join(","));
+            }
+
+            function setClass(element, name) {
+                element.attr('class', name);
+                //questions.push(name);
+                //$("#quiz-questions").val(questions.join(","));
             }
 
             function createSection(section) {
                 var template = $($("#section-template").html());
                 template.find('legend').text(section.name);
                 QUESTIONS_CONTAINER.append(template);
+
+                if (section.obs) {
+                    template.find('p:first').text(section.obs);
+                    //template.find('.help-block').text(section.obs);
+                }
 
                 section.questions.map(function(question) {
                     createQuestion(question, template)
@@ -62,10 +97,12 @@
             function createQuestion(question, section) {
                 var template;
                 switch (question.type) {
-                    case 0:
+                    case 0: // texto
+                    case 5: // valor
+                    case 6: // data
                         template = createText(question);
                         break;
-                    case 1:
+                    case 1: 
                         template = createParagraph(question);
                         break;
                     case 2:
@@ -74,42 +111,53 @@
                     case 3:
                         template = createMultiple(question);
                         break;
+                    case 4:
+                        template = createMoreThanOne(question);
+                        break;
                 }
 
                 section.append(template);
             }
 
-            function createText(question) {
-                var template = $($("#text-template").html());
-                template.find('label').text(question.name);
-                var input = template.find('input');
-                input.val(question.value);
-                setName(input, question.id);
-
+            function formatQuestion (question, template) {
+                if (question.format != 0) {
+                    template.find('b:first').text(question.name);
+                } else {
+                    template.find('label:first').text(question.name);
+                }
                 if (question.obs) {
                     template.find('.help-block').text(question.obs);
                 }
+            }
+
+            function createText(question) {
+                var template = $($("#text-template").html());
+                formatQuestion (question, template)
+                var input = template.find('input');
+                input.val(question.value);
+                if (question.type == 5 /* valor */) {
+                    setClass(input, "input-small currency");
+                } else if (question.type == 6 /* valor */) {
+                    setClass(input, "input-small date");
+                }
+                setName(input, question.id);
 
                 return template;
             }
 
             function createParagraph(question) {
                 var template = $($("#paragraph-template").html());
-                template.find('label').text(question.name);
+                formatQuestion (question, template)
                 var textarea = template.find('textarea');
                 textarea.val(question.value);
                 setName(textarea, question.id);
-
-                if (question.obs) {
-                    template.find('.help-block').text(question.obs);
-                }
 
                 return template;
             }
 
             function createList(question) {
                 var template = $($("#list-template").html());
-                template.find('label').text(question.name);
+                formatQuestion (question, template)
 
                 var select = template.find('select');
                 setName(select, question.id);
@@ -131,7 +179,36 @@
 
             function createMultiple(question) {
                 var template = $($("#multiple-template").html());
-                template.find('label:first').text(question.name);
+                formatQuestion (question, template)
+                setName(template.find('input'), question.id + 'L');
+
+                var ul = template.find('ul');
+                var li = template.find('li');
+
+                question.domain.forEach(function(domain) {
+                    var option = li.clone();
+                    var input = option.find('label input');
+                    input.attr('value', domain.id);
+                    option.find('label span').text(domain.name);
+                    if (domain.color) {
+                        option.find('label span').attr("style","background-color:"+domain.color)
+                    }
+                    question.value.split(",").forEach(function(value){
+                        if (domain.id == value) {
+                            input.attr('checked', 'checked');
+                        }
+                    });
+
+                    ul.append(option);
+                });
+
+                $('li:first', ul).remove();
+
+                return template;
+            }
+            function createMoreThanOne(question) {
+                var template = $($("#morethanone-template").html());
+                formatQuestion (question, template)
                 setName(template.find('input'), question.id + 'L');
 
                 var ul = template.find('ul');
@@ -155,27 +232,53 @@
 
                 return template;
             }
+            var sendReceiptEmailCustomer = function(customer){
+              var mail = $("#quiz-div").html()
+              if(confirm("Tem certeza que deseja enviar um e-mail para o cliente?")){
+                var url = "/social/treatments/email_customer"
+                //+customer+"/"+encodeURIComponent(mail);
+                var subject = "Avaliação ";
+                $.ajax(url,{"type": "post", "data" : {id : customer, body : mail, subject : subject}, "success" : function(){
+                  alert("Enviado com sucesso!");
+                }, "error" : function(response){
+                  alert("Erro ao enviar E-mail!");
+                }});
+              } 
+            }
+
+            $(".send_email_customer").click(function(){
+              //sendReceiptEmailCustomer(idcustomer1);
+              sendReceiptEmailCustomer($("#quiz-bpid").val());
+            });
         })
     </script>
-    <div class="">
-        <h1><span class="lift:CompanySnippet.thumb"> </span><span id="quiz-title">Questionário</span> - <span id="quiz-bpname">parceiro</span></h1>
+    <div class='span12' id="quiz-div">
+        <h1><span class="lift:CompanySnippet.thumb"> </span><span id="quiz-title">Questionário</span> - </span><span id="quiz-date">date</span> - <span id="quiz-bpname">parceiro</span></h1>
+        <span id="quiz-obs"></span>
+        <br/><br/>
 
         <form id="quiz-form" onsubmit="return false;">
+            <input type="hidden" id="quiz-bpid" name="bpid">
             <input type="hidden" id="quiz-applying-id" name="id">
             <input type="hidden" id="quiz-questions" name="questions">
             <div class="questions-container"></div>
-            <input type="submit" value="Enviar">
+            <input class="btn success" type="submit" value="Salvar">
+            <a type="button" class="btn primary send_email_customer">
+            Notificar <span data-i18n='Cliente'></span>
+            </a>
         </form>
 
         <script type="text/template" id="section-template">
             <fieldset>
                 <legend></legend>
+                <p></p>
             </fieldset>
         </script>
 
         <script type="text/template" id="text-template">
             <div class="clearfix">
-                <label for="obs">Observação</label>
+                <p><b></b></p>
+                <label for="obs"></label>
 
                 <div class="input">
                     <input class="xlarge" id="obs" name="obs" type="text"/>
@@ -186,7 +289,8 @@
 
         <script type="text/template" id="paragraph-template">
             <div class="clearfix">
-                <label for="obs">Observação</label>
+                <p><b></b></p>
+                <label for="obs"></label>
 
                 <div class="input">
                     <textarea class="xlarge" name="" id="" cols="60" rows="10"></textarea>
@@ -197,17 +301,40 @@
 
         <script type="text/template" id="list-template">
             <div class="clearfix">
-                <label for="obs">Observação</label>
+                <p><b></b></p>
+                <label for="obs"></label>
 
                 <div class="input">
                     <select class="xlarge" ></select>
+                    <span class="help-block"></span>
                 </div>
             </div>
         </script>
 
         <script type="text/template" id="multiple-template">
             <div class="clearfix">
-                <label for="obs">Observação</label>
+                <p><b></b></p>
+                <label for="obs"></label>
+
+                <div class="input">
+                    <ul class="inputs-list">
+                        <li>
+                            <label>
+                                <input type="radio" name="optionsCheckboxes" value="option1">
+                                <span>Option one is this and that—be sure to include why it’s great</span>
+                                <!--label style="background-color:#2b72d0">Option one is this and that—be sure to include why it’s great</label-->
+                            </label>
+                        </li>
+                    </ul>
+                    <span class="help-block"></span>
+                </div>
+            </div>
+        </script>
+
+        <script type="text/template" id="morethanone-template">
+            <div class="clearfix">
+                <p><b></b></p>
+                <label for="obs"></label>
 
                 <div class="input">
                     <ul class="inputs-list">
@@ -218,6 +345,7 @@
                             </label>
                         </li>
                     </ul>
+                    <span class="help-block"></span>
                 </div>
             </div>
         </script>

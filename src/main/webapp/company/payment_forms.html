@@ -159,17 +159,19 @@
                   </div>
                 </div>             
                 <div class="clearfix">
-                  <label for="needCardInfo">Solicita Dados do Cartão?</label>        
+                  <label for="needCardInfo">Cartão?</label>       
                   <div class="input">
                     <div class='inline-inputs'>
+                      <input name='creditCard'/> Solicita Dados?
                       <input name='needCardInfo'/>
                     </div>
                   </div>
                 </div>
                 <div class="clearfix">
-                  <label for="needChequeInfo">Solicita Dados do Cheque?</label>        
+                  <label for="needChequeInfo">Cheque?</label>     
                   <div class="input">
                     <div class='inline-inputs'>
+                      <input name='cheque'/> Solicita Dados?
                       <input name='needChequeInfo'/>
                     </div>
                   </div>
@@ -219,7 +221,8 @@
                   <label for="addUserAccountToDiscount">Pagamento Vale p/ <span data-i18n='Profissional'></span>?</label>
                   <div class="input">
                     <div class='inline-inputs'>
-                      <input name='addUserAccountToDiscount'/>
+                      <input name='addUserAccountToDiscount'/> Permite Cliente?
+                      <input name='allowCustomeraddUserToDiscount'/>
                       <a data-original-title="Informação" data-content="clique para abrir a documentação" data-help-url='/docs/paymenttype.html#special' rel="popover" class="_popover_basic _help">
                       <img src="/images/info.gif" width="20">
                       </a>
@@ -348,6 +351,12 @@
             </div>                       
           </div>          
         </div>          
+        <div class="well">
+          <label for="btn"></label>
+          <a class="btn primary" href="/company/payment_forms_list">Lista</a>
+          <input class="btn success" type="submit" value="Salvar">
+          <a class="btn primary" href="/company/payment_forms">Inserir novo</a>
+        </div>      
       </form>
     </div>
   </div>

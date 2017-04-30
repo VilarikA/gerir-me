@@ -6,7 +6,7 @@
     $("#send").click(function(){
 //      if($("#customer_origin").val() != $("#customer_dest").val()){
           if(confirm("Tem certeza que deseja unificar esses dois clientes? Uma vez esse processo feito não é possível revertê-lo!")){
-            return $.get("/customer/unification/"+$("#customer_origin").val()+"/"+$("#customer_dest").val(), function(results){
+            return $.get("/customer/unification/"+$("#customer_origin").val()+"/"+$("#customer_dest").val()+"/customer", function(results){
               if (results === 1 || results == "1") {
                 alert("Clientes unificados com sucesso!");
               } else {
@@ -21,7 +21,7 @@
     $("#senduser").click(function(){
 //      if($("#customer_origin").val() != $("#customer_dest").val()){
           if(confirm("Tem certeza que deseja unificar esse PROFISSIONAL? Uma vez esse processo feito não é possível revertê-lo!")){
-            return $.get("/customer/userunification/"+$("#customer_origin").val()+"/"+$("#customer_dest").val(), function(results){
+            return $.get("/customer/unification/"+$("#customer_origin").val()+"/"+$("#customer_dest").val()+"/user", function(results){
               if (results === 1 || results == "1") {
                 alert("Profissional unificado com sucesso!");
               } else {

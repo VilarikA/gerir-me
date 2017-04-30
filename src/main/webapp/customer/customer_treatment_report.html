@@ -21,6 +21,7 @@
     fields[9] = {
       type : "format",
       decode: function(name, row) {
+        customers.push(row[0]);
         return "<a class='btn' href='/customer/edit?id="+row[0]+"' target='_customer_maste'>Ir</a> <a class='btn success' href='/treatment/treatment?id="+row[9]+"' target='_treatment_maste'>Editar</a>"
       }
     };
@@ -40,6 +41,10 @@
     $("#send").click(request);
     $("#send_notifications").click(function(){
       var message = $("#send_message").val();
+      if (!message) {
+        alert ("É preciso selecionar uma mensagem")
+        return
+      }
       if(confirm("Deseja enviar esta mensagem aos clientes?")){
           $.get("/notification/messagesend/"+customers.join(",")+"/"+message,function(r){
             if(r === '1'){

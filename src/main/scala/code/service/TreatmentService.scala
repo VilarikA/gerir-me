@@ -195,9 +195,12 @@ object  TreatmentService extends net.liftweb.common.Logger {
 				if(treatments.size >0){
 					treatments(0).command.is
 				}else{
-					if(AuthUtil.company.autoIncrementCommand_?.is){
-						Treatment.nextCommandNumber(startDate,AuthUtil.company).toString
+					//if(AuthUtil.company.autoIncrementCommand_?.is){
+					if(AuthUtil.company.commandControl.is == Company.CmdDaily){
+						Treatment.nextCommandNumber(startDate,AuthUtil.company, AuthUtil.unit).toString
 					}else{
+						// never - user vai por a comanda
+						// ever - o sistema poe q comamnda ao clicar em pagar na agenda
 						"0"
 					}
 				}
@@ -382,13 +385,15 @@ object  TreatmentService extends net.liftweb.common.Logger {
 	*/
 	def delete(id:String){
 		var treatment = loadTreatment(id)
-		var user = treatment.user.obj.get;
-		if ((AuthUtil.user.id.is != user.id.is) && 
-			AuthUtil.user.isSimpleUserCalendarView) {
-			// evita que atendimento pago seja alterado gerava erro de comissao se o atend
-			// fosse moviedo para outro usuario
-			// TratmentServer ! TreatmentMessage("SaveUpdateTratment",end)		
-  	        throw new RuntimeException("Você não tem permissão para excluir atendimentos de outros profissionais!")
+		if (!treatment.user.isEmpty) {
+			var user = treatment.user.obj.get;
+			if ((AuthUtil.user.id.is != user.id.is) && 
+				AuthUtil.user.isSimpleUserCalendarView) {
+				// evita que atendimento pago seja alterado gerava erro de comissao se o atend
+				// fosse moviedo para outro usuario
+				// TratmentServer ! TreatmentMessage("SaveUpdateTratment",end)		
+	  	        throw new RuntimeException("Você não tem permissão para excluir atendimentos de outros profissionais!")
+			}
 		}
 		//treatment.details.foreach(_.delete_!);
 		//treatment.details.clear
@@ -606,7 +611,29 @@ object  TreatmentService extends net.liftweb.common.Logger {
 											val product = Product.findByKey(td.activity_id.toInt).get
 											DeliveryDetail.findPriceByCustomerProduct(customer,product)(0).price.toDouble;
 										} else if (specialType == 0 /*bpmonthly*/) {
-											td.price.is.toDouble
+											//td.price.is.toDouble
+											//25.0
+											val customer = Customer.findByKey(treatment.customer.is.toInt).get
+											val product = Activity.findByKey(td.activity_id.toInt).get
+											val bpMonthlys = BpMonthly.findPriceByCustomerProduct(customer,product, treatment.dateEvent);
+											if (!bpMonthlys.isEmpty) {
+												val session = bpMonthlys(0).valueSession;
+												if (session > td.price.is.toDouble) {
+													td.price (BigDecimal (session)).save()
+													session
+												} else if (session == 0.0) {
+													val str = if (bpMonthlys(0).weekDays != "") {
+															""
+														} else {
+															"\n\nÉ preciso informar os dias da semana!\n\n"
+														}
+	            									throw new RuntimeException("Mensalidade com valor de sessão zero" + str);
+												} else {
+													session
+												}
+											} else {
+												td.price.is.toDouble
+											}
 										} else {
 											td.price.is.toDouble
 										}
@@ -637,7 +664,8 @@ object  TreatmentService extends net.liftweb.common.Logger {
 						)::Nil,
 						treatment.command.is,
 						Project.dateToStr(treatment.start.is),
-						cashier
+						cashier,
+						"" //status2 vazio
 			)
 
 	}

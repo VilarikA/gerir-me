@@ -12,8 +12,8 @@ import _root_.java.math.MathContext;
 
 class Cheque extends Audited[Cheque] with PerCompany with IdPK with CreatedUpdated with CreatedUpdatedBy with WithCustomer{ 
     def getSingleton = Cheque 
-    object banc extends MappedLongForeignKey(this,Bank)
-    object acount extends MappedPoliteString(this,255)
+    object bank extends MappedLongForeignKey(this,Bank)
+    object account extends MappedPoliteString(this,255)
 	object agency extends MappedPoliteString(this,255)
 	object number extends MappedPoliteString(this,255)
 	object value extends MappedDecimal(this,MathContext.DECIMAL64,2)
@@ -37,7 +37,7 @@ class Cheque extends Audited[Cheque] with PerCompany with IdPK with CreatedUpdat
     }
 
     def bankName = {
-        banc obj match {
+        bank obj match {
             case Full(u) => u.short_name.is
             case _ => ""
         }        

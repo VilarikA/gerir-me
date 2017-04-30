@@ -14,6 +14,13 @@ import Helpers._
 import scala.xml.{NodeSeq, Text}
 
 object CompanySnippet{
+	val cmdControl = Seq(
+		Company.CmdNever.toString -> "Nunca incrementa, usuário informa" ,
+		Company.CmdDaily.toString -> "Incrementa no dia, no momento do agendamento" ,
+		Company.CmdEver.toString -> "Sempre incrementa, no momento da venda" 
+	)
+
+
 	def render(in: NodeSeq):NodeSeq  = {
 		for {
 			r <- S.request if r.post_?
@@ -23,55 +30,55 @@ object CompanySnippet{
 				email  <- S.param("email")
 
 		}{
-			var company = AuthUtil ? match {
+			var ac = AuthUtil ? match {
 				case true => AuthUtil company
 				case _ => Company.create
 			}
 //			println (S.hostName + "++++++++++++++++++============================")
 			  def product1:String = if (S.hostName.contains ("gerir")) {
-					company.appType(2)
+					ac.appType(2)
 			      " gerir-me "
 			    }else if (S.hostName.contains ("egrex")) {
-					company.appType(5)
+					ac.appType(5)
 			      " e-grex "
 			    }else if (S.hostName.contains ("esmile")) {
-					company.appType(3)
+					ac.appType(3)
 			      " e-smile "
 			    }else if (S.hostName.contains ("edoctus")) {
-					company.appType(4)
-					company.calendarInterval(30)
+					ac.appType(4)
+					ac.calendarInterval(30)
 			      " e-doctus "
 			    }else if (S.hostName.contains ("efisio") || S.hostName.contains ("ephysio")) {
-			    	company.calendarStart(7)
-			    	company.calendarEnd(21)
-					company.appType(6)
-					company.calendarInterval(60)
+			    	ac.calendarStart(7)
+			    	ac.calendarEnd(21)
+					ac.appType(6)
+					ac.calendarInterval(60)
 			      " e-physio "
 			    }else if (S.hostName.contains ("ebellepet")) {
-			    	company.calendarStart(8)
-			    	company.calendarEnd(19)
-					company.appType(7)
-					company.calendarInterval(30)
+			    	ac.calendarStart(8)
+			    	ac.calendarEnd(19)
+					ac.appType(7)
+					ac.calendarInterval(30)
 			      " e-bellepet "
 			    }else{
-					company.appType(1)
-					company.calendarInterval(30)
+					ac.appType(1)
+					ac.calendarInterval(30)
 			      " e-belle "
 			    }
-			company.name(name)
-			company.phone(phone)
-			company.contact(contact)
-			company.email(email)
-			company.obs(product1)
-			company.validate match {
+			ac.name(name)
+			ac.phone(phone)
+			ac.contact(contact)
+			ac.email(email)
+			ac.obs(product1)
+			ac.validate match {
 				case Nil =>{
-						company.save
-						UserCreateActors ! company
+						ac.save
+						UserCreateActors ! ac
 						return{
 								<h2>
 									Processo de cadastro iniciado<br/> 
 									com sucesso para empresa<br/>
-									{company.name}.
+									{ac.name}.
 								</h2>
 
 								<div>
@@ -91,33 +98,33 @@ object CompanySnippet{
 		}
 		in
 	}
-	def company = AuthUtil company
+	def ac = AuthUtil company
 	def name = {
-		<span>{company.name.is}</span>
+		<span>{ac.name.is}</span>
 	}
 	def phone = {
-		<span>{company.phone.is}</span>
+		<span>{ac.phone.is}</span>
 	}	
 	def thumb = {	
-		company.imagethumb.is match {
+		ac.imagethumb.is match {
 			case img:String if(img != "") => {
-				<img width="70px" src={company.thumb_web}/>
+				<img width="70px" src={ac.thumb_web}/>
 			}
 			case _ => <img width="70px" style="padding-right: 10px" src="/images/logo.png"/>
 		}
 	}
 	def logo = {	
-		company.image.is match {
+		ac.image.is match {
 			case img:String if(img != "") => {
-				<img width="110px" src={company.logo_web}/>
+				<img width="110px" src={ac.logo_web}/>
 			}
-			case _ => <img  src="/images/logo.png"/>
+			case _ => <img width="110px" src="/images/logo.png"/>
 		}
 	}	
 	def form = {
 			def process(): JsCmd= {
 				try {
-					company.save	
+					ac.save	
 				   	S.notice("Alterado com sucesso!")
 		   		}catch{
 					case (e:net.liftweb.http.ResponseShortcutException) =>{
@@ -129,51 +136,52 @@ object CompanySnippet{
 				}
 			}
 			//
-//		    "name=status" #> (SHtml.select(status,Full(company.status.is.toString),(v:String) => company.status(v.toInt)))&
-		    "name=status" #>(SHtml.text(company.status.is.toString,(s:String) => company.status(s.toInt)))&
-		    "name=apptype" #>(SHtml.text(company.appType.is.toString,(s:String) => company.appType(s.toInt)))&
-		    "name=bpIdForCompany" #>(SHtml.text(company.bpIdForCompany.is.toString,(s:String) => company.bpIdForCompany(s.toInt)))&
-			"name=userActivityAssociate" #> (SHtml.checkbox(company.userActivityAssociate_?, company.userActivityAssociate_?(_)))&
-			"name=showSalesToUser" #> (SHtml.checkbox(company.showSalesToUser_?, company.showSalesToUser_?(_)))&
-			"name=useTreatmentAsAClass" #> (SHtml.checkbox(company.useTreatmentAsAClass_?, company.useTreatmentAsAClass_?(_)))&
-			"name=autoIncrementCommand" #> (SHtml.checkbox(company.autoIncrementCommand_?, company.autoIncrementCommand_?(_)))&
-			"name=autoOpenCalendar" #> (SHtml.checkbox(company.autoOpenCalendar_?, company.autoOpenCalendar_?(_)))&
-			"name=allowrepeatcommand" #> (SHtml.checkbox(company.allowRepeatCommand_?, company.allowRepeatCommand_?(_)))&
-			"name=notify" #> (SHtml.checkbox(company.senNotifications_?, company.senNotifications_?(_)))&
-		    "name=financialNotification" #>(SHtml.text(company.financialNotification.is.toString,(s:String) => company.financialNotification(s.toInt)))&
-		    "name=customerNotification" #>(SHtml.text(company.customerNotification.is.toString,(s:String) => company.customerNotification(s.toInt)))&
-		    "name=userNotification" #>(SHtml.text(company.userNotification.is.toString,(s:String) => company.userNotification(s.toInt)))&
-		    "name=partner" #>(SHtml.text(company.partner.is.toString,(s:String) => company.partner(s.toInt)))&
-		    "name=name" #> (SHtml.text(company.name.is,company.name(_)))&
-		    "name=obs" #> (SHtml.textarea(company.obs.is, company.obs(_)))&
-		    "name=toCancelAnAppointment" #> (SHtml.textarea(company.toCancelAnAppointment.is, company.toCancelAnAppointment(_)))&
-		    "name=bpmStartDay" #>(SHtml.text(company.bpmStartDay.is.toString,(s:String) => company.bpmStartDay(s.toInt)))&
-		    "name=bpmDaysToAlert" #>(SHtml.text(company.bpmDaysToAlert.is.toString,(s:String) => company.bpmDaysToAlert(s.toInt)))&
-		    "name=bpmDaysToEmail" #>(SHtml.text(company.bpmDaysToEmail.is.toString,(s:String) => company.bpmDaysToEmail(s.toInt)))&
-			"name=bpmCommissionOnSale" #> (SHtml.checkbox(company.bpmCommissionOnSale_?, company.bpmCommissionOnSale_?(_)))&
-			"name=bpmCommissionOnReady" #> (SHtml.checkbox(company.bpmCommissionOnReady_?, company.bpmCommissionOnReady_?(_)))&
-			"name=bpmCommissionOnMissed" #> (SHtml.checkbox(company.bpmCommissionOnMissed_?, company.bpmCommissionOnMissed_?(_)))&
-			"name=offCommissionOnReady" #> (SHtml.checkbox(company.offCommissionOnReady_?, company.offCommissionOnReady_?(_)))&
-			"name=offCommissionOnMissed" #> (SHtml.checkbox(company.offCommissionOnMissed_?, company.offCommissionOnMissed_?(_)))&
-			"name=packCommissionOnReady" #> (SHtml.checkbox(company.packCommissionOnReady_?, company.packCommissionOnReady_?(_)))&
-			"name=packCommissionOnMissed" #> (SHtml.checkbox(company.packCommissionOnMissed_?, company.packCommissionOnMissed_?(_)))&
-			"name=categoryOnProduct" #> (SHtml.checkbox(company.categoryOnProduct_?, company.categoryOnProduct_?(_)))&
-		    "name=short_name" #> (SHtml.text(company.short_name.is,company.short_name(_)))&
-		    "name=phone" #>(SHtml.text(company.phone.is,company.phone(_)))&
-		    "name=calendarInterval" #>(SHtml.text(company.calendarInterval.is.toString,(s:String) => company.calendarInterval(s.toInt)))&
-		    "name=calendarIntervalAlt" #>(SHtml.text(company.calendarIntervalAlt.is.toString,(s:String) => company.calendarIntervalAlt(s.toInt)))&
-			"name=calendarStart" #>(SHtml.text(company.calendarStart.is.toString,(s:String) => company.calendarStart(s.toInt)))&		    
-			"name=calendarEnd" #>(SHtml.text(company.calendarEnd.is.toString,(s:String) => company.calendarEnd(s.toInt)))&
-			"name=calendarShowId" #> (SHtml.checkbox(company.calendarShowId_?, company.calendarShowId_?(_)))&
-			"name=calendarShowPhone" #> (SHtml.checkbox(company.calendarShowPhone_?, company.calendarShowPhone_?(_)))&
-			"name=calendarShowLight" #> (SHtml.checkbox(company.calendarShowLight_?, company.calendarShowLight_?(_)))&
-			"name=calendarShowInterval" #> (SHtml.checkbox(company.calendarShowInterval_?, company.calendarShowInterval_?(_)))&
-			"name=calendarShowActivity" #> (SHtml.checkbox(company.calendarShowActivity_?, company.calendarShowActivity_?(_)))&
-			"name=calendarShowDifUnit" #> (SHtml.checkbox(company.calendarShowDifUnit_?, company.calendarShowDifUnit_?(_)))&
-		    "name=contact" #>  (SHtml.text(company.contact.is,company.contact(_)))&
-		    "name=website" #> (SHtml.text(company.website.is, company.website(_))) &
-		    "name=email" #> (SHtml.text(company.email.is,company.email(_)))&
-			"name=email_dis" #> (SHtml.text(company.email.is,s => s,"disabled" -> "true")++SHtml.hidden(process))
+//		    "name=status" #> (SHtml.select(status,Full(ac.status.is.toString),(v:String) => ac.status(v.toInt)))&
+		    "name=status" #>(SHtml.text(ac.status.is.toString,(s:String) => ac.status(s.toInt)))&
+		    "name=apptype" #>(SHtml.text(ac.appType.is.toString,(s:String) => ac.appType(s.toInt)))&
+		    "name=bpIdForCompany" #>(SHtml.text(ac.bpIdForCompany.is.toString,(s:String) => ac.bpIdForCompany(s.toInt)))&
+			"name=userActivityAssociate" #> (SHtml.checkbox(ac.userActivityAssociate_?, ac.userActivityAssociate_?(_)))&
+			"name=showSalesToUser" #> (SHtml.checkbox(ac.showSalesToUser_?, ac.showSalesToUser_?(_)))&
+			"name=useTreatmentAsAClass" #> (SHtml.checkbox(ac.useTreatmentAsAClass_?, ac.useTreatmentAsAClass_?(_)))&
+//			"name=autoIncrementCommand" #> (SHtml.checkbox(ac.autoIncrementCommand_?, ac.autoIncrementCommand_?(_)))&
+		    "name=commandControl" #> (SHtml.select(cmdControl,Full(ac.commandControl.is.toString),(v:String) => ac.commandControl(v.toInt)))&
+			"name=autoOpenCalendar" #> (SHtml.checkbox(ac.autoOpenCalendar_?, ac.autoOpenCalendar_?(_)))&
+			"name=allowrepeatcommand" #> (SHtml.checkbox(ac.allowRepeatCommand_?, ac.allowRepeatCommand_?(_)))&
+			"name=notify" #> (SHtml.checkbox(ac.senNotifications_?, ac.senNotifications_?(_)))&
+		    "name=financialNotification" #>(SHtml.text(ac.financialNotification.is.toString,(s:String) => ac.financialNotification(s.toInt)))&
+		    "name=customerNotification" #>(SHtml.text(ac.customerNotification.is.toString,(s:String) => ac.customerNotification(s.toInt)))&
+		    "name=userNotification" #>(SHtml.text(ac.userNotification.is.toString,(s:String) => ac.userNotification(s.toInt)))&
+		    "name=partner" #>(SHtml.text(ac.partner.is.toString,(s:String) => ac.partner(s.toInt)))&
+		    "name=name" #> (SHtml.text(ac.name.is,ac.name(_)))&
+		    "name=obs" #> (SHtml.textarea(ac.obs.is, ac.obs(_)))&
+		    "name=toCancelAnAppointment" #> (SHtml.textarea(ac.toCancelAnAppointment.is, ac.toCancelAnAppointment(_)))&
+		    "name=bpmStartDay" #>(SHtml.text(ac.bpmStartDay.is.toString,(s:String) => ac.bpmStartDay(s.toInt)))&
+		    "name=bpmDaysToAlert" #>(SHtml.text(ac.bpmDaysToAlert.is.toString,(s:String) => ac.bpmDaysToAlert(s.toInt)))&
+		    "name=bpmDaysToEmail" #>(SHtml.text(ac.bpmDaysToEmail.is.toString,(s:String) => ac.bpmDaysToEmail(s.toInt)))&
+			"name=bpmCommissionOnSale" #> (SHtml.checkbox(ac.bpmCommissionOnSale_?, ac.bpmCommissionOnSale_?(_)))&
+			"name=bpmCommissionOnReady" #> (SHtml.checkbox(ac.bpmCommissionOnReady_?, ac.bpmCommissionOnReady_?(_)))&
+			"name=bpmCommissionOnMissed" #> (SHtml.checkbox(ac.bpmCommissionOnMissed_?, ac.bpmCommissionOnMissed_?(_)))&
+			"name=offCommissionOnReady" #> (SHtml.checkbox(ac.offCommissionOnReady_?, ac.offCommissionOnReady_?(_)))&
+			"name=offCommissionOnMissed" #> (SHtml.checkbox(ac.offCommissionOnMissed_?, ac.offCommissionOnMissed_?(_)))&
+			"name=packCommissionOnReady" #> (SHtml.checkbox(ac.packCommissionOnReady_?, ac.packCommissionOnReady_?(_)))&
+			"name=packCommissionOnMissed" #> (SHtml.checkbox(ac.packCommissionOnMissed_?, ac.packCommissionOnMissed_?(_)))&
+			"name=categoryOnProduct" #> (SHtml.checkbox(ac.categoryOnProduct_?, ac.categoryOnProduct_?(_)))&
+		    "name=short_name" #> (SHtml.text(ac.short_name.is,ac.short_name(_)))&
+		    "name=phone" #>(SHtml.text(ac.phone.is,ac.phone(_)))&
+		    "name=calendarInterval" #>(SHtml.text(ac.calendarInterval.is.toString,(s:String) => ac.calendarInterval(s.toInt)))&
+		    "name=calendarIntervalAlt" #>(SHtml.text(ac.calendarIntervalAlt.is.toString,(s:String) => ac.calendarIntervalAlt(s.toInt)))&
+			"name=calendarStart" #>(SHtml.text(ac.calendarStart.is.toString,(s:String) => ac.calendarStart(s.toInt)))&		    
+			"name=calendarEnd" #>(SHtml.text(ac.calendarEnd.is.toString,(s:String) => ac.calendarEnd(s.toInt)))&
+			"name=calendarShowId" #> (SHtml.checkbox(ac.calendarShowId_?, ac.calendarShowId_?(_)))&
+			"name=calendarShowPhone" #> (SHtml.checkbox(ac.calendarShowPhone_?, ac.calendarShowPhone_?(_)))&
+			"name=calendarShowLight" #> (SHtml.checkbox(ac.calendarShowLight_?, ac.calendarShowLight_?(_)))&
+			"name=calendarShowInterval" #> (SHtml.checkbox(ac.calendarShowInterval_?, ac.calendarShowInterval_?(_)))&
+			"name=calendarShowActivity" #> (SHtml.checkbox(ac.calendarShowActivity_?, ac.calendarShowActivity_?(_)))&
+			"name=calendarShowDifUnit" #> (SHtml.checkbox(ac.calendarShowDifUnit_?, ac.calendarShowDifUnit_?(_)))&
+		    "name=contact" #>  (SHtml.text(ac.contact.is,ac.contact(_)))&
+		    "name=website" #> (SHtml.text(ac.website.is, ac.website(_))) &
+		    "name=email" #> (SHtml.text(ac.email.is,ac.email(_)))&
+			"name=email_dis" #> (SHtml.text(ac.email.is,s => s,"disabled" -> "true")++SHtml.hidden(process))
 		
 	}
 

@@ -37,6 +37,11 @@ class Payment extends LongKeyedMapper[Payment] with PerCompany with IdPK with Cr
       treatments(0).details(0).discountCategoryByType (category)
     }
     
+    // usado para pgto vale profissional feito para cliente
+    // ou seja o cliente neste caso não é profissional
+    // no financeiro não gera vale para o cliente mas sim para o profissional mesmo
+    def user = treatments(0).user;
+
     def treatmentUserAsText = {
       treatments.map(_.userName).
       reduceLeft( _+" , "+_)
@@ -125,14 +130,21 @@ class Payment extends LongKeyedMapper[Payment] with PerCompany with IdPK with Cr
         case Full(p) => p.is_bom_?.is
         case _ => false
       })
+
     def validadeAddUserAccountToDiscountIfCustomerIsAUser {
-      val paymentDetailtoAddUserAccountToDiscount = this.details.filter(_.typePaymentObj.get.addUserAccountToDiscount_?.is)
+      // valida se na forma de pagto vale profissional aceita pagto pra cliente 
+      // ou se exige que o cliente seja profissional
+      val paymentDetailtoAddUserAccountToDiscount = this.details.filter(
+        _.typePaymentObj.get.addUserAccountToDiscount_?.is).filter(!
+        _.typePaymentObj.get.allowCustomeraddUserToDiscount_?.is)
+
       if(!paymentDetailtoAddUserAccountToDiscount.isEmpty){
         if(!this.customer.obj.get.is_user_?.is){
           throw new PaymentCustomerIsNotAUser(paymentDetailtoAddUserAccountToDiscount(0).typePaymentObj.get.name.is, this.customer.obj.get.name.is)
         }
       }
     }
+
     def validadeProductsAllowSaleByUser {
       detailTreaments.foreach( (td) => {
           if(!td.productBase.allowSaleByUser_? && td.hasUser){

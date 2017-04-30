@@ -14,6 +14,7 @@ var DataManagerClass = function() {
 	var banks = [];
 	var civilstatuses = [];
 	var quizzes = [];
+	var quizsections = [];
 	var quetions = [];
 	var domains = [];
 	var accounts = [];
@@ -187,12 +188,24 @@ var DataManagerClass = function() {
 
 	this.getQuizzes = function(callback) {
 		if (quizzes.length > 0) {
-			callback(quizses)
+			callback(quizzes)
 		} else {
 			url = "/customer_report/quizzes";
 			$.get(url, function(t) {
 				eval("quizzes = " + t);
 				callback(quizzes);
+			});
+		}
+	};
+
+	this.getQuizSections = function(callback) {
+		if (quizsections.length > 0) {
+			callback(quizsections)
+		} else {
+			url = "/customer_report/quizsections";
+			$.get(url, function(t) {
+				eval("quizsections = " + t);
+				callback(quizsections);
 			});
 		}
 	};

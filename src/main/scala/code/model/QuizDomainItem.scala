@@ -22,7 +22,12 @@ class QuizDomainItem extends Audited[QuizDomainItem] with PerCompany with IdPK w
     object orderInDomain extends MappedInt(this){
 	    override def defaultValue = 10
 	}
+    object rank extends MappedDecimal(this,MathContext.DECIMAL64,4)
     object valueStr extends MappedPoliteString (this,255)
+    object valueNum extends MappedDecimal(this,MathContext.DECIMAL64,4)
+    object valueNumEnd extends MappedDecimal(this,MathContext.DECIMAL64,4)
+    object color extends MappedPoliteString(this, 55)
+    
     def quizDomainName = quizDomain.obj match {
         case Full(t) => t.short_name.is
         case _ => ""

@@ -322,14 +322,14 @@ object TreatmentReportApi extends RestHelper with ReportRest with net.liftweb.co
 			}yield{
 				val sql = """
 					select pt.name || ' ' || coalesce (ba.short_name,'') || ' ' || coalesce (ch.agency,'') 
-					               || ' ' || coalesce (ch.acount,'') || ' ' || coalesce (ch.number_c,''), 
+					               || ' ' || coalesce (ch.account,'') || ' ' || coalesce (ch.number_c,''), 
 					pd.value, pd.duedate
 					--, pd.* 
 					from payment pa
 					inner join paymentdetail pd on pd.payment = pa.id
 					inner join paymenttype pt on pt.id = pd.typepayment
 					left join cheque ch on ch.paymentdetail = pd.id
-					left join bank ba on ba.id = ch.banc
+					left join bank ba on ba.id = ch.bank
 					where pa.company = ? and pa.command = ? and pa.datepayment = ?
 					order by pd.id
 				""";

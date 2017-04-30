@@ -55,8 +55,8 @@ class PaymentTypesSnippet extends BootstrapPaginatorSnippet[PaymentType]{
 							"sumincachier" -> Text(if(ac.sumInCachier_?.is){ "Sim" }else{ "Não" }),
 							"sumtoconference" -> Text(if(ac.sumToConference_?.is){ "Sim" }else{ "Não" }),
 							"generatecommision" -> Text(if(ac.generateCommision_?.is){ "Sim" }else{ "Não" }),
-							"needcardinfo" -> Text(if(ac.needCardInfo_?.is){ "Sim" }else{ "Não" }),
-							"needchequeinfo" -> Text(if(ac.needChequeInfo_?.is){ "Sim" }else{ "Não" }),
+							"creditcard" -> Text(if(ac.creditCard_?.is){ "Sim" }else{ "Não" }),
+							"cheque" -> Text(if(ac.cheque_?.is){ "Sim" }else{ "Não" }),
 							"deliverycontol" -> Text(if(ac.deliveryContol_?.is){ "Sim" }else{ "Não" }),
 							"customerregisterdebit" -> Text(if(ac.customerRegisterDebit_?.is){ "Sim" }else{ "Não" }),
 							"comissionatsight" -> Text(if(ac.comissionAtSight_?.is){ "Sim" }else{ "Não" }),
@@ -130,11 +130,14 @@ class PaymentTypesSnippet extends BootstrapPaginatorSnippet[PaymentType]{
 		    "name=sumInCachier" #> (SHtml.checkbox(ac.sumInCachier_?, ac.sumInCachier_?(_)))&
 		    "name=sumToConference" #> (SHtml.checkbox(ac.sumToConference_?, ac.sumToConference_?(_)))&
 			"name=generateCommision" #> (SHtml.checkbox(ac.generateCommision_?, ac.generateCommision_?(_)))&
+			"name=creditCard" #> (SHtml.checkbox(ac.creditCard_?, ac.creditCard_?(_)))&
 			"name=needCardInfo" #> (SHtml.checkbox(ac.needCardInfo_?, ac.needCardInfo_?(_)))&
+			"name=cheque" #> (SHtml.checkbox(ac.cheque_?, ac.cheque_?(_)))&
 			"name=needChequeInfo" #> (SHtml.checkbox(ac.needChequeInfo_?, ac.needChequeInfo_?(_)))&
 			"name=deliveryContol" #> (SHtml.checkbox(ac.deliveryContol_?, ac.deliveryContol_?(_)))&
 			"name=customerRegisterDebit" #> (SHtml.checkbox(ac.customerRegisterDebit_?, ac.customerRegisterDebit_?(_)))&
 			"name=addUserAccountToDiscount" #> (SHtml.checkbox(ac.addUserAccountToDiscount_?, ac.addUserAccountToDiscount_?(_)))&
+			"name=allowCustomeraddUserToDiscount" #> (SHtml.checkbox(ac.allowCustomeraddUserToDiscount_?, ac.allowCustomeraddUserToDiscount_?(_)))&
 			"name=bpmonthly" #> (SHtml.checkbox(ac.bpmonthly_?, ac.bpmonthly_?(_)))&
 			"name=offSale" #> (SHtml.checkbox(ac.offSale_?, ac.offSale_?(_)))&
 			"name=customerUseCredit" #> (SHtml.checkbox(ac.customerUseCredit_?, ac.customerUseCredit_?(_)))&

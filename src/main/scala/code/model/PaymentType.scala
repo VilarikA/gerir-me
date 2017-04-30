@@ -42,17 +42,30 @@ with CreatedUpdatedBy with NameSearchble[PaymentType] with ActiveInactivable[Pay
     override def dbColumnName = "generateCommision"
   }
   
+  object creditCard_? extends MappedBoolean(this){
+    override def dbColumnName = "creditCard"
+  }
+
   object needCardInfo_? extends MappedBoolean(this){
     override def dbColumnName = "needCardInfo"
+    override def defaultValue = false;
   }
   
+  object cheque_? extends MappedBoolean(this){
+    override def dbColumnName = "cheque"
+  }
+
   object needChequeInfo_? extends MappedBoolean(this){
     override def dbColumnName = "needChequeInfo"
-
+    override def defaultValue = true;
   }
 
   object deliveryContol_? extends MappedBoolean(this){
     override def dbColumnName = "deliveryContol"
+  }
+
+  object fidelity_? extends MappedBoolean(this){
+    override def dbColumnName = "fidelity"
   }
 
   object customerRegisterDebit_? extends MappedBoolean(this){
@@ -65,6 +78,10 @@ with CreatedUpdatedBy with NameSearchble[PaymentType] with ActiveInactivable[Pay
 
   object addUserAccountToDiscount_? extends MappedBoolean(this){
     override def dbColumnName = "addUserAccountToDiscount"
+  }  
+  object allowCustomeraddUserToDiscount_? extends MappedBoolean(this){
+    override def dbColumnName = "allowCustomeraddUserToDiscount"
+    override def defaultValue = false
   }  
   
   object bpmonthly_? extends MappedBoolean(this){
@@ -153,10 +170,13 @@ with CreatedUpdatedBy with NameSearchble[PaymentType] with ActiveInactivable[Pay
 }
 object PaymentType extends PaymentType with LongKeyedMapperPerCompany[PaymentType]  with  OnlyActive[PaymentType] with NameSearchble[PaymentType]{
     def findAllForOption = findAllInCompany(By(PaymentType.showAsOptions_?,true),OrderBy(PaymentType.order, Ascending))
-    def PaymentCheckIds = 0l :: findAllInCompany(By(PaymentType.needChequeInfo_?,true)).map(_.id.is)
-    def PaymentCardIds = 0l :: findAllInCompany(By(PaymentType.needCardInfo_?,true)).map(_.id.is)
+    def PaymentCheckIds = 0l :: findAllInCompany(By(PaymentType.cheque_?,true)).map(_.id.is)
+    def PaymentCardIds = 0l :: findAllInCompany(By(PaymentType.creditCard_?,true)).map(_.id.is)
     def PaymentToConferenceIds = 0l :: findAllInCompany(By(PaymentType.sumToConference_?,true)).map(_.id.is)
-    def PaymentMoneyIds = 0l :: findAllInCompany(By(PaymentType.needCardInfo_?,false),By(PaymentType.needChequeInfo_?,false),By(PaymentType.sumInCachier_?,true)).map(_.id.is)
+    def PaymentMoneyIds = 0l :: findAllInCompany(By(PaymentType.creditCard_?,false),
+      By(PaymentType.cheque_?,false),
+      By(PaymentType.sumInCachier_?,true)).map(_.id.is)
+    
     def PaymentDebitsIds = 0l :: findAllInCompany(By(PaymentType.customerRegisterDebit_?,true)).map(_.id.is)
     def PaymentDebitsIds(companyId:Long) = 0l :: findAll(By(PaymentType.customerRegisterDebit_?,true),By(PaymentType.company,companyId)).map(_.id.is)    
 

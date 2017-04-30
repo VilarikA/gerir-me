@@ -22,6 +22,7 @@ class QuizAnswer extends Audited[QuizAnswer] with PerCompany with IdPK with Crea
     object quizDomainItem extends MappedLongForeignKey(this, QuizDomainItem)
     object rank extends MappedDecimal(this,MathContext.DECIMAL64,4)
     object valueStr extends MappedPoliteString (this,2000)
+    object valueNum extends MappedDecimal(this,MathContext.DECIMAL64,4)
 }
 
 object QuizAnswer extends QuizAnswer with LongKeyedMapperPerCompany[QuizAnswer]  

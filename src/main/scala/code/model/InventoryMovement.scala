@@ -154,7 +154,7 @@ class InventoryMovement extends LongKeyedMapper[InventoryMovement] with PerCompa
         this.typeMovement.is match {
             case (t) if(t == InventoryMovement.In) => {
                 if (causeObj.id == 9) {
-                    println ("vaiii ===================== solicitacao");
+                    // println ("vaiii ===================== solicitacao");
                 } else {
                     movementToCurrent(+=,location)
                     ajustProductPrice

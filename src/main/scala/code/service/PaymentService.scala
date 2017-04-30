@@ -22,7 +22,12 @@ object  PaymentService extends  net.liftweb.common.Logger  {
 			treatment.saveWithoutValidate
 		}
 	}
-	def processTreatments(treatments:List[TreatmentDTO],command:String,dateTreatment:Date,status:Treatment.TreatmentStatus.TreatmentStatus,processInventory:Boolean=false, payment:Box[Payment]=Empty, validate:Boolean=false):List[Treatment] = {
+	def processTreatments(treatments:List[TreatmentDTO],command:String,dateTreatment:Date,
+		status:Treatment.TreatmentStatus.TreatmentStatus,
+		status2:String,
+		processInventory:Boolean=false, 
+		payment:Box[Payment]=Empty, 
+		validate:Boolean=false):List[Treatment] = {
 		val validTreatments = treatRemovedTreatments(treatments)
 		validTreatments.map((t:TreatmentDTO) => {
 			val treatment:Treatment = factoryTreatment(t,command,dateTreatment)
@@ -47,6 +52,9 @@ object  PaymentService extends  net.liftweb.common.Logger  {
 				}
 			})
 			treatment.status(status)
+			if (status2 =="4") {
+				treatment.status2(status)
+			}
 			saveTreatment(treatment, validate)
 			treatment
 		})
@@ -62,7 +70,15 @@ object  PaymentService extends  net.liftweb.common.Logger  {
 					payment.datePayment(request.dataTreatmentsAsDate)
 					payment.cashier(request.cashier.toLong)
 					payment.save
-					val processedTreatments = processTreatments(request.treatments, request.command, request.dataTreatmentsAsDate, Treatment.TreatmentStatus.Paid, true, Full(payment), false)
+					/*					if (request.status2 == "4" /* pago e pago no caixa nao no atendido*/) {
+
+					} else {
+
+					} */
+					val processedTreatments = processTreatments(request.treatments, request.command, 
+						request.dataTreatmentsAsDate, 
+						Treatment.TreatmentStatus.Paid, request.status2,
+						true, Full(payment), false)
 					payment.customer(processedTreatments.head.customer)
 					processedTreatments.foreach((t) => payment.treatments += t)
 					request.payments filter(!_.removed) foreach((p:PaymentDTO) => {
@@ -204,7 +220,7 @@ object  PaymentService extends  net.liftweb.common.Logger  {
 
 	def removePaymentDetails(detail:PaymentDetail) = {
 		val paymentType = detail.typePaymentObj.get
-		if(paymentType.needChequeInfo_?.is){
+		if(paymentType.cheque_?.is || paymentType.needCardInfo_?.is){
 			detail.cheque.delete_!
 		}
 		if(paymentType.customerRegisterDebit_?.is){
@@ -247,10 +263,15 @@ object  PaymentService extends  net.liftweb.common.Logger  {
 	}
 
 	private def createCheque(p:PaymentDTO,paymentDetail:PaymentDetail, goodTo:Date, receivedDate:Date) = {
+		val tp_cheque = if (p.chequeInfo.bank.toInt == 0) {
+				3
+			} else {
+				AccountPayable.IN
+			}
 		Cheque.create
 		.customer(paymentDetail.customer)
-		.banc(p.chequeInfo.banc.toInt)
-		.acount(p.chequeInfo.acount)
+		.bank(p.chequeInfo.bank.toInt)
+		.account(p.chequeInfo.account)
 		.agency(p.chequeInfo.agency)
 		.number(p.chequeInfo.cheque_number)
 		.value(paymentDetail.value.is)
@@ -260,6 +281,7 @@ object  PaymentService extends  net.liftweb.common.Logger  {
 		.received(false)
 		.company(AuthUtil.company)
 		.paymentDetail(paymentDetail)
+		.movementType(tp_cheque)
 		.save
 	}
 
@@ -379,7 +401,7 @@ case class PaymentDTO(typePayment:Int,value:Double,removed:Boolean,chequeInfo:Ch
 	def dateDetailAsDate = Project.strOnlyDateToDate(this.dateDetailStr)
 }
 case class TreatmentDTO(customerId:Int,userId:Int,treatmentStatus:String,activitys:List[ActivityDTO],removed:Boolean,id:Int, ignored:Boolean=false);
-case class PaymentRequst(treatments:List[TreatmentDTO],payments:List[PaymentDTO],command:String,dataTreatments:String,cashier:String){
+case class PaymentRequst(treatments:List[TreatmentDTO],payments:List[PaymentDTO],command:String,dataTreatments:String,cashier:String, status2:String){
 	def dataTreatmentsAsDate  ={
 		dataTreatments match {
 			case (s:String) if(s.length >= 9) => Project.strOnlyDateToDate(s)
@@ -388,7 +410,7 @@ case class PaymentRequst(treatments:List[TreatmentDTO],payments:List[PaymentDTO]
 		
 	}
 };
-case class ChequeRequest(acount:String,agency:String,banc:Long,cheque_number:String,date_for_payment:String){
+case class ChequeRequest(account:String,agency:String,bank:Long,cheque_number:String,date_for_payment:String){
 	def datePayment = Project.strOnlyDateToDate(date_for_payment)
 }
 

@@ -1,9 +1,14 @@
 sources_bak
 
-link para funcao de distancia entre coordenadas para ver que está dentr do raio
+/**
+   * Synchronously send an email.
+   */
+  def blockingSendMail(from: From, subject: Subject, rest: MailTypes*) {
+    msgSendImpl(from, subject, rest.toList)
+  }
+  
 
-fazer função no banco
-http://pt.stackoverflow.com/questions/9128/como-obter-dist%C3%A2ncia-dadas-as-coordenadas-usando-sql/9142#9142
+
 
 Botão submit com imagem
 Let's say your image is a 16x16 .png icon called icon.png Use the power of CSS!
@@ -23,12 +28,31 @@ This will put the image to the left of the text.
 
 
 align="left"
-margin-bottom: 0px;
+margin-bottom: 0px; ??????
 line-height: normal;
-margin: 0px;
+margin: 0px; ??????
 font-stretch: normal;
 color="#000000"
 mso-bidi-font-weight:normal
 font-size-adjust: none;
 border-color: rgb(0, 0, 0);
 border-image: none;
+
+border-right-width: initial;
+border-right-style: none;
+border-top: none;
+
+solid rgb(0, 0, 0) => solid
+solid #000000 => solid
+
+
+
+mateus - capar array com mais de 2 colunas 
+
+console.log(data.map(function(a){
+	return {
+		0: a[0],
+		1: a[1]
+	}
+}));
+

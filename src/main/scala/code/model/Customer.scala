@@ -232,12 +232,16 @@ class Customer extends BusinessPattern[Customer]{
         validateDuplicatedDocument
         validateDuplicatedBarcode
         // tirei no businesspattern - pq tava gerando prontuario
+/*
+        voltei pra lá - provavelmente não usava o insecureSave
+        e tirando de lá não gerava o mapa para unidade e convenio - 02/04/2017
         if(!this.street.is.isEmpty || this.street.is != "") {
             BusinessPatternLocationQueeue.enqueeue(BusinessPatternQueeueDto(this.id.is))
         } else {
             this.lat.set ("");
             this.lng.set ("");
         }
+  */
         super.save
     }
 
@@ -461,18 +465,21 @@ object Customer extends Customer with BusinessPatternMeta[Customer]{
             )
 
     }
-    def unificCustomer(customerSource:Customer, customerDesc:Customer, isemployee:Long){
-        if(customerSource.id.is == customerDesc.id.is && isemployee != 1){
+    def unificCustomer(customerSource:Customer, customerDesc:Customer, bptype:String){
+        if(customerSource.id.is == customerDesc.id.is && bptype == "customer"){
             throw new RuntimeException("Não é permitido unificar um cliente com ele mesmo!")
         }
-        if(customerSource.id.is == customerDesc.id.is && (isemployee == 1)) {
+        if(customerSource.id.is == customerDesc.id.is && bptype == "animal"){
+            throw new RuntimeException("Não é permitido unificar um pet com ele mesmo!")
+        }
+        if(customerSource.id.is == customerDesc.id.is && bptype == "user") {
             throw new RuntimeException("Não é permitido unificar um profissional com ele mesmo!")
         }
-        if (customerSource.is_employee_? && isemployee != 1) {
+        if (customerSource.is_employee_? && bptype == "customer") {
             throw new RuntimeException("Não é comum unificar um profissional com o cliente, se for mesmo o caso use o botão vermelho!")
         }
 
-        if (!customerSource.is_employee_? && (isemployee == 1)) {
+        if (!customerSource.is_employee_? && bptype == "user") {
             throw new RuntimeException("Essa opção só deve ser usada quando a origem for um profissional!")
         }
 
@@ -512,6 +519,7 @@ object Customer extends Customer with BusinessPatternMeta[Customer]{
                     "update usercompanyunit set user_c=? where user_c=?;"::
                     "update userusergroup set user_c=? where user_c=?;"::
                     "update bpmonthly set user_c=? where user_c=?;"::
+                    "update tdepet set animal=? where animal=?;"::
                     Nil
                     val sql1s = 
                     "update business_pattern set is_user = (select bps.is_user from business_pattern bps where bps.id = ? ) where id = ? and (is_user = false);"::

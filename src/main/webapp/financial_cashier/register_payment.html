@@ -266,9 +266,6 @@
       </div>
     </div>
     <div class="modal-body" ng-controller="PaymentController">
-      <div class='well'>
-        <input type="button"   class="btn danger b_payment_finalize" value="Finalizar Pagamento"/>
-      </div>      
       <form>
           <div class="clearfix">
            <label>Complementos</label>
@@ -351,42 +348,46 @@
           </div>
           <span class="cheque_data">
             <div class="clearfix">
-              <label>Número</label>
-              <div class="input">
-                <div class="input-prepend">
-                  <input class="mini" id="cheque_number" name="cheque_number" size="10" type="text"/>
-                  <span class="help-block">Número do cheque</span>
-                </div>
-              </div>
-            </div>
-            <div class="clearfix">
               <label>Banco</label>
                 <div class="input">
                   <div class="input-prepend">
-                    <select id="banc" name="banc" size="10">
+                    <select id="bank" name="bank" size="10">
                     </select>
-                    <span class="help-block">Banco</span>
                   </div>
                 </div>
             </div>
+            <br/>
             <div class="clearfix">
-              <label>Agência</label>
+              <label>Número</label>
                 <div class="input">
-                  <div class="input-prepend">
-                    <input class="normal" id="agency" name="agency" size="10" type="text"/>
-                    <span class="help-block">Número da agência</span>
+                  <div class='inline-inputs'>
+                    <div class="input-prepend">
+                      <input class="mini" id="cheque_number" name="cheque_number" size="10" type="text"/>
+                      <span class='label-inline'>Agência</span>
+                      <input class="small" id="agency" name="agency" size="10" type="text"/>
+                      <span class='label-inline'>Conta</span>
+                      <input class="normal" id="account" name="account" size="20" type="text"/>
+                    </div>
                   </div>
+                </div>
+                <label style='float:left; padding-right:20px'></label>
+                  <span class="help-block">Número do cheque / agência / conta</span>
+            </div>          
+            <br/>
+          </span>          
+          <span class="card_data">
+            <div class="clearfix">
+              <label>Número</label>
+                <div class="input">
+                  <div class='inline-inputs'>
+                    <div class="input-prepend">
+                      <input class="normal" id="card_number" name="card_number" size="10" type="text"/>
+                    </div>
+                  </div>
+                  <span class="help-block">Número cartão / transação</span>
                 </div>
             </div>          
-            <div class="clearfix">
-              <label>Conta</label>
-                <div class="input">
-                  <div class="input-prepend">
-                    <input class="xlarge" id="acount" name="acount" size="20" type="text"/>
-                    <span class="help-block">Conta</span>
-                  </div>
-                </div>
-            </div>            
+            <br/>
           </span>          
           </fieldset>
           <table id='payments_table' class="bordered-table zebra-striped">
@@ -395,10 +396,10 @@
                 <th>Tipo</th>
                 <th>Valor</th>
                 <th class="has_cheque">Bom Para</th>
+                <th class="has_cheque">Nr Ch/Cartão</th>
                 <th class="has_cheque">Banco</th>
                 <th class="has_cheque">Agência</th>
                 <th class="has_cheque">Conta</th>
-                <th class="has_cheque">Nr Cheque</th>
                 <th class="has_cheque">Dt Cheque</th>
                 <th>Ação</th>
               </tr>
@@ -413,14 +414,14 @@
                       {{paymentDetail.dateDetail.getDateBr()}}
                     </span>
                   </td>
+                  <td class="has_cheque"><input  ng-show="paymentDetail.chequeInfo" ng-model="paymentDetail.chequeInfo.cheque_number" class="small"/></td>
                   <td class="has_cheque">
-                    <select ng-show="paymentDetail.chequeInfo" ng-options="b.id as b.name for b in banks" class="notselect2" ng-model="paymentDetail.chequeInfo.banc">
-                      <option style="display:none" value="{{paymentDetail.chequeInfo.banc}}">{{paymentDetail.chequeInfo.banc_name}}</option>
+                    <select ng-show="paymentDetail.chequeInfo" ng-options="b.id as b.name for b in banks" class="notselect2" ng-model="paymentDetail.chequeInfo.bank">
+                      <option style="display:none" value="{{paymentDetail.chequeInfo.bank}}">{{paymentDetail.chequeInfo.bank_name}}</option>
                     </select> 
                   </td>
                   <td class="has_cheque"><input  ng-show="paymentDetail.chequeInfo" ng-model="paymentDetail.chequeInfo.agency" class="small"/></td>
-                  <td class="has_cheque"><input  ng-show="paymentDetail.chequeInfo" ng-model="paymentDetail.chequeInfo.acount" class="small"/></td>
-                  <td class="has_cheque"><input  ng-show="paymentDetail.chequeInfo" ng-model="paymentDetail.chequeInfo.cheque_number" class="small"/></td>
+                  <td class="has_cheque"><input  ng-show="paymentDetail.chequeInfo" ng-model="paymentDetail.chequeInfo.account" class="small"/></td>
                   <td class="has_cheque"><input ui-date ng-show="paymentDetail.chequeInfo" date ng-model="paymentDetail.chequeInfo.cheque_date" class="small"/></td>
                   <td><a href="#" ng-click="paymentDetail.remove()"><img src='../images/delete.png'/></a></td>
                 </tr>
@@ -431,7 +432,5 @@
         <input type="button"   class="btn danger b_payment_finalize" value="Finalizar Pagamento"/>
       </div>
     </div>  
-    <div class="modal-footer">
-    </div>
   </div>
 </div>

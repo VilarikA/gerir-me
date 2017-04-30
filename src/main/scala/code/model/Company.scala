@@ -218,14 +218,27 @@ class Company extends Audited[Company] with PerCompany with IdPK with CreatedUpd
 //  val TODAY7AM = "1"
 // criar outrs campos para notificar no dia ou criar comobinacoes
 
+/*
   object autoIncrementCommand_? extends MappedBoolean(this) {
     override def defaultValue = true
     override def dbColumnName = "autoincrementcommand"
   }
+*/
+
+  object commandControl extends MappedInt(this){
+    override def defaultValue = 1;
+    /*
+    0 não incrementa (never)
+    1 incrementa no dia (daily)
+    2 incrementa sequencial sempre (ever)
+    */
+  }
+
   object allowRepeatCommand_? extends MappedBoolean(this) {
     override def defaultValue = true
     override def dbColumnName = "allowrepeatcommand"
   }
+
   object autoOpenCalendar_? extends MappedBoolean(this) {
     override def defaultValue = true
     override def dbColumnName = "autoopencalendar"
@@ -422,7 +435,8 @@ class Company extends Audited[Company] with PerCompany with IdPK with CreatedUpd
   // este métodos estão mal colocados aqui - RESOLVER
   def paymentTypes = PaymentType.findAllInCompany(OrderBy(PaymentType.name, Ascending))
 
-  def chequesNotReceived = Cheque.findAllInCompany(By(Cheque.received, false))
+  def chequesNotReceived = Cheque.findAllInCompany(By(Cheque.received, false), 
+    By(Cheque.movementType, AccountPayable.IN), OrderBy(Cheque.dueDate, Descending))
 
   def accountCategorys = AccountCategory.findAllInCompany(By(AccountCategory.company, this.id))
   def accountPayables = AccountPayable.findAllInCompany(By(AccountPayable.company, this.id))
@@ -448,6 +462,10 @@ object Company extends Company with LongKeyedMapperPerCompany[Company] with Site
   val PLAN_BASIC = 3
   val PLAN_CLASSIC = 4
   val PLAN_ELITE = 5
+
+  val CmdNever = 0
+  val CmdDaily = 1
+  val CmdEver = 2;
 
   override def findByKey(id: Long) = {
     val company = super.findByKey(id)

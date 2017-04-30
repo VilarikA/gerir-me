@@ -60,7 +60,10 @@
       total = 0.00;
       total_customers = 0.00;
       total_invoices = 0.00;
-      renderReport(url,fields,$("#form_report").serializeObject(), "#grid", function(){
+      renderReport(url,fields,$("#form_report").serializeObject(), "#grid", function(data){
+        data.forEach(function(iten){
+          customers.push(iten[0]);
+        });
         $('#total').val(total.formatMoney());
         $('#total_customers').val(total_customers.formatMoney());
         $('#total_invoices').val(total_invoices.formatMoney());
@@ -69,6 +72,10 @@
     $("#send").click(request);
     $("#send_notifications").click(function(){
       var message = $("#send_message").val();
+      if (!message) {
+        alert ("É preciso selecionar uma mensagem")
+        return
+      }
       if(confirm("Deseja enviar esta mensagem aos clientes?")){
           $.get("/notification/messagesend/"+customers.join(",")+"/"+message,function(r){
             if(r === '1'){

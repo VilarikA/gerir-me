@@ -71,7 +71,7 @@ object CalendarApi extends RestHelper with net.liftweb.common.Logger  {
 		}
 		case "calendar" :: date :: "getNextCommandId" ::  Nil JsonGet _ => {
 			def startDate = Project.strToDateOrToday(date)
-			JInt(Treatment.nextCommandNumber(startDate,AuthUtil.company))
+			JInt(Treatment.nextCommandNumber(startDate,AuthUtil.company, AuthUtil.unit))
 		}
 
 		case "calendar" :: "treatments"::"today"::"total"::  Nil JsonGet _ => {

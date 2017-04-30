@@ -38,6 +38,10 @@
       $("#send").click(request);
        $("#send_notifications").click(function(){
           var message = $("#send_message").val();
+          if (!message) {
+            alert ("É preciso selecionar uma mensagem")
+            return
+          }
           if(confirm("Deseja enviar esta mensagem aos clientes?")){
             $.get("/notification/messagesend/"+customers.join(",")+"/"+message,function(r){
               if(r === '1'){

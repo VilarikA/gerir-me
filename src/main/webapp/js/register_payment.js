@@ -941,6 +941,7 @@
             "command": $("#command").val(),
             "dataTreatments": $("#date_treatment").val(),
             'cashier': $("#cashiers_select").val(),
+            "status2": 4,
             "customer": $(".id_customer_search").val()
           };
           $.post(url, {
@@ -995,7 +996,7 @@
     } else {
       $(".has_cheque").show();
       setTimeout(function() {
-        $("#cheque_number").focus();
+        $("#bank").focus();
       }, 100)
     } 
   }
@@ -1019,6 +1020,12 @@
       $(".cheque_data").hide();
     }
 
+    if (paymentType && paymentType.needCardInfo) {
+      $(".card_data").show();
+    } else {
+      $(".card_data").hide();
+    }
+
   }
   var clearInstallment = function() {
     $("#payment_type_installment").attr("checked", false);
@@ -1036,7 +1043,9 @@
   var paymentRegister = function(paymentType, chequeInfo) {
     if (chequeInfo) {
       try {
-        validateChequeInfos(chequeInfo);
+        if (paymentType.cheque) {
+          validateChequeInfos(chequeInfo);
+        }
       } catch (e) {
         alert(e);
         return;
@@ -1088,7 +1097,7 @@
     preparePaymentsInUi();
   };
   var PaymentModel = angular.module('PaymentModel', ['ui.directives']);
-  //$("#banc").html()
+  //$("#bank").html()
   var PaymentController = function($scope) {
     PaymentController.$scope = $scope;
     $scope.paymentDetails = window.payments;
@@ -1100,10 +1109,19 @@
       if (paymentType.cheque) {
         chequeInfoObj = {
           agency: $(":input[name=agency]").val(),
-          banc: parseInt($(":input[name=banc]").val()),
-          banc_name: $(":input[name=banc] option[selected]").text(),
-          acount: $(":input[name=acount]").val(),
+          bank: parseInt($(":input[name=bank]").val()),
+          bank_name: $(":input[name=bank] option[selected]").text(),
+          account: $(":input[name=account]").val(),
           cheque_number: $(":input[name=cheque_number]").val()
+        };
+        paymentRegister(getPaymentTypeById($('#payment_type').val()), chequeInfoObj);
+      } else if (paymentType.needCardInfo) {
+        chequeInfoObj = {
+          agency: "",
+          bank: 0,
+          bank_name: "",
+          account: "",
+          cheque_number: $(":input[name=card_number]").val()
         };
         paymentRegister(getPaymentTypeById($('#payment_type').val()), chequeInfoObj);
       } else {
@@ -1124,7 +1142,7 @@
     }
   });
 
-  /*directives.directive('banc', function() {
+  /*directives.directive('bank', function() {
      return function(scope, element, attrs) {element.bankField();}
   });*/
   var paymentDetailAdd = function(value, typePayment, removed, chequeInfo, paymentDate) {
@@ -1168,7 +1186,7 @@
       throw "O valor do cheque deve ser o mesmo do pagamento!";
     }
     for (var i in chequeInfo) {
-      if (chequeInfo[i] === "" && i != 'acount') {
+      if (chequeInfo[i] === "" && i != 'account') {
         throw "Existem informações em branco no cheque por favor preencha todos os campos!";
       }
     }
@@ -1296,15 +1314,15 @@
         });
       }
     });
-    $("#banc").change(function() {
-      $("#agency").focus();
+    $("#bank").change(function() {
+      $("#cheque_number").focus();
     });
     $("#cash_form").submit(function() {
       return false;
     });
     Customer.addonsListeners.push(processPrice);
     Customer.addonsListeners.push(processOffSale);
-    $("#banc").bankField();
+    $("#bank").bankField();
     $("#payment_type_value").keypress(function(e) {
       if (e.keyCode == 13) {
         $("#add_payment").click();

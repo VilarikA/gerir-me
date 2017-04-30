@@ -1,5 +1,5 @@
 var buildCalendar = function(users,treatments,interval,intervalAlt,startCalendar,endCalendar, 
-	    autoincrementcommand, autoOpenCalendar, permissions, 
+	    commandControl, autoOpenCalendar, permissions, 
 	    features, unit, calendarShowLight,
 	    calendarShowInterval, ignoreParameter){
 			if(!ignoreParameter){
@@ -74,7 +74,7 @@ var buildCalendar = function(users,treatments,interval,intervalAlt,startCalendar
 			global_users = treatUsersServer(global_users_obj);
 			global_usersIds = treatUsersServerId(global_users_obj);
 			global_treatments = treatTreatmentsServer(treatments);
-			global_autoincrementcommand = autoincrementcommand;
+			global_commandControl = commandControl;
 			global_calendarShowLight = calendarShowLight;
 			resizeCalendar();
 			global_load = users.length==1 || global_load || autoOpenCalendar;

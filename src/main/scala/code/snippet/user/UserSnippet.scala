@@ -215,6 +215,10 @@ class  UserSnippet extends BootstrapPaginatorSnippet[User] {
 			"name=number" #> (SHtml.text(user.number.is, user.number(_)))&		    
 			"name=complement" #> (SHtml.text(user.complement.is, user.complement(_)))&
 			"name=showInCalendar" #> (SHtml.checkbox(user.showInCalendar_?, user.showInCalendar_?(_)))&
+			"name=calendarFixed" #> (SHtml.checkbox(user.calendarFixed_?, user.calendarFixed_?(_)))&
+			"name=showInCalendarPub" #> (SHtml.checkbox(user.showInCalendarPub_?, user.showInCalendarPub_?(_)))&
+			"name=showInCommand" #> (SHtml.checkbox(user.showInCommand_?, user.showInCommand_?(_)))&
+			"name=showInCashier" #> (SHtml.checkbox(user.showInCashier_?, user.showInCashier_?(_)))&
 			"name=is_auxiliar" #> (SHtml.checkbox(user.is_auxiliar_?, user.is_auxiliar_?(_)))&
 			"name=groupPermission_text" #> (SHtml.text(user.groupPermission, (a:String) => {}))&
 			"#img_thumb" #> user.thumb&
@@ -297,7 +301,8 @@ class  UserSnippet extends BootstrapPaginatorSnippet[User] {
 									AuthUtil.company.calendarIntervalAlt.is,
 									AuthUtil.company.calendarStart.is,
 									AuthUtil.company.calendarEnd.is,
-									AuthUtil.company.autoIncrementCommand_?.is,
+									//AuthUtil.company.autoIncrementCommand_?.is,
+									AuthUtil.company.commandControl.is,
 									AuthUtil.company.autoOpenCalendar_?.is,
 									JsObj(
 										("newEvent", AuthUtil.user.canCreateCalendarEvents_?.is),

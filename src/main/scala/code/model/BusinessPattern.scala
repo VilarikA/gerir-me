@@ -271,8 +271,8 @@ with PerCity{
     }    
     object external_id extends MappedPoliteString(this,200)
     object offsale extends MappedLongForeignKey(this,OffSale)
-    object senNotifications_? extends MappedBoolean(this){
-      override def defaultValue = true
+    object senNotifications extends MappedPoliteString(this,2){
+      override def defaultValue = "1"
       override def dbColumnName = "senNotifications"
     }    
     object is_prospect_? extends MappedBoolean(this){
@@ -325,7 +325,7 @@ with PerCity{
         this.is_customer_?.set(false)
       }
       if (bp_manager == 0 && bp_indicatedby == 0 && is_animal_?) {
-        //info ("************************* caixa fechado alteracao")
+        // pelo menos um tem que ser informado
         throw new RuntimeException("Não é permitido cadastrar Pet sem tutor e quem indicou")
       }
 
@@ -345,14 +345,13 @@ with PerCity{
         BpRelationship.addBpRelationship(id.is, bp_manager.is, 27)
       }
 
-/*    dupliquei no customer e no user - tava gerando prontuario na sao camilo
       if(!this.street.is.isEmpty || this.street.is != "") {
         BusinessPatternLocationQueeue.enqueeue(BusinessPatternQueeueDto(this.id.is))
       } else {
         this.lat.set ("");
         this.lng.set ("");
       }
-*/
+
       result
     }
     def defaultValueIsCustomer = true
@@ -549,11 +548,9 @@ with PerCity{
         if(AccountPayable.count(By(AccountPayable.user,this.id)) > 0){
             throw new RuntimeException("Existe lançamento financeiro para este parceiro!")
         }        
-        super.delete_!
         if(Company.count(By(Company.partner,this.id)) > 0){
             throw new RuntimeException("Existe empresa onde este parceiro é contato!")
         }        
-        super.delete_!
         if(CompanyUnit.count(By(CompanyUnit.partner,this.id)) > 0){
             throw new RuntimeException("Existe unidade onde este parceiro é ligado!")
         }        

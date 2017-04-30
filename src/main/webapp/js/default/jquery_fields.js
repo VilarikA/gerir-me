@@ -267,6 +267,11 @@ jQuery.fn.quizField = function(allow_null) {
 		makeSelect(this, 'getQuizzes', allow_null, "Selecione um questionário");
 	});
 };
+jQuery.fn.quizSectionField = function(allow_null) {
+	return this.each(function() { 
+		makeSelect(this, 'getQuizSections', allow_null, "Selecione uma seção");
+	});
+};
 
 jQuery.fn.quizDomainField = function(allow_null) {
 	return this.each(function() { 

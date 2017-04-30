@@ -72,6 +72,12 @@ trait ProductMapper[OwnerType <: ProductMapper[OwnerType]] extends Audited[Owner
         override def dbColumnName = "is_discount"
     }
 
+    // qdo o cliente agenda ele proprio on line
+    object showInCalendarPub_? extends MappedBoolean(this){
+        override def dbColumnName = "showInCalendarPub"
+        override def defaultValue = true
+    }
+
     object allowSaleByUser_? extends MappedBoolean(this){
         override def defaultValue = true
         override def dbColumnName = "allowsalebyuser"

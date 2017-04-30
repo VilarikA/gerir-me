@@ -82,8 +82,8 @@ object PaymentApi extends RestHelper {
 						case _ => ""
 					}
 					),
-					("banc",c.banc.is),
-					("acount",c.acount.is),
+					("bank",c.bank.is),
+					("account",c.account.is),
 					("value",c.value.is.toFloat),
 					("id",c.id.is)
 				)

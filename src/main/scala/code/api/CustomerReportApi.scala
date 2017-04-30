@@ -56,6 +56,12 @@ object CustomerReportApi extends RestHelper with ReportRest {
 				}
 				))
 			}
+			case "customer_report" :: "quizsections" :: Nil Get _ =>{
+				JsArray(QuizSection.findAllInCompanyOrDefaultCompany(OrderBy(QuizSection.name, Ascending)).map((section)=>{
+					JsObj(("name",section.name.is), ("id",section.id.is))
+				}
+				))
+			}
 			case "customer_report" :: "quizzes" :: Nil Get _ =>{
 				val issuperadm = if (AuthUtil.user.isSuperAdmin) {
 					" or 1 = 1 "

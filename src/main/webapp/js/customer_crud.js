@@ -496,9 +496,9 @@ $(function() {
           " <meta charset='utf-8'> " +
           " <title>" + header + "</title> " +
           " </head> " +
-        '<img width="35px" style="padding-right: 10px" src="/images/logo_'+logo+'.png"/>' + 
+        '<img width="35px" style="padding-right: 10px" src="/images/logo_ftr_'+logo+'.png"/>' + 
         header + " Gestão Integrada " + 
-        '<img width="70px" style="padding-right: 10px" src="http://nb.transitobh.com.br/images/company/'+AuthUtil.company.image+'"/>' + 
+        '<img width="70px" style="padding-right: 10px" src="http://nb.vilarika.com.br/images/company/'+AuthUtil.company.image+'"/>' + 
         " <br></p>"
         var printWindow = window.open("", "MsgPrintWindow");
         printWindow.document.write(header + message_print);

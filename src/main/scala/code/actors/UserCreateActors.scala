@@ -5,7 +5,7 @@ import net.liftweb._
 import mapper._
 import http._
 import actor._
-import model.{Company, CompanyUnit, Customer, ProductType, Account, User, Product, Activity}
+import model.{Company, CompanyUnit, Customer, ProductType, Account, User, Product, Activity, PermissionModule}
 import code.util._
 import java.util.Random
 
@@ -32,7 +32,33 @@ object UserCreateActors extends LiftActor {
   }
 
   def updatePermissionModuleInfos(company:Company) = {
-    PermissionModuleSqlMigrate.createPermissionModule
+    PermissionModuleSqlMigrate.createPermissionModule;
+    if (company.appType == Company.SYSTEM_EBELLE) {
+      //"ebelle"
+    } else if (company.appType == Company.SYSTEM_GERIRME) {
+      //"gerirme"
+    } else if (company.appType == Company.SYSTEM_ESMILE) {
+      PermissionModule.setModule (company, "QUIZ");
+      //"esmile"
+    } else if (company.appType == Company.SYSTEM_EDOCTUS) {
+      PermissionModule.setModule (company, "QUIZ");
+      PermissionModule.setModule (company, "OFFSALE");
+      //"edoctus"
+    } else if (company.appType == Company.SYSTEM_EGREX) {
+      //"egrex"
+      PermissionModule.setModule (company, "RELATION");
+      PermissionModule.setModule (company, "EVENT");
+    } else if (company.appType == Company.SYSTEM_EPHYSIO) {
+      PermissionModule.setModule (company, "BPMONTHLY");
+      PermissionModule.setModule (company, "QUIZ");
+      //"ephysio"
+    } else if (company.appType == Company.SYSTEM_EBELLEPET) {
+      PermissionModule.setModule (company, "RELATION");
+      PermissionModule.setModule (company, "QUIZ");
+    } else {
+      //"vilarika"
+    }
+
   }
 
 /*
@@ -293,7 +319,8 @@ object FinancialSqlMigrate{
                                 defaltcategory, day, nextmonth, limitday, defaltdicountcategory,
                                 percentdiscounttocommision, sumtoconference, customerusecredit,
                                 search_name, short_name, adduseraccounttodiscount, status,
-                                showasfinoptions, bpmonthly, offsale, individualReceive 
+                                showasfinoptions, bpmonthly, offsale, individualReceive, creditcard,
+                                cheque, fidelity, allowcustomeraddusertodiscount
                                 FROM paymenttype where paymenttype.company=26;"""
 
   val UPDATE_FACT_INFORMATIONS = """update paymenttype 
