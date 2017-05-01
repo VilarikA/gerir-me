@@ -40,7 +40,7 @@ mail.port=465
 mail.password=rika775072
 #---------------------------
 photo.path=/var/www/html/images/
-photo.urlbase=http://images.vilarika.com.br
+photo.urlbase=http://images.vilarika.com.br/
 
 #---------------------------
 tissxml.path=/var/www/html/tissxml/
