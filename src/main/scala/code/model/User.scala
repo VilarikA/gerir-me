@@ -171,8 +171,8 @@ class User extends  BusinessPattern[User] with UserIdAsString{
             if(listCompany.size == 1){
                 val user = listCompany(0)
                 val today : String = Project.dateToStr(new Date());
-                if (today == "30/04/2017" && !user.isSuperAdmin) {
-                    LoginStatus(false, "Estamos em manutenção para melhoria de nossa infraestrutura.\n\n O acesso será normalizado a partir de 0h de 01/05/2017")
+                if (today == "01/05/2017" && !user.isSuperAdmin) {
+                    LoginStatus(false, "Estamos em manutenção para melhoria de nossa infraestrutura.\n\n O acesso será normalizado a partir de 0h de 02/05/2017")
                 } else {
                     if (user.groupPermission  == ""){
                         LoginStatus(false, "Este usuário não possui nenhuma permissão atribuida")
