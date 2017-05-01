@@ -204,7 +204,7 @@ var TreatmentManger = {
 	    	// duplicado do treatments_conference.js
 	      return "<img src='/images/treatment_"+status.toLowerCase()+".png' width='24'/>"
 	    };
-		var url = "/treatment/by_customer/" + calEvent.customerId + "/" + encodeURIComponent(getDateBr(calEvent.start)) + "/details";
+		var url = "http://45.33.99.152:7171/treatment/by_customer/" + calEvent.customerId + "/" + encodeURIComponent(getDateBr(calEvent.start)) + "/details";
 		$.get(url, function(ret) {
 			var details = [];
 			eval("details=" + ret);
