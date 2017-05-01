@@ -96,7 +96,7 @@ object LoginSnippet extends net.liftweb.common.Logger {
         if (S.hostName.contains ("local")) {
           S.redirectTo("http://"+S.hostName+":7171/v2/login")
         } else if (user == 3 /* rigel*/) {
-          S.redirectTo("http://"+S.hostName+"/v2/login")
+          S.redirectTo("http://ebelle.vilarika.com.br/v2/login")
         } else {
           S.redirectTo(straux(randomNumber))
           //S.redirectTo("http://"+S.hostName+"/v2/login")
