@@ -314,7 +314,7 @@ object EmailUtil {
   }
 
   def sendDiskSpaceAlert = {
-    if (code.daily.DailyReport.diskUsed > 55) {
+    if (code.daily.DailyReport.diskUsed > 75) {
       sendMailTo(admins,code.daily.DailyReport.diskSpaceAlertInHtml,"Disk Space Alert " + code.daily.DailyReport.diskUsed)
     }
   }
