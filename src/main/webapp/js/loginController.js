@@ -34,7 +34,7 @@ var LoginController = function($scope, $http){
 		$http.post("/security/login_email", {company : company,email : email, password : password, hasCompany : true}).success(loginSoccess).error(loginError);
 	};
 	$scope.login = function(email, password){
-		$http.post("/security/login_email", {company : "", email : email, password : password, hasCompany : false}).success(loginSoccess).error(loginError);
+		$http.post("http://45.33.99.152:7171/security/login_email", {company : "", email : email, password : password, hasCompany : false}).success(loginSoccess).error(loginError);
 	};
 	$scope.rememberPassword = function(email){
 		var emailValidation = /^([a-z0-9._%\-+]+@(?:[a-z0-9\-]+\.)+[a-z]{2,4}$)/;
