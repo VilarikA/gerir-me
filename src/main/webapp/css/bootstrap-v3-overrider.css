@@ -1,0 +1,155 @@
+/**
+ * Navbar
+ **/
+
+nav.navbar {
+	border-radius: 0;
+}
+
+nav.navbar .navbar-brand > img {
+	margin-top: -2px;
+	width: 25px;
+}
+
+
+/**
+ * Form & Inputs
+ **/
+input.form-control.input-inline {
+	display: inline-block;
+	width: initial;
+}
+
+.form-group input.inline,
+.form-group select.inline,
+.form-group label.inline,
+.form-group .select2-container {
+	vertical-align: middle;
+}
+
+.form-group .row div[class^="col-"] {
+	height: 100%;
+}
+
+.form-group .row div[class^="col-"]:first-child {
+	padding-left: 0;
+}
+
+.form-group .select2-container .select2-choice {
+	height: 34px;
+}
+
+.form-group .select2-container .select2-choice span {
+	line-height: 30px;
+}
+
+.form-group span.checkbox.inline {
+	/* line-height: 34px; */
+	margin-left: 20px;
+}
+
+
+/**
+ * Tables
+ **/
+table.table-zoomed-out,
+table.table-zoomed-out .btn {
+	font-size: 0.95em;
+}
+
+table.vr-table a.btn {
+	margin-bottom: 5px;
+}
+
+table.vr-table .btn {
+	width: 100%;
+}
+
+table td.actions { max-width: 100px; }
+
+/**
+ * Containers and general divs
+ **/
+.row {
+	margin: 10px 0;
+}
+
+.row.with-divider {
+	margin: 0 -20px;
+	padding: 20px;
+	border-bottom: 1px solid #dcdcdc;
+}
+
+
+/**
+ * Missing classes from Bootstrap 1.x
+ **/
+.span18 { width: 1060px; }
+
+.upper-footer ul.footer_nav,
+.upper_footer ul.footer_nav { 
+	position: relative;
+    float: left;
+    width: 164px;
+    margin: 20px 10px;
+
+}
+
+/**
+ * Twipsy
+ **/
+.popover {
+	background-color: #000;
+	padding: 3px;
+}
+
+.popover.right > .arrow,
+.popover.right > .arrow:after {
+	border-right-color: #000;
+}
+
+.popover .inner h3 {
+	background-color: #f5f5f5;
+	border-bottom: 1px solid #eee;
+	margin: 0;
+	font-size: 20px;
+	padding: 10px 15px;
+}
+
+.popover .inner .content {
+	background-color: white;
+	margin: 0;
+	padding: 15px;
+}
+
+.popover .inner .content p:last-child {
+	margin-bottom: 0;
+}
+
+
+/**
+ * Application style 
+ **/
+aside.vr-sidebar-icons {
+	position: absolute;
+    top: 0;
+    left: 20px;
+    text-align: center;
+    width: 140px;
+}
+
+aside.vr-sidebar-icons h5 { font-weight: bold; }
+
+aside.vr-sidebar-icons ul {
+	display: inline-block;
+	padding-left: 0;
+	width: 100%;
+}
+
+aside.vr-sidebar-icons ul li {
+	margin-bottom: 10px;
+}
+
+div.vr-content {
+	position: relative;
+}

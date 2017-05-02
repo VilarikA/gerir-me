@@ -110,10 +110,10 @@ class  UserSnippet extends BootstrapPaginatorSnippet[User] {
 						    //"name=userName" #> (SHtml.text(user.userName.is, user.userName(_))) &
 							//"groupPermission" -> SHtml.text(user.groupPermission, (a:String) => {}),
 							"gp" -> Text(user.groupPermission.is),
-							"actions" -> <a class="btn" href={"/user/edit?id="+user.id.is}>Editar</a>,
+							"actions" -> <a class="btn btn-default" href={"/user/edit?id="+user.id.is}>Editar</a>,
 //							"actions" -> <a class="btn" href={"/user/edit_new?id="+user.id.is}>Editar</a>,
 							"thumb" -> user.thumb ("36"),
-							"delete" -> SHtml.submit("Excluir",delete,"class" -> "btn danger","data-confirm-message" -> {" excluir o profissional "+user.name.is}),
+							"delete" -> SHtml.submit("Excluir",delete,"class" -> "btn danger btn-danger","data-confirm-message" -> {" excluir o profissional "+user.name.is}),
 							"_id" -> SHtml.text(user.id.is.toString, id = _),
 							"id" ->Text(user.id.is.toString)
 				)
