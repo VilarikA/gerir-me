@@ -94,7 +94,8 @@ class Boot {
       if(AuthUtil.?)
         RedirectResponse("/docs/access_denied.html")
       else
-        RedirectResponse("http://45.33.99.152:7171/v2/login")
+        //RedirectResponse("http://45.33.99.152:7171/v2/login")
+        RedirectResponse("/v2/login")
     }
     
     val loggedIn = If( ()=> AuthUtil ?,
