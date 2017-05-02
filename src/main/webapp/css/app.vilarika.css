@@ -1,0 +1,29 @@
+/**
+ * Forms & Inputs
+ **/
+div.vr-box-content {}
+
+div.vr-box-content .form-inline { margin-bottom: 15px; }
+
+div.vr-box-content .form-inline label { 
+	display: inline-block; 
+	width: 120px;
+	text-align: right;
+}
+
+div.vr-box-content .form-inline select { min-width: 120px; }
+
+div.vr-box-content .form-inline .form-group.with-right-margin:not(:first-child) { 
+	min-width: 0; margin-right: 15px; 
+}
+
+div.vr-box-content .form-inline .hint { 
+	display: block;
+	font-size: 12px;
+	color: #bfbfbf;
+	padding: 2px; 
+}
+
+div.vr-box-content .form-inline .hint.right {
+	text-align: right;
+}

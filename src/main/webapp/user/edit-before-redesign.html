@@ -1,0 +1,707 @@
+<div id="main" class="lift:surround?with=user&at=content">
+	<script type="text/javascript" src="/js/passwork_force.js"></script>
+	<script type="text/javascript" src="/js/reports.js"></script>
+	<script src="/js/user_crud.js?sensor=true"></script>
+	<script>
+	  var validate = function () {
+		var password = $("#password_text").text();
+		if(password != "Média" && password != "Forte" && password != "Muito forte" && password !=""){
+		  alert("Senha "+password+". Altere antes de salvar!");
+		  return false;
+		}
+		return true;
+	  }
+	  $(function(){
+		$(".password_container input").pstrength();
+		$("#day_form,#service_form").hide();
+		$("#add_day").click(function(){
+		  $("#day_form").show("slow");
+		});
+		$("#add_service").click(function(){
+		  $("#service_form").show("slow");
+		});
+		var str = $("#groupPermission_text_id input").val();
+		$("#groupPermission").val(str.split(",")).change();
+		setTimeout(function(){
+		  if($("#parent").val() && $("#parent").val() != '0'){
+			$("#parent").change();
+		  }
+		}, 500);
+		$(".tab").click(function(){
+		  if($("#address").is(".active")){
+			$("#address").removeClass("active");
+		  }
+		});         
+
+	  })
+	</script>   
+	<div class="lift:UserSnippet.maintain">
+		<form class="crud_form lift:form.ajax" id='user_form' onsubmit="return validate();">
+		  <div class="well">
+			<label for="btn"></label>
+			<a class="btn primary" href="/user/list">Lista</a>
+			<input class="btn success  lift:SecuritySnippet.isNotAdminRead" type="submit" value="Salvar">
+			<a class="btn primary" href="/user/edit">Inserir novo</a>
+		  </div>
+		  <div>
+			<span class='row'>
+			  <span class='span12'>
+				<div class="clearfix">
+					<label for="idforcompany">Código</label>        
+					<div class="input">
+						<div class='inline-inputs'>
+							<div class="input-prepend" style='float:left; padding-right:10px'>
+								<input class="lift:SecuritySnippet.DoNoteditBpIdfC small" id="idForCompany" name="idForCompany" size="10" type="text" disabled="" />
+								<input class="lift:SecuritySnippet.editBpIdfC small" id="idForCompany" name="idForCompany" size="10" type="text" />
+							</div>
+							<div class="input-prepend">
+								<select class="medium" id="status" name="status" >
+								</select>
+								<a data-original-title="Informação" data-content="clique para abrir a documentação" data-help-url='/docs/status.html' rel="popover" class="_popover_basic _help">
+								<img src="/images/info.gif" width="20">
+								</a>
+							</div>
+							<span class="help-block">Código sequencial / Status do <span data-i18n='Profissional'></span></span>
+						</div>
+					</div>
+				</div>
+				<div class="clearfix">
+				  <label for="name">Nome</label>        
+				  <div class="input">
+					  <div class='inline-inputs'>
+						  <div class="input-prepend" style='float:left; padding-right:10px'>
+						  <span>
+							  <input class="large" id="name" name="name" size="30" type="text"/>
+						  </span>
+						  <span class='label-inline'>
+							  Apelido
+						  </span>
+						  <span>
+							  <input class="medium" id="short_name" name="short_name" size="30" type="text"/>
+							  <a data-original-title="Informação" data-content="clique para abrir a documentação" data-help-url='/docs/name.html' rel="popover" class="_popover_basic _help">
+							  <img src="/images/info.gif" width="20">
+							  </a>
+						  </span>
+						  </div>
+					  </div>
+				  </div>
+				</div>
+				<div class="clearfix lift:SecuritySnippet.isSuperAdmin">
+				  <label for="name">Migração *</label>        
+				  <div class="input">
+						<input class="mini" id="external_id" name="external_id" size="30" type="text"/>
+				  </div>
+				</div>
+				<div class="clearfix">
+				  <label for="large">Observação</label>
+				   <div class="input">
+					  <input class="large" id="obs" name="obs" size="30" type="textarea"/>
+					  <span class="help-block">Observação</span>
+				   </div>
+				</div>          
+				<div class="clearfix">
+				  <label for="phone">Telefones</label>
+				   <div class="input">
+					  <div class='inline-inputs'>
+						<div class="input-prepend" style='float:left; padding-right:10px'>
+						  <span class="add-on"><img src='/images/phone.png'/></span>
+						  <input class="medium phone" id="phone" name="phone" size="30" type="text"/>
+						</div>
+						<div class="input-prepend" style='float:left; padding-right:10px'>
+						   <span class="add-on"><img src='/images/mobile_phone.png'/></span>                   
+						   <input class="medium phone" id="mobilePhone" name="mobilePhone" size="30" type="text"/>
+						</div>
+						<div class="input-prepend">
+						   <span class="add-on"><img src='/images/mobile_phone.png'/></span>                   
+						   <input class="medium phone" id="email_alternative" name="email_alternative" size="30" type="text"/>
+						</div>
+						<span class="help-block">Telefone fixo e celulares, importantes para envio de SMS</span>
+					  </div>
+				   </div>
+				</div>
+				<div class="clearfix">
+				  <label for="birthday">Data de Aniversário</label>
+					<div class="input">
+					  <div class='inline-inputs'>
+						<div class="input-prepend" style='float:left; padding-right:10px'>
+						  <span class="add-on"><img src='/images/birthday.png'/></span>
+						  <input class="input-small date" id="birthday" name="birthday" size="19" type="text"/>
+						</div>
+						<div class="input-prepend" style='float:left; padding-right:10px'>
+						  <span class="add-on"><img src='/images/sex.png'/></span>
+						  <select id="sex" name="sex" ></select>
+						  <span class="help-inline">Sexo</span>
+						</div>
+						<div class="input-prepend" style='float:left; padding-right:10px'>
+						  <span class="add-on"><img src='/images/sex.png'/></span> 
+						  <select id="civilstatus" name="civilstatus" ></select>
+						  <span class="help-inline">Estado civil</span>
+						</div>                  
+					  </div>
+					</div>
+				</div>
+					  <div class="clearfix">
+						  <label for="document">CPF / RG</label>
+						  <div class="input">
+							<div class='inline-inputs'>
+							  <div class="input-prepend" style='float:left; padding-right:10px'>
+								<input class="medium cpf" id="document" name="document" size="30" type="text"/>
+								<span class="help-block">CPF</span>
+							   </div>
+							   <div class="input-prepend" style='float:left; padding-right:10px'>
+								  <input class="medium" id="document_identity" name="document_identity" size="30" type="text"/>
+								  <span class="help-block">RG ou carteira de identidade</span>
+							   </div>
+							   <div class="input-prepend" style='float:left; padding-right:10px'>
+								<select class="large" name="instructiondegree" id='instructiondegree'></select>
+								<span class="help-block">Grau de Instrução</span>
+							  </div>	
+							</div>
+						  </div>
+					  </div>
+				<div class="clearfix">
+				  <label for="document_company">CNPJ</label>
+				   <div class="input">
+					  <input class="medium cnpj" id="document_company" name="document_company" size="30" type="text"/>
+					  <span class="help-block">CNPJ</span>
+				   </div>
+				</div>
+				<div class="clearfix lift:SecuritySnippet.hasTissModule">
+					<label for="document_council">Nro conselho</label>
+					<div class="input">
+						<div class='inline-inputs'>
+							<div class="input-prepend" style='float:left; padding-right:10px'>
+								<input class="medium" id="document_council" name="document_council" size="30" type="text"/>
+								<span class="help-block">Nro no conselho</span>
+							</div>
+						</div>
+						<div class='inline-inputs'>
+							<div class="input-prepend" style='float:left; padding-right:10px'>
+								<select class="xlarge" name="council" id='council'></select>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="clearfix">
+				  <label for="name">Agenda</label>
+				   <div class="input">
+					  <div class="input-prepend">
+						<label class="add-on"><input type="checkbox" name="showInCalendar"></label>
+						<input class="mini" name="orderInCalendar" size="16" type="text">
+						<span class="help-block">Mostrar <span data-i18n='Profissional'></span> na agenda? / Ordem na agenda</span>
+					  </div>
+				   </div>
+				</div>
+				<div class="clearfix">
+				  <label for="showInCommand">Comanda? </label>
+				  <div class="input">
+					<div class='inline-inputs'>
+					  <div class="input-prepend" style='float:left; padding-right:10px'>
+						<label class="add-on"><input type="checkbox" name="showInCommand"></label>
+					  </div>
+					</div>
+				  </div>
+				  <label for="showInCashier">Caixa? </label>
+				  <div class="input">
+					<div class='inline-inputs'>
+					  <div class="input-prepend" style='float:left; padding-right:10px'>
+						<label class="add-on"><input type="checkbox" name="showInCashier"></label>
+					  </div>
+					</div>
+				  </div>
+				  <label for="showInCalendarPub">Agenda Pública? </label>
+				  <div class="input">
+					<div class='inline-inputs'>
+					  <div class="input-prepend" style='float:left; padding-right:10px'>
+						<label class="add-on"><input type="checkbox" name="showInCalendarPub"></label>
+					  </div>
+					</div>
+				  </div>
+				  <label for="calendarFixed">Agenda Tam Fixo? </label>
+				  <div class="input">
+					<div class='inline-inputs'>
+					  <div class="input-prepend" style='float:left; padding-right:10px'>
+						<label class="add-on"><input type="checkbox" name="calendarFixed"></label>
+					  </div>
+					</div>
+					<span class="help-block">Mostrar <span data-i18n='Profissional'></span> na comanda? / no caixa? / na agenda pública? / usar tamanho fixo em dispositivos móveis</span>
+				  </div>
+				</div>
+
+				<div class="lift:SecuritySnippet.hasAuxiliarModule clearfix">
+					<label for="is_auxiliar">É <span data-i18n='Assistente'></span></label>
+					<div class="input">
+						<select name="is_auxiliar"></select>
+						<span class="help-block">Indica que este <span data-i18n='Profissional'></span> é um <span data-i18n='Assistente'></span></span>
+					</div>
+				</div>
+				<div class="clearfix">
+					<label for="email">E-mail</label>
+					<div class="input">
+					  <div class="input-prepend">
+						<span class="add-on">@</span>
+						<input class="xlarge" id="email" name="email" size="16" type="text" autocomplete="off">
+					  </div>
+					  <span class="help-block">E-mail de contato</span>
+					</div>
+				</div>
+				<div class="clearfix">
+				  <label for="password">Senha</label>
+				   <div class="input password_container">
+					  <input class="medium password" type="password" id="password" name="password" size="30" type="text" autocomplete="off"/>
+					  <a data-original-title="Informação" data-content="clique para abrir a documentação" data-help-url='/docs/password.html' rel="popover" class="_popover_basic _help">
+						<img src="/images/info.gif" width="20">
+					  </a>
+					  <span class="help-block">Senha para acesso</span>
+				   </div>
+				</div>
+				<span id='groupPermission_text_id' class="hide">
+				  <input name="groupPermission_text"/>
+				</span>
+				<div class="clearfix">
+				  <label for="groupPermission">Permissões</label>
+				   <div class="input">
+					  <div class='inline-inputs'>
+						<div class="input-prepend" style='float:left; padding-right:10px'>
+						  <select multiple="multiple" class="xlarge" id="groupPermission" name="groupPermission" >
+							  <option class="lift:SecuritySnippet.isSuperAdmin" value="1000">Super Admin</option>
+							  <option value="1">Administrador</option>
+							  <option class="lift:SecuritySnippet.isNotEgrexSystem" value="13">Clientes</option>
+							  <option class="lift:SecuritySnippet.isEgrexSystem" value="13">Membros</option>
+							  <option class="lift:SecuritySnippet.isMedicalSystem" value="19">Prontuário</option>
+							  <option value="5">Serviços</option>
+							  <option class="lift:SecuritySnippet.hasInventoryModule" value="2">Estoque</option>
+							  <option class="lift:SecuritySnippet.hasFinancialModule" value="3">Financeiro</option>
+							  <option value="10">Relatórios</option>
+							  <option class="lift:SecuritySnippet.hasFinancialModule" value="12">Caixa</option>
+							  <option class="lift:SecuritySnippet.hasFinancialModule" value="15">Caixa Geral</option>
+							  <option value="4">Agenda Geral</option>
+							  <option value="20">Comanda Geral</option>
+							  <option value="18">Comanda Senha</option>
+							  <option class="lift:SecuritySnippet.hasFinancialModule" value="9">Gerente de Serviços</option>
+							  <option class="lift:SecuritySnippet.hasInventoryModule" value="7">Gerente de Estoque</option>
+							  <option class="lift:SecuritySnippet.hasFinancialModule" value="8">Gerente de Financeiro</option>
+							  <option value="11">Gerente de Pessoas</option>
+							  <option value="6">Prof Agenda</option>
+							  <option value="21">Prof Agenda Geral</option>
+							  <option value="16">Prof Comissão</option>
+							  <option value="17">Prof Comanda</option>
+							  <option class="lift:SecuritySnippet.isEgrexSystem" value="14">Somente Consulta</option>
+						  </select>
+						  <a data-original-title="Informação" data-content="clique para abrir a documentação" data-help-url='/docs/permission.html' rel="popover" class="_popover_basic _help">
+							<img src="/images/info.gif" width="20">
+						  </a>
+						  <span class="help-block">Permissões de acesso</span>
+						</div>
+					  </div>
+				   </div>
+				</div>
+				<div class="clearfix">
+				  <label for="cancreatecalendarevents">Pode criar agendamentos?</label>
+				  <div class="input">
+					<div class='inline-inputs'>
+					  <div class="input-prepend" style='float:left; padding-right:10px'>
+						<input type="checkbox" name="cancreatecalendarevents">
+					  </div>
+					</div>
+				  </div>
+				  <label for="cancreatecalendarevents">Pode excluir agendamentos?</label>
+				  <div class="input">
+					<div class='inline-inputs'>
+					  <div class="input-prepend" style='float:left; padding-right:10px'>
+						<input type="checkbox" name="candeletecalendarevents">
+					  </div>
+					</div>
+				  </div>
+				  <label for="cancreatecalendarevents">Pode mover agendamentos?</label>
+				  <div class="input">
+					<div class='inline-inputs'>
+					  <div class="input-prepend" style='float:left; padding-right:10px'>
+						<input type="checkbox" name="canmovecalendarevents">
+					  </div>
+					</div>
+				  </div> 
+				  <label for="cancreatecalendarevents">Pode editar agendamentos?</label>
+				  <div class="input">
+					<div class='inline-inputs'>
+					  <div class="input-prepend" style='float:left; padding-right:10px'>
+						<input type="checkbox" name="caneditcalendarevents">
+					  </div>
+					</div>
+				  </div>                 
+				</div>
+				<div class="clearfix">
+				  <label for="birthday">Data de Admissão/Rescisão</label>
+					<div class="input">
+					  <div class='inline-inputs'>
+						<div class="input-prepend" style='float:left; padding-right:10px'>
+						  <span class="add-on"><img width="16" src='/images/calendar_addon.png'/></span>
+						  <input class="input-small date" id="hireDate" name="hireDate" size="19" type="text"/>
+						</div>
+						<div class="input-prepend" style='float:left; padding-right:10px'>
+						  <span class="add-on"><img width="16" src='/images/calendar_addon.png'/></span>
+						  <input class="input-small date" id="resignationDate" name="resignationDate" size="19" type="text"/>
+						</div>
+					  </div>
+					</div>
+				</div>
+				<div class="clearfix">
+				  <label for="phone">Grupo / Unidade</label>
+				   <div class="input">
+					  <div class='inline-inputs'>
+						<div class="input-prepend" style='float:left; padding-right:10px'>
+							<select class="large" id="group" name="group" >
+							</select>
+						</div>
+						<div class="input-prepend">
+							<select class="large" id="unit" name="unit" >
+							</select>
+						</div>
+						<span class="help-block">Grupo / Unidade do <span data-i18n='Profissional'></span></span>
+					  </div>
+				   </div>
+				</div>
+				<div class="clearfix">
+				  <label for="parent">Superior</label>
+				   <div class="input">
+					  <span>
+						<img class="customer_search_button" width='24' src="/images/search.png"/>
+						<input class='mini id_customer_search' data-just_user='true' id='parent' name="parent"/> 
+						<input class="name_customer_search" name="parentname" id="parentname"  size="30" type="text" placeholder="Nome" data-just_user='true'/>
+					  </span>
+					  <span class="help-block">Superior deste <span data-i18n='Profissional'></span>, para repasse/visualização de comissão</span>
+				   </div>
+				</div>
+				<div class="clearfix">
+				  <label for="parent_percent">Comissão Superior</label>
+				  <div class="input">
+					<div class="input-append">
+					  <input class="mini" id="parent_percent" name="parent_percent" size="30" type="text"/>
+					  <span class="add-on">%</span>
+					  <a href="" class="_popover_basic" rel="popover" data-content="Caso um profissional superior seja informado no campo acima, o percentual do valor do serviço/produto, definido neste campo será retirado da comissão deste profissional e atribuido ao seu superior. 
+					  Este campo e o Superior devem ser preenchidos em conjunto." data-original-title="Informação">
+						<img width='20' src="/images/info.gif"/>
+					  </a>
+					  <span class="help-block">Percentual do valor do serviço/produto de repasse para o Superior</span>
+					</div>
+				  </div>
+				</div>
+			  </span>
+			  <span class='span4'>
+				  <img id='img_user' alt=""/>
+			  </span>                    
+			</span>
+		  </div>
+		  <div class="well">
+			<label for="btn"></label>
+			<a class="btn primary" href="/user/list">Lista</a>
+			<input class="btn success  lift:SecuritySnippet.isNotAdminRead" type="submit" value="Salvar">
+			<a class="btn primary" href="/user/edit">Inserir novo</a>
+		  </div>
+		  <ul class="tabs">
+			<li class="active tab"><a href="#address">Endereço</a></li>
+			<li class="lift:SecuritySnippet.hasPortalModule tab"><a href="#site">Portal</a></li>
+			<li><a href="#service">Horários/Serviços</a></li>
+			<li class="tab"><a href="#bankaccount">Contas Bancárias</a></li>
+			<li class="lift:SecuritySnippet.hasUnitModule tab"><a href="#companyunit">Unidades</a></li>
+			<li class="tab"><a href="#usergroup">Grupos</a></li>
+			<li><a href="#photo">Foto</a></li>
+			<li></li>
+		  </ul>
+		  <div class="pill-content">
+			  <div class="active tab_content" id="address">
+				<div class='span8'>
+				  <div class="clearfix">
+					<label for="name">Rua</label>
+					 <div class="input">
+						<div class='inline-inputs'>
+						  <input class="xlarge" id="street" name="street" size="30" type="text"/>
+						  <input class="mini" id="number" name="number" size="5 " type="text"/>           
+						</div>
+						<span class="help-block">Rua/Número</span>
+					 </div>
+				  </div>
+				  <div class="clearfix">
+					<label for="document">Complemento</label>
+					 <div class="input">
+						<input class="xlarge" id="complement" name="complement" size="30" type="text"/>
+						<span class="help-block">Casa / Ap:402 Bl:1</span>
+					 </div>
+				  </div>                          
+				  <div class="clearfix">
+					<label for="district">Bairro</label>
+					 <div class="input">
+						<div class='inline-inputs'>
+						  <input class="xlarge" id="district" name="district" size="30" type="text"/>           
+						</div>
+						<span class="help-block">Bairro</span>
+					 </div>
+				  </div>
+				  <div class="clearfix">
+					<label for="city">Uf / Cidade</label>
+					<div class="input">
+					  <div class='inline-inputs'>
+						<span>
+							<span class='hidden'>
+							  <input class="mini state_field_value" id="state_ref" name="state_ref" size="5 " type="text" />
+							</span>
+							<select class="state_field">
+							</select>
+						</span>
+						<span>
+							<span class='hidden'>
+							  <input class="city_field_value" id="city_ref" name="city_ref"/>
+							</span>
+							<select class="xlarge city_field">
+							</select>
+						</span>
+					  </div>
+					  <span class="help-block">UF / Cidade</span>
+					</div>
+				  </div>
+				  <div class="clearfix lift:SecuritySnippet.isSuperAdmin">
+					 <div class="input">
+						<div class='inline-inputs'>
+						  <input class="xlarge disabled" disabled='true' id="city" placeholder="Cidade" name="city" size="30" type="text"/>
+						  <input class="mini disabled" disabled='true' id="state" placeholder="Estado" name="state" size="5 " type="text"/>
+						</div>
+						<span class="help-block">Cidade/UF</span>
+					 </div>
+				  </div>
+				  <div class="clearfix">
+					<label for="postal_code">CEP</label>
+					 <div class="input">
+						<div class='inline-inputs'>
+						  <input class="small cep" id="postal_code" name="postal_code" size="15" type="text"/>           
+						</div>
+						<span class="help-block">CEP</span>
+					 </div>
+				  </div>      
+				  <div class="clearfix lift:SecuritySnippet.isGerirmeSystem">
+					  <label for="pointofreference">Ponto de referência</label>
+					  <div class="input">
+						  <input class="xlarge " id="pointofreference" name="pointofreference" size="30" type="textarea"/>
+						  <span class="help-block">Ponto de referência para o endereço</span>
+					  </div>
+				  </div>
+				</div>
+				<div class='span8'>
+				  <span class='map_class'>
+					<script>
+					  var imageToMap = "";
+					</script>
+					<span style="display: none">
+					  <input id="lng" name="lng" type="hidden"/>
+					  <input id="lat" name="lat" type="hidden"/>
+					</span>
+					<div id="map_canvas" style="width:100%; height: 302px"></div>
+					<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=true"></script>
+					<script  type="text/javascript" src='/js/map.js'></script>
+				  </span>
+				</div>
+			  </div> 
+			  <div class="tab_content row" id="site">
+				<div class='span12'>
+				  <div class="clearfix">
+					<label for="allowshowonsite">Mostrar no Site</label>
+					<div class="input">
+					  <div class='inline-inputs'>
+						<div class="input-prepend" style='float:left; padding-right:10px'>
+						  <input type="checkbox" name="allowshowonsite">
+						</div>
+						<div class="input-prepend" style='float:left; padding-right:20px'>
+						  <label for="allowshowonsite">Mostrar no Portal</label>
+						</div>
+						<div class="input-prepend" style='float:left; padding-right:10px'>
+						  <input type="checkbox" name="allowshowonportal">
+						</div>
+					  </div>
+					</div>
+				  </div>                     
+				  <div class="lift:SecuritySnippet.isSuperAdmin clearfix">
+					<label for="moderatedportal">Aprovado Moderador</label>
+					<div class="input">
+					  <input type="checkbox" name="moderatedportal">
+					  <span class="help-block">Se foi aprovado pelo moderador do portal do ebelle</span>
+					</div>
+				  </div>                     
+				  <div class="clearfix">
+					<label for="sitetitle">Título Público</label>        
+					<div class="input">
+					  <input class="large" id="sitetitle" name="sitetitle" size="30" type="text"/>
+					  <span class="help-block">Título como aparecerá no site/portal</span>
+					</div>
+				  </div>
+				  <div class="clearfix">
+					<label for="sitedescription">Descrição Pública</label>
+					<div class="input">
+					  <div class="input-prepend">
+						<textarea class="xlarge" id="sitedescription" name="sitedescription" size="16"></textarea>
+						<a data-original-title="Informação" data-content="clique para abrir a documentação" data-help-url='/docs/portal.html' rel="popover" class="_popover_basic _help">
+						  <img src="/images/info.gif" width="20">
+						</a>
+						<span class="help-block">Descrição como aparecerá no site/portal</span>
+					  </div>
+					</div>
+				  </div>              
+				</div>
+			  </div>              
+		  </div>
+		</form>
+		<script>
+		  $(function(){
+			$('#sitedescription').jqte();
+		  });
+		</script>
+		<div class="pill-content"> 
+			<div id='service' class='tab_content'>
+			  <iframe src="" frameborder="0" id='new_page' style="width:100%;  height: 10000px; min-width: 800px;"> 
+			  </iframe>
+			  <script>
+				$(function(){
+				  if(gup('id')){
+					$('#new_page').attr('src',"/v2/main.html#/user?id="+gup('id'));
+				  }else{
+					$('#new_page').attr('src',"/v2/main.html#/user");
+				  }
+				})
+			  </script>              
+			</div>
+			<div id="bankaccount" class='tab_content'>
+				<div class='span8'>
+				  <div class="clearfix">
+					<label for="text">Banco</label>
+					 <div class="input">
+						<select class="medium" id="bankaccount_bank" size="30" type="text">
+						</select>
+					 </div>
+				  </div>                
+				  <div class="clearfix">
+					<label for="text">Agência</label>
+					 <div class="input">
+						<input class="small" id="bankaccount_agency" size="30" type="text"/>
+					 </div>
+				  </div>                
+				  <div class="clearfix">
+					<label for="text">Conta</label>
+					 <div class="input">
+						<input class="small" id="bankaccount_account" size="30" type="text"/>
+					 </div>
+				  </div>                
+				  <div class="clearfix">
+					<label for="text">Obs</label>
+					 <div class="input">
+						<input class="xlarge" id="bankaccount_obs" size="30" type="text"/>
+					 </div>
+				  </div>                
+				  <div class="clearfix">
+					<label for="btn"></label>
+					<input class="btn success" id="bankaccount_add" type="button" value="Adicionar">
+				  </div>
+				</div>
+				<table id="grid_bankaccount" class="bordered-table zebra-striped">
+					<thead>
+						<th>Banco</th>
+						<th>Agência</th>
+						<th>Conta</th>
+						<th>Obs</th>
+						<th></th>
+					</thead>
+					<tbody>
+					</tbody>
+				</table>
+			</div>
+			<div id="companyunit" class='tab_content'>
+				<div class='span8'>
+				  <div class="clearfix">
+					<label for="text">Unidade</label>
+					 <div class="input">
+						<select class="large" id="companyunit_unit" size="30" type="text">
+						</select>
+					 </div>
+				  </div>                
+				  <div class="clearfix">
+					<label for="text">Obs</label>
+					 <div class="input">
+						<input class="xlarge" id="companyunit_obs" size="30" type="text"/>
+					 </div>
+				  </div>                
+				  <div class="clearfix">
+					<label for="btn"></label>
+					<input class="btn success" id="companyunit_add" type="button" value="Adicionar">
+				  </div>
+				</div>
+			  <table id="grid_companyunit" class="bordered-table zebra-striped">
+				<thead>
+				  <th>Unidade</th>
+				  <th>Obs</th>
+				  <th></th>
+				</thead>
+				<tbody>
+				</tbody>
+			  </table>                            
+			</div>            
+			<div id="usergroup" class='tab_content'>
+				<div class='span8'>
+				  <div class="clearfix">
+					<label for="text">Grupo</label>
+					 <div class="input">
+						<select class="large" id="usergroup_group" size="30" type="text">
+						</select>
+					 </div>
+				  </div>                
+				  <div class="clearfix">
+					<label for="text">Obs</label>
+					 <div class="input">
+						<input class="xlarge" id="usergroup_obs" size="30" type="text"/>
+					 </div>
+				  </div>                
+				  <div class="clearfix">
+					<label for="btn"></label>
+					<input class="btn success" id="usergroup_add" type="button" value="Adicionar">
+				  </div>
+				</div>
+			  <table id="grid_usergroup" class="bordered-table zebra-striped">
+				<thead>
+				  <th>Grupo</th>
+				  <th>Obs</th>
+				  <th></th>
+				</thead>
+				<tbody>
+				</tbody>
+			  </table>                            
+			</div>            
+			<div id="photo" class='tab_content'>
+			  <form class="lift:UploadImage?form=post;multipart=true">
+				<input type="hidden" name='id' id="id_user_image"/>
+				<div class="clearfix">
+				  <label for="name">Foto do Usuário</label>
+				  <div class="input">
+					<input type="text" name='file' id='file'/>
+					<span class="help-block">Selecione a foto do usuário</span>
+				  </div>
+				</div>
+				<div class="clearfix">
+				  <label for="name"></label>
+				  <div class="input-prepend">
+					<input type="submit" value="Enviar" id='submit'/>
+				  </div>
+				</div>          
+			  </form>            
+			</div>
+			<script src="/js/jquery.tablesorter.pager.js"></script>            
+			<script>
+				$(function () {
+				  $("#id_user_image").val(gup("id"));
+				  $('.tabs').tabs();
+				  if(gup("id_")){
+					$('a[href=#service]').click();
+					$("#add_service").click();
+					window.scrollTo(0, 815);
+				  }
+				  $("#user_activity").tablesorter();
+				});
+			</script>
+	  </div>
+	</div>
+</div>
