@@ -419,18 +419,18 @@
 				<li class="active"><a href="#address" data-toggle="tab">Endereço</a></li>
 				<li class="lift:SecuritySnippet.hasPortalModule"><a href="#site" data-toggle="tab">Portal</a></li>
 				<li><a href="#service" data-toggle="tab">Horários/Serviços</a></li>
-				<li><a href="#bankaccount">Contas Bancárias</a></li>
-				<li class="lift:SecuritySnippet.hasUnitModule"><a href="#companyunit">Unidades</a></li>
-				<li><a href="#usergroup">Grupos</a></li>
-				<li><a href="#photo">Foto</a></li>
+				<li><a href="#bankaccount" data-toggle="tab">Contas Bancárias</a></li>
+				<li class="lift:SecuritySnippet.hasUnitModule"><a href="#companyunit" data-toggle="tab">Unidades</a></li>
+				<li><a href="#usergroup" data-toggle="tab">Grupos</a></li>
+				<li><a href="#photo" data-toggle="tab">Foto</a></li>
 				<li></li>
 			</ul>
 
 
-			<!-- Content of Tabs -->
+			<!-- Content of tabs -->
 			<div class="tab-content">
 
-				<!-- Content of Address Tab -->
+				<!-- Content of Address tab -->
 				<div class="tab-pane active" id="address">
 					<div class='span8'>
 						<div class="form-inline">
@@ -508,7 +508,7 @@
 					</div>
 				</div>
 
-				<!-- Content of Site Tab -->
+				<!-- Content of Site tab -->
 				<div class="tab-pane" id="site">
 					<div class='span12'>
 
@@ -535,9 +535,10 @@
 						<div class="form-inline">
 							<div class="form-group">
 								<div class="form-group">
-								<label for="sitetitle">Título Público</label>
-								<input class="large" id="sitetitle" name="sitetitle" size="30" type="text"/>
-								<span class="hint right">Título como aparecerá no site/portal</span>
+									<label for="sitetitle">Título Público</label>
+									<input class="large" id="sitetitle" name="sitetitle" size="30" type="text"/>
+									<span class="hint right">Título como aparecerá no site/portal</span>
+								</div>
 							</div>
 						</div>
 						                   
@@ -559,20 +560,79 @@
 						</div>             
 					</div>
 				</div>
+
+				<!-- Content of Service tab -->
+				<div id='service' class="tab-pane">
+					<iframe src="" frameborder="0" id='new_page' style="width:100%;  height: 10000px; min-width: 800px;"></iframe>
+					<script>
+						$(function(){
+							if(gup('id')) $('#new_page').attr('src',"/v2/main.html#/user?id="+gup('id'));
+							else $('#new_page').attr('src',"/v2/main.html#/user");
+						});
+					</script>              
+				</div>
+
+				<!-- Content of Bank Accounts tab -->
+				<div class="tab-pane" id="bankaccount">
+					<div class='span8'>
+
+						<div class="form-inline">
+							<div class="form-group">
+								<label for="bankaccount_bank">Banco</label>
+								<select style="width: 200px" id="bankaccount_bank" size="30"></select>
+							</div>
+						</div>
+
+						<div class="form-inline">
+							<div class="form-group">
+								<label for="bankaccount_agency">Agência</label>
+								<input class="form-control" id="bankaccount_agency" size="30"/>
+							</div>
+						</div>
+
+						<div class="form-inline">
+							<div class="form-group">
+								<label for="bankaccount_account">Conta</label>
+								<input class="form-control" id="bankaccount_account" size="30"/>
+							</div>
+						</div>
+
+						<div class="form-inline">
+							<div class="form-group">
+								<label for="bankaccount_obs">Obs</label>
+								<input class="form-control" id="bankaccount_obs" size="30"/>
+							</div>
+						</div>
+              
+						<div class="form-inline">
+							<div class="form-group">
+								<label for="bankaccount_add"></label>
+								<input class="btn btn-success" id="bankaccount_add" type="button" value="Adicionar">
+							</div>
+						</div>
+
+						<table id="grid_bankaccount" class="table table-striped table-bordered table-hover">
+							<thead>
+								<th>Banco</th>
+								<th>Agência</th>
+								<th>Conta</th>
+								<th>Obs</th>
+								<th></th>
+							</thead>
+							<tbody>
+							</tbody>
+						</table>
+
+					</div>
+				</div>
+
+				
 			</div>
 		</form>
 
 		<!--		
 		<div class="tab-content"> 
-			<div id='service' class='tab_content'>
-			  	<iframe src="" frameborder="0" id='new_page' style="width:100%;  height: 10000px; min-width: 800px;"></iframe>
-				<script>
-					$(function(){
-						if(gup('id')) $('#new_page').attr('src',"/v2/main.html#/user?id="+gup('id'));
-					  	else $('#new_page').attr('src',"/v2/main.html#/user");
-					});
-				</script>              
-			</div>
+			
 
 			<div id="bankaccount" class='tab_content'>
 				<div class='span8'>
