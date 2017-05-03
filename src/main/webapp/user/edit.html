@@ -398,28 +398,37 @@
 				</span>
 			</div>
 
+
 			<!-- User picture panel -->
 			<div class="edit-picture">
 				<img id='img_user' alt=""/>
 			</div>
 
-		  <div class="well">
-			<label for="btn"></label>
-			<a class="btn btn-primary" href="/user/list">Lista</a>
-			<input class="btn btn-success  lift:SecuritySnippet.isNotAdminRead" type="submit" value="Salvar">
-			<a class="btn btn-primary" href="/user/edit">Inserir novo</a>
-		  </div>
-		  <ul class="tabs">
-			<li class="active tab"><a href="#address">Endereço</a></li>
-			<li class="lift:SecuritySnippet.hasPortalModule tab"><a href="#site">Portal</a></li>
-			<li><a href="#service">Horários/Serviços</a></li>
-			<li class="tab"><a href="#bankaccount">Contas Bancárias</a></li>
-			<li class="lift:SecuritySnippet.hasUnitModule tab"><a href="#companyunit">Unidades</a></li>
-			<li class="tab"><a href="#usergroup">Grupos</a></li>
-			<li><a href="#photo">Foto</a></li>
-			<li></li>
-		  </ul>
-		  <div class="pill-content">
+
+			<!-- Bottom buttons -->
+			<div class="well">
+				<label for="btn"></label>
+				<a class="btn btn-primary" href="/user/list">Lista</a>
+				<input class="btn btn-success  lift:SecuritySnippet.isNotAdminRead" type="submit" value="Salvar">
+				<a class="btn btn-primary" href="/user/edit">Inserir novo</a>
+			</div>
+
+
+			<!-- Tabs -->
+			<ul class="nav nav-tabs">
+				<li class="active"><a href="#address">Endereço</a></li>
+				<li class="lift:SecuritySnippet.hasPortalModule"><a href="#site">Portal</a></li>
+				<li><a href="#service">Horários/Serviços</a></li>
+				<li><a href="#bankaccount">Contas Bancárias</a></li>
+				<li class="lift:SecuritySnippet.hasUnitModule"><a href="#companyunit">Unidades</a></li>
+				<li><a href="#usergroup">Grupos</a></li>
+				<li><a href="#photo">Foto</a></li>
+				<li></li>
+			</ul>
+
+
+			<!-- Content of Address Tab -->
+			<div class="tab-content">
 			  <div class="active tab_content" id="address">
 				<div class='span8'>
 				  <div class="clearfix">

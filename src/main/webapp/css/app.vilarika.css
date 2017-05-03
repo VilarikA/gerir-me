@@ -37,3 +37,5 @@ div.vr-box-content .edit-picture {
 div.vr-box-content .edit-content { width: calc(100% - 230px); border-right: 1px solid #eee; padding-right: 25px; }
 div.vr-box-content .edit-picture { width: 200px; text-align: center; }
 div.vr-box-content .edit-picture img { display: inline-block; max-width: 180px; }
+
+div.vr-box-content .tab-content { border: 1px solid #ddd; border-top: 0; padding: 25px; }
