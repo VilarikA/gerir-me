@@ -37,15 +37,18 @@
 	</script>   
 	<div class="lift:UserSnippet.maintain vr-box-content">
 
-		<!-- Header buttons -->
 		<form class="crud_form lift:form.ajax" id='user_form' onsubmit="return validate();">
+
+			<!-- Header buttons -->
 			<div class="well">
 				<label for="btn"></label>
 				<a class="btn btn-primary" href="/user/list">Lista</a>
 				<input class="btn btn-success  lift:SecuritySnippet.isNotAdminRead" type="submit" value="Salvar">
 				<a class="btn btn-primary" href="/user/edit">Inserir novo</a>
 		  	</div>
-		  	<div>
+
+		  	<!-- Form content -->
+		  	<div class="edit-content">
 				<span class='row'>
 			  		<span class='span12'>
 
@@ -109,12 +112,14 @@
 									<span class="input-group-addon"><img src='/images/phone.png'/></span>
 									<input class="form-control" id="phone" name="phone"/>
 								</div>
-
+							</div>
+							<div class="form-group">
 								<div class="input-group">
 									<span class="input-group-addon"><img src='/images/mobile_phone.png'/></span>
 									<input class="form-control" id="mobilePhone" name="mobilePhone"/>
 								</div>
-
+							</div>
+							<div class="form-group">
 								<div class="input-group">
 									<span class="input-group-addon"><img src='/images/mobile_phone.png'/></span>
 									<input class="form-control" id="email_alternative" name="email_alternative"/>
@@ -392,12 +397,14 @@
 							</div>
 						</div>
 
-			  </span>
-			                    
-			</span>
-		  </div>
+			  		</span>
+				</span>
+			</div>
 
-			<span class='span4'><img id='img_user' alt=""/></span>
+			<!-- User picture panel -->
+			<div class="edit-picture">
+				<img id='img_user' alt=""/>
+			</div>
 
 		  <div class="well">
 			<label for="btn"></label>
