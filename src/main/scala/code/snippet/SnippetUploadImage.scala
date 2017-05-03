@@ -41,11 +41,13 @@ trait SnippetUploadImage {
          * I'm 99% sure I could use open_! but I'd rather get
          * a broken link than a NPE
          */
-        val name = fileName.is.openOr("BrokenLink") + fp.fileName.takeRight(4)
-        val thumbName = "thumb_"+name+".png";
-        val homeName = "home_"+name+".png"
-        val oFileThumb = new File(filePath,  thumbName)
-        val oFileHome = new File(filePath,  homeName)
+        var name = fileName.is.openOr("BrokenLink") + fp.fileName.takeRight(4)
+        var thumbName = "thumb_"+name+".png";
+        var homeName = "home_"+name+".png"
+        var oFileThumb = new File(filePath,  thumbName)
+        println ("vaiii ==================================== " + oFileThumb)
+        var oFileHome = new File(filePath,  homeName)
+        println ("vaiii ==================================== " + oFileHome)
         if(resize_?){
           ImageIO.write(ImageResizer.resize(new ByteArrayInputStream(fp.file),70,130), "png", oFileThumb);
           ImageIO.write(ImageResizer.resize(new ByteArrayInputStream(fp.file),430,230), "png", oFileHome);
