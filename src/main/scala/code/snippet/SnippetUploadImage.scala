@@ -31,7 +31,8 @@ trait SnippetUploadImage {
       case x =>{
         
         val filePath = if(Project.isLinuxServer){
-          (Props.get("photo.path") openOr "/tmp/")+imageFolder
+          //(Props.get("photo.path") openOr "/tmp/")+imageFolder
+          "/tmp/"
         }else{
           "c:\\vilarika\\"+imageFolder
         }
