@@ -20,6 +20,8 @@ input.form-control.input-inline {
 	width: initial;
 }
 
+.form-inline .form-group { margin-bottom: 15px; }
+
 .form-group input.inline,
 .form-group select.inline,
 .form-group label.inline,

@@ -14,12 +14,9 @@
 #payment_form {width: 90%; left: 5%; margin: auto auto auto auto; top:5%; height:90%;max-height:100%;}
 .img_customer_search{
 	position: relative;
-	bottom: -10px;
 	height: 30px;
 }
-.name_customer_search{
-	top : 10px;
-}
+
 .in_button{
 	min-width: 10%;
 	position: fixed;

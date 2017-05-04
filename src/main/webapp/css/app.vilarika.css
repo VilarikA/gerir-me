@@ -1,0 +1,41 @@
+/**
+ * Forms & Inputs
+ **/
+div.vr-box-content {}
+
+div.vr-box-content .form-inline { margin-bottom: 15px; }
+
+div.vr-box-content .form-inline label { 
+	display: inline-block; 
+	width: 120px;
+	text-align: right;
+}
+
+div.vr-box-content .form-inline select { min-width: 120px; }
+
+div.vr-box-content .form-inline .form-group.with-right-margin:not(:first-child) { 
+	min-width: 0; margin-right: 15px; 
+}
+
+div.vr-box-content .form-inline .hint { 
+	display: block;
+	font-size: 12px;
+	color: #bfbfbf;
+	padding: 2px; 
+}
+
+div.vr-box-content .form-inline .hint.right {
+	text-align: right;
+}
+
+div.vr-box-content .edit-content,
+div.vr-box-content .edit-picture {
+	display: inline-block;
+	vertical-align: top;
+}
+
+div.vr-box-content .edit-content { width: calc(100% - 230px); border-right: 1px solid #eee; padding-right: 25px; }
+div.vr-box-content .edit-picture { width: 200px; text-align: center; }
+div.vr-box-content .edit-picture img { display: inline-block; max-width: 180px; }
+
+div.vr-box-content .tab-content { border: 1px solid #ddd; border-top: 0; padding: 25px; }
