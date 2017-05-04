@@ -119,6 +119,9 @@ class AccountCategory extends Audited[AccountCategory] with PerCompany with IdPK
   def hasChilds = directyChilds.size > 0
 
   private def saveWithoutUpdateTree = {
+    if (this.testIfDuplicatedName (this.id, this.name)) {
+      this.name.set (this.name + "  1")
+    }
     super.save
   }
   override def save = {
@@ -146,10 +149,20 @@ class AccountCategory extends Audited[AccountCategory] with PerCompany with IdPK
     }
     super.delete_!;
   }
+
+  /*
+  Se for fazer outro levar para o nome searchable trai
+  tem accountcategory e productmapper já
+  */
   def reorgCategory = {
     val category = AccountCategory.findAllInCompany (OrderBy (maxTreeNode, Descending))
+    var i = 1;
     category.foreach((c)=>{
       println ("vaiii ================ category full name === " + c.fullName)
+      if (c.testIfDuplicatedName (c.id, c.name)) {
+        c.name (c.name + " " + i.toString)
+        i = i + 1;
+      }
       c.obs (c.obs+" ")
       c.save        
     })

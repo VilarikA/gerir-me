@@ -317,7 +317,8 @@ object BusinessRulesUtil{
 	val EMPTY = ""
 	val notCamelize = "de" :: "da" :: "do" :: "das" :: "dos" :: "a" :: "à" :: "e" :: "em" :: "com" :: "por" :: Nil
 	def toShortString(value:String) = {
-		toCamelCase(value.trim()).substring(0,scala.math.min(value.length, 20))
+    var len = toCamelCase(value.trim()).length
+		toCamelCase(value.trim()).substring(0,scala.math.min(len, 20))
 	}
 	def md5(value:String) = Project.md5(value)
 	def toCamelCase(value:String) = {
@@ -392,6 +393,20 @@ object BusinessRulesUtil{
     	}else{
 			EMPTY
     	}
+    }
+
+    def convertChars (name:String):String = {
+        var name_aux = name;
+        name_aux = name_aux.replaceAll ("ǁ", "Á")
+        name_aux = name_aux.replaceAll ("Ǉǃ", "ÇÃ")
+        name_aux = name_aux.replaceAll ("Ǉ", "c")
+        name_aux = name_aux.replaceAll ("ǚ", "Ú")
+        name_aux = name_aux.replaceAll ("ǉ", "É")
+        name_aux = name_aux.replaceAll ("Ǔ", "Ó")
+        name_aux = name_aux.replaceAll ("ǂ", "Â")
+        name_aux = name_aux.replaceAll ("SǃO", "SÃO")
+        name_aux = name_aux.replaceAll ("Ǎ", "Í")
+        name_aux
     }
 
     def roundHalfUp(d:Double) = {

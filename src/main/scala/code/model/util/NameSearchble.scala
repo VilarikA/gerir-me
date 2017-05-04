@@ -82,15 +82,32 @@ trait NameSearchble [self <: net.liftweb.mapper.Mapper[self]]{
       this.set(BusinessRulesUtil.toCamelCase(this.is.trim()));
     }
   }
+      def testIfDuplicatedName ( id1: Long, name1 : String) = {
+        if(!allowDuplicated_? && self.getSingleton.count(
+          By(self.company, self.company.is), 
+          Like(self.name, BusinessRulesUtil.toCamelCase(name1)), //self.name.is.trim)), 
+          NotBy(self.id, id1) //self.id.is)
+          ) > 0){
+          true
+        } else {
+          false
+        }
+      }
 
       def validateDuplicatedName = {
+        if (testIfDuplicatedName (self.id.is, self.name.is.trim)) {
+          throw new RuntimeException("Já existe um registro com esse nome : %s".format(self.name.is))
+        }
+/*
         if(!allowDuplicated_? && self.getSingleton.count(
           By(self.company, self.company.is), 
           Like(self.name, BusinessRulesUtil.toCamelCase(self.name.is.trim)), 
           NotBy(self.id, self.id.is)) > 0){
           throw new RuntimeException("Já existe um registro com esse nome : %s".format(self.name.is))
         }
+*/
       }
+
       protected class MyShortName(obj: self) extends MappedPoliteString(obj,20) with LifecycleCallbacks {
         override def beforeCreate() {
           super.beforeCreate;
