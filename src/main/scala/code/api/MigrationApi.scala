@@ -25,10 +25,10 @@ import net.liftweb.json._
 //implicit val formats = DefaultFormats // Brings in default date formats etc.
 
 
-object ComissionApi extends RestHelper  with net.liftweb.common.Logger  {
+object MigrationApi extends RestHelper  with net.liftweb.common.Logger  {
 	serve {
 
-		case "comission" :: "process_start" :: Nil Post _ =>{
+		case "migration" :: "process_start" :: Nil Post _ =>{
 			for {
 				dateStart <- S.param("start") ?~ "start parameter missing" ~> 400
 				dateEnd <- S.param("end") ?~ "end parameter missing" ~> 400
@@ -39,10 +39,13 @@ object ComissionApi extends RestHelper  with net.liftweb.common.Logger  {
 				JInt(1)
 			}			
 		}
-		case "comission" :: "category_start" :: Nil Post _ =>{
+		case "migration" :: "category_start" :: Nil Post _ =>{
 			AccountCategory.reorgCategory
 			JInt(1)
-			
+		}
+		case "migration" :: "product_start" :: Nil Post _ =>{
+			Activity.reorgMigration
+			JInt(1)
 		}
 	}
 }

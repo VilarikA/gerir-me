@@ -6,7 +6,7 @@
   <script type="text/javascript">
   $(function () {
     $("#send").click(function(){
-      $.post('/comission/process_start', {start:$('#start').val(), end:$('#end').val()}, function(){
+      $.post('/migration/process_start', {start:$('#start').val(), end:$('#end').val()}, function(){
         alert('Processo iniciado com sucesso. Este processamento pode demorar alguns minutos!');
       });
     });

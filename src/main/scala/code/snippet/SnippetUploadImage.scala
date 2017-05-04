@@ -50,9 +50,14 @@ trait SnippetUploadImage {
           ImageIO.write(ImageResizer.resize(new ByteArrayInputStream(fp.file),70,130), "png", oFileThumb);
           ImageIO.write(ImageResizer.resize(new ByteArrayInputStream(fp.file),430,230), "png", oFileHome);
         }else{
-          ImageIO.write(ImageIO.read(new ByteArrayInputStream(fp.file)),"png", oFileThumb);
-          ImageIO.write(ImageIO.read(new ByteArrayInputStream(fp.file)), "png", oFileHome);
+          try {
+            ImageIO.write(ImageIO.read(new ByteArrayInputStream(fp.file)),"png", oFileThumb);
+            ImageIO.write(ImageIO.read(new ByteArrayInputStream(fp.file)), "png", oFileHome);
+          }catch{
+            case e:Exception => S.error(e.getMessage + " " + filePath + " " + homeName)
+          }
         }
+
         setImageToEntity(homeName, thumbName);
         S.notice("Imagem enviada com sucesso!")
       }

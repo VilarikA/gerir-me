@@ -118,10 +118,48 @@ trait ProductMapper[OwnerType <: ProductMapper[OwnerType]] extends Audited[Owner
     def lineIds = lines.map(_.line.is)
 
     def lines_text = lineIds.map(_.toString).foldLeft("0,")(_+","+_)
+ 
+    /*
+    Se for fazer outro levar para o nome searchable trai
+    tem accountcategory e productmapper já
+    */
+    def reorgMigration = {
+        val product = Product.findAllInCompany 
+        var i = 1;
+        product.foreach((c)=>{
+            //val n1 = this.name.is
+            c.name.set (BusinessRulesUtil.convertChars(c.name));
+            println ("vaiii ================ product name === " + c.name)
+            if (c.testIfDuplicatedName (c.id, c.name)) {
+                c.name (c.name + " " + i.toString)
+                i = i + 1;
+            }
+            c.obs (c.obs+" ")
+            c.save        
+        })
+        val activity = Activity.findAllInCompany 
+        i = 1;
+        activity.foreach((c)=>{
+            c.name.set (BusinessRulesUtil.convertChars(c.name));
+            println ("vaiii ================ activity name === " + c.name)
+            if (c.testIfDuplicatedName (c.id, c.name)) {
+                c.name (c.name + " " + i.toString)
+                i = i + 1;
+            }
+            c.obs (c.obs+" ")
+            c.save        
+        })
+    }
+
+
     override def save() = {
         if(this.external_id.is != "" && getSingleton.asInstanceOf[OnlyCurrentCompany[OwnerType]].countInCompany(NotBy(self.id,this.id),By(self.external_id,this.external_id))>0){
             throw new RuntimeException("Já existe um produto com o código externo %s".format(this.external_id.is))
         }
+/*
+        val n1 = this.name.is
+        this.name.set (BusinessRulesUtil.convertChars(n1));
+*/
         super.save()
     }
     override def delete_! = {
