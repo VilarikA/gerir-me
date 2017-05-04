@@ -260,7 +260,7 @@ class Boot {
     LiftRules.dispatch.append(OffSaleProductApi)
     LiftRules.dispatch.append(PayrollEventApi)  
     LiftRules.dispatch.append(MobileApi)
-    LiftRules.dispatch.append(ComissionApi)
+    LiftRules.dispatch.append(MigrationApi)
     LiftRules.dispatch.append(CompanyApi)
     LiftRules.dispatch.append(WorkHourApi)
     LiftRules.dispatch.append(UserActivityApi)
