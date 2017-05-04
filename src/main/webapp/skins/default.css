@@ -15,7 +15,10 @@
 .img_customer_search{
 	position: relative;
 	height: 30px;
+	top: 10px;
 }
+
+.name_customer_search { top: 10px; }
 
 .in_button{
 	min-width: 10%;

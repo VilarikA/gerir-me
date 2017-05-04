@@ -1,0 +1,47 @@
+/**
+ * Style created by VilarikA's team
+ * @author: Stanley Sathler <stanleysathlerpinto@gmail.com>
+ **/
+
+nav.vr-sidebar {
+	background-color: #324555;
+	bottom: 0;
+	color: #f2f2f2;
+	left: 0;
+	padding: 25px 0;
+	position: fixed;
+	top: 0;
+	width: 200px;
+}
+
+	nav.vr-sidebar,
+	nav.vr-sidebar a {
+		color: #f2f2f2;
+		text-decoration: none;
+	}
+
+nav.vr-sidebar .header {
+	margin-bottom: 10px;
+	text-align: center;
+}
+
+	nav.vr-sidebar .header .picture img { 
+		border: 2px solid white;
+		border-radius: 50%;
+		display: inline-block;
+		width: 60px; 
+	}
+
+nav.vr-sidebar .menu {
+	list-style-type: none;
+	padding-left: 0;
+}
+
+	nav.vr-sidebar .menu li {
+		border-bottom: 1px solid #21323d;
+		height: 44px;
+		line-height: 44px;
+		padding-left: 10px;
+	}
+
+
