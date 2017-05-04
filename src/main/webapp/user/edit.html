@@ -371,7 +371,6 @@
 								<label for="parent">Superior</label>
 								<input class="form-control id_customer_search" data-just_user='true' id='parent' name="parent"/> 
 								<input class="name_customer_search" style="top: 0" name="parentname" id="parentname"  size="30" placeholder="Nome" data-just_user='true'/>
-								
 							</div>
 						</div>
 
@@ -627,27 +626,27 @@
 				</div>
 
 				<!-- Content of Units tab -->
-				<div id="companyunit" class='tab-pane'>
+				<div id="companyunit" class="tab-pane">
 					<div class='span8'>
 
 						<div class="form-inline">
 							<div class="form-group">
-								<label for="text">Unidade</label>
-								<select style="width: 200px" id="companyunit_unit" size="30"></select>
+								<label for="companyunit_unit">Unidade</label>
+								<select style="width: 200px" name="companyunit_unit" id="companyunit_unit" size="30"></select>
 							</div>
 						</div>
 
 						<div class="form-inline">
 							<div class="form-group">
 								<label for="companyunit_obs">Obs</label>
-								<input class="form-control" id="companyunit_obs" size="30"/>
+								<input class="form-control" name="companyunit_obs" id="companyunit_obs" size="30"/>
 							</div>
 						</div>
 
 						<div class="form-inline">
 							<div class="form-group">
 								<label for="companyunit_add"></label>
-								<input class="btn btn-success" id="companyunit_add" type="button" value="Adicionar">
+								<input class="btn btn-success" name="companyunit_add" id="companyunit_add" type="button" value="Adicionar">
 							</div>
 						</div>
 					</div>
@@ -660,76 +659,80 @@
 						</thead>
 						<tbody></tbody>
 					</table>                        
-				</div>     
+				</div>
+
+				<!-- Content of Groups tab -->
+				<div id="usergroup" class="tab-pane">
+					<div class="span8">
+						
+						<div class="form-inline">
+							<div class="form-group">
+								<label for="usergroup_group">Grupo</label>
+								<select style="width: 200px" id="usergroup_group" name="usergroup_group" size="30"></select>
+							</div>
+						</div>
+
+						<div class="form-inline">
+							<div class="form-group">
+								<label for="usergroup_obs">Obs</label>
+								<input class="form-control" id="usergroup_obs" name="usergroup_obs" size="30"/>
+							</div>
+						</div>	
+
+						<div class="form-inline">
+							<div class="form-group">
+								<label for="usergroup_add"></label>
+								<input class="btn btn-success" id="usergroup_add" type="button" value="Adicionar">
+							</div>
+						</div>			
+
+						<table id="grid_usergroup" class="table table-bordered table-hover table-striped">
+							<thead>
+								<th>Grupo</th>
+								<th>Obs</th>
+								<th></th>
+							</thead>
+							<tbody></tbody>
+						</table> 
+					</div>
+				</div>
+
+				<div id="photo" class="tab-pane">
+					<form class="lift:UploadImage?form=post;multipart=true">
+						<input type="hidden" name="id" id="id_user_image"/>
+
+						<div class="form-inline">
+							<div class="form-group">
+								<label for="name">Foto do Usuário</label>
+								<input type="file" name="file" id="file"/>
+								<span class="hint right">Selecione a foto do usuário</span>
+							</div>
+						</div>
+
+						<div class="form-inline">
+							<div class="form-group">
+								<label for="name"></label>
+								<input type="submit" value="Enviar" id="submit"/>
+							</div>
+						</div>
+					</form>
+				</div>
+
+				<script>
+					$(function () {
+						$("#id_user_image").val(gup("id"));
+						$('.tabs').tabs();
+						if(gup("id_")){
+							$('a[href=#service]').click();
+							$("#add_service").click();
+							window.scrollTo(0, 815);
+						}
+
+						$("#user_activity").tablesorter();
+					});
+				</script>
 			</div>
 		</form>
 
-		<!--		
-		<div class="tab-content"> 
-			
-			       
-			<div id="usergroup" class='tab_content'>
-				<div class='span8'>
-				  <div class="clearfix">
-					<label for="text">Grupo</label>
-					 <div class="input">
-						<select class="large" id="usergroup_group" size="30" type="text">
-						</select>
-					 </div>
-				  </div>                
-				  <div class="clearfix">
-					<label for="text">Obs</label>
-					 <div class="input">
-						<input class="xlarge" id="usergroup_obs" size="30" type="text"/>
-					 </div>
-				  </div>                
-				  <div class="clearfix">
-					<label for="btn"></label>
-					<input class="btn success" id="usergroup_add" type="button" value="Adicionar">
-				  </div>
-				</div>
-			  <table id="grid_usergroup" class="bordered-table zebra-striped">
-				<thead>
-				  <th>Grupo</th>
-				  <th>Obs</th>
-				  <th></th>
-				</thead>
-				<tbody>
-				</tbody>
-			  </table>                            
-			</div>            
-			<div id="photo" class='tab_content'>
-			  <form class="lift:UploadImage?form=post;multipart=true">
-				<input type="hidden" name='id' id="id_user_image"/>
-				<div class="clearfix">
-				  <label for="name">Foto do Usuário</label>
-				  <div class="input">
-					<input type="text" name='file' id='file'/>
-					<span class="help-block">Selecione a foto do usuário</span>
-				  </div>
-				</div>
-				<div class="clearfix">
-				  <label for="name"></label>
-				  <div class="input-prepend">
-					<input type="submit" value="Enviar" id='submit'/>
-				  </div>
-				</div>          
-			  </form>            
-			</div>
-			<script src="/js/jquery.tablesorter.pager.js"></script>            
-			<script>
-				$(function () {
-				  $("#id_user_image").val(gup("id"));
-				  $('.tabs').tabs();
-				  if(gup("id_")){
-					$('a[href=#service]').click();
-					$("#add_service").click();
-					window.scrollTo(0, 815);
-				  }
-				  $("#user_activity").tablesorter();
-				});
-			</script>
-	  </div>
-	  -->
 	</div>
 </div>
