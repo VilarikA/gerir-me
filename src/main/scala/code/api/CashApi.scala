@@ -428,7 +428,6 @@ object CashApi extends RestHelper with net.liftweb.common.Logger  {
 				case (s:String) if(s != "" && s != "0") => Project.strToDate(date+" "+AuthUtil.company.calendarStart.is+":00:00")
 				case _ => new Date()
 			}
-			
 		TreatmentService.loadTreatmentByCommandOrCustomer(
 			command, customer.toLong, dateIniValue,
 			dateValue, AuthUtil.unit.id.is) match {

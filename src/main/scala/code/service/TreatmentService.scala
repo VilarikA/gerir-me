@@ -160,13 +160,24 @@ object  TreatmentService extends net.liftweb.common.Logger {
 
 	def loadTreatmentByCommandOrCustomer(command:String,customer:Long,dateIni:Date,date:Date,unit:Long):List[Treatment] = {
 		if (command == "0") {
+			// vai pelo customer
 			Treatment.findAllInCompany(By(Treatment.customer,customer),
 			  By(Treatment.unit,unit),
 			  By(Treatment.hasDetail,true),
 			  BySql("dateevent between date(?) and date(?)",IHaveValidatedThisSQL("dateevent","01-01-2012 00:00:00"),dateIni, date),
 			  OrderBy(Treatment.id, Ascending)
 			 )
+		} else if (customer != 0) {
+			// novo - 04/05/2017 vai pelos 2 comanda e customer
+			Treatment.findAllInCompany(By(Treatment.customer,customer),
+			  By(Treatment.command,command), 
+			  By(Treatment.unit,unit),
+			  By(Treatment.hasDetail,true),
+			  BySql("dateevent between date(?) and date(?)",IHaveValidatedThisSQL("dateevent","01-01-2012 00:00:00"),dateIni, date),
+			  OrderBy(Treatment.id, Ascending)
+			 )
 		} else {
+			// vai pela comanda
 			Treatment.findAllInCompany(By(Treatment.command,command),
 			  By(Treatment.unit,unit),
 			  By(Treatment.hasDetail,true),
