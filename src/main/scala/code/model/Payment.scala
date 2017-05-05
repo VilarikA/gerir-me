@@ -29,6 +29,10 @@ class Payment extends LongKeyedMapper[Payment] with PerCompany with IdPK with Cr
       reduceLeft( _+" , "+_)
     }
 
+    def unitId = {
+      treatments(0).unit.obj.get.id.is
+    }
+
     def categoryByType (category:AccountCategory) = {
       treatments(0).details(0).categoryByType (category)
     }
