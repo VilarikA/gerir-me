@@ -195,9 +195,6 @@ object  TreatmentService extends net.liftweb.common.Logger {
 
 		if ((AuthUtil.user.id.is != userCode.toLong) && 
 			AuthUtil.user.isSimpleUserCalendarView) {
-			// evita que atendimento pago seja alterado gerava erro de comissao se o atend
-			// fosse moviedo para outro usuario
-//			TratmentServer ! TreatmentMessage("SaveUpdateTratment",end)		
   	        throw new RuntimeException("Você não tem permissão para inserir atendimentos para outros profissionais!")
 		}
 
@@ -400,9 +397,6 @@ object  TreatmentService extends net.liftweb.common.Logger {
 			var user = treatment.user.obj.get;
 			if ((AuthUtil.user.id.is != user.id.is) && 
 				AuthUtil.user.isSimpleUserCalendarView) {
-				// evita que atendimento pago seja alterado gerava erro de comissao se o atend
-				// fosse moviedo para outro usuario
-				// TratmentServer ! TreatmentMessage("SaveUpdateTratment",end)		
 	  	        throw new RuntimeException("Você não tem permissão para excluir atendimentos de outros profissionais!")
 			}
 		}
