@@ -37,7 +37,8 @@ var LoginController = function($scope, $http){
 		if (document.location.href.indexOf("local") != -1) {
 			$http.post("/security/login_email", {company : "", email : email, password : password, hasCompany : false}).success(loginSoccess).error(loginError);
 		} else {
-			$http.post("http://45.33.99.152:7171/security/login_email", {company : "", email : email, password : password, hasCompany : false}).success(loginSoccess).error(loginError);
+			$http.post("/security/login_email", {company : "", email : email, password : password, hasCompany : false}).success(loginSoccess).error(loginError);
+			//$http.post("http://45.33.99.152:7171/security/login_email", {company : "", email : email, password : password, hasCompany : false}).success(loginSoccess).error(loginError);
 		}
 	};
 	$scope.rememberPassword = function(email){
