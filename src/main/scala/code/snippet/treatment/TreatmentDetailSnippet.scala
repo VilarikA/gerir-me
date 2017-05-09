@@ -45,6 +45,7 @@ class  TreatmentDetailSnippet extends PaginatorSnippet [TreatmentDetail] {
 		case _ => ""
 	}	
 
+	def teeth = DomainTable.findAll(OrderBy(DomainTable.cod, Ascending),By(DomainTable.domain_name, "dente")).map(t => (t.cod.is.toString,t.name.is))
 	def activities = ("0", "Selecione um Serviço") :: Activity.findAllInCompany.map(t => (t.id.is.toString,t.name.is))
 	def auxiliars = ("0", "Selecione um Asistente") :: User.findAllInCompany.map(t => (t.id.is.toString,t.name.is))
 	def units = ("0", "Selecione uma Unidade") :: CompanyUnit.findAllInCompany(OrderBy(CompanyUnit.name, Ascending)).map(t => (t.id.is.toString, t.name.is))
@@ -122,6 +123,8 @@ class  TreatmentDetailSnippet extends PaginatorSnippet [TreatmentDetail] {
 					ac.company(AuthUtil.company)
 //					ac.weekDays(S.params("weekDays").foldLeft("")(_+","+_))
 					ac.save
+					val ac1 = Treatment.findByKey(ac.treatment.toLong).get
+					ac1.save
 				   	S.notice("Detalhe de Atendimento salvo com sucesso!")
 				   	S.redirectTo("/treatment/treatmentdetail?id="+ac.id.is)
 		   		}catch{
@@ -139,6 +142,8 @@ class  TreatmentDetailSnippet extends PaginatorSnippet [TreatmentDetail] {
 		    "name=auxiliar" #> (SHtml.select(auxiliars,Full(ac.auxiliar.is.toString),(s:String) => ac.auxiliar( s.toLong)))&
 			"name=product" #> (SHtml.text(ac.product.is.toString, (p:String) => ac.product(p.toLong)))&
 			"name=wayofaccess" #> (SHtml.text(ac.getTdEdoctus.wayOfAccess.is, ac.getTdEdoctus.wayOfAccess(_)))&
+			"name=tooth" #> (SHtml.select(teeth,Full(ac.getTdEdoctus.tooth.is), ac.getTdEdoctus.tooth(_)))&
+//			"name=hospitalizationType" #> (SHtml.select(hospitalizationtypes,Full(ac.getTreatEdoctus.hospitalizationType.is), ac.getTreatEdoctus.hospitalizationType(_)))&
 			"name=price" #> (SHtml.text(ac.price.is.toString, (v:String) => { if(v !="")ac.price(v.toDouble)} ))&
 			"name=amount" #> (SHtml.text(ac.amount.is.toString, (v:String) => { if(v !="")ac.amount(v.toDouble)} ))&
 			"name=obs" #> (SHtml.textarea(ac.obs.is, ac.obs(_))++SHtml.hidden(process))

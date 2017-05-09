@@ -740,7 +740,7 @@ object Reports2 extends RestHelper with ReportRest with net.liftweb.common.Logge
 					left join treatedoctus ted on ted.treatment = tr.id
 					left join offsale os on os.id = ted.offsale
 					where tr.company = ? and tr.dateevent between ? and ?
-					and tr.status <> 5 and tr.hasdetail = true
+					and tr.status <> 5 -- and tr.hasdetail = true
 					%s %s order by tr.dateevent desc
 					 """
 				toResponse(SQL.format(customer, unit),List(AuthUtil.company.id.is, start, end))
@@ -1029,10 +1029,11 @@ order by date_c, 2
 				}
 
 				val SQL = """
-					select pr.name, ba.name, price/amount, amount, price, td.obs, 
+					select pr.name, tded.tooth, ba.name, price/amount, amount, price, td.obs, 
 					td.external_id, td.id from treatmentdetail td
 					inner join product pr on (pr.id = td.activity or pr.id = td.product) and pr.productclass = ?
 					left join business_pattern ba on ba.id = td.auxiliar
+					left join tdedoctus tded on tded.treatmentdetail = td.id
 					where td.company = ? and td.treatment = ? order by td.id
 		        	"""
 				toResponse(SQL,List(productclass.toLong, AuthUtil.company.id.is, treatment))

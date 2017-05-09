@@ -402,6 +402,7 @@ $(function(){
 			$("#animal").val("").change();
 			$("#offsale").val("").change();
 	});
+	$('#tooth').toothField(false);
 	$('#auxiliar').auxiliarField(false);
     $("#offsale").offSaleField(true);
     Customer.addonsListeners.push(processOffSale);

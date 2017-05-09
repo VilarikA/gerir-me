@@ -14,6 +14,15 @@
     var total_customers = 0;
     var total_invoices = 0;
     fields[0] = "int";
+    fields[1] = {
+      type: "format",
+      decode: function(name, row) {
+        // para envio de email deve aparecer em um decode
+        // tem exemplos de receber um id como parm ai usa push(id) como no birhtdays
+        customers.push(row[0]); 
+        return "<a href='/customer/edit?id=" + row[0] + "' target='_customer_maste'>" + name + "</a>";
+      }
+    }
     fields[5] = "date";
     if (!hasUnitModule) {
       fields[4]="none";
@@ -22,7 +31,7 @@
       type : "format",
       decode: function(name, row) {
         customers.push(row[0]);
-        return "<a class='btn' href='/customer/edit?id="+row[0]+"' target='_customer_maste'>Ir</a> <a class='btn success' href='/treatment/treatment?id="+row[9]+"' target='_treatment_maste'>Editar</a>"
+        return "<a class='btn success' href='/treatment/treatment?id="+row[9]+"' target='_treatment_maste'>Editar</a>"
       }
     };
     $("#unit").unitField(true,false);
@@ -63,7 +72,7 @@
     <div>
       <form id="form_report" class="well form-search" method='get'>
         <h1><span class="lift:CompanySnippet.thumb"> </span>
-          <input class="report_title local_storage" id="title_customer_treatment_report" name="title_customer_treatment_report" size="30" type="text" value="Atendimentos"/>
+          <input class="report_title local_storage" id="title_customer_treatment_report" name="title_customer_treatment_report" size="30" type="text" value="Orçamentos/Atendimentos"/>
         </h1>
         <div class="row">
           <div class="span9">
@@ -127,6 +136,7 @@
               <label for=""></label>
                <div class="input">
                   <button type="button" id="send" class="btn success">Buscar</button>
+                  <a class="btn primary" href="/treatment/treatment" target='_treatment_maste'>Inserir novo</a>
                </div>
             </div>                        
           </div>

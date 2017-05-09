@@ -464,6 +464,12 @@ class TreatmentDetail extends Audited[TreatmentDetail] with IdPK with CreatedUpd
                 getTdEpet.save
             }
         }
+        if (AuthUtil.company.appType.isEsmile || AuthUtil.company.appType.isEdoctus) {
+            // edoctus tb seria necessário para o tiss
+            if (this.id > 0) {
+                getTdEdoctus.save
+            }
+        }
         super.save()
     }    
 

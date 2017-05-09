@@ -58,6 +58,13 @@ object UtilApi extends RestHelper  with net.liftweb.common.Logger  {
 				JsArray(Nil)
 			}
 		}		
+		case "crud" :: "teeths" :: Nil Get _ =>{
+			JsArray(DomainTable.findAll(By(DomainTable.domain_name,"dente"),
+				OrderBy(DomainTable.name, Ascending)).map((domaintable)=>{
+				JsObj(("name",domaintable.name.is), ("cod",domaintable.cod.is))
+			}
+			))
+		}
 	}
 }
 
