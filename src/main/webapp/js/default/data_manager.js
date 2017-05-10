@@ -25,6 +25,7 @@ var DataManagerClass = function() {
 	var suppliers = [];
 	var terms = [];
 	var costCenters = [];
+	var teeths = [];
 
 
 	this.getSelectDataSource = function(url_source, callback, params) {
@@ -182,6 +183,18 @@ var DataManagerClass = function() {
 			$.get(url, function(t) {
 				eval("civilstatuses = " + t);
 				callback(civilstatuses);
+			});
+		}
+	};
+
+	this.getTeeths = function(callback) {
+		if (teeths.length > 0) {
+			callback(teeths)
+		} else {
+			url = "/crud/teeths";
+			$.get(url, function(t) {
+				eval("teeths = " + t);
+				callback(teeths);
 			});
 		}
 	};

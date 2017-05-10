@@ -5,7 +5,8 @@ $(function() {
 		var recordsStr = ""
 	    var hasEdoctusSystem = $('.has-edoctus-system').length > 0;
 	    var hasEphysioSystem = $('.has-ephysio-system').length > 0;
-	    if (hasEdoctusSystem || hasEphysioSystem) {
+	    var hasEsmileSystem = $('.has-esmile-system').length > 0;
+	    if (hasEdoctusSystem || hasEphysioSystem || hasEsmileSystem) {
 //		if ((document.location.href.indexOf("edoctus") != -1) ||
 //			(document.location.href.indexOf("ephysio") != -1)) {
 			recordsStr = '<a href="#" title="Ir para prontuário" class="openRecordsSelected"><img src="/images/records.png" class="img_customer_search" width="32">'

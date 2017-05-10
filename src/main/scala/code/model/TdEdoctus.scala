@@ -16,6 +16,7 @@ class TdEdoctus extends Audited[TdEdoctus] with IdPK with CreatedUpdated with Cr
     def getSingleton = TdEdoctus
     object treatmentDetail extends MappedLongForeignKey(this,TreatmentDetail)
     object wayOfAccess extends MappedString(this, 1)
+    object tooth extends MappedString(this, 20)
     
     def toXmlTiss = {
        var strXml:String ="""

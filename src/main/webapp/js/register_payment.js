@@ -394,9 +394,12 @@
       url = "/cash/getTreatment/" + "0" + '/' + $('#customer').val() + '/' +gatDateTreatmentIni() + '/' + gatDateTreatmentOr0();
     } else {
       if ($('#command').val() != "0") {
-        url = "/cash/getTreatment/" + $('#command').val() + '/' + "0" + '/' +gatDateTreatmentIni() + '/' + gatDateTreatmentOr0();
+        if (!$('#customer').val()) {
+          $('#customer').val("0")
+        }
+        url = "/cash/getTreatment/" + $('#command').val() + '/' + $('#customer').val() + '/' +gatDateTreatmentIni() + '/' + gatDateTreatmentOr0();
       } else {
-        url = "/cash/getTreatment/" + "0" + '/' + $('#customer').val() + '/' +gatDateTreatmentIni() + '/' + gatDateTreatmentOr0();
+        url = "/cash/getTreatment/" + $('#command').val() + '/' + $('#customer').val() + '/' +gatDateTreatmentIni() + '/' + gatDateTreatmentOr0();
       }        
     }
     $.get(url, function(t) {
@@ -873,7 +876,7 @@
         if (hasAnvisaModule) {
           window.open('/financial_cashier/expense_ticket?command=' + $('#command').val() + "&date=" + $('#date_treatment').val(),"_command_maste");
         } else {
-          window.open('/financial_cashier/print_command?command=' + $('#command').val() + "&date=" + $('#date_treatment').val(),"_command_maste");
+          window.open('/financial_cashier/print_command?command=' + $('#command').val() + "&unit=" + AuthUtil.unit.id + "&date=" + $('#date_treatment').val(),"_command_maste");
         }
       }, true);
     }

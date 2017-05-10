@@ -740,7 +740,7 @@ object Reports2 extends RestHelper with ReportRest with net.liftweb.common.Logge
 					left join treatedoctus ted on ted.treatment = tr.id
 					left join offsale os on os.id = ted.offsale
 					where tr.company = ? and tr.dateevent between ? and ?
-					and tr.status <> 5 and tr.hasdetail = true
+					and tr.status <> 5 -- and tr.hasdetail = true
 					%s %s order by tr.dateevent desc
 					 """
 				toResponse(SQL.format(customer, unit),List(AuthUtil.company.id.is, start, end))
@@ -1029,10 +1029,11 @@ order by date_c, 2
 				}
 
 				val SQL = """
-					select pr.name, ba.name, price/amount, amount, price, td.obs, 
+					select pr.name, tded.tooth, ba.name, price/amount, amount, price, td.obs, 
 					td.external_id, td.id from treatmentdetail td
 					inner join product pr on (pr.id = td.activity or pr.id = td.product) and pr.productclass = ?
 					left join business_pattern ba on ba.id = td.auxiliar
+					left join tdedoctus tded on tded.treatmentdetail = td.id
 					where td.company = ? and td.treatment = ? order by td.id
 		        	"""
 				toResponse(SQL,List(productclass.toLong, AuthUtil.company.id.is, treatment))
@@ -1282,162 +1283,6 @@ order by date_c, 2
 				toResponse(sql.format (unit, sex, status, civilstatus, mapicon, projectclass, noprojectclass, project, noproject, offsale),
 					List(AuthUtil.company.id.is, agerange, AuthUtil.company.id.is/*,start,end*/))
 			}
-/*
-			case "report" :: "customer_list" :: Nil Post _=> {
-				def customer:String = S.param("customer") match {
-					case Full(p) if(p != "") => " and bp.id =%S".format(p) 
-					case _ => ""
-				}			
-/*
-				def mapicon:String = S.param("mapIcon") match {
-					case Full(s) if(s == "")=> " and 1=1 "
-					case _ => " and bp.mapicon in(%s)".format(S.params("mapIcon[]").filter( _!= "").reduceLeft(_+" , "+_))		
-				}
-*/
-				def mapicon = S.param("mapIcon") match {
-					case Full(p) if(p != "")=> " and bp.mapicon in(%s)".format(p)
-					case _ => S.param("mapIcon[]") match {
-						case Full(p) if(p != "") => " and bp.mapicon in(%s)".format(S.params("mapIcon[]").foldLeft("0")(_+","+_))
-						case _ => "" 
-					}
-				}
-				val sql_class = """and bp.id in (select st.business_pattern from stakeholder st 
-				inner join project pr on pr.id = st.project and pr.status = 1
-				inner join projectclass pc on pc.id in (%s) and pc.id = pr.projectclass
-				where st.company = bp.company and bp.id = st.business_pattern and st.status = 1)"""
-				def projectclass:String = S.param("projectclass") match {
-					case Full(s) => " and 1=1 "
-					// o tratamento é pq as company que nao tem projeto tava quebrando
-					case _ => if (S.param("projectclass") != Empty || 
-						S.param("projectclass[]") != Empty) {
-							sql_class.format(S.params("projectclass[]").filter( _!= "").reduceLeft(_+" , "+_))		
-						} else {
-							" and 1=1 "
-						}
-				}
-				val sql_noclass = """and bp.id not in (select st.business_pattern from stakeholder st 
-				inner join project pr on pr.id = st.project and pr.status = 1
-				inner join projectclass pc on pc.id in (%s) and pc.id = pr.projectclass
-				where st.company = bp.company and bp.id = st.business_pattern and st.status = 1)"""
-				def noprojectclass:String = S.param("noprojectclass") match {
-					case Full(s) => " and 1=1 "
-					// o tratamento é pq as company que nao tem projeto tava quebrando
-					case _ => if (S.param("noprojectclass") != Empty || 
-						S.param("noprojectclass[]") != Empty) {
-							sql_noclass.format(S.params("noprojectclass[]").filter( _!= "").reduceLeft(_+" , "+_))		
-						} else {
-							" and 1=1 "
-						}
-				}
-				val sql_project = """and bp.id in (select st.business_pattern from stakeholder st 
-				inner join project pr on pr.id = st.project and pr.status = 1 and pr.id in (%s)
-				where st.company = bp.company and bp.id = st.business_pattern and st.status = 1)"""
-				def project:String = S.param("project") match {
-					case Full(s) => " and 1=1 "
-					// o tratamento é pq as company que nao tem projeto tava quebrando
-					case _ => if (S.param("project") != Empty || 
-						S.param("project[]") != Empty) {
-							sql_project.format(S.params("project[]").filter( _!= "").reduceLeft(_+" , "+_))		
-						} else {
-							" and 1=1 "
-						}
-				}
-				val sql_noproject = """and bp.id not in (select st.business_pattern from stakeholder st 
-				inner join project pr on pr.id = st.project and pr.status = 1 and pr.id in (%s)
-				where st.company = bp.company and bp.id = st.business_pattern and st.status = 1)"""
-				def noproject:String = S.param("noproject") match {
-					case Full(s) => " and 1=1 "
-					// o tratamento é pq as company que nao tem projeto tava quebrando
-					case _ => if (S.param("noproject") != Empty || 
-						S.param("noproject[]") != Empty) {
-							sql_noproject.format(S.params("noproject[]").filter( _!= "").reduceLeft(_+" , "+_))		
-						} else {
-							" and 1=1 "
-						}
-				}
-
-				def unit:String = S.param("unit") match {
-					case Full(p) if(p != "") => " and bp.unit =%S".format(p) 
-					case _ => ""
-				}		
-
-				def offsale:String = S.param("offsale") match {
-					case Full(s) if(s != "") => " and bp.offsale = %s".format(s)
-					case _ => " and 1 = 1 "
-				}
-
-				val sex_param_name = S.param("sex[]") match {
-					case Full(p) => "sex[]"
-					case _ => "sex"
-				}
-
-				def sex:String = S.param(sex_param_name) match {
-					case Full(s) => if(s == "All") {
-						" and bp.sex in ('F', 'M', 'N') "
-						} else {
-						" and bp.sex in ('"+S.params(sex_param_name).filter(_ != "").map(_.toString).reduceLeft(_+"','"+_)+"')"
-						}
-					case _ => " and 1=1 "
-				}
-
-				val status_param_name = S.param("status[]") match {
-					case Full(p) => "status[]"
-					case _ => "status"
-				}
-
-				def status:String = S.param(status_param_name) match {
-					case Full(s) => if(s == "All") {
-						" and bp.status in (1,4,0) "
-						} else {
-						" and bp.status in ("+S.params(status_param_name).filter(_ != "").map(_.toLong).map(_.toString).reduceLeft(_+","+_)+")"
-						}
-					case _ => " and 1=1 "
-				}
-
-				def civilstatus = S.param("civilstatus") match {
-					case Full(p) if(p != "")=> " and bp.civilstatus in(%s)".format(p)
-					case _ => S.param("civilstatus[]") match {
-						case Full(p) if(p != "") => " and bp.civilstatus in(%s)".format(S.params("civilstatus[]").foldLeft("0")(_+","+_))
-						case _ => "" 
-					}
-				}
-
-				def start_value:Double = S.param("start_value") match {
-					case Full(p) if(p != "") => p.toDouble
-					case _ => -9999999;
-				}
-				def end_value:Double = S.param("end_value") match {
-					case Full(p) if(p != "") => p.toDouble
-					case _ => 9999999;
-				}
-				val SQL = """select bp.id, bp.name, trim (mobile_phone || ' ' || phone || ' ' || email_alternative), email, 
-				cs.name,
-				trunc ((((DATE_PART('year', now()) - DATE_PART('year', birthday)) * 12) 
-					+ (DATE_PART('month', date (now())) - DATE_PART('month', birthday)))/12) as anos,
-				birthday, sex,
-				mi.short_name, 
-				oc.name, id.name,
-				trim (trim (bp.street || ', ' || bp.number_c || ' ' || bp.complement)
-				|| ', ' || bp.district || ', ' || ci.name || '-' || st.short_name || ', ' || postal_code),
-				cu.name, 
-				bp.id
-				from business_pattern bp  
-				left join companyunit cu on cu.id = bp.unit
-				left join mapicon mi on mi.id = bp.mapicon
-				left join civilstatus cs on cs.id = bp.civilstatus
-				left join occupation oc on oc.id = bp.occupation
-				left join instructiondegree id on id.id = bp.instructiondegree
-				left join city ci on ci.id = bp.cityref
-				left join state st on st.id = bp.stateref
-				where (case when birthday is not null then ((DATE_PART('year', now()) - DATE_PART('year', birthday)) * 12) 
-					+ (DATE_PART('month', date (now())) - DATE_PART('month', birthday))
-					when birthday is null then 0 end) between ?*12 and ?*12 and bp.company=? 
-					and bp.is_unit = false
-				%s %s %s %s %s %s %s %s %s %s %s order by bp.name """
-				toResponse(SQL.format(customer, unit, sex, status, civilstatus, mapicon, projectclass, noprojectclass, project, noproject, offsale),
-					List(start_value, end_value, AuthUtil.company.id.is))
-			}
-*/
 			case "report" :: "treatments_simple" :: Nil Post _=> {
 				def user = S.param("user") match {
 					case Full(p) if(p != "")=> " and bp.id in(%s)".format(p)

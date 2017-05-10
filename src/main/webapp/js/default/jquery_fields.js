@@ -262,6 +262,12 @@ jQuery.fn.civilStatusField = function(allow_null) {
 	});
 };
 
+jQuery.fn.toothField = function(allow_null) {
+	return this.each(function() { 
+		makeSelect(this, 'getTeeths', allow_null, "Selecione um dente");
+	});
+};
+
 jQuery.fn.quizField = function(allow_null) {
 	return this.each(function() { 
 		makeSelect(this, 'getQuizzes', allow_null, "Selecione um questionário");

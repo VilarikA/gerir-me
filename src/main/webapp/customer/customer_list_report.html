@@ -10,6 +10,7 @@
     $("#offsale").offSaleField(true);
     $("#civilstatus").civilStatusField(true,false);
     var hasUnitModule = $('.has-unit-module').length > 0;
+    var hasEgrexSystem = $('.has-egrex-system').length > 0;
     var fields = [];
     var total = 0;
     fields[0] = "int";
@@ -36,7 +37,25 @@
     if (!hasUnitModule) {
       fields[12] = "none";
     }
-    fields[13] = "none";
+    if (!hasEgrexSystem) {
+      fields[13] = "none"; // conjuge
+    }
+    if (!hasEgrexSystem) {
+      fields[14] = "none"; // filho
+    }
+    if (!hasEgrexSystem) {
+      fields[15] = "none";
+    }
+    if (!hasEgrexSystem) {
+      fields[16] = "none";
+    }
+    if (!hasEgrexSystem) {
+      fields[17] = "none";
+    }
+    if (!hasEgrexSystem) {
+      fields[18] = "none";
+    }
+    fields[19] = "none";
     /*
     fields[8] = {
       type : "format",
@@ -256,6 +275,7 @@
       <form action="">
     </form>      
   </div>
+  <input type="hidden" class="has-egrex-system lift:SecuritySnippet.isEgrexSystem" value="1">
   <table id="grid" class="bordered-table zebra-striped">
       <thead>
         <th>Cod</th>
@@ -271,6 +291,12 @@
         <th>Instrução</th>
         <th>Endereço</th>
         <th class ='clearfix lift:SecuritySnippet.hasUnitModule'>Unidade</th>
+        <th class ='clearfix lift:SecuritySnippet.isEgrexSystem'>Cônjuge</th>
+        <th class ='clearfix lift:SecuritySnippet.isEgrexSystem'>Filho</th>
+        <th class ='clearfix lift:SecuritySnippet.isEgrexSystem'>Filho</th>
+        <th class ='clearfix lift:SecuritySnippet.isEgrexSystem'>Filho</th>
+        <th class ='clearfix lift:SecuritySnippet.isEgrexSystem'>Filho</th>
+        <th class ='clearfix lift:SecuritySnippet.isEgrexSystem'>Filho</th>
       </thead>
       <tbody>
       </tbody>

@@ -172,6 +172,7 @@ object Reports3 extends RestHelper with ReportRest with net.liftweb.common.Logge
 
 		serve {
 			case "report" :: "customer_list" :: Nil Post _=> {
+				// MOSTRA OS RELACIONAMENTOS SÓ PARA EGREX
 				val SQL = """select bp.id, bp.name, trim (mobile_phone || ' ' || phone || ' ' || email_alternative), email, 
 				cs.name,
 				trunc ((((DATE_PART('year', now()) - DATE_PART('year', birthday)) * 12) 
@@ -182,6 +183,35 @@ object Reports3 extends RestHelper with ReportRest with net.liftweb.common.Logge
 				trim (trim (bp.street || ', ' || bp.number_c || ' ' || bp.complement)
 				|| ', ' || bp.district || ', ' || ci.name || '-' || st.short_name || ', ' || postal_code),
 				cu.name, 
+
+				(select max (bp1.name) from business_pattern bp1 where id in 
+				(select bp_related from bprelationship where company = 88 and business_pattern = bp.id and relationship = 3)) as conjuge, 
+
+				(select name from business_pattern bp1 where id in (select bp_related from (select row_number() over (order by id nulls last) as rownum, * from bprelationship 
+				where company = 88 and business_pattern = bp.id and relationship = 1
+				order by id 
+				) as data1 where rownum = 1)) as filho1,
+
+				(select name from business_pattern bp1 where id in (select bp_related from (select row_number() over (order by id nulls last) as rownum, * from bprelationship 
+				where company = 88 and business_pattern = bp.id and relationship = 1
+				order by id 
+				) as data1 where rownum = 2)) as filho2,
+
+				(select name from business_pattern bp1 where id in (select bp_related from (select row_number() over (order by id nulls last) as rownum, * from bprelationship 
+				where company = 88 and business_pattern = bp.id and relationship = 1
+				order by id 
+				) as data1 where rownum = 3)) as filho3,
+
+				(select name from business_pattern bp1 where id in (select bp_related from (select row_number() over (order by id nulls last) as rownum, * from bprelationship 
+				where company = 88 and business_pattern = bp.id and relationship = 1
+				order by id 
+				) as data1 where rownum = 4)) as filho4,
+
+				(select name from business_pattern bp1 where id in (select bp_related from (select row_number() over (order by id nulls last) as rownum, * from bprelationship 
+				where company = 88 and business_pattern = bp.id and relationship = 1
+				order by id 
+				) as data1 where rownum = 5)) as filho5,
+
 				bp.id
 				from business_pattern bp  
 				left join companyunit cu on cu.id = bp.unit

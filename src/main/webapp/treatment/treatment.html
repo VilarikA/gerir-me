@@ -105,7 +105,7 @@
                     </div>
                   </div>
               </div>
-              <div class="clearfix">
+              <div class="lift:SecuritySnippet.IsEdoctusSystem clearfix">
                 <label for="hospitalizationType">Tipo Internação</label>
                 <div class="input">
                   <text class="large" id="hospitalizationType" name="hospitalizationType" size="30"></text>
@@ -127,31 +127,55 @@
         <label for="btn"></label>
         <a class="btn primary" href="/treatment/list_treatment">Lista</a>
         <input class="btn success" type="submit" value="Salvar">
-        <a class="btn primary" href="/treatment/treatment">Inserir novo</a>
+        <a class="btn primary" href="/treatment/treatment" target='_treatment_maste'>Inserir novo</a>
       </div>
       <span>
+        <div class="clearfix">
+          <label for="start_date">Total </label>
+          <div class="input">
+            <div class="input-prepend" style="float:left; padding-right:10px">
+              <span class="add-on"><img src="/images/user.png" width="16"></span>
+              <input class="small disabled" id="total_activities" name="total_activities" size="19" placeholder="0.00" type="text" disabled='true'>
+              <span class="help-block">Total de serviços</span>
+            </div>
+            <div class="input-prepend" style="float:left; padding-right:10px">
+              <span class="add-on"><img src="/images/user.png" width="16"></span>
+              <input class="small disabled" id="total_products" name="total_products" size="19" placeholder="0.00" type="text" disabled='true'>
+              <span class="help-block">Total de produtos</span>
+            </div>
+            <div class="input-prepend" style="float:left; padding-right:10px">
+              <span class="add-on"><img src="/images/user.png" width="16"></span>
+              <input class="small disabled" id="total" name="total" size="19" placeholder="0.00" type="text" disabled='true'>
+              <span class="help-block">Total de geral</span>
+            </div>
+          </div>
+        </div>
         <ul class="tabs">
           <li class="active tab"><a href="#activities">Serviços</a></li>
           <li class="tab"><a href="#products">Produtos</a></li>
         </ul>
+        <input type="hidden" class="has-auxiliar-module lift:SecuritySnippet.hasAuxiliarModule" value="1">
+        <input type="hidden" class="has-esmile-system lift:SecuritySnippet.isEsmileSystem" value="1">
+        <input type="hidden" class="has-edoctus-system lift:SecuritySnippet.isEdoctusSystem" value="1">
         <div class="pill-content">
           <div class="active tab_content row" id="activities">
             <span class='span18'>
               <div class="clearfix">
                 <div class="input">
-                  <a class="btn primary" href="/treatment/treatmentdetail?treatment=##" id ="add_td">Inserir novo</a>
+                  <a class="btn primary" href="/treatment/treatmentdetail?treatment=##" id ="add_td" target='_treatdetail_maste'>Inserir novo</a>
                 </div>
               </div>              
               <table id="table_activities" class='bordered-table zebra-striped'>
                 <thead>
                   <tr>
                     <th>Serviço</th>
-                    <th>Assistente</th>
+                    <th class="lift:SecuritySnippet.isEsmileSystem">Dente</th>
+                    <th class="lift:SecuritySnippet.hasAuxiliarModule"><span data-i18n='Assistente'></span></th>
                     <th>Val Unit</th>
                     <th>Qtde</th>
                     <th>Val Total</th>
                     <th>Obs</th>
-                    <th>Código</th>
+                    <th class="lift:SecuritySnippet.IsEdoctusSystem clearfix">Código</th>
                     <th>Ações</th>
                   </tr>
                 </thead>
@@ -164,18 +188,20 @@
             <span class='span18'>
               <div class="clearfix">
                 <div class="input">
-                  <a class="btn primary" href="/treatment/treatmentdetail?treatment=##" id ="add_td1">Inserir novo</a>
+                  <a class="btn primary" href="/treatment/treatmentdetail?treatment=##" id ="add_td1" ' target='_treatdetail_maste'>Inserir novo</a>
                 </div>
               </div>              
               <table id="table_products" class='bordered-table zebra-striped'>
                 <thead>
                   <tr>
                     <th>Produto</th>
+                    <th class="lift:SecuritySnippet.isEsmileSystem">Dente</th>
+                    <th class="lift:SecuritySnippet.hasAuxiliarModule"><span data-i18n='Assistente'></span></th>
                     <th>Val Unit</th>
                     <th>QTde</th>
                     <th>Val Total</th>
                     <th>Obs</th>
-                    <th>Código</th>
+                    <th class="lift:SecuritySnippet.IsEdoctusSystem clearfix">Código</th>
                     <th>Ações</th>
                   </tr>
                 </thead>

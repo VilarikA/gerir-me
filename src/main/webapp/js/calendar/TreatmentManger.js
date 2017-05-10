@@ -1,32 +1,39 @@
 var TreatmentManger = {
 	updateTreatmentData: function(id, user, startDate, endDate, status, validate) {
-		if (validate === undefined) {
-			validate = true;
-		}
-		var start = getDateBr(startDate) + " " + getHourBr(startDate);
-		var end = getDateBr(endDate) + " " + getHourBr(endDate);
-		var url = "";
-		if (status == "event" || status == "not_work") {
-			url = "/userEvent/" + id;
-		} else {
-			url = "/treatment/" + id;
-		}
-		$.post(url, {
-			"user": user,
-			"start": start,
-			"end": end,
-			"status": status,
-			"validate": validate
-		}, function(t) {
-			eval("t=" + t);
-			if (t != 1) {
-				if (confirm(t + "\n Deseja salvar assim mesmo?")) {
-					TreatmentManger.updateTreatmentData(id, user, startDate, endDate, status, false);
-				} else {
-					refreshCalendarByAjax();
-				}
+		if (CalendarManager.calendarPermitions.editEvent) {
+			if (validate === undefined) {
+				validate = true;
 			}
-		});
+			var start = getDateBr(startDate) + " " + getHourBr(startDate);
+			var end = getDateBr(endDate) + " " + getHourBr(endDate);
+			var url = "";
+			if (status == "event" || status == "not_work") {
+				url = "/userEvent/" + id;
+			} else {
+				url = "/treatment/" + id;
+			}
+			$.post(url, {
+				"user": user,
+				"start": start,
+				"end": end,
+				"status": status,
+				"validate": validate
+			}, function(t) {
+				eval("t=" + t);
+				if (t != 1) {
+					if (confirm(t + "\n Deseja salvar assim mesmo?")) {
+						TreatmentManger.updateTreatmentData(id, user, startDate, endDate, status, false);
+					} else {
+						refreshCalendarByAjax();
+					}
+				}
+			});
+		} else {
+			alert ("Suas permissões não permitem editar agendamento");
+				// o refresh aqui nao funcionou - 05/05/2017 rigel
+				//	refreshCalendarByAjax();
+			    $('#calendar').weekCalendar("refresh");
+		}
 	},
 	saveTreatment: function(force) {
 		if (force === undefined) {

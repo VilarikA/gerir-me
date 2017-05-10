@@ -200,47 +200,52 @@ object TreatmentReportApi extends RestHelper with ReportRest with net.liftweb.co
 		case "treatments"::"print_command" :: Nil Post _ => {
 			for {
 					command  <- S.param("command") ?~ "command parameter missing" ~> 400
-					date_str <- S.param("date") ?~ "customer parameter missing" ~> 400
+					date_str <- S.param("date") ?~ "date parameter missing" ~> 400
+					unit_str <- S.param("unit") ?~ "unit parameter missing" ~> 400
 			}yield{
+				val unit = unit_str.toLong;
 				val sql = """
 						select user_id, user_name, product,amount, price, status, name, tdid from (
 								
 								select u.id user_id,u.short_name as user_name,p.name product,td.amount,td.price, c.name as name,-1 as orderincommand,'X' as status
-								,td.id as tdid from   treatment t
+								,td.id as tdid 
+								from   treatment t
 								inner join treatmentdetail td on(td.treatment = t.id and td.company = t.company)
 								inner join product p on(p.id=td.product or p.id=td.activity and p.company = td.company)
 								left join business_pattern u on( u.id = t.user_c and u.company = t.company)
 								left join business_pattern c on( c.id = t.customer and c.company = t.company)
-								where t.company =? and command=? and t.dateevent=date(?) and t.status <> 5
+								where t.company =? and command=? and t.dateevent=date(?) and t.unit =? and t.status <> 5
 							union
 								select null,null,p.name,null as amount, p.saleprice,' ' as status ,orderInCommand, '' as name
-								,orderInCommand as tdid from product p where p.company =? and showincommad =true
+								,orderInCommand as tdid from 
+								product p where p.company =? and showincommad =true
 								and p.gender in('A',
 									(	select c.sex
 											from
 											treatment t
 											inner join business_pattern c on(c.id = t.customer)
-											where t.company =? and command=? and t.dateevent=date(?) and t.status <> 5
+											where t.company =? and command=? and t.dateevent=date(?) and t.unit =? and t.status <> 5
 											limit 1
 									)
 								)
 								and p.id not in (
 									select td.activity from   treatment t
 									inner join treatmentdetail td on(td.treatment = t.id and td.company = t.company)
-									where t.company =? and command=? and t.dateevent=date(?)
+									where t.company =? and command=? and t.dateevent=date(?) and t.unit =? and t.status <> 5
 								)
 							union
 								select null, 'Total' as user_name,'',sum(td.amount),sum (td.price), '' as name,9999999 as orderincommand,'' as status
 								,99999999 as tdid from   treatment t
 								inner join treatmentdetail td on(td.treatment = t.id and td.company = t.company)
-								where t.company =? and command=? and t.dateevent=date(?) and t.status <> 5
+								where t.company =? and command=? and t.dateevent=date(?) and t.unit =? and t.status <> 5
 						) as data order by orderInCommand, tdid asc
 				""";
 				toResponse(sql,scala.List(
-					AuthUtil.company.id.is, command, Project.strOnlyDateToDate(date_str), 
-					AuthUtil.company.id.is, AuthUtil.company.id.is, command, Project.strOnlyDateToDate(date_str), 
-					AuthUtil.company.id.is, command, Project.strOnlyDateToDate(date_str), 
-					AuthUtil.company.id.is, command, Project.strOnlyDateToDate(date_str)))
+					AuthUtil.company.id.is, command, Project.strOnlyDateToDate(date_str), unit, 
+					AuthUtil.company.id.is, 
+					AuthUtil.company.id.is, command, Project.strOnlyDateToDate(date_str), unit, 
+					AuthUtil.company.id.is, command, Project.strOnlyDateToDate(date_str), unit, 
+					AuthUtil.company.id.is, command, Project.strOnlyDateToDate(date_str), unit))
 			}	
 		}
 		case "treatments"::"expense_ticket" :: Nil Post _ => {

@@ -155,7 +155,8 @@ object SecurityApi extends RestHelper with net.liftweb.common.Logger {
             if (S.hostName.contains ("local")) {
               "/calendar"
             } else {
-              "http://45.33.99.152:7171/calendar"
+              "/calendar"
+              //"http://45.33.99.152:7171/calendar"
             }
         } else if (PermissionModule.command_? && (AuthUtil.user.isCommandUser || AuthUtil.user.isCommandPwd)) {
           "/command_full/user_command_full"

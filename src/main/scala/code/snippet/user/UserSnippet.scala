@@ -171,7 +171,7 @@ class  UserSnippet extends BootstrapPaginatorSnippet[User] {
 		    "name=sitedescription" #> (SHtml.textarea(user.siteDescription.is, user.siteDescription(_)))&
 		    "name=external_id" #> (SHtml.text(user.external_id.is, user.external_id(_)))&
 			"#img_user" #> user.thumb("192")&
-		    "name=name" #> (SHtml.text(user.name.is, user.name(_)))&
+//		    "name=name" #> (SHtml.text(user.name.is, user.name(_)))&
 		    "name=short_name" #> (SHtml.text(user.short_name.is, user.short_name(_)))&
 		    "name=obs" #> (SHtml.textarea(user.obs.is, user.obs(_)))&
 //		    "name=userName" #> (SHtml.text(user.userName.is, user.userName(_))) &
@@ -235,7 +235,9 @@ class  UserSnippet extends BootstrapPaginatorSnippet[User] {
 			"name=candeletecalendarevents" #> (SHtml.checkbox(user.canDeleteCalendarEvents_?, user.canDeleteCalendarEvents_?(_)))&
 			"name=canmovecalendarevents" #> (SHtml.checkbox(user.canMoveCalendarEvents_?, user.canMoveCalendarEvents_?(_)))&
 			"name=caneditcalendarevents" #> (SHtml.checkbox(user.canEditCalendarEvents_?, user.canEditCalendarEvents_?(_)))&
-			"name=email" #> (SHtml.text(user.email.is, user.email(_))++SHtml.hidden(process))
+		    "name=email" #> (SHtml.text(user.email.is, user.email(_)))&
+			"name=name" #> (SHtml.text(user.name.is, user.name(_)))&
+			"name=process" #> (SHtml.hidden(process))
 		}catch {
 		    case e: NoSuchElementException => S.error("Profissional não existe!")
 		    "#user_form *" #> NodeSeq.Empty

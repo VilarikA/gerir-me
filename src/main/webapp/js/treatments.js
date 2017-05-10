@@ -1,17 +1,22 @@
 var customers = [];
 var deleteStakeHolder = function(id) {
+	alert ("Falta implementar a deleção!!!")
+	return;
 	if (confirm("Deseja excluir o detalhe de atendimento?")) {
 		$.post("/project/remove_stakeholder/" + gup('id'), {
 				id: id
 			})
 			.success(function() {
 				$("#bp_stakeholder").val('').change();
-				updateReportStake(0);
-				updateReportStake(1);
+				updateTDetailReport(0);
+				updateTDetailReport(1);
 			});
 	}
 };
-var updateReportStake = function(classe) {
+var updateTDetailReport = function(classe) {
+    var hasAuxiliarModule = $('.has-auxiliar-module').length > 0;
+    var hasEsmileSystem = $('.has-esmile-system').length > 0;
+    var hasEdoctusSystem = $('.has-edoctus-system').length > 0;
 	var fields = [];
 /*	fields [0] = {
 		type: "format",
@@ -20,45 +25,68 @@ var updateReportStake = function(classe) {
 		}
 	};
 */
-	if (classe == 1) {
-		fields [1] = 'none';
+    if (!hasEsmileSystem) {
+		fields [1] = 'none'; // dente
 	}
-	fields [2] = 'real';
-	fields [4] = 'real';
+    if (!hasAuxiliarModule) {
+		fields [2] = 'none'; // auxiliar
+	}
+	fields [3] = 'real'; // preço unitario
+	fields [4] = 'real'; // qtde
+	fields [5] = 'real'; // price
 
-	fields [7] = {
+    if (!hasEdoctusSystem) {
+		fields [7] = 'none'; // external_id era integracao no angiosemper
+	}
+
+	fields [8] = {
 		type: "format",
 		decode: function(id, row) {
 			customers.push(id);
-			return "<span style='margin-right:4px'><a class='btn' href='/treatment/treatmentdetail?id=" + row[7] + "' target='_treatdetail_maste'>Ir</a></span>" +
-				"<span><a class='btn danger' target='_blank' onclick='deleteStakeHolder(" + row[7] + ")'>Excluir</a></span>";
+			return "<span style='margin-right:4px'><a class='btn' href='/treatment/treatmentdetail?id=" + row[8] + "' target='_treatdetail_maste'>Editar</a></span>" +
+				"<span><a class='btn danger' target='_blank' onclick='deleteStakeHolder(" + row[8] + ")'>Excluir</a></span>";
 		}
 	};
 
+	var total_activities = 0.0;
+	var total_products = 0.0;
 	if (classe == "0") {
 		renderReport("/report/td_activities", fields, {
 			treatment: gup('id'),
 			productclass: classe
-		}, "#table_activities");
+		}, "#table_activities", function(data){
+	        data.forEach(function(row){
+	          total_activities += parseFloat(row[5]);
+	        });
+	        $("#total_activities").val(total_activities.formatMoney());
+	    });
 	} else {
 		renderReport("/report/td_activities", fields, {
 			treatment: gup('id'),
 			productclass: classe
-		}, "#table_products");
+		}, "#table_products", function(data){
+	        data.forEach(function(row){
+	          total_products += parseFloat(row[5]);
+	        });
+	        $("#total_products").val(total_products.formatMoney());
+	    });
 	}
 };
 
 $(function() {
 	if (gup('id')) {
-		updateReportStake(0);
-		updateReportStake(1);
+		updateTDetailReport(0);
+		updateTDetailReport(1);
 	    setTimeout(function(){    
+	    	var total = 0.0;
 			if($("#add_td").length > 0){
 			$("#add_td").attr("href", $("#add_td").attr("href").replace("##", gup("id")));
 			}
 			if($("#add_td1").length > 0){
 			$("#add_td1").attr("href", $("#add_td1").attr("href").replace("##", gup("id")));
 			}
+			total = parseFloat($("#total_activities").val())+parseFloat($("#total_products").val())
+		    $("#total").val(total.formatMoney());
 	    },600);
 	}
 
