@@ -263,8 +263,6 @@ object  TreatmentService extends net.liftweb.common.Logger {
 		} 
 		if ((AuthUtil.user.id.is != user) && 
 			AuthUtil.user.isSimpleUserCalendarView) {
-			// evita que atendimento pago seja alterado gerava erro de comissao se o atend
-			// fosse moviedo para outro usuario
 			TratmentServer ! TreatmentMessage("SaveUpdateTratment",end)		
   	        throw new RuntimeException("Você não tem permissão para alterar atendimentos de outros profissionais!")
 		}

@@ -594,7 +594,8 @@ object User extends User with BusinessPatternMeta[User] with OnlyCurrentUnit[Use
         super.findAll(By(is_employee_?,true) :: params.toList :_*)
     }
 
-    def findAllInCompanyOrdened = if(AuthUtil.user.isSimpleUserCommission || AuthUtil.user.isSimpleUserCommand) { 
+//    def findAllInCompanyOrdened = if(AuthUtil.user.isSimpleUserCommission || AuthUtil.user.isSimpleUserCommand) { 
+    def findAllInCompanyOrdened = if(AuthUtil.user.isSimpleUserCommand) { 
         List(AuthUtil.user) ::: AuthUtil.user.childs
     }else{
         findAllInCompany(OrderBy(User.search_name, Ascending), By(User.userStatus, User.STATUS_OK))
@@ -606,7 +607,8 @@ object User extends User with BusinessPatternMeta[User] with OnlyCurrentUnit[Use
         findAllInCompany( listParamns :_*)
     }
 
-    def findAllInCompanyOrdened(params: QueryParam[User]*) = if(AuthUtil.user.isSimpleUserCommission || AuthUtil.user.isSimpleUserCommand) {
+//    def findAllInCompanyOrdened(params: QueryParam[User]*) = if(AuthUtil.user.isSimpleUserCommission || AuthUtil.user.isSimpleUserCommand) {
+    def findAllInCompanyOrdened(params: QueryParam[User]*) = if(AuthUtil.user.isSimpleUserCommand) {
             List(AuthUtil.user) 
     }else{
         def listParamns = OrderBy(User.search_name, Ascending) :: By(User.userStatus, User.STATUS_OK) :: params.toList
