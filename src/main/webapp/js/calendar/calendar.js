@@ -265,7 +265,30 @@ var buildCalendar = function(users,treatments,interval,intervalAlt,startCalendar
 						dateFormat: "d/m/y"
 					});
 				}else{
-					$("#calendar").html('<div style="float:left; padding-right:10px" class="input-prepend"><span class="add-on" style="height: 17px;"><img width="16" src="/images/calendar_addon.png"></span> <input type="text" size="19" name="data_calendar" id="data_calendar" class="input-small date" style="height: 17px;"></div><div style="float:left; padding-right:10px" class="input-prepend"><span class="add-on" style="height: 17px;"><img width="16" src="/images/calendar_addon.png"></span> <input type="text" size="19" name="data_calendar_end" id="data_calendar_end" class="input-small date" style="height: 17px;"></div>');
+					$("#calendar").html(
+						'<form class="vr-form">' +
+						'	<input size="19" name="data_calendar_end" id="data_calendar_end" class="date">' + 
+						'</form>'
+					);
+
+
+					/*
+					$("#calendar").html(
+						'<div style="float:left; padding-right:10px" class="input-prepend">' +
+						'	<span class="add-on" style="height: 17px;">' + 
+						'		<img width="16" src="/images/calendar_addon.png"/>' + 
+						'	</span>' + 
+						'	<input type="text" size="19" name="data_calendar" id="data_calendar" class="input-small date" style="height: 17px;">' + 
+						'</div>' + 
+						'<div style="float:left; padding-right:10px" class="input-prepend">' + 
+						'	<span class="add-on" style="height: 17px;">' + 
+						'		<img width="16" src="/images/calendar_addon.png"/>' + 
+						'	</span>' + 
+						'	<input type="text" size="19" name="data_calendar_end" id="data_calendar_end" class="input-small date" style="height: 17px;">' + 
+						'</div>'
+					);
+					*/
+
 					$("#data_calendar").datepicker({
 													    beforeShow: function() {
 													        setTimeout(function(){

@@ -6,7 +6,7 @@
 	<script type="text/javascript" src="/js/calendar/CalendarScreen.js?_v25042015_"></script>
 	<script type="text/javascript" src="/js/calendar/calendarUtil.js?_v25042015_"></script>
 	<script type="text/javascript" src='/js/default/animal.js'></script>
-	<script type="text/javascript" src="/js/calendar/calendar.js?_v06012016_"></script>
+	<script type="text/javascript" src="/js/calendar/calendar.js?_v10052017_"></script>
 
 	<!-- Filter row -->
 	<div class="row filter">
@@ -37,93 +37,14 @@
 				</a>
 			</div>
 		</form>
-
-		<!--
-		<div class="form-inline">
-			<div class="form-group col-xs-12 col-md-3">
-				<label for="units">Unidade:</label>
-				<select class="notselect2" name="units" id="units"></select>
-			</div>
-
-			<div class="form-group col-xs-12 col-md-3">
-				<label for="groups">Grupos:</label>
-				<select class="notselect21" style="width: 200px" name="groups" id='groups'></select>
-			</div>
-
-			<div class="form-group col-xs-12 col-md-3">
-				<label for="user"> <span data-i18n="Profissional"></span>: </label>
-				<select class="notselect21" style="width: 200px" multiple="true" name="user" id="user"></select>
-			</div>
-
-			<div class="col-xs-12 col-md-3">
-				<div class="form-group">
-					<button class="btn btn-default" id="toggle_interval">
-						<img src="/images/open.png" style="width: 16px;"/>
-						Alternar intervalo
-					</button>
-				</div>
-
-				<div class="form-group">
-					<a data-original-title="Informação" data-content="clique para abrir a documentação" data-help-url='/docs/agenda.html' rel="popover" class="_popover_basic _help">
-						<img src="/images/info.gif" width="20">
-					</a>
-				</div>
-			</div>
-		</div>
-		-->
 	</div>
 
-
-	<!--
-	<span class='row'>
-		<span class='span16' style='width: 100%'>
-			<div class="clearfix ">
-				<div class="input">
-					<div class="inline-inputs">
-						<span class='calendar-filter lift:SecuritySnippet.hasUnitModule'>
-							<span class='label-calendar'>
-								Unidade: 	
-							</span class='label-calendar'>
-							<span style="position: relative; bottom: 0; top: -10px;">
-								<select class="notselect2" name="units" id='units'></select>
-							</span>
-						</span>
-						<span class='calendar-filter hide_mobile'>
-							<span class='label-calendar'>
-								Grupos: 	
-							</span class='label-calendar'>						
-							<select class="notselect21" name="groups" id='groups'></select>
-						</span>
-						<span class='calendar-filter'>
-							<span class='label-calendar'>
-								<span data-i18n='Profissional'></span>: 	
-							</span class='label-calendar'>						
-							<select class="notselect21" multiple="true" name="user" id='user'></select>
-							<span class="label-calendar hide_mobile">
-								<button class="btn" id="toggle_interval" alt='Alternar intervalo'>								
-									<img src="/images/open.png" style="width: 16px;"/>
-									Alternar intervalo
-								</button>
-							</span>
-						</span>
-						<span class='calendar-filter hide_mobile'>
-							<a data-original-title="Informação" data-content="clique para abrir a documentação" data-help-url='/docs/agenda.html' rel="popover" class="_popover_basic _help">
-								<img src="/images/info.gif" width="20">
-							</a>
-						</span>		                  	
-					</div>
-				</div>
-			</div>
-		</span>
-	</span>
-	-->
-
+	<!-- Contains the calendar component itself -->
 	<div id="calendar" style="top: 0"></div>
 
 	<span class='lift:UserSnippet.usersJsonFromCalendar'></span>
 
 	<span class="lift:comet?type=TrasTratmentServerListener"></span>
-
 
 	<div id="treatment_class" class="modal hide fade" style="">
 		<div class="modal-header" style="border-bottom:none">
@@ -152,9 +73,6 @@
 
 	<!-- Form modal for add treatment -->
 	<div id="treatment_add" class="modal hide fade">
-
-
-
 
 		<div class="modal-header" style="border-bottom:none">
 			<a href="#" class="close">&times;</a>
