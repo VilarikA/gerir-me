@@ -1,0 +1,59 @@
+/**
+ * Style created by VilarikA's team
+ * @author: Stanley Sathler <stanleysathlerpinto@gmail.com>
+ **/
+
+form.vr-form .columns { vertical-align: bottom; }
+
+form.vr-form label {
+	display: block;
+	line-height: 1.2em;
+	font-weight: bold;
+	width: 100%;
+}
+
+form.vr-form input,
+form.vr-form select,
+form.vr-form button,
+form.vr-form .select2-container,
+form.vr-form .select2-choice,
+form.vr-form .select2-choices {
+	display: block;
+	height: 44px;
+	width: 100%;
+}
+
+form.vr-form button.with-hint { 
+	display: inline-block; 
+	width: calc(100% - 30px); 
+}
+
+form.vr-form .select2-choices { min-height: 44px; }
+
+/* Makes select's text vertically aligned */
+form.vr-form .select2-choice span { line-height: 44px; }
+
+/* Makes select's arrow vertically aligned */
+form.vr-form .select2-choice div b { background-position-y: 9px; }
+
+/*
+ * Media queries for other devices 
+ */
+@media only screen and (min-width: 768px) {
+
+	form.vr-form input,
+	form.vr-form select,
+	form.vr-form button,
+	form.vr-form .select2-container,
+	form.vr-form .select2-choice,
+	form.vr-form .select2-choices {
+		height: 34px;
+	}
+
+	form.vr-form .select2-choices { min-height: 34px; }
+
+	form.vr-form .select2-choice span { line-height: 34px; }
+
+	form.vr-form .select2-choice div b { background-position-y: 4px; }
+
+}

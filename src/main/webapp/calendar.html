@@ -9,7 +9,36 @@
 	<script type="text/javascript" src="/js/calendar/calendar.js?_v06012016_"></script>
 
 	<!-- Filter row -->
-	<div class="row">
+	<div class="row filter">
+		<form class="vr-form">
+			<div class="xs-12 lg-3 columns">
+				<label for="units">Unidade</label>
+				<select class="notselect21" style="width: 100%" name="units" id="units"></select>
+			</div>
+
+			<div class="xs-12 lg-3 columns">
+				<label for="groups">Grupo</label>
+				<select class="notselect21" style="width: 100%" name="groups" id='groups'></select>
+			</div>
+
+			<div class="xs-12 lg-3 columns">
+				<label for="user"><span data-i18n="Profissional"></span></label>
+				<select class="notselect21" style="width: 100%" multiple="true" name="user" id="user"></select>
+			</div>
+
+			<div class="xs-12 lg-3 columns">
+				<button class="btn btn-primary with-hint" id="toggle_interval">
+					<img src="/images/open.png" style="width: 16px;"/>
+					Alternar intervalo
+				</button>
+
+				<a data-original-title="Informação" data-content="clique para abrir a documentação" data-help-url='/docs/agenda.html' rel="popover" class="_popover_basic _help">
+					<img src="/images/info.gif" width="20">
+				</a>
+			</div>
+		</form>
+
+		<!--
 		<div class="form-inline">
 			<div class="form-group col-xs-12 col-md-3">
 				<label for="units">Unidade:</label>
@@ -41,6 +70,7 @@
 				</div>
 			</div>
 		</div>
+		-->
 	</div>
 
 
@@ -88,7 +118,7 @@
 	</span>
 	-->
 
-	<div id="calendar"></div>
+	<div id="calendar" style="top: 0"></div>
 
 	<span class='lift:UserSnippet.usersJsonFromCalendar'></span>
 
