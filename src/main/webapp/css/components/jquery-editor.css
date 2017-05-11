@@ -1,0 +1,11 @@
+/*
+ criado para sobrepor altura padrão do editor
+*/
+
+.editor-medium .jqte_editor {
+	height: 300px;
+}
+
+.editor-large .jqte_editor {
+	height: 600px;
+}
