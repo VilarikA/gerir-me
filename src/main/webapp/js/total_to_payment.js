@@ -1,6 +1,6 @@
       var total_to_pay = 0;
       var getUsers = function(){
-          var url = "/cash/getUsers";
+          var url = "/cash/getUsers/commission";
           $.get(url, function(t){
             eval("userObj = "+t);
             $('#user').append("<option value=''>Selecione um Profissional</option>");

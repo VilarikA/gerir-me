@@ -212,6 +212,8 @@ object Reports3 extends RestHelper with ReportRest with net.liftweb.common.Logge
 				order by id 
 				) as data1 where rownum = 5)) as filho5,
 
+				mobile_phone, phone, email_alternative, -- separados para a CCZS
+				
 				bp.id
 				from business_pattern bp  
 				left join companyunit cu on cu.id = bp.unit

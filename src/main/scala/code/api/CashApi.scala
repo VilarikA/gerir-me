@@ -207,6 +207,23 @@ object CashApi extends RestHelper with net.liftweb.common.Logger  {
 			}
 		}
 
+		case "cash" :: "getUsers" :: "commission" :: Nil JsonGet _ =>{
+			if (AuthUtil.user.isSimpleUserCommission) {
+				JsArray(
+					JsObj(
+						("status","success"),
+						("name",AuthUtil.user.short_name.is),("id",AuthUtil.user.id.is),
+						("idForCompany",BusinessRulesUtil.zerosNoLimit(AuthUtil.user.idForCompany.is.toString,3))
+					)		
+				)
+			} else {
+				JsArray(User.findAllInCompanyOrdened.map( (u) => {
+					JsObj(("status","success"),("name",u.short_name.is),("id",u.id.is)
+						,("idForCompany",BusinessRulesUtil.zerosNoLimit(u.idForCompany.is.toString,3)))
+				}))
+			}
+		}
+
 		case "cash" :: "getUsers" :: Nil JsonGet _ =>{
 			JsArray(User.findAllInCompanyOrdened.map( (u) => {
 				JsObj(("status","success"),("name",u.short_name.is),("id",u.id.is)

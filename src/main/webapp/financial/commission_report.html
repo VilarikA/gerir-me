@@ -4,8 +4,28 @@
   <script src="/js/reports.js"></script>
   <script src="/js/jquery.tablesorter.pager.js"></script>
   <script type="text/javascript">
+    // função replicada de total_to_payment.js
+    // unico get users que verifica a restrição de 
+    // acesso a comissão
+    var getUsers = function(){
+        var url = "/cash/getUsers/commission";
+        $.get(url, function(t){
+          eval("userObj = "+t);
+          $('#user').append("<option value=''>Selecione um Profissional</option>");
+          for(i in userObj){
+            $('#user').append("<option value='"+userObj[i].id+"'>"+userObj[i].name+"</option>");
+          }
+          $("#user").val(gup("user"));
+          $("#user").change();
+          if(gup("user")){
+            $("#send").click();
+          }
+        });
+    }      
+
   $(function(){
-    $("#user").userField();
+    //$("#user").userField();
+    getUsers ();
     $("#terms").termsField();
     $("#unit").unitField(true);
     var hasUnitModule = $('.has-unit-module').length > 0;
