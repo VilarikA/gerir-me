@@ -496,6 +496,7 @@ $(function(){
 		}
 	});
 	//setTimeout("createHours()",100);
+	
 	$("#keep_with_customer").click(function(){
 		if(Customer.current){
 			setTimeout('$("#cutomer_id_treatment").val('+Customer.current.id+').focus().change();', 500);
@@ -503,6 +504,7 @@ $(function(){
 			alert("Não há cliente selecionado");
 		}
 	});
+
 	$("#start_block").click(function() {
 		if(confirm("Tem certeza que deseja bloquear o horário de "+$("#hour_treatment").val()+" até "+$("#hour_treatment_end").val())){
 			var start = $("#date_treatment").val()+" "+$("#hour_treatment").val();

@@ -1,0 +1,25 @@
+/**
+ * This file overrides the third-party Calendar component.
+ * @author Stanley Sathler <stanleysathlerpinto@gmail.com>
+ **/
+
+#calendar .ui-widget-header.wc-toolbar {
+	padding: 5px;
+}
+
+#calendar .ui-button-text-only .ui-button-text {
+	line-height: 25px;
+}
+
+#calendar .input-group .form-control {
+	width: auto;
+}
+
+#calendar .ui-buttonset .ui-button {
+	height: 34px;
+}
+
+#calendar .wc-toolbar .form-group {
+	float: left;
+	margin-right: 10px;
+}

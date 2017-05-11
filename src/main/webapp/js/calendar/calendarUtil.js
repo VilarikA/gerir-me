@@ -317,38 +317,40 @@ var buildDataField = function(start, end){
 	if(!stopProcess){
 		stopProcess = true;
 		if(($("#data_calendar").length === 0) && ($("#data_calendar_end").length === 0)){
-			div = 	'<form class="form-inline">' +
-					'	<div class="form-group">' + 
-					'		<div class="input-group">' + 
-					'			<div class="input-group-addon"><img width="16" src="/images/calendar_addon.png"/></div>'
-					'			<input class="form-control date" size="19" name="data_calendar" id="data_calendar">' + 
-					'		</div>'
-					'	</div>' + 
-					'	<div class="form-group">' + 
-					'		<div class="input-group">' + 
-					'			<div class="input-group-addon"><img width="16" src="/images/calendar_addon.png"></div>'
-					'			<input class="form-control date" size="19" name="data_calendar_end" id="data_calendar_end"/>' + 
-					'		</div>'
+
+			div =	'<form class="form-inline">' + 
+  					'	<div class="form-group">' +
+  					'		<div class="input-group">' +
+    				'			<div class="input-group-addon"><img width="16" src="/images/calendar_addon.png"/></div>' +
+    				'			<input type="text" class="form-control date" name="data_calendar" id="data_calendar">' +
+    				'		</div>' +
+  					'	</div>' +
+  					'	<div class="form-group">' +
+  					'		<div class="input-group">' +
+    				'			<div class="input-group-addon"><img width="16" src="/images/calendar_addon.png"/></div>' +
+    				'			<input type="text" class="form-control date" name="data_calendar_end" id="data_calendar_end">' +
+    				'		</div>' +
 					'	</div>' +
 					'</form>';
 
 			$(".wc-toolbar").prepend(div);
+
 			$("#data_calendar").val(getDateBr(start)).datepicker({
-															beforeShow: function() {
-																	setTimeout(function(){
-																			$('#ui-datepicker-div').css('z-index',10000);
-																			
-																	}, 0);
-															}
-													});
+				beforeShow: function() {
+					setTimeout(function(){
+						$('#ui-datepicker-div').css('z-index',10000);					
+					}, 0);
+				}
+			});
+
 			$("#data_calendar_end").val(getDateBr(end)).datepicker({
-															beforeShow: function() {
-																	setTimeout(function(){
-																			$('#ui-datepicker-div').css('z-index',10000);
-																			
-																	}, 0);
-															}
-													});
+				beforeShow: function() {
+					setTimeout(function(){
+						$('#ui-datepicker-div').css('z-index',10000);			
+					}, 0);
+				}
+			});
+
 			$(".add-on").click(function(){
 				$(this).next().focus();
 			});//setfous in datepiker ao clicar no calendariozinho
