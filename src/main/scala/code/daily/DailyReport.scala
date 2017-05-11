@@ -179,6 +179,9 @@ object DailyReport{
 										<b>Local</b> : {company.name.is} - Unidade {a.unit.obj.get.name}
 									<br/>
 										<b>Telefone</b> : {company.phone.is}
+									<br/>
+										<b>Endereço</b> : {a.unit.obj.get.getPartner.full_address}
+									<br/>
 									<hr/>
 								</div>
 							)
