@@ -1,0 +1,12 @@
+/**
+ * Style created by VilarikA's team
+ * @author: Stanley Sathler <stanleysathlerpinto@gmail.com>
+ **/
+
+.vr-modal .modal-header .title { text-align: center; }
+
+.vr-modal .modal-header .title * {
+	display: inline-block;
+	margin: 0;
+	vertical-align: middle;
+}

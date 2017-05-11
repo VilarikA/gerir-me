@@ -72,8 +72,66 @@
 
 
 	<!-- Form modal for add treatment -->
-	<div id="treatment_add" class="modal hide fade">
+	<div id="treatment_add" class="modal fade vr-modal" role="dialog">
+		<div class="modal-dialog">
+			<div class="modal-content">
 
+				<!-- Header -->
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+
+					<div class="title">
+						<span class="lift:CompanySnippet.thumb"></span>
+						<h3>Adicionar atendimento</h3>
+					</div>
+				</div>
+
+				<!-- Body -->
+				<div class="modal-body">
+
+					<!-- Tabs -->
+					<ul class="nav nav-tabs">
+
+						<li class="dropdown">
+							<a class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+								Status <span class="caret"></span>
+							</a>
+							<ul class="dropdown-menu">
+								<li><a href="#">HTML</a></li>
+								<li><A href="#">CSS</a></li>
+							</ul>
+						</li>
+
+						<li>
+							<a class="btn btn-primary" href="#" id="treatment_fit_show">Ver encaixe</a>
+							<a class="btn btn-primary" href="#" id="treatment_fit">Encaixar</a>
+						</li>
+
+						<li class="hide_mobile">
+							<a class="btn btn-primary" id="keep_with_customer" href="#">
+								<span id="keep_with_customer_text">Último <span data-i18n='Cliente'></span></span>
+							</a>
+						</li>
+
+						<li>
+							<a class="btn btn-danger" id="start_block" href="#">
+								Bloqueio						
+							</a>
+						</li>
+					</ul>
+
+
+					<form id="treatment_div_span" class="vr-form">
+						Hello, Mister
+					</form>
+				</div>
+
+				<!-- Footer -->
+				<div class="modal-footer"></div>
+			</div>
+		</div>
+
+		<!--
 		<div class="modal-header" style="border-bottom:none">
 			<a href="#" class="close">&times;</a>
 			<h3 class='hide_mobile' style="position: relative;margin: auto;margin-left: 10px;margin-right: 10px;text-align: center;">
@@ -340,5 +398,6 @@
 				</div>
 			</span>
 		</div>
+		-->
 	</div>	
 </div>
