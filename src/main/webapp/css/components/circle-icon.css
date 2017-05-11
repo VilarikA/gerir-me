@@ -1,0 +1,24 @@
+/**
+ * Style created by VilarikA's team
+ * @author: Stanley Sathler <stanleysathlerpinto@gmail.com>
+ **/
+
+.vr-circle-icon {
+	background-color: #333;
+	color: white;
+	display: inline-block;
+	line-height: 30px;
+	height: 30px;
+	text-align: center;
+	width: 30px;
+
+	border-radius: 50%;
+	-webkit-border-radius: 50%;
+	-moz-border-radius: 50%;
+}
+
+form.vr-form .vr-circle-icon .fa {
+	font-size: 20px;
+}
+
+form.vr-form .vr-circle-icon .fa.fa-file-text { font-size: 18px; }

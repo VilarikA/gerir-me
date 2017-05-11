@@ -28,6 +28,17 @@ form.vr-form button.with-hint {
 	width: calc(100% - 30px); 
 }
 
+form.vr-form .fa { font-size: 30px; vertical-align: middle; }
+form.vr-form .fa-user-circle { font-size: 27px; }
+
+form.vr-form .select2-container.name_customer_search,
+form.vr-form .select2-container.with-icons { 
+	display: inline-block; 
+	vertical-align: middle; 
+}
+
+form.vr-form .openCustomerSelected img { top: 0; }
+
 form.vr-form .select2-choices { min-height: 44px; }
 
 /* Makes select's text vertically aligned */
@@ -35,6 +46,9 @@ form.vr-form .select2-choice span { line-height: 44px; }
 
 /* Makes select's arrow vertically aligned */
 form.vr-form .select2-choice div b { background-position-y: 9px; }
+
+/* Disables the top property which is inserted by another file */
+form.vr-form .name_customer_search { top: 0; }
 
 /*
  * Media queries for other devices 

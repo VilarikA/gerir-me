@@ -12,3 +12,9 @@
 	border-color: #ac2925;
 	background-color: #c9302c;
 }
+
+.vr-tab-content {
+	border: 1px solid #ddd;
+	border-top: none;
+	padding: 10px 20px;
+}

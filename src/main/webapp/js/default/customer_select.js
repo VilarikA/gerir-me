@@ -11,7 +11,16 @@ $(function() {
 //			(document.location.href.indexOf("ephysio") != -1)) {
 			recordsStr = '<a href="#" title="Ir para prontuário" class="openRecordsSelected"><img src="/images/records.png" class="img_customer_search" width="32">'
 		}
-		$(".name_customer_search").parent().append('<a href="#" title="Ir para cadastro" class="openCustomerSelected"><img src="/images/customers.png" class="img_customer_search" width="32">' + recordsStr);
+
+		var nameCustomerSearchElement = $(".name_customer_search");
+
+		if(nameCustomerSearchElement.hasClass("use-fa")){
+			nameCustomerSearchElement.parent().append('<i class="fa fa-user-circle openCustomerSelected" aria-hidden="true"></i>' + recordsStr);
+		} else {
+			nameCustomerSearchElement.parent().append('<a href="#" title="Ir para cadastro" class="openCustomerSelected"><img src="/images/customers.png" class="img_customer_search" width="32">' + recordsStr);
+		}
+		
+		
 		$(".openRecordsSelected").click(function(){
 			$parent = $(this).parent();
 			var id = $(".id_customer_search", $parent).val();

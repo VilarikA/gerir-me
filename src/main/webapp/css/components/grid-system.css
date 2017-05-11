@@ -39,4 +39,9 @@
 		width: 50%; 
 	}
 
+	.columns.lg-9,
+	.column.lg-9 {
+		width: 75%;
+	}
+
 }

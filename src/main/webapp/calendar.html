@@ -121,8 +121,51 @@
 					</ul>
 
 
-					<form id="treatment_div_span" class="vr-form">
-						Hello, Mister
+					<form id="treatment_div_span" class="vr-form vr-tab-content">
+						<div class="row">
+							<div class="xs-12 columns">
+								<span id="when_treatment">Quinta-feira, 11 de maio de 2017</span>
+							</div>
+						</div>
+
+						<div class="row">
+							<div class="xs-3 lg-3 columns">
+								<label for="command"><span data-i18n="Comanda"></span>: </label>
+								<input class="command" id="command_treatment" name='command' />
+							</div>
+						</div>
+
+						<div class="row">
+							<div class="xs-12 columns">
+								<label>Cliente: </label>
+								<div>
+									<div class="xs-6 lg-3 columns">
+										<input class='id_customer_search' id="cutomer_id_treatment" name='customer' />
+									</div>
+									<div class="xs-6 lg-9 columns"> 
+										<span>
+											<input class="disabled name_customer_search use-fa" name="name_customer" id="cutomer_name_treatment" placeholder="Nome" disabled=""/>
+										</span>
+										<i class="fa fa-plus-circle" aria-hidden="true" id="customer_add_button" alt="Cadastro rápido"></i>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<div class="row lift:SecuritySnippet.hasOffSaleModule">
+							<div class="xs-12 lg-6 columns">
+								<label>Convênio:</label>
+								<select style="width: 100%" name="offsale" id="offsale"></select>
+							</div>
+						</div>
+
+						<div class="row lift:SecuritySnippet.isEbellepetSystem">
+							<label for="animal">Pet</label>
+							<select class="with-icons" name="animal" id="animal"></select>
+							<div class="vr-circle-icon"><i class="fa fa-paw" aria-hidden="true" title="Ir para animal" onclick="openAnimalSelected()"></i></div>
+							<div class="vr-circle-icon"><i class="fa fa-file-text" aria-hidden="true" title="Prontuário" onclick="openAnimalRecordSelected()"></i></div>
+							<div class="vr-circle-icon"><i class="fa fa-plus" aria-hidden="true" title="Cadastro rápido" onclick="openAnimalRapidAdd()"></i></div>
+						</div>
 					</form>
 				</div>
 
