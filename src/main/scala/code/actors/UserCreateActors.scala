@@ -36,9 +36,11 @@ object UserCreateActors extends LiftActor {
     if (company.appType == Company.SYSTEM_EBELLE) {
       //"ebelle"
     } else if (company.appType == Company.SYSTEM_GERIRME) {
+      PermissionModule.setModule (company, "BUDGET");
       //"gerirme"
     } else if (company.appType == Company.SYSTEM_ESMILE) {
       PermissionModule.setModule (company, "QUIZ");
+      PermissionModule.setModule (company, "BUDGET");
       //"esmile"
     } else if (company.appType == Company.SYSTEM_EDOCTUS) {
       PermissionModule.setModule (company, "QUIZ");
@@ -48,6 +50,9 @@ object UserCreateActors extends LiftActor {
       //"egrex"
       PermissionModule.setModule (company, "RELATION");
       PermissionModule.setModule (company, "EVENT");
+
+      PermissionModule.resetModule (company, "FIDELITY");
+      PermissionModule.resetModule (company, "PACKAGE");
     } else if (company.appType == Company.SYSTEM_EPHYSIO) {
       PermissionModule.setModule (company, "BPMONTHLY");
       PermissionModule.setModule (company, "QUIZ");
