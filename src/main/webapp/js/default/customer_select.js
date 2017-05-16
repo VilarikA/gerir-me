@@ -15,7 +15,7 @@ $(function() {
 		var nameCustomerSearchElement = $(".name_customer_search");
 
 		if(nameCustomerSearchElement.hasClass("use-fa")){
-			nameCustomerSearchElement.parent().append('<i class="fa fa-user-circle openCustomerSelected" aria-hidden="true"></i>' + recordsStr);
+			nameCustomerSearchElement.parent().append('<div class="vr-circle-icon openCustomerSelected"><i class="fa fa-user" aria-hidden="true"></i></div>' + recordsStr);
 		} else {
 			nameCustomerSearchElement.parent().append('<a href="#" title="Ir para cadastro" class="openCustomerSelected"><img src="/images/customers.png" class="img_customer_search" width="32">' + recordsStr);
 		}
