@@ -1,0 +1,8 @@
+/*
+ * File created and maintained by VilarikA team
+ */
+
+nav.navbar { text-align: center; }
+nav.navbar .navbar-header { float: none; }
+nav.navbar .navbar-header,
+nav.navbar .navbar-collapse { display: inline-block !important; }
