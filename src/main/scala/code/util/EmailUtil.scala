@@ -326,7 +326,8 @@ object EmailUtil {
             Tenha um bom dia!<br/>
             Atenciosamente equipe {appName}
             <br/>
-            <a href={"http://" + appName + ".vilarika.com.br/"}><img src={"http://" + appName + ".vilarika.com.br/images/logo_fbr_name_"+ appName+".png"} style="width: 100px;"/></a>
+            <br/>
+            <a href={"http://" + appName + ".vilarika.com.br/"}><img src={"http://" + appName + ".vilarika.com.br/images/logo_fbr_name_"+ appName+".png"} style="width: 50px;"/></a>
             <img src={"http://" + appName + ".vilarika.com.br/system/makeMailAsRead/"+id.toString} style="width: 0px;"/>
           </div>
   
