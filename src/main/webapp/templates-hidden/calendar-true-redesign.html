@@ -65,6 +65,7 @@
 		<script src="/js/bootstrap-twipsy.js"></script>
 		<script src="/js/bootstrap-popover.js"></script>
 		<script src="/js/bootstrap-modal.js"></script>
+		<script src="/js/bootstrap-dropdown.js"></script>
 		<script src="/js/bootstrap-scrollspy.js"></script>
 		<script src="/js/bootstrap-tabs.js"></script>
 		<script src="/js/product_search.js"></script>    
@@ -98,23 +99,6 @@
 		</script>
 
 		<style type="text/css">
-			li{
-				list-style:none;
-			}
-
-			/* The white background content wrapper */
-			.container > .content {
-				background-color: #fff;
-				padding: 20px;
-				margin: 0 -20px; /* negative indent the amount of the padding to maintain the grid system */
-				-webkit-border-radius: 0 0 6px 6px;
-					 -moz-border-radius: 0 0 6px 6px;
-								border-radius: 0 0 6px 6px;
-				-webkit-box-shadow: 0 1px 2px rgba(0,0,0,.15);
-					 -moz-box-shadow: 0 1px 2px rgba(0,0,0,.15);
-								box-shadow: 0 1px 2px rgba(0,0,0,.15);
-			}
-
 			#avatar{
 				float: left;
 				margin: 1px 5px 0 0;
@@ -122,61 +106,80 @@
 			}
 
 		</style>
-		
 	</head>
 
 	<body class="fixed-menu light-bg">
+
+
+		<!-- =============================== 
+		     TOOLBAR MENU 
+		================================ -->
 		<div class="lift:surround?with=toolbar-redesign;at=toolbar"></div>
 
+
+		<!-- =============================== 
+		     MESSAGES 
+		================================ -->
 		<span class="messages">
 			<div class="lift:Msgs?showAll=true"></div>
 		</span>  
 
-		<!-- Content which surrounds calendar-true-redesign goes here -->
+
+		<!-- =============================== 
+		     CONTENT CONTAINER (INCLUDED TEMPLATE GOES HERE)
+		================================ -->
 		<div class="container-fluid" id="content"></div>
 
+
+		<!-- =============================== 
+		     SEARCH CUSTOMER MODAL
+		================================ -->
 		<div id="customer_search" class="modal hide fade">
 
-		<div class="modal-header">
-						<a href="#" class="close">&times;</a>
-					<h3>Buscar <span data-i18n='Cliente'></span></h3>
-		</div>
-		<div class="modal-body ">
-		<form class="lift:form.ajax">
-					<div class="well">
-						<input class="btn success" type="submit" value="Buscar">
-					</div>    
-						<span class='lift:CustomerSnippet.formSeachCustomer'>
-							<div class="clearfix">
-								<label for="name">Nome</label>
-								 <div class="input">
-										<input class="medium customer_name" id="name" name="name" size="30" type="text"/>
-										<span class="help-block">Nome completo</span>
-								 </div>
-							</div>        
-							<div class="clearfix">
-								<label for="document">Telefone</label>
-								 <div class="input">
-										<input class="medium customer_document" id="document" name="document" size="30" type="text"/>
-										<span class="help-block">Use um hífen para separar os últimos 4 dígitos</span>
-								 </div>
-							</div>
-							<div class="clearfix">
-								<label for="email">Email</label>
-								<div class="input">
-									<input class="medium customer_email" id="email" name="email" size="30" type="text"/>
-									<span class="help-block">Use apenas letras minúsculas</span>
+			<div class="modal-header">
+				<a href="#" class="close">&times;</a>
+				<h3>Buscar <span data-i18n='Cliente'></span></h3>
+			</div>
+
+
+			<div class="modal-body ">
+			<form class="lift:form.ajax">
+						<div class="well">
+							<input class="btn success" type="submit" value="Buscar">
+						</div>    
+							<span class='lift:CustomerSnippet.formSeachCustomer'>
+								<div class="clearfix">
+									<label for="name">Nome</label>
+									 <div class="input">
+											<input class="medium customer_name" id="name" name="name" size="30" type="text"/>
+											<span class="help-block">Nome completo</span>
+									 </div>
+								</div>        
+								<div class="clearfix">
+									<label for="document">Telefone</label>
+									 <div class="input">
+											<input class="medium customer_document" id="document" name="document" size="30" type="text"/>
+											<span class="help-block">Use um hífen para separar os últimos 4 dígitos</span>
+									 </div>
 								</div>
-							</div>
-						</span>
-						<input type="hidden" id="id_customer_search_form" name='id_customer_search_form'/>
-				</form> 
-				<table id='table_customer' class="zebra-striped">
-				</table>    
-		</div>  
-		<div class="modal-footer">
+								<div class="clearfix">
+									<label for="email">Email</label>
+									<div class="input">
+										<input class="medium customer_email" id="email" name="email" size="30" type="text"/>
+										<span class="help-block">Use apenas letras minúsculas</span>
+									</div>
+								</div>
+							</span>
+							<input type="hidden" id="id_customer_search_form" name='id_customer_search_form'/>
+					</form> 
+					<table id='table_customer' class="zebra-striped">
+					</table>    
+			</div>  
+			<div class="modal-footer">
+			</div>
 		</div>
-	</div>
+
+		
 <div id="customer_rapid_add" class="modal hide fade">
 		<div class="modal-header">
 						<a href="#" class="close">&times;</a>

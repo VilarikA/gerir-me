@@ -1,4 +1,9 @@
 <div id="main" class="lift:surround?with=calendar-true-redesign;at=content">
+
+
+	<!-- ==========================
+	     CALENDAR JS FILES
+	=============================== -->
 	<script type="text/javascript" src="/js/event_busy_controller.js?_v25042015_"></script>
 	<script type="text/javascript" src="/js/calendar/CalendarManager.js?_v25042015_"></script>
 	<script type="text/javascript" src="/js/calendar/TreatmentStatusManager.js?_v25042015_"></script>
@@ -8,7 +13,10 @@
 	<script type="text/javascript" src='/js/default/animal.js'></script>
 	<script type="text/javascript" src="/js/calendar/calendar.js?_v10052017_"></script>
 
-	<!-- Filter row -->
+
+	<!-- ==========================
+	     FILTER ROW
+	=============================== -->
 	<div class="row filter">
 		<form class="vr-form">
 			<div class="xs-12 lg-3 columns">
@@ -39,13 +47,28 @@
 		</form>
 	</div>
 
-	<!-- Contains the calendar component itself -->
+
+	<!-- ==========================
+	     CALENDAR WIDGET
+	=============================== -->
 	<div id="calendar" style="top: 0"></div>
 
+
+	<!-- ==========================
+	     ...
+	=============================== -->
 	<span class='lift:UserSnippet.usersJsonFromCalendar'></span>
 
+
+	<!-- ==========================
+	     ...
+	=============================== -->
 	<span class="lift:comet?type=TrasTratmentServerListener"></span>
 
+
+	<!-- ==========================
+	     ...
+	=============================== -->
 	<div id="treatment_class" class="modal hide fade" style="">
 		<div class="modal-header" style="border-bottom:none">
 			<a href="#" class="close">&times;</a>
@@ -71,7 +94,9 @@
 	</div>
 
 
-	<!-- Form modal for add treatment -->
+	<!-- ==========================
+	     ADD TREATMENT MODAL
+	=============================== -->
 	<div id="treatment_add" class="modal fade vr-modal" role="dialog">
 		<div class="modal-dialog">
 			<div class="modal-content">
@@ -92,13 +117,58 @@
 					<!-- Tabs -->
 					<ul class="nav nav-tabs">
 
-						<li class="dropdown">
+						<li class="dropdown" data-dropdown="dropdown">
 							<a class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
 								Status <span class="caret"></span>
 							</a>
 							<ul class="dropdown-menu">
-								<li><a href="#">HTML</a></li>
-								<li><a href="#">CSS</a></li>
+								<li class='hide_on_paid'>
+									<a id="customer_preopen" type="button">
+										<img src="/images/treatment_preopen1.png" style="width: 16px;">
+										Pré Agendado
+									</a>
+								</li>
+
+								<li class='hide_on_paid'>
+									<a id="customer_open" type="button" >
+										<img src="/images/treatment_open1.png" style="width: 16px;">
+										Agendado
+									</a>	
+								</li>
+
+								<li class="hide_on_paid">
+									<a class="" id="customer_confirmed" type="button">
+										<img src="/images/treatment_confirmed1.png" style="width: 16px;">
+										Confirmado	
+									</a>
+								</li>
+
+								<li class="hide_on_paid">
+									<a class="" id="customer_arrived" type="button">
+										<img src="/images/treatment_arrived1.png" style="width: 16px;">
+										Chegou
+									</a>
+								</li>
+
+								<li class="divider"></li>
+
+								<li class='hide_on_paid'>
+									<a class="" id="customer_ready" type="button">
+										<img src="/images/treatment_ready1.png" style="width: 16px;">
+										Atendido
+									</a>			            	
+								</li>
+								
+								<li class='hide_on_paid'>
+									<a class="" id="customer_missed" href="#" type="button">
+										<img src="/images/treatment_missed1.png" style="width: 16px;">
+										Faltou
+									</a>			            	
+									<a class="" id="customer_reschedule" href="#" type="button">
+										<img src="/images/treatment_reschedule1.png" style="width: 16px;">
+										Desmarcou
+									</a>			            	
+								</li>
 							</ul>
 						</li>
 
