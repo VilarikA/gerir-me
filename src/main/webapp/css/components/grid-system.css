@@ -3,6 +3,29 @@
  * @author: Stanley Sathler <stanleysathlerpinto@gmail.com>
  **/
 
+/*
+ * Removes padding-left from all elements whose class 
+ * starts with col- preffix
+ */
+.row div[class^="col-"]:not(:first-child) {
+	padding-left: 5px;
+	padding-right: 0;
+}
+
+/*
+ * Removes padding-right to all elements whose class 
+ * starts with col- preffix but is the last item in a row
+ */
+ /*
+.row div[class^="col-"]:last-child {
+	padding-right: 0;
+}
+*/
+
+
+
+
+
 .columns,
 .column { 
 	display: inline-block;
@@ -18,7 +41,6 @@
 	width: 100%; 
 }
 
-
 /*
  * Responsive features and queries
  */
@@ -26,7 +48,7 @@
 
 	.columns.lg-2,
 	.column.lg-2 {
-		width: 16.66%;
+		width: calc(16.66% - 5px);
 	}
 
 	.columns.lg-3,
