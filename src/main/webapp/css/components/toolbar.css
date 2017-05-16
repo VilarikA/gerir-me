@@ -1,0 +1,12 @@
+/**
+ * Style created by VilarikA's team
+ * @author: Stanley Sathler <stanleysathlerpinto@gmail.com>
+ **/
+
+
+/* 
+ * Creates a container with custom size, applied to some pages 
+ */
+.container.toolbar {
+	width: 970px;
+}

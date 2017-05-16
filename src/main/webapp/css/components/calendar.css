@@ -3,6 +3,10 @@
  * @author Stanley Sathler <stanleysathlerpinto@gmail.com>
  **/
 
+#calendar { 
+	margin-bottom: 15px; 
+}
+
 #calendar .ui-widget-header.wc-toolbar {
 	padding: 5px;
 }
