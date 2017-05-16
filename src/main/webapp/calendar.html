@@ -194,7 +194,10 @@
 					<form id="treatment_div_span" class="vr-form vr-tab-content">
 						<div class="row">
 							<div class="col-xs-12">
-								<span id="when_treatment">Quinta-feira, 11 de maio de 2017</span>
+								<div class="alert alert-info" role="alert">
+									<i class="fa fa-calendar" aria-hidden="true"></i>
+									<span id="when_treatment"></span>
+								</div>
 							</div>
 						</div>
 
@@ -242,24 +245,24 @@
 						</div>
 
 						<div class="row">
-							<div class="col-xs-12 col-lg-6">
+							<div class="col-xs-12 col-lg-5">
 								<label><span data-i18n="Profissional"></span>:</label>
 								<select name="users" class="notselect2" id="user_treatment" disabled></select>
 							</div>
 
-							<div class="col-xs-12 col-lg-2">
+							<div class="col-xs-12 col-lg-3">
 								<label>Data:</label>
-								<input name="date" id="date_treatment" class="date small start_treatment"/>
+								<input name="date" id="date_treatment" class="date small start_treatment form-control"/>
 							</div>
 
 							<div class="col-xs-12 col-lg-2">
 								<label>&nbsp; <!-- Empty space due Bootstrap bug --></label>
-								<input  name="hour_start" id="hour_treatment" class="time mini"/>
+								<input  name="hour_start" id="hour_treatment" class="time mini form-control"/>
 							</div>
 
 							<div class="col-xs-12 col-lg-2">
 								<label>&nbsp; <!-- Empty space due Bootstrap bug --></label>
-								<input  name="hour_end" id="hour_treatment_end" class="time mini"/>
+								<input  name="hour_end" id="hour_treatment_end" class="time mini form-control"/>
 							</div>
 
 							<input type="hidden" name="id" id="treatment_add_form_id"/>
