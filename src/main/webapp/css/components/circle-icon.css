@@ -6,6 +6,7 @@
 .vr-circle-icon {
 	background-color: #333;
 	color: white;
+	cursor: pointer;
 	display: inline-block;
 	line-height: 30px;
 	height: 30px;
