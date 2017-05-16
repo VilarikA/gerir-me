@@ -24,6 +24,11 @@
  */
 @media only screen and (min-width: 1200px) {
 
+	.columns.lg-2,
+	.column.lg-2 {
+		width: 16.66%;
+	}
+
 	.columns.lg-3,
 	.column.lg-3 { 
 		width: calc(25% - 5px); 

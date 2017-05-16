@@ -158,7 +158,7 @@
 										Atendido
 									</a>			            	
 								</li>
-								
+
 								<li class='hide_on_paid'>
 									<a class="" id="customer_missed" href="#" type="button">
 										<img src="/images/treatment_missed1.png" style="width: 16px;">
@@ -191,7 +191,7 @@
 					</ul>
 
 
-					<!-- ... -->
+					<!-- Add treatment form -->
 					<form id="treatment_div_span" class="vr-form vr-tab-content">
 						<div class="row">
 							<div class="xs-12 columns">
@@ -225,7 +225,7 @@
 
 						<div class="row lift:SecuritySnippet.hasOffSaleModule">
 							<div class="xs-12 lg-6 columns">
-								<label>Convênio:</label>
+								<label for="offsale">Convênio:</label>
 								<select style="width: 100%" name="offsale" id="offsale"></select>
 							</div>
 						</div>
@@ -237,6 +237,28 @@
 							<div class="vr-circle-icon"><i class="fa fa-file-text" aria-hidden="true" title="Prontuário" onclick="openAnimalRecordSelected()"></i></div>
 							<div class="vr-circle-icon"><i class="fa fa-plus" aria-hidden="true" title="Cadastro rápido" onclick="openAnimalRapidAdd()"></i></div>
 						</div>
+
+						<div class="row">
+							<div class="xs-12 lg-6 columns">
+								<label data-i18n="Profissional"></label>
+								<select name="users" class="notselect2" id="user_treatment" disabled></select>
+							</div>
+
+							<div class="xs-12 lg-2 columns">
+								<label>Data:</label>
+								<input name="date" id="date_treatment" class="date small start_treatment"/>
+							</div>
+
+							<div class="xs-12 lg-2 columns">
+								<input  name="hour_start" id="hour_treatment" class="time mini"/>
+							</div>
+
+							<div class="xs-12 lg-2 columns">
+								<input  name="hour_end" id="hour_treatment_end" class="time mini"/>
+							</div>
+
+							<input type="hidden" name="id" id="treatment_add_form_id"/>
+						</div>
 					</form>
 				</div>
 
@@ -246,78 +268,6 @@
 		</div>
 
 		<!--
-		<div class="modal-header" style="border-bottom:none">
-			<ul class="tabs">
-				<li class="dropdown" data-dropdown="dropdown">
-					<a href="#" class="dropdown-toggle btn">Status</a>
-					<ul class="dropdown-menu">
-						<li class='hide_on_paid'>
-							<a id="customer_preopen" type="button" >
-								<img src="/images/treatment_preopen1.png" style="width: 16px;">
-								Pré Agendado
-							</a>	
-						</li>
-						<li class='hide_on_paid'>
-							<a id="customer_open" type="button" >
-								<img src="/images/treatment_open1.png" style="width: 16px;">
-								Agendado
-							</a>	
-						</li>
-						<li class="hide_on_paid">
-							<a class="" id="customer_confirmed" type="button">
-								<img src="/images/treatment_confirmed1.png" style="width: 16px;">
-								Confirmado	
-							</a>
-						</li>
-						<li class="hide_on_paid">
-							<a class="" id="customer_arrived" type="button">
-								<img src="/images/treatment_arrived1.png" style="width: 16px;">
-								Chegou
-							</a>
-						</li>
-						<li class="divider"></li>
-						<li class='hide_on_paid'>
-							<a class="" id="customer_ready" type="button">
-								<img src="/images/treatment_ready1.png" style="width: 16px;">
-								Atendido
-							</a>			            	
-						</li>
-						<li class='hide_on_paid'>
-							<a class="" id="customer_missed" href="#" type="button">
-								<img src="/images/treatment_missed1.png" style="width: 16px;">
-								Faltou
-							</a>			            	
-							<a class="" id="customer_reschedule" href="#" type="button">
-								<img src="/images/treatment_reschedule1.png" style="width: 16px;">
-								Desmarcou
-							</a>			            	
-						</li>
-					</ul>
-				</li>
-				<li>
-					<a class="btn primary" id="treatment_fit_show" href="#" type="button">
-						<img src="/images/bell.png" style="width: 16px;">
-						Ver encaixe
-					</a>
-					<a class="btn primary" id="treatment_fit" href="#" type="button">
-						<img class='hide_mobile' src="/images/donw.png" style="width: 16px;">
-						Encaixar
-					</a>						
-				</li>
-				<li class='hide_mobile'>
-					<a class="btn primary" id="keep_with_customer" href="#" type="button">
-						<img src="/images/arrow_undo.png" style="width: 16px;">
-						<span id="keep_with_customer_text">Último <span data-i18n='Cliente'></span></span>
-					</a>				  		
-				</li>				
-				<li>
-					<a class="btn danger" id="start_block" href="#" type="button">
-						<img class='hide_mobile' src="/images/cancel.png" style="width: 16px;">
-						Bloqueio						
-					</a>				  		
-				</li>
-			</ul>
-		</div>
 		<div class="modal-body ">
 			<div class="row">				
 				<form>
@@ -342,37 +292,6 @@
 									</div>
 								</div>
 							</div>
-							<div class="clearfix">
-								<label for='customer'>
-									<img class="customer_search_button" width='24' src="/images/search.png"/>
-								</label>
-								<div class="input">
-									<div class='inline-inputs'>
-										<span>
-											<input class='mini id_customer_search'  id="cutomer_id_treatment" name='customer' /> 
-											<input class="disabled name_customer_search" name="name_customer" id="cutomer_name_treatment" size="30" type="text" placeholder="Nome" disabled=""/>
-										</span>
-										<span class="help-block"><span data-i18n='Cliente'></span> que será atendido
-											<img id="customer_add_button" width='24' src="/images/add.png" alt="Cadastro rápido"/>
-										</span>
-									</div>
-								</div>
-							</div>
-							<div class="clearfix lift:SecuritySnippet.hasOffSaleModule">
-							  <label for="offsale">Convênio</label>
-							   <div class="input">
-							      <select name="offsale" id='offsale'></select>
-							   </div>
-							</div>                  
-							<div class="clearfix lift:SecuritySnippet.isEbellepetSystem">
-							  <label for="animal">Pet</label>
-							   	<div class="input">
-							      	<select name="animal" id="animal"></select>
-									<a href="#" title="Ir para animal"> <img src="/images/pets.png" width="32" onclick="openAnimalSelected()"></a>
-									<a href="#" title="Prontuário"> <img src="/images/records.png" width="32" onclick='openAnimalRecordSelected()'></a>
-									<a href="#" title="Cadastro rápido"> <img src="/images/add.png" width="32" onclick='openAnimalRapidAdd()'></a>
-								</div>
-							</div>                  
 						</div>
 						<div class="span12">
 							<div class="clearfix">
