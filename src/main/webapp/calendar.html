@@ -67,9 +67,9 @@
 
 
 	<!-- ==========================
-	     ...
+	     CUSTOMERS LIST MODAL
 	=============================== -->
-	<div id="treatment_class" class="modal hide fade" style="">
+	<div id="treatment_class" class="modal fade" style="">
 		<div class="modal-header" style="border-bottom:none">
 			<a href="#" class="close">&times;</a>
 			<h3 style="position: relative;top: 28px;margin: auto;margin-left: auto;margin-right: auto;text-align: center;">
@@ -204,7 +204,7 @@
 						<div class="row">
 							<div class="col-xs-3">
 								<label for="command"><span data-i18n="Comanda"></span>: </label>
-								<input class="command" id="command_treatment" name='command' />
+								<input class="form-control command" id="command_treatment" name='command' />
 							</div>
 						</div>
 
@@ -213,7 +213,7 @@
 								<label>Cliente: </label>
 								<div>
 									<div class="col-xs-6 col-lg-3">
-										<input class='id_customer_search' id="cutomer_id_treatment" name='customer' />
+										<input class='form-control id_customer_search' id="cutomer_id_treatment" name='customer' />
 									</div>
 									<div class="col-xs-6 col-lg-9"> 
 										<span>
@@ -288,10 +288,6 @@
 
                         	<div class="row lift:SecuritySnippet.hasAuxiliarModule">
                         		<div class="col-xs-12">
-									<label for="activitys" data-i18n="Serviço">
-										<span data-i18n='Serviço'></span> / <span data-i18n='Assistente'></span>
-									</label>
-
 									<div class="col-xs-12 col-lg-5">
 										<label for="activitys" data-i18n="Serviço"></label>
 										<select style="width: 100%" class="notselect2"  name="activitys" id="activitys"></select> 
@@ -310,119 +306,105 @@
 								</div>
 							</div>
 						</form>
+
+						<form class="vr-form vr-tab-content">
+							<div class="row lift:SecuritySnippet.hasNotAuxiliarModule">
+								<div class="col-xs-12">
+									<label for="activitys"><span data-i18n="Serviço"></span>:</label>
+									<select class="notselect2"  name="activitys" id="activitys"></select>
+									<button type="button" id="add_detail_button" class="btn btn-primary">
+										Adicionar
+									</button>
+								</div>
+							</div>
+
+							<span style="display: none">
+								<input type="text" name="treatment_id" id="treatment_id" />
+								<input type="text" name="treatment_parent_id" id="treatment_parent_id" />
+							</span>
+						</form>
+
+						<div class="row">
+							<form>
+								<div class="col-xs-6 col-lg-3">
+									<a type="button" onclick="CalendarScreen.registerPayment()" class="btn btn-success">
+										<img class='hide_mobile' width="16px" src="/images/paid.png">
+										Pagar
+									</a>
+								</div>
+								<div class="col-xs-6 col-lg-3">
+									<a type="button" id="removetreatment_button" class="btn btn-danger" onclick="CalendarScreen.removeTreatmentShowModal();">
+										<img class='hide_mobile' width="16px" src="/images/delete.png">
+										Excluir
+									</a>
+								</div>
+								<div class="col-xs-6 col-lg-3">
+									<a type="button" class="hide_mobile btn btn-primary send_email_customer">
+										<img width="16px" src="/images/messages_forward.png">
+										Notificar <span data-i18n='Cliente'></span>
+									</a>
+								</div>
+								<div class="col-xs-6 col-lg-3">
+									<a type="button" class="hide_mobile lift:SecuritySnippet.isCustomer btn btn-primary send_email_user">
+										<img width="16px" src="/images/messages_forward.png">
+										Not <span data-i18n='Profissional'></span>
+									</a>
+								</div>
+							</form>
+						</div>
+
+						<div class="row">
+							<table id="table_detail_table" class="table table-bordered table-striped" style="width:95%">
+								<thead>
+									<th><span data-i18n='Profissional'></span></th>
+									<th class="lift:SecuritySnippet.hasUnitModule">Unidade</th>
+									<th class="lift:SecuritySnippet.hasAuxiliarModule"><span data-i18n='Assistente'></span></th>
+									<th class="lift:SecuritySnippet.isEbellepetSystem">Pet</th>
+									<th><span data-i18n='Serviço'></span></th>
+									<th>Início</th>
+									<th>Fim</th>
+									<th>Status</th>
+									<th>Ações</th>
+								</thead>
+								<tbody>
+								</tbody>
+							</table>
+						</div>
+
+						<div class="row">
+							<form>
+								<div class="col-xs-6 col-lg-3">
+									<a type="button" onclick="CalendarScreen.registerPayment()" class="btn success">
+										<img class='hide_mobile' width="16px" src="/images/paid.png">
+										Pagar
+									</a>
+								</div>
+
+								<div class="col-xs-6 col-lg-3">
+									<a type="button" id="removetreatment_button" class="btn danger" onclick="CalendarScreen.removeTreatmentShowModal();">
+										<img class='hide_mobile' width="16px" src="/images/delete.png">
+										Excluir
+									</a>
+								</div>
+
+								<div class="col-xs-6 col-lg-3">
+									<a type="button" class="btn primary send_email_customer">
+										<img class='hide_mobile' width="16px" src="/images/messages_forward.png">
+										Notificar <span data-i18n='Cliente'></span>
+									</a>
+								</div>
+
+								<div class="col-xs-6 col-lg-3">
+									<a type="button" class="lift:SecuritySnippet.isCustomer btn primary send_email_user">
+										<img class='hide_mobile' width="16px" src="/images/messages_forward.png">
+										Not <span data-i18n='Profissional'></span>
+									</a>
+								</div>
+							</form>
+						</div>
 					</div>
 				</div>
-
-				<!-- Footer -->
-				<div class="modal-footer"></div>
 			</div>
 		</div>
-
-		<!--
-		<div class="modal-body ">
-
-			<span id="treatment_detail_div">
-				<div class = "row">
-					<form>
-						<div class="lift:SecuritySnippet.hasAuxiliarModule clearfix">
-							<label for="activitys"><span data-i18n='Serviço'></span> / <span data-i18n='Assistente'></span> </label>
-							<div class="input">
-								<span>
-									<select class="notselect2"  name="activitys" id="activitys">
-									</select> / 
-									<select name="auxiliar" id="auxiliar">
-									</select>									
-									<button type="button" id="add_detail_button" class="btn primary">
-										<img width="16px" src="/images/add.png">
-										Adicionar
-									</button>
-								</span>						                
-							</div>
-						</div>
-						<div class="lift:SecuritySnippet.hasNotAuxiliarModule clearfix">
-							<label for="activitys"><span data-i18n='Serviço'></span></label>
-							<div class="input">
-								<span>
-									<select class="notselect2"  name="activitys" id="activitys">
-									</select>
-									<button type="button" id="add_detail_button" class="btn primary">
-										<img width="16px" src="/images/add.png">
-										Adicionar
-									</button>
-								</span>						                
-							</div>
-						</div>
-						<span style="display:none">
-							<input type="text" name="treatment_id" id="treatment_id" />
-							<input type="text" name="treatment_parent_id" id="treatment_parent_id" />
-						</span>
-					</form>					
-				</div>
-				<div class = "row">
-				<form>
-					<div class="clearfix">
-					    <div class="input">
-					    	<a type="button" onclick="CalendarScreen.registerPayment()" class="btn success">
-								<img class='hide_mobile' width="16px" src="/images/paid.png">
-								Pagar
-							</a>
-					    	<a type="button" id="removetreatment_button" class="btn danger" onclick="CalendarScreen.removeTreatmentShowModal();">
-								<img class='hide_mobile' width="16px" src="/images/delete.png">
-								Excluir
-							</a>
-					    	<a type="button" class="hide_mobile btn primary send_email_customer">
-								<img width="16px" src="/images/messages_forward.png">
-								Notificar <span data-i18n='Cliente'></span>
-							</a>
-					    	<a type="button" class="hide_mobile lift:SecuritySnippet.isCustomer btn primary send_email_user">
-								<img width="16px" src="/images/messages_forward.png">
-								Not <span data-i18n='Profissional'></span>
-							</a>
-				        </div>					
-					</div>
-				</form>
-				</div>
-				<table id="table_detail_table" class="bordered-table zebra-striped" style="width:95%">
-					<thead>
-						<th><span data-i18n='Profissional'></span></th>
-						<th class="lift:SecuritySnippet.hasUnitModule">Unidade</th>
-						<th class="lift:SecuritySnippet.hasAuxiliarModule"><span data-i18n='Assistente'></span></th>
-						<th class="lift:SecuritySnippet.isEbellepetSystem">Pet</th>
-						<th><span data-i18n='Serviço'></span></th>
-						<th>Início</th>
-						<th>Fim</th>
-						<th>Status</th>
-						<th>Ações</th>
-					</thead>
-					<tbody>
-					</tbody>
-				</table>
-				<div class = "row">
-					<form>
-						<div class="clearfix">
-							<div class="input">
-								<a type="button" onclick="CalendarScreen.registerPayment()" class="btn success">
-									<img class='hide_mobile' width="16px" src="/images/paid.png">
-									Pagar
-								</a>
-								<a type="button" id="removetreatment_button" class="btn danger" onclick="CalendarScreen.removeTreatmentShowModal();">
-									<img class='hide_mobile' width="16px" src="/images/delete.png">
-									Excluir
-								</a>
-								<a type="button" class="btn primary send_email_customer">
-									<img class='hide_mobile' width="16px" src="/images/messages_forward.png">
-									Notificar <span data-i18n='Cliente'></span>
-								</a>
-								<a type="button" class="lift:SecuritySnippet.isCustomer btn primary send_email_user">
-									<img class='hide_mobile' width="16px" src="/images/messages_forward.png">
-									Not <span data-i18n='Profissional'></span>
-								</a>
-							</div>
-						</div>
-					</form>
-				</div>
-			</span>
-		</div>
-		-->
 	</div>	
 </div>

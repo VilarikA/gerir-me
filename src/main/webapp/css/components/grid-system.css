@@ -16,15 +16,7 @@
 	padding-left: 0;
 }
 
-/*
- * Removes padding-right to all elements whose class 
- * starts with col- preffix but is the last item in a row
- */
- /*
-.row div[class^="col-"]:last-child {
-	padding-right: 0;
-}
-*/
+
 
 
 
