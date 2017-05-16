@@ -3,10 +3,7 @@
  * @author: Stanley Sathler <stanleysathlerpinto@gmail.com>
  **/
 
-
-/* 
- * Creates a container with custom size, applied to some pages 
- */
-.container.toolbar {
-	width: 970px;
-}
+nav.navbar { text-align: center; }
+nav.navbar .navbar-header { float: none; }
+nav.navbar .navbar-header,
+nav.navbar .navbar-collapse { display: inline-block !important; }
