@@ -15,6 +15,10 @@
 
 .vr-tab-content {
 	border: 1px solid #ddd;
-	border-top: none;
+	margin-bottom: 25px;
 	padding: 10px 20px;
 }
+
+.nav.nav-tabs ~ .vr-tab-content { border-top: none; }
+
+.vr-tab-content:last-child { margin-bottom: 0; }

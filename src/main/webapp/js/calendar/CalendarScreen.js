@@ -172,7 +172,7 @@ var CalendarScreen = {
 	},
 	renewTratment: function() {
 		$(":input:not(.disabled)", '#treatment_div_span').removeAttr("disabled", "false");
-		$("#treatment_detail_div").hide();
+		//$("#treatment_detail_div").hide();
 		$("#treatment_id").val(0);
 		$("#treatment_parent_id").val(0);
 	},

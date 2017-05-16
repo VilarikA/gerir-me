@@ -24,3 +24,9 @@
 	margin: 0;
 	vertical-align: middle;
 }
+
+@media only screen and (min-width: 768px) {
+	.vr-modal .modal-dialog {
+		width: 800px;
+	}
+}

@@ -28,7 +28,6 @@ form.vr-form button.with-hint {
 	width: calc(100% - 30px); 
 }
 
-form.vr-form .fa { font-size: 30px; vertical-align: middle; }
 form.vr-form .fa-user-circle { font-size: 27px; }
 
 form.vr-form .select2-container.name_customer_search,
