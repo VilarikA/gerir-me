@@ -38,8 +38,9 @@ object PermissionModule extends PermissionModule with LongKeyedMapperPerCompany[
 	lazy val TISS_MODULE_NAME = "TISS"; // 
 	lazy val ANVISA_MODULE_NAME = "ANVISA"; // para prontuario idforcompany/AA
 	lazy val AUXILIAR_MODULE_NAME = "AUXILIAR"; // para assistente na agenda / comissionamanto
-	lazy val QUIZ_MODULE_NAME = "QUIZ"; // para anamnese e avaliações
+	lazy val QUIZ_MODULE_NAME = "QUIZ"; // para prontuário anamnese e avaliações
 	lazy val BPMONTHLY_MODULE_NAME = "BPMONTHLY"; // para mensalidades
+	lazy val BUDGET_MODULE_NAME = "BUDGET"; // para orçamentos e lancto fora da agenda e do caixa
 	
 
 	def financial_? = PermissionModule.countInCompany(
@@ -101,11 +102,17 @@ object PermissionModule extends PermissionModule with LongKeyedMapperPerCompany[
 	def quiz_? = PermissionModule.countInCompany(By(PermissionModule.name,PermissionModule.QUIZ_MODULE_NAME)) > 0
 	def bpmonthly_? = PermissionModule.countInCompany(By(PermissionModule.name,PermissionModule.BPMONTHLY_MODULE_NAME)) > 0
 	def crm_? = PermissionModule.countInCompany(By(PermissionModule.name,PermissionModule.CRM_MODULE_NAME)) > 0
+	def budget_? = PermissionModule.countInCompany(By(PermissionModule.name,PermissionModule.BUDGET_MODULE_NAME)) > 0
 
 	def setModule (company:Company, module:String) = {
 		val pm = PermissionModule.findAll (By(PermissionModule.company, company),
 			By(PermissionModule.name, module))
 		pm(0).status (1).save
+	}
+	def resetModule (company:Company, module:String) = {
+		val pm = PermissionModule.findAll (By(PermissionModule.company, company),
+			By(PermissionModule.name, module))
+		pm(0).status (0).save
 	}
 }
 

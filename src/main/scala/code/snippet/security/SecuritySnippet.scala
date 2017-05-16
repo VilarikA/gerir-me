@@ -364,6 +364,12 @@ object SecuritySnippet {
         else
           NodeSeq.Empty
       }      
+      def hasBudgetModule(in:NodeSeq):NodeSeq ={
+        if (PermissionModule.budget_?)
+          in
+        else
+          NodeSeq.Empty
+      }      
 //
       def calendarFixed (in:NodeSeq):NodeSeq ={
         if (AuthUtil.user.calendarFixed_?)

