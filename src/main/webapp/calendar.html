@@ -190,94 +190,100 @@
 						</li>
 					</ul>
 
-					<!-- Add treatment form -->
-					<form id="treatment_div_span" class="vr-form vr-tab-content">
-						<div class="row">
-							<div class="col-xs-12">
-								<div class="alert alert-info" role="alert">
-									<i class="fa fa-calendar" aria-hidden="true"></i>
-									<span id="when_treatment"></span>
+					<div class="vr-tab-content">
+						
+						<!-- Add treatment form -->
+						<form id="treatment_div_span" class="vr-form">
+							<div class="row">
+								<div class="col-xs-12">
+									<div class="alert alert-info" role="alert">
+										<i class="fa fa-calendar" aria-hidden="true"></i>
+										<span id="when_treatment"></span>
+									</div>
 								</div>
 							</div>
-						</div>
 
-						<div class="row">
-							<div class="col-xs-3">
-								<label for="command"><span data-i18n="Comanda"></span>: </label>
-								<input class="form-control command" id="command_treatment" name='command' />
+							<div class="row">
+								<div class="col-xs-3">
+									<label for="command"><span data-i18n="Comanda"></span>: </label>
+									<input class="form-control command" id="command_treatment" name='command' />
+								</div>
 							</div>
-						</div>
 
-						<div class="row">
-							<div class="col-xs-12">
-								<label>Cliente: </label>
-								<div>
-									<div class="col-xs-6 col-lg-3">
-										<input class='form-control id_customer_search' id="cutomer_id_treatment" name='customer' />
-									</div>
-									<div class="col-xs-6 col-lg-9">
+							<div class="row">
+								<div class="col-xs-12">
+									<label>Cliente: </label>
+									<div>
+										<div class="col-xs-6 col-lg-3">
+											<input class='form-control id_customer_search' id="cutomer_id_treatment" name='customer' />
+										</div>
+										<div class="col-xs-6 col-lg-9">
 
-										<!-- <span> really needed, otherwise, the buttons order becomes wrong -->
-										<span>
-											<input class="disabled name_customer_search use-fa with-icons two-icons" name="name_customer" id="cutomer_name_treatment" placeholder="Nome" disabled=""/>
-										</span>
+											<!-- <span> really needed, otherwise, the buttons order becomes wrong -->
+											<span>
+												<input class="disabled name_customer_search use-fa with-icons two-icons" name="name_customer" id="cutomer_name_treatment" placeholder="Nome" disabled=""/>
+											</span>
 
-										<div class="vr-circle-icon" id="customer_add_button">
-											<i class="fa fa-plus" aria-hidden="true" title="Cadastro rápido"></i>
+											<div class="vr-circle-icon" id="customer_add_button">
+												<i class="fa fa-plus" aria-hidden="true" title="Cadastro rápido"></i>
+											</div>
 										</div>
 									</div>
 								</div>
 							</div>
-						</div>
 
-						<div class="row lift:SecuritySnippet.hasOffSaleModule">
-							<div class="col-xs-12">
-								<label for="offsale">Convênio:</label>
-								<select style="width: 100%" name="offsale" id="offsale"></select>
-							</div>
-						</div>
-
-						<div class="row lift:SecuritySnippet.isEbellepetSystem">
-							<div class="col-xs-12">
-								<label for="animal">Pet:</label>
-								<select class="with-icons three-icons" name="animal" id="animal"></select>
-								<div class="vr-circle-icon"><i class="fa fa-paw" aria-hidden="true" title="Ir para animal" onclick="openAnimalSelected()"></i></div>
-								<div class="vr-circle-icon"><i class="fa fa-file-text" aria-hidden="true" title="Prontuário" onclick="openAnimalRecordSelected()"></i></div>
-								<div class="vr-circle-icon"><i class="fa fa-plus" aria-hidden="true" title="Cadastro rápido" onclick="openAnimalRapidAdd()"></i></div>
-							</div>
-						</div>
-
-						<div class="row">
-							<div class="col-xs-12 col-lg-5">
-								<label><span data-i18n="Profissional"></span>:</label>
-								<select name="users" class="notselect2" id="user_treatment" disabled></select>
+							<div class="row lift:SecuritySnippet.hasOffSaleModule">
+								<div class="col-xs-12">
+									<label for="offsale">Convênio:</label>
+									<select style="width: 100%" name="offsale" id="offsale"></select>
+								</div>
 							</div>
 
-							<div class="col-xs-12 col-lg-3">
-								<label>Data:</label>
-								<input name="date" id="date_treatment" class="date small start_treatment form-control"/>
+							<div class="row lift:SecuritySnippet.isEbellepetSystem">
+								<div class="col-xs-12">
+									<label for="animal">Pet:</label>
+									<select class="with-icons three-icons" name="animal" id="animal"></select>
+									<div class="vr-circle-icon"><i class="fa fa-paw" aria-hidden="true" title="Ir para animal" onclick="openAnimalSelected()"></i></div>
+									<div class="vr-circle-icon"><i class="fa fa-file-text" aria-hidden="true" title="Prontuário" onclick="openAnimalRecordSelected()"></i></div>
+									<div class="vr-circle-icon"><i class="fa fa-plus" aria-hidden="true" title="Cadastro rápido" onclick="openAnimalRapidAdd()"></i></div>
+								</div>
 							</div>
 
-							<div class="col-xs-12 col-lg-2">
-								<label>&nbsp; <!-- Empty space due Bootstrap bug --></label>
-								<input  name="hour_start" id="hour_treatment" class="time mini form-control"/>
+							<div class="row">
+								<div class="col-xs-12 col-lg-5">
+									<label><span data-i18n="Profissional"></span>:</label>
+									<select name="users" class="notselect2" id="user_treatment" disabled></select>
+								</div>
+
+								<div class="col-xs-12 col-lg-3">
+									<label>Data:</label>
+									<input name="date" id="date_treatment" class="date small start_treatment form-control"/>
+								</div>
+
+								<div class="col-xs-12 col-lg-2">
+									<label>&nbsp; <!-- Empty space due Bootstrap bug --></label>
+									<input  name="hour_start" id="hour_treatment" class="time mini form-control"/>
+								</div>
+
+								<div class="col-xs-12 col-lg-2">
+									<label>&nbsp; <!-- Empty space due Bootstrap bug --></label>
+									<input  name="hour_end" id="hour_treatment_end" class="time mini form-control"/>
+								</div>
+
+								<input type="hidden" name="id" id="treatment_add_form_id"/>
 							</div>
 
-							<div class="col-xs-12 col-lg-2">
-								<label>&nbsp; <!-- Empty space due Bootstrap bug --></label>
-								<input  name="hour_end" id="hour_treatment_end" class="time mini form-control"/>
+							<div class="row">
+								<div class="col-xs-12">
+									<label for="obs_treatment">Observação:</label>
+									<textarea class="form-control" name="obs" id="obs_treatment"></textarea>
+								</div>
 							</div>
+						</form>
 
-							<input type="hidden" name="id" id="treatment_add_form_id"/>
-						</div>
+					</div>
 
-						<div class="row">
-							<div class="col-xs-12">
-								<label for="obs_treatment">Observação:</label>
-								<textarea class="form-control" name="obs" id="obs_treatment"></textarea>
-							</div>
-						</div>
-					</form>
+					
 
 					<!-- Treatment detail form -->
 					<div id="treatment_detail_div">
@@ -337,29 +343,25 @@
 							<form class="vr-form">
 								<div class="col-xs-6 col-lg-3">
 									<button onclick="CalendarScreen.registerPayment()" class="btn btn-success">
-										<i class="fa fa-usd" aria-hidden="true"></i>
 										Pagar
 									</button>
 								</div>
 
 								<div class="col-xs-6 col-lg-3">
 									<button id="removetreatment_button" class="btn btn-danger" onclick="CalendarScreen.removeTreatmentShowModal();">
-										<i class="fa fa-trash" aria-hidden="true"></i>
 										Excluir
 									</button>
 								</div>
 
 								<div class="col-xs-6 col-lg-3">
 									<button class="hide_mobile btn btn-primary send_email_customer">
-										<i class="fa fa-envelope" aria-hidden="true"></i>
 										Notificar <span data-i18n='Cliente'></span>
 									</button>
 								</div>
 
 								<div class="col-xs-6 col-lg-3">
 									<button class="hide_mobile lift:SecuritySnippet.isCustomer btn btn-primary send_email_user">
-										<i class="fa fa-envelope" aria-hidden="true"></i>
-										Not <span data-i18n='Profissional'></span>
+										Notif. <span data-i18n='Profissional'></span>
 									</button>
 								</div>
 							</form>
@@ -387,29 +389,25 @@
 							<form class="vr-form">
 								<div class="col-xs-6 col-lg-3">
 									<button onclick="CalendarScreen.registerPayment()" class="btn btn-success">
-										<i class="fa fa-usd" aria-hidden="true"></i>
 										Pagar
 									</button>
 								</div>
 
 								<div class="col-xs-6 col-lg-3">
 									<button id="removetreatment_button" class="btn btn-danger" onclick="CalendarScreen.removeTreatmentShowModal();">
-										<i class="fa fa-trash" aria-hidden="true"></i>
 										Excluir
 									</button>
 								</div>
 
 								<div class="col-xs-6 col-lg-3">
 									<button class="hide_mobile btn btn-primary send_email_customer">
-										<i class="fa fa-envelope" aria-hidden="true"></i>
 										Notificar <span data-i18n='Cliente'></span>
 									</button>
 								</div>
 
 								<div class="col-xs-6 col-lg-3">
 									<button class="hide_mobile lift:SecuritySnippet.isCustomer btn btn-primary send_email_user">
-										<i class="fa fa-envelope" aria-hidden="true"></i>
-										Not <span data-i18n='Profissional'></span>
+										Notif. <span data-i18n='Profissional'></span>
 									</button>
 								</div>
 							</form>
