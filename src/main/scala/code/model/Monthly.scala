@@ -111,7 +111,7 @@ class Monthly extends Audited[Monthly] with LongKeyedMapper[Monthly]
     } else {
       ""
     }
-    complemento + convenio + BusinessRulesUtil.zerosLimit(id.toString,10) + "17" // carteira nova
+    complemento + convenio + BusinessRulesUtil.zerosLimit(idForCompany.toString,10) + "17" // carteira nova
   }
 
   def _barCode = {
