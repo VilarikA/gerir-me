@@ -141,6 +141,13 @@ class  MonthlySnippet extends BootstrapPaginatorSnippet[Monthly] {
 						ac.id(0)
 
 			}))&
+			"name=idForCompany" #> (SHtml.text(ac.idForCompany.is.toString, (f:String) => { 
+					if(f != "")
+						ac.idForCompany(f.toInt)
+					else
+						ac.idForCompany(0)
+
+			}))&
 			"name=bpname" #> (SHtml.text(ac.bpName, (p)=> {} ))&
 		    "name=description" #> (SHtml.text(ac.description.is, ac.description(_)))&
 		    "name=paymentDate" #> (SHtml.text(getDateAsString(ac.paymentDate.is),
@@ -151,10 +158,19 @@ class  MonthlySnippet extends BootstrapPaginatorSnippet[Monthly] {
 						(date:String) => {
 							ac.dateExpiration(Project.strOnlyDateToDate(date))
 						}))&
+		    "name=originalDate" #> (SHtml.text(getDateAsString(ac.originalDate.is),
+						(date:String) => {
+							ac.originalDate(Project.strOnlyDateToDate(date))
+						}))&
+		    "name=efetiveDate" #> (SHtml.text(getDateAsString(ac.efetiveDate.is),
+						(date:String) => {
+							ac.efetiveDate(Project.strOnlyDateToDate(date))
+						}))&
 		    "name=obs" #> (SHtml.textarea(ac.obs.is, ac.obs(_)))&
 		    "name=barCode" #> (SHtml.text(ac.barCode.is, ac.barCode(_)))&
 		    "name=editableLine" #> (SHtml.text(ac.editableLine.is, ac.editableLine(_)))&
 			"name=value" #> (SHtml.text(ac.value.is.toString, (v:String) => { if(v !="") ac.value(v.toDouble)} ))&
+			"name=liquidValue" #> (SHtml.text(ac.liquidValue.is.toString, (v:String) => { if(v !="") ac.liquidValue(v.toDouble)} ))&
 		    "name=paid" #> (SHtml.checkbox(ac.paid.is, ac.paid(_)))&
 			"name=status" #> (SHtml.select(status,Full(ac.status.is.toString),(v:String) => ac.status(v.toInt))++SHtml.hidden(process))			//notification
 			//"name=offType" #> (SHtml.select(offTypes,Full(ac.offType.is.toString),(v:String) => ac.offType(v.toInt)))&
