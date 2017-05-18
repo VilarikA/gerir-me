@@ -36,6 +36,10 @@ form.vr-form .select2-container.with-icons {
 	vertical-align: middle; 
 }
 
+form.vr-form .select2-container.with-icons.one-icon {
+	width: calc(100% - 35px) !important;
+}
+
 form.vr-form .select2-container.with-icons.three-icons {
 	width: calc(100% - 105px) !important;
 }
