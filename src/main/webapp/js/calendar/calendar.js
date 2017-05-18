@@ -369,23 +369,22 @@ $(function(){
 	$("#treatment_div").click(function(){
 		TreatmentManger.saveTreatment();
 	});
+
+
 	$("#add_detail_button").click(function(){
 		var aux = $("#auxiliar").val();
 		var ani = $("#animal").val();
 		var off = $("#offsale").val();
-		if (!aux){
-			aux = 0;
-		}
-		if (!ani){
-			ani = 0;
-		}
-		if (!off){
-			off = 0;
-		}
-		//	TreatmentManger.addDetail($("#treatment_id").val(), $("#activitys").val(), 0, off);
-		//}else{
-			TreatmentManger.addDetail($("#treatment_id").val(), $("#activitys").val(), aux, ani, off);
-		//}
+
+		aux = aux || 0;
+		ani = ani || 0;
+		off = off || 0;
+
+		var treatmentId = $("#treatment_id").val();
+		var activities = $("#activitys").val();
+
+		TreatmentManger.addDetail(treatmentId, activities, aux, ani, off);
+		
 		$("#auxiliar").val("").change();
 	});
 	$(".send_email_customer").click(function(){
