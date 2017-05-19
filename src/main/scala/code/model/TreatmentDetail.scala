@@ -456,6 +456,9 @@ class TreatmentDetail extends Audited[TreatmentDetail] with IdPK with CreatedUpd
         if(treatment.obj.get.isPaid){
             throw new RuntimeException("Este atendimento já foi pago, para alterá-lo exclua o pagamento e tente novamente!");
         }
+        if(treatment.obj.get.company != company){
+            throw new RuntimeException("Este atendimento é de uma empresa diferente do detalhe");
+        }
     }
     override def save() = {
         validateTreatment

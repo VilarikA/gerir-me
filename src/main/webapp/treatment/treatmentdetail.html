@@ -5,6 +5,7 @@
         <label for="btn"></label>
         <input class="btn success" type="submit" value="Salvar">
         <a class="btn primary" href="/treatment/treatmentdetail?treatment=##" id="add_td">Inserir novo</a>
+        <input class="btn primary" id="edit_treatment" type="button" value="Atendimento">
       </div>
       <div>
         <span id="treatmentDetail_form">
@@ -22,7 +23,7 @@
                 </div>
               </div>
               <div class="clearfix">
-                <label for="activity">Serviço </label>
+                <label for="activity"><span data-i18n='Serviço'></span></label>
                 <div class="input">
                   <div class="inline-inputs">
                       <div style="float:left; padding-right:10px" class="input-prepend">
@@ -117,9 +118,17 @@
         <label for="btn"></label>
         <input class="btn success" type="submit" value="Salvar">
         <a class="btn primary" href="/treatment/treatmentdetail?treatment=##" id ="add_td1">Inserir novo</a>
+        <input class="btn primary" id="edit_treatment" type="button" value="Atendimento">
       </div>
     </form>
     <script type="text/javascript" src="/js/treatmentdetails.js"></script>
+    <script>
+    $(function(){
+      $('#edit_treatment').click(function (){
+        window.open("/treatment/treatment?id=" + $('#treatment').val(),"_treatment_maste")
+      });
+    });
+    </script>
   </span>
 </div>
 </div>
