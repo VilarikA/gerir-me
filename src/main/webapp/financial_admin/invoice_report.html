@@ -39,7 +39,7 @@
           decode: function(name, row) {
             //customers.push(id);
 //            return "<a class='btn success' href='/invoice/xmltiss/"+row[1]+"' /target='_blank'>XML</a>"
-            return "<a class='btn success' onclick='downloadxml("+row[1]+")'  target='_tissxml_maste'>XML</a> <a class='btn success' href='/financial_admin/invoice_summary_report?invoiceid="+row[0]+"' target='_invoice_maste'>Imprimir</a>"
+            return "<a class='btn success' onclick='downloadxml("+row[1]+")'  target='_tissxml_maste'>XML</a> <a class='btn primary' href='/financial_admin/invoice_summary_report?invoiceid="+row[0]+"' target='_invoice_maste'>Imprimir</a>"
           }
         };
 

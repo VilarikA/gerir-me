@@ -9,9 +9,16 @@
     $("#start").val(getDateBr(new Date().getStartOfMonth()));
     $("#end").val(getDateBr(new Date()));    
     var fields = [];
+    fields[1] = {
+      type: "format",
+      decode: function(name, row) {
+        return "<a href='/customer/edit?id=" + row[7] + "' target='_customer_maste'>" + name + "</a>";
+      }
+    }
     fields[3] = "dateTime";
     fields[4] = "dateTime";
     fields[5] = "boolean";
+    fields[7] = "none";
     var total = 0.00;
     var total_read = 0.00;
     var total_notread = 0.00;

@@ -50,7 +50,7 @@
     fields[9] = {
       type : "format",
       decode: function(name, row) {
-        return "<a class='btn' href='/customer/edit?id="+row[0]+"' target='_customer_maste'>Ir</a> <a class='btn success' href='/financial_admin/invoice_plain_report?invoiceit="+row[9]+"' target='_invoice_maste'>Imprimir</a>"
+        return "<a class='btn' href='/customer/edit?id="+row[0]+"' target='_customer_maste'>Ir</a> <a class='btn primary' href='/financial_admin/invoice_plain_report?invoiceit="+row[9]+"' target='_invoice_maste'>Imprimir</a>"
       }
     };
     $("#unit").unitField(true,false);
