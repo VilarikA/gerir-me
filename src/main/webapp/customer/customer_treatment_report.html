@@ -33,7 +33,7 @@
       type : "format",
       decode: function(name, row) {
         customers.push(row[0]);
-        return "<a class='btn success' href='/treatment/treatment?id="+row[9]+"' target='_treatment_maste'>Editar</a>"
+        return "<a class='btn success' href='/treatment/treatment?id="+row[9]+"' target='_treatment_maste'>Editar</a>" + "<a class='btn success' href='/treatment/budget_plain_report?trid="+row[9]+"' target='_treatment_maste'>Imprimir</a>"
       }
     };
     $("#unit").unitField(true,false);

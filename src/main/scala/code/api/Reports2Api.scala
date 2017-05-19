@@ -628,6 +628,27 @@ object Reports2 extends RestHelper with ReportRest with net.liftweb.common.Logge
 				toResponse(SQL.format(customer, unit),List(start_value, end_value, AuthUtil.company.id.is))
 			}
 
+			case "report" :: "budget_plain" :: Nil Post _=> {
+				for {
+						trid  <- S.param("trid") ?~ "trid parameter missing" ~> 400
+				}yield{
+					val SQL = """select 'ig.name', pt.name || ' ' || td.external_id, 
+						pr.name, tded.tooth, td.amount, um.short_name, 
+						to_char (td.price/td.amount,'999999.99'), td.price, bc.name
+						from treatment tr 
+						inner join treatmentdetail td on td.treatment = tr.id
+						inner join product pr on pr.id = td.product or pr.id = td.activity
+						left join business_pattern bc on bc.id = tr.customer
+						left join unitofmeasure um on um.id = pr.unitofmeasure
+						left join producttype pt on pt.id = pr.typeproduct
+						--left join invoicegroup ig on ig.id = pt.invoicegroup
+						left join tdedoctus tded on tded.treatmentDetail = td.id
+						where tr.company = ? and tr.id = ?
+						order by tr.id, tr.customer asc"""
+					toResponse(SQL,List(AuthUtil.company.id.is, trid.toLong))
+				}
+			}
+
 			case "report" :: "customer_invoice" :: Nil Post _=> {
 				def start:Date = S.param("start") match {
 					case Full(p) => Project.strToDateOrToday(p)
