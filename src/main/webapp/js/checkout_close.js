@@ -66,7 +66,7 @@ var openDetail = function() {
         id = cashier.id;
       }
     }
-    document.location.href = "/financial_cashier/comman_conference?cashier=" + id + "&type_category=1,0";
+    document.location.href = "/financial_cashier/comman_conference?cashier=" + id + "&productclass=1,0";
   }
 }
 var callApiGetValue = function() {

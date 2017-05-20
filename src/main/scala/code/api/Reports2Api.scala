@@ -189,7 +189,7 @@ object Reports2 extends RestHelper with ReportRest with net.liftweb.common.Logge
 					case Full(p) => Project.strToDateOrToday(p)
 					case _ => new Date()
 				}						
-				def types:String = S.param("type") match {
+				def productclass:String = S.param("productclass") match {
 					case Full(p) => p
 					case _ => "0,1";
 				}
@@ -232,7 +232,7 @@ object Reports2 extends RestHelper with ReportRest with net.liftweb.common.Logge
 //				info (payment_type)
 //				info (sql.toString)
 //				payment_type
-				toResponse(sql.format(types, unit, payment_type),List(AuthUtil.company.id.is,start,end, maxcli))
+				toResponse(sql.format(productclass, unit, payment_type),List(AuthUtil.company.id.is,start,end, maxcli))
 			}
 
 			case "report" :: "message_send_log" :: Nil Post _ => {

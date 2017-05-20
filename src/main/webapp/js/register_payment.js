@@ -384,7 +384,7 @@
     });
   };
   var showCommand = function() {
-    url = "/financial_cashier/comman_conference?startDate=" + gatDateTreatmentOr0() + "&endDate=" + gatDateTreatmentOr0() + "&type_category=1%2C0&commands=" + $('#command').val();
+    url = "/financial_cashier/comman_conference?startDate=" + gatDateTreatmentOr0() + "&endDate=" + gatDateTreatmentOr0() + "&productclass=1%2C0&commands=" + $('#command').val();
     window.open(url);
   };
   var getTreatmentbyCommand = function(callback, customer) {
