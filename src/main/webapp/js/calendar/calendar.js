@@ -366,7 +366,7 @@ $(function(){
 		$($(".name_customer_search")[2]).select2("open")
 		$(".name_customer_search span").html("");
 	});
-	
+
 	$("#treatment_div").click(function(){
 		TreatmentManger.saveTreatment();
 	});
@@ -378,9 +378,6 @@ $(function(){
 
 		var treatmentId = $("#treatment_id").val();
 		var activities = $("#activitys").val();
-
-		if(!parseInt(treatmentId))
-			throw new Error("The #treatment_id element has an invalid value: " + treatmentId);
 		
 		TreatmentManger.addDetail(treatmentId, activities, aux, ani, off);
 		
