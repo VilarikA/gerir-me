@@ -167,7 +167,7 @@ object Reports extends RestHelper with ReportRest with net.liftweb.common.Logger
 					case Full(p) => Project.strToDateOrToday(p)
 					case _ => new Date()
 				}
-				def types:String = S.param("type") match {
+				def productclass:String = S.param("productclass") match {
 					case Full(p) => p
 					case _ => "0,1";
 				}
@@ -196,7 +196,7 @@ object Reports extends RestHelper with ReportRest with net.liftweb.common.Logger
 					group by profissional, telefone, email, idp
 					order by profissional, telefone, email, idp) as data1 order by valor_total desc limit ?) as data2
 					""";
-				toResponse(sql.format(types,unit),List(AuthUtil.company.id.is,start,end, maxprof))
+				toResponse(sql.format(productclass,unit),List(AuthUtil.company.id.is,start,end, maxprof))
 			}
 			case "report" :: "prof_ranking_csv.csv" :: Nil Post _ => {
 				def start:Date = S.param("start") match { 
@@ -299,7 +299,7 @@ object Reports extends RestHelper with ReportRest with net.liftweb.common.Logger
 					case Full(p) if(p !="") => "pa.cashier = "+p.toLong
 					case _ => "1 =1"
 				}
-				def type_category = S.param("type_category") match {
+				def productclass = S.param("productclass") match {
 					case Full(p) if(p !="") => "pd.productclass in ( "+p+" )"
 					case _ => "1 =1"
 				}
@@ -321,7 +321,7 @@ object Reports extends RestHelper with ReportRest with net.liftweb.common.Logger
 					and %s
 				) as data1 order by data_venda desc, cliente_profissional limit 500
 				 """
-				toResponse(sql.format(cashier, type_category),List(AuthUtil.company.id.is, start, end))
+				toResponse(sql.format(cashier, productclass),List(AuthUtil.company.id.is, start, end))
 			}
 			case "report" :: "commissions_filter" :: Nil Post _ => {
 				def treatment = S.param("treatment") match {
@@ -395,7 +395,7 @@ object Reports extends RestHelper with ReportRest with net.liftweb.common.Logger
 						case _ => " 01 " 
 					}
 				}			
-				def types:String = S.param("type") match {
+				def productclass:String = S.param("productclass") match {
 					case Full(p) => p
 					case _ => "0,1";
 				}
@@ -420,7 +420,7 @@ object Reports extends RestHelper with ReportRest with net.liftweb.common.Logger
 								and tr.user_c in (%s)
 								and p.productclass in(%s) %s
 								and date(pa.datepayment) between date(?) and date(?)
-								""".format(user, types, units),List(AuthUtil.company.id.is, start, end))
+								""".format(user, productclass, units),List(AuthUtil.company.id.is, start, end))
 			}
 
 			case "report" :: "commissions" :: Nil Post _ => {
@@ -452,7 +452,7 @@ object Reports extends RestHelper with ReportRest with net.liftweb.common.Logger
 					case _ => " and " + Treatment.unitsToShowSql
 				}
 
-				def types:String = S.param("type") match {
+				def productclass:String = S.param("productclass") match {
 					case Full(p) => p
 					case _ => "0,1";
 				}
@@ -536,9 +536,9 @@ object Reports extends RestHelper with ReportRest with net.liftweb.common.Logger
 					"""
 				if(rel_mini == 0){
 					//info (user + " = = = = = = = = = = = = = = = =  = = == = = = = = = = = =")
-					toResponse(SQL_REPORT.format(user, types, units),List(AuthUtil.company.id.is, start, end))
+					toResponse(SQL_REPORT.format(user, productclass, units),List(AuthUtil.company.id.is, start, end))
 				} else {
-					toResponse(SQL_REPORT_MINI.format(user, types, units),List(AuthUtil.company.id.is, start, end))
+					toResponse(SQL_REPORT_MINI.format(user, productclass, units),List(AuthUtil.company.id.is, start, end))
 				}
 			}
 
@@ -568,7 +568,7 @@ object Reports extends RestHelper with ReportRest with net.liftweb.common.Logger
 					case Full(p) if(p != "") => " and tr.unit =%S".format(p) 
 					case _ => " and " + Treatment.unitsToShowSql
 				}			
-				def types:String = S.param("type") match {
+				def productclass:String = S.param("productclass") match {
 					case Full(p) => p
 					case _ => "0,1";
 				}
@@ -616,7 +616,7 @@ object Reports extends RestHelper with ReportRest with net.liftweb.common.Logger
 					order by prof, id, telefone, email, unidade
 					"""
 					//LogActor ! SQL
-				toResponse(SQL.format(types,unit,user),List(start, end, AuthUtil.company.id.is, start, end, start, end, AuthUtil.company.id.is))
+				toResponse(SQL.format(productclass,unit,user),List(start, end, AuthUtil.company.id.is, start, end, start, end, AuthUtil.company.id.is))
 			}
 
 			case "report" :: "sales_purchase_margin" :: Nil Post _=> {
@@ -639,7 +639,7 @@ object Reports extends RestHelper with ReportRest with net.liftweb.common.Logger
 					case Full(p) if(p != "") => " and tr.unit =%S".format(p) 
 					case _ => " and " + Treatment.unitsToShowSql
 				}			
-				def types:String = S.param("type") match {
+				def productclass:String = S.param("productclass") match {
 					case Full(p) => p
 					case _ => "0,1";
 				}
@@ -663,7 +663,7 @@ object Reports extends RestHelper with ReportRest with net.liftweb.common.Logger
 					order by lucro desc
 					"""
 					//LogActor ! SQL
-				toResponse(SQL.format(types,unit,user),List(margin_value, margin_value, AuthUtil.company.id.is, start, end))
+				toResponse(SQL.format(productclass,unit,user),List(margin_value, margin_value, AuthUtil.company.id.is, start, end))
 			}
 
 			case "report" :: "dre" :: Nil Post _ => {

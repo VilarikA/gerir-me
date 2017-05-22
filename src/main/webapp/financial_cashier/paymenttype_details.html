@@ -7,7 +7,7 @@
         <form id="form_search" class="well form-search" method='get'>
             <h1>
               <span class="lift:CompanySnippet.thumb"> </span>
-              <input class="report_title local_storage" id="title_command_conference" name="title_command_conference" size="30" type="text" value="Relatório de Conferência de Comandas"/>
+              <input class="report_title local_storage" id="title_paymenttype_details" name="title_paymenttype_details" size="30" type="text" value="Relatório de Formas de Pagamento"/>
             </h1>
             <div class="row">
                   <div class="span8">
@@ -90,7 +90,6 @@
               <label for="send"></label>
               <div class="input">
                 <button type="submit" class="btn success">Buscar</button>
-                <button  id ="detail_print" class="btn primary">Detalhar</button>
               </div>
             </div>                        
             <div class="clearfix">
@@ -125,22 +124,6 @@
             </div>
         </form>
       </div>
-	    <h1>Entradas/Recebimentos</h1>
-      <a onclick="return ExcellentExport.excel(this, 'in_commands', 'data');"
-        href="#" download="data.xls" class="btn excel_buttton"
-        title="Exportar para excel">
-        <img style="width: 16px;" src="/images/excel.png" />
-      </a>  
-      <a onclick="return ExcellentExport.csv(this, 'in_commands', ';');"
-        href="#" download="data.csv" class="btn excel_buttton"
-        title="Exportar para csv">
-        <img style="width: 16px;" src="/images/generate.png" />
-      </a>  
-      <a id="hide_grid_payments" onclick="$('#in_commands').toggle();return false;" 
-        href="#" class="btn excel_buttton" 
-        title="Ocultar tabela">
-        <img style="width: 16px;" src="/images/collapse.png" />
-      </a>  
     <table id="in_commands" class="bordered-table zebra-striped">
       <thead>
         <th>Caixa</th>
@@ -158,78 +141,7 @@
         <th>Recibo</th>
         </tr>
       </thead>
-      <!--<tr class="lift:ReportSales:reportCommandConference"> -->
-      <tr class="lift:ReportSales:simpleReportCommandConference">
-        <td>
-          <f:cashier></f:cashier>
-        </td>
-        <td class="translate_date">
-          <f:date></f:date>
-        </td>
-        <td>
-          <f:customerid></f:customerId>
-        </td>
-        <td>
-          <f:customername></f:customerName>
-        </td>
-        <td>
-          <f:command></f:command>
-        </td>
-        <td>
-          <f:user></f:user>
-        </td>
-        <td>
-          <f:treatments></f:treatments>
-        </td>
-        <td>
-          <f:payments></f:payments>
-        </td>
-        <td>
-          <f:total></f:total>
-        </td>
-        <td>
-          <div class="hide_on_print">
-            <f:link></f:link>
-          </div>
-        </td>
-        <td>
-          <div class="hide_on_print">
-            <f:commandprint></f:commandprint>
-          </div>
-        </td>
-        <td>
-          <div class="hide_on_print">
-            <f:ticket></f:ticket>
-          </div>
-        </td>
-        <td>
-          <div class="hide_on_print">
-            <f:receipt></f:receipt>
-          </div>
-        </td>
-      </tr>
     </table>
-    <h1>Saídas/Entradas     
-      <a href="" class="_popover_basic" rel="popover" data-content="As entradas e  saídas de caixa feitas diretamente através de lançamentos no financeiro só são exibidas quando um caixa é especificado" data-original-title="Informação">
-      <img width='20' src="/images/info.gif"/>
-      </a>
-    </h1>
-    <table id="grid_outs" class="bordered-table zebra-striped">
-        <thead>
-          <th>Data</th>
-          <th>Categoria</th>
-          <th>Desc</th>
-          <th>Valor</th>
-          <th>Tipo</th>
-          <th><span data-i18n='Profissional'></span></th>
-          <th>Caixa</th>
-          <th>Conta</th>
-          <th title ="Para o caso de retirada em cheque">Cheque <span data-i18n='Cliente'></span></th>
-          <th>Banco</th>
-        </thead>
-        <tbody>
-        </tbody>
-    </table>     
     <script type="text/javascript" src="/js/comman_conference.js"></script>
     <script type="text/javascript">
       $(function(){

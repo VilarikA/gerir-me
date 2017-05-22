@@ -46,8 +46,9 @@ class  TreatmentDetailSnippet extends PaginatorSnippet [TreatmentDetail] {
 	}	
 
 	def teeth = DomainTable.findAll(OrderBy(DomainTable.cod, Ascending),By(DomainTable.domain_name, "dente")).map(t => (t.cod.is.toString,t.name.is))
-	def activities = ("0", "Selecione um Serviço") :: Activity.findAllInCompany.map(t => (t.id.is.toString,t.name.is))
-	def auxiliars = ("0", "Selecione um Asistente") :: User.findAllInCompany.map(t => (t.id.is.toString,t.name.is))
+	def activities = ("0", "Selecione um Serviço") :: Activity.findAllInCompany(OrderBy(Activity.name, Ascending)).map(t => (t.id.is.toString,t.name.is))
+	def auxiliars = ("0", "Selecione um Assistente") :: User.findAllInCompany(OrderBy(User.name, Ascending)).map(t => (t.id.is.toString,t.name.is))
+	def offsales = ("0", "Selecione um Convênio") :: OffSale.findAllInCompany(OrderBy(OffSale.name, Ascending)).map(t => (t.id.is.toString,t.name.is))
 	def units = ("0", "Selecione uma Unidade") :: CompanyUnit.findAllInCompany(OrderBy(CompanyUnit.name, Ascending)).map(t => (t.id.is.toString, t.name.is))
 	def icds = ("0" -> "Selecione um cid")::Icd.findAll(By(Icd.section,"S"),OrderBy(Icd.namecomp, Ascending)).map(t => (t.id.is.toString,t.namecomp.is))
 //,By(Icd.section,"S")
@@ -122,6 +123,9 @@ class  TreatmentDetailSnippet extends PaginatorSnippet [TreatmentDetail] {
 				try{
 					ac.company(AuthUtil.company)
 //					ac.weekDays(S.params("weekDays").foldLeft("")(_+","+_))
+					if (ac.price == 0.0) {
+						ac.price (ac.priceActivity * ac.amount) 
+					}
 					ac.save
 					val ac1 = Treatment.findByKey(ac.treatment.toLong).get
 					ac1.save
@@ -140,11 +144,19 @@ class  TreatmentDetailSnippet extends PaginatorSnippet [TreatmentDetail] {
 			"name=external_id" #> (SHtml.text(ac.external_id.is, ac.external_id(_)))&
 		    "name=activity" #> (SHtml.select(activities,Full(ac.activity.is.toString),(s:String) => ac.activity( s.toLong)))&
 		    "name=auxiliar" #> (SHtml.select(auxiliars,Full(ac.auxiliar.is.toString),(s:String) => ac.auxiliar( s.toLong)))&
+		    "name=offsale" #> (SHtml.select(offsales,Full(ac.offsale.is.toString),(s:String) => ac.offsale( s.toLong)))&
 			"name=product" #> (SHtml.text(ac.product.is.toString, (p:String) => ac.product(p.toLong)))&
 			"name=wayofaccess" #> (SHtml.text(ac.getTdEdoctus.wayOfAccess.is, ac.getTdEdoctus.wayOfAccess(_)))&
 			"name=tooth" #> (SHtml.select(teeth,Full(ac.getTdEdoctus.tooth.is), ac.getTdEdoctus.tooth(_)))&
 //			"name=hospitalizationType" #> (SHtml.select(hospitalizationtypes,Full(ac.getTreatEdoctus.hospitalizationType.is), ac.getTreatEdoctus.hospitalizationType(_)))&
-			"name=price" #> (SHtml.text(ac.price.is.toString, (v:String) => { if(v !="")ac.price(v.toDouble)} ))&
+//			"name=price" #> (SHtml.text(ac.price.is.toString, (v:String) => { if(v !="")ac.price(v.toDouble)} ))&
+			"name=price" #> (SHtml.text(ac.price.is.toString, (f:String) => { 
+					if(f != "")
+						ac.price(f.toDouble)
+					else
+						ac.price(0.0)
+
+			}))&
 			"name=amount" #> (SHtml.text(ac.amount.is.toString, (v:String) => { if(v !="")ac.amount(v.toDouble)} ))&
 			"name=obs" #> (SHtml.textarea(ac.obs.is, ac.obs(_))++SHtml.hidden(process))
 //			"name=status" #> (SHtml.select(status,Full(ac.status.is.toString),(v:String) => ac.status(v))++SHtml.hidden(process))			

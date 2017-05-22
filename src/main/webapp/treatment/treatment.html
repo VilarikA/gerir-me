@@ -123,12 +123,14 @@
           </span>
         </span>
       </div>
+      <!-- ganha visao do grid de detalhes
       <div class="well">
         <label for="btn"></label>
         <a class="btn primary" href="/treatment/list_treatment">Lista</a>
         <input class="btn success" type="submit" value="Salvar">
         <a class="btn primary" href="/treatment/treatment" target='_treatment_maste'>Inserir novo</a>
       </div>
+      -->
       <span>
         <div class="clearfix">
           <label for="start_date">Total </label>
@@ -155,6 +157,7 @@
           <li class="tab"><a href="#products">Produtos</a></li>
         </ul>
         <input type="hidden" class="has-auxiliar-module lift:SecuritySnippet.hasAuxiliarModule" value="1">
+        <input type="hidden" class="has-offsale-module lift:SecuritySnippet.hasOffSaleModule" value="1">
         <input type="hidden" class="has-esmile-system lift:SecuritySnippet.isEsmileSystem" value="1">
         <input type="hidden" class="has-edoctus-system lift:SecuritySnippet.isEdoctusSystem" value="1">
         <div class="pill-content">
@@ -175,6 +178,7 @@
                     <th>Qtde</th>
                     <th>Val Total</th>
                     <th>Obs</th>
+                    <th class="lift:SecuritySnippet.hasOffSaleModule">Convênio</th>
                     <th class="lift:SecuritySnippet.IsEdoctusSystem clearfix">Código</th>
                     <th>Ações</th>
                   </tr>
@@ -201,6 +205,7 @@
                     <th>QTde</th>
                     <th>Val Total</th>
                     <th>Obs</th>
+                    <th class="lift:SecuritySnippet.hasOffSaleModule">Convênio</th>
                     <th class="lift:SecuritySnippet.IsEdoctusSystem clearfix">Código</th>
                     <th>Ações</th>
                   </tr>

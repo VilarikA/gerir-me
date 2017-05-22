@@ -84,7 +84,9 @@ object AccountApi extends RestHelper with ReportRest with net.liftweb.common.Log
 			case "account" :: "category" :: "list" :: Nil JsonGet _ => {
 				JsArray(AccountCategory
 					.findAllInCompany
-					(/*By(AccountCategory.parent_?,false),*/OrderBy(AccountCategory.maxTreeNode, Descending))
+					(/*By(AccountCategory.parent_?,false),*/
+						OrderBy(AccountCategory.maxTreeNode, Descending),
+						OrderBy(AccountCategory.orderInReport, Ascending))
 					.map((c) => JsObj(
 															("name",c._treeLevelstr + c.name.is),
 															("obs",c.obs.is),

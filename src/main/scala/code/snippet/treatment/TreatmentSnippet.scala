@@ -141,7 +141,12 @@ class  TreatmentSnippet extends PaginatorSnippet [Treatment] {
 				}
 			}
 			"name=customer" #> (SHtml.text(ac.customer.is.toString, (p:String) => ac.customer(p.toLong)))&
-		    "name=user" #> (SHtml.select(users,Full(ac.user.is.toString),(v:String) => ac.user(v.toLong)))&
+		    "name=user" #> (SHtml.select(users,Full(ac.user.is.toString),(v:String) => if(v != "")
+						ac.user(v.toLong)
+					else
+						ac.user(0)
+
+			))&
 			"name=start" #> (SHtml.text(getDateAsString(ac.start.is),
 						(date:String) => {
 							ac.start(Project.strOnlyDateToDate(date))

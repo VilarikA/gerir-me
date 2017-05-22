@@ -23,9 +23,11 @@ trait UserEvent {
 	    	override def dbIndexed_? = true
 	    }
 	    object start extends EbMappedDateTime(this.asInstanceOf[MapperType]){
+	        override def defaultValue = Project.date_format_db.parse(Project.date_format_db.format(new Date()));
 	    	override def dbIndexed_? = true
 	    }
 	    object end extends EbMappedDateTime(this.asInstanceOf[MapperType]) with LifecycleCallbacks{
+	        override def defaultValue = Project.date_format_db.parse(Project.date_format_db.format(new Date()));
 	    	override def dbIndexed_? = true
 			override def beforeSave() {
 			  super.beforeSave;

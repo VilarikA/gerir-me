@@ -6,7 +6,9 @@
   <script type="text/javascript">
   var customers = [];
   $(function(){
-    $("#start").val(getDateBr(new Date().getAYearAgo()));
+    // pra angiosemper a ideia era trazer atendimentos de um ano atrás
+    // $("#start").val(getDateBr(new Date().getAYearAgo()));
+    $("#start").val(getDateBr(new Date(new Date().setDate(1))));
     var hasUnitModule = $('.has-unit-module').length > 0;
     $("#send_message").notificationField(true);
     var fields = [];
@@ -31,7 +33,7 @@
       type : "format",
       decode: function(name, row) {
         customers.push(row[0]);
-        return "<a class='btn success' href='/treatment/treatment?id="+row[9]+"' target='_treatment_maste'>Editar</a>"
+        return "<a class='btn' href='/treatment/treatment?id="+row[9]+"' target='_treatment_maste'>Editar</a>" + "<a class='btn primary' href='/treatment/budget_plain_report?trid="+row[9]+"' target='_treatment_maste'>Imprimir</a>"
       }
     };
     $("#unit").unitField(true,false);
@@ -92,7 +94,7 @@
               </div>
             </div>
             <div class="clearfix">
-              <label for="type_category">Intervalo</label>
+              <label for="start">Intervalo</label>
               <div class="input">
                 <div class="inline-inputs">
                   <div class="input-prepend" style="float:left; padding-right:10px">

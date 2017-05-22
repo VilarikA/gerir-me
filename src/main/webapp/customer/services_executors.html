@@ -38,30 +38,35 @@
     <h1><span class="lift:CompanySnippet.thumb"> </span>Relatório Profissionais / Serviços</h1>
 	<div class="span8">
 		<div class="clearfix">
-		    <label for="type_category">Profissionais</label>
+		    <label for="user">Profissionais</label>
 		    <div class="input">
 				<select multiple="multiple"  id='user' name="user">
 				</select>
 			</div>
 		</div>
 		<div class="clearfix">
-		    <label for="type_category">Serviços</label>
+		    <label for="product">Serviços</label>
 		    <div class="input">
 		        <select multiple="multiple"  id='product' name="product">
 		        </select>
 		    </div>
 		</div>
 		<div class="clearfix">
-		    <label for="type_category">Tipo Detalhe</label>
+		    <label for="type_detail">Tipo Detalhe</label>
 		    <div class="input">
-		        <select name="type_category" id="type_category">
+		        <select name="type_detail" id="type_detail">
 		            <option value='1'>Todos</option>
 		            <option value='0'>Exceções</option>
 		        </select>
 			    <span class="help-block">Todos / Execeções (preço, comissão, ou duração diferentes)</span>
 		    </div>
 		</div>
+    <div class="clearfix">
+      <label for=""></label>
+      <div class="input">
         <input class="btn success" id="send" type="button" value="Buscar">
+      </div>
+    </div>
 	</div>
   </form>
   <table id="grid" class="bordered-table zebra-striped">

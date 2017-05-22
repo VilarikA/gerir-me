@@ -83,6 +83,11 @@ class TreatmentDetail extends Audited[TreatmentDetail] with IdPK with CreatedUpd
         case Full(a) => true
         case _ => false
     }
+
+    def hasOffSale = offsale.obj  match {
+        case Full(a) => true
+        case _ => false
+    }
     
     def customer = treatment.obj.get.customer.obj.get
     def command = treatment.obj.get.command.is
@@ -362,7 +367,11 @@ class TreatmentDetail extends Audited[TreatmentDetail] with IdPK with CreatedUpd
         activity.obj match {
             case Full(t) => {
                             if(isAMonthlyService && BpMonthly.countBpMonthlyByProduct(t, customer, start) > 0){
-                                BigDecimal(BpMonthly.monthlyByProduct(t, customer, start).valueSession.is)
+                                BigDecimal(BpMonthly.monthlyByProduct(t, 
+                                    customer, start).valueSession.is)
+                            } else if(hasOffSale) {
+                                OffSaleProduct.offSaleProductPrice (offsale.obj.get.id, 
+                                    activity.obj.get.id.is, t.salePrice.is)
                             }else  if(hasUser) {
                                 user.activityPrice(t)
                             } else {
@@ -370,10 +379,16 @@ class TreatmentDetail extends Audited[TreatmentDetail] with IdPK with CreatedUpd
                             }
                 }
             case _ => product.obj match {
-                case Full(p) => if(hasUser)
+                case Full(p) => {
+                            if(hasOffSale) {
+                                OffSaleProduct.offSaleProductPrice (offsale.obj.get.id, 
+                                    product.obj.get.id.is, p.salePrice.is)
+                            } else if(hasUser) {
                                 user.activityPrice(p)
-                            else
+                            } else {
                                 p.salePrice.is
+                            }
+                    }
                 case _ => 0.0
             }
         }
@@ -455,6 +470,9 @@ class TreatmentDetail extends Audited[TreatmentDetail] with IdPK with CreatedUpd
     def validateTreatment {
         if(treatment.obj.get.isPaid){
             throw new RuntimeException("Este atendimento já foi pago, para alterá-lo exclua o pagamento e tente novamente!");
+        }
+        if(treatment.obj.get.company != company){
+            throw new RuntimeException("Este atendimento é de uma empresa diferente do detalhe");
         }
     }
     override def save() = {

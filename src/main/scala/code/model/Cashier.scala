@@ -194,7 +194,7 @@ object Cashier extends Cashier with LongKeyedMapperPerCompany[Cashier]  with  On
                                         inner join paymenttype t on(pd.typepayment=t.id)
                                         WHERE pd.company = ? and p.cashier= ? and %s
                                         group by t.name
-                                        order by value desc) as data;"""
+                                        order by t.name) as data;"""
 
     lazy val SQL_REPORT_PAYMENT_TYPES_UNIT =  """
                                         select t.name paymenttype, sum(pd.value) as value
@@ -206,7 +206,7 @@ object Cashier extends Cashier with LongKeyedMapperPerCompany[Cashier]  with  On
                                         and p.datepayment between ? and ?  
                                         and %s
                                         group by t.name
-                                        order by value desc;"""
+                                        order by t.name;"""
     lazy val SQL_REPORT_PAYMENT_TYPES_COMPANY =  """
                                         select t.name paymenttype, sum(pd.value) as value
                                         from paymentdetail pd
@@ -217,7 +217,7 @@ object Cashier extends Cashier with LongKeyedMapperPerCompany[Cashier]  with  On
                                         and p.datepayment between ? and ?
                                         and %s
                                         group by t.name
-                                        order by value desc;"""
+                                        order by t.name;"""
 
 //    def showAllCashiers = AuthUtil.user.isAdmin  || AuthUtil.user.isFinancialManager || 
 //     AuthUtil.user.isCashierGeneral || AuthUtil.unit.useSingleCashier_?.is

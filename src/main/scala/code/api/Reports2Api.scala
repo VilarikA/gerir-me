@@ -189,7 +189,7 @@ object Reports2 extends RestHelper with ReportRest with net.liftweb.common.Logge
 					case Full(p) => Project.strToDateOrToday(p)
 					case _ => new Date()
 				}						
-				def types:String = S.param("type") match {
+				def productclass:String = S.param("productclass") match {
 					case Full(p) => p
 					case _ => "0,1";
 				}
@@ -232,7 +232,7 @@ object Reports2 extends RestHelper with ReportRest with net.liftweb.common.Logge
 //				info (payment_type)
 //				info (sql.toString)
 //				payment_type
-				toResponse(sql.format(types, unit, payment_type),List(AuthUtil.company.id.is,start,end, maxcli))
+				toResponse(sql.format(productclass, unit, payment_type),List(AuthUtil.company.id.is,start,end, maxcli))
 			}
 
 			case "report" :: "message_send_log" :: Nil Post _ => {
@@ -626,6 +626,27 @@ object Reports2 extends RestHelper with ReportRest with net.liftweb.common.Logge
 				left join companyunit cu on cu.id = bp.unit
 				where valueinaccount <>0 and valueinaccount between ? and ? and bp.company=? %s %s order by valueinaccount """
 				toResponse(SQL.format(customer, unit),List(start_value, end_value, AuthUtil.company.id.is))
+			}
+
+			case "report" :: "budget_plain" :: Nil Post _=> {
+				for {
+						trid  <- S.param("trid") ?~ "trid parameter missing" ~> 400
+				}yield{
+					val SQL = """select 'ig.name', pt.name || ' ' || td.external_id, 
+						pr.name, tded.tooth, td.amount, um.short_name, 
+						to_char (td.price/td.amount,'999999.99'), td.price, bc.name
+						from treatment tr 
+						inner join treatmentdetail td on td.treatment = tr.id
+						inner join product pr on pr.id = td.product or pr.id = td.activity
+						left join business_pattern bc on bc.id = tr.customer
+						left join unitofmeasure um on um.id = pr.unitofmeasure
+						left join producttype pt on pt.id = pr.typeproduct
+						--left join invoicegroup ig on ig.id = pt.invoicegroup
+						left join tdedoctus tded on tded.treatmentDetail = td.id
+						where tr.company = ? and tr.id = ?
+						order by tr.id, tr.customer asc"""
+					toResponse(SQL,List(AuthUtil.company.id.is, trid.toLong))
+				}
 			}
 
 			case "report" :: "customer_invoice" :: Nil Post _=> {
@@ -1029,10 +1050,12 @@ order by date_c, 2
 				}
 
 				val SQL = """
-					select pr.name, tded.tooth, ba.name, price/amount, amount, price, td.obs, 
+					select pr.name, tded.tooth, ba.name, price/amount, amount, 
+					price, td.obs, os.short_name,
 					td.external_id, td.id from treatmentdetail td
 					inner join product pr on (pr.id = td.activity or pr.id = td.product) and pr.productclass = ?
 					left join business_pattern ba on ba.id = td.auxiliar
+					left join offsale os on os.id = td.offsale
 					left join tdedoctus tded on tded.treatmentdetail = td.id
 					where td.company = ? and td.treatment = ? order by td.id
 		        	"""

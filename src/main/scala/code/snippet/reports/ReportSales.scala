@@ -44,12 +44,12 @@ object  ReportSales extends net.liftweb.common.Logger{
 		case _ => if(cashier != Nil) new Date(1l) else new Date();
 	}
 
-	def showProducts = S.param("type_category") match {
+	def showProducts = S.param("productclass") match {
 		case Full(s) if(s != "") => s.contains("1")
 		case _ => false
 	}
 
-	def showServices = S.param("type_category") match {
+	def showServices = S.param("productclass") match {
 		case Full(s) if(s != "") => s.contains("0")
 		case _ => false
 	}	
@@ -106,7 +106,7 @@ object  ReportSales extends net.liftweb.common.Logger{
 				}else{
 					(p:Payment) =>{ p.treatments.filter((t) => {t.hasProduct}).size > 0 }
 				}
-			def typeLog =  S.param("type_category") match {
+			def typeLog =  S.param("productclass") match {
 				case Full(s) => s
 				case _ => ""
 			}		
