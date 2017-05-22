@@ -48,6 +48,7 @@ class  TreatmentDetailSnippet extends PaginatorSnippet [TreatmentDetail] {
 	def teeth = DomainTable.findAll(OrderBy(DomainTable.cod, Ascending),By(DomainTable.domain_name, "dente")).map(t => (t.cod.is.toString,t.name.is))
 	def activities = ("0", "Selecione um Serviço") :: Activity.findAllInCompany(OrderBy(Activity.name, Ascending)).map(t => (t.id.is.toString,t.name.is))
 	def auxiliars = ("0", "Selecione um Assistente") :: User.findAllInCompany(OrderBy(User.name, Ascending)).map(t => (t.id.is.toString,t.name.is))
+	def offsales = ("0", "Selecione um Convênio") :: OffSale.findAllInCompany(OrderBy(OffSale.name, Ascending)).map(t => (t.id.is.toString,t.name.is))
 	def units = ("0", "Selecione uma Unidade") :: CompanyUnit.findAllInCompany(OrderBy(CompanyUnit.name, Ascending)).map(t => (t.id.is.toString, t.name.is))
 	def icds = ("0" -> "Selecione um cid")::Icd.findAll(By(Icd.section,"S"),OrderBy(Icd.namecomp, Ascending)).map(t => (t.id.is.toString,t.namecomp.is))
 //,By(Icd.section,"S")
@@ -143,6 +144,7 @@ class  TreatmentDetailSnippet extends PaginatorSnippet [TreatmentDetail] {
 			"name=external_id" #> (SHtml.text(ac.external_id.is, ac.external_id(_)))&
 		    "name=activity" #> (SHtml.select(activities,Full(ac.activity.is.toString),(s:String) => ac.activity( s.toLong)))&
 		    "name=auxiliar" #> (SHtml.select(auxiliars,Full(ac.auxiliar.is.toString),(s:String) => ac.auxiliar( s.toLong)))&
+		    "name=offsale" #> (SHtml.select(offsales,Full(ac.offsale.is.toString),(s:String) => ac.offsale( s.toLong)))&
 			"name=product" #> (SHtml.text(ac.product.is.toString, (p:String) => ac.product(p.toLong)))&
 			"name=wayofaccess" #> (SHtml.text(ac.getTdEdoctus.wayOfAccess.is, ac.getTdEdoctus.wayOfAccess(_)))&
 			"name=tooth" #> (SHtml.select(teeth,Full(ac.getTdEdoctus.tooth.is), ac.getTdEdoctus.tooth(_)))&

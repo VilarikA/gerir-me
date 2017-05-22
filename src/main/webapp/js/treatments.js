@@ -15,6 +15,7 @@ var deleteStakeHolder = function(id) {
 };
 var updateTDetailReport = function(classe) {
     var hasAuxiliarModule = $('.has-auxiliar-module').length > 0;
+    var hasOffSaleModule = $('.has-offsale-module').length > 0;
     var hasEsmileSystem = $('.has-esmile-system').length > 0;
     var hasEdoctusSystem = $('.has-edoctus-system').length > 0;
 	var fields = [];
@@ -35,16 +36,19 @@ var updateTDetailReport = function(classe) {
 	fields [4] = 'real'; // qtde
 	fields [5] = 'real'; // price
 
+    if (!hasOffSaleModule) {
+		fields [7] = 'none'; // convênio
+	}
     if (!hasEdoctusSystem) {
-		fields [7] = 'none'; // external_id era integracao no angiosemper
+		fields [8] = 'none'; // external_id era integracao no angiosemper
 	}
 
-	fields [8] = {
+	fields [9] = {
 		type: "format",
 		decode: function(id, row) {
 			customers.push(id);
-			return "<span style='margin-right:4px'><a class='btn' href='/treatment/treatmentdetail?id=" + row[8] + "' target='_treatdetail_maste'>Editar</a></span>" +
-				"<span><a class='btn danger' target='_blank' onclick='deleteStakeHolder(" + row[8] + ")'>Excluir</a></span>";
+			return "<span style='margin-right:4px'><a class='btn' href='/treatment/treatmentdetail?id=" + row[9] + "' target='_treatdetail_maste'>Editar</a></span>" +
+				"<span><a class='btn danger' target='_blank' onclick='deleteStakeHolder(" + row[9] + ")'>Excluir</a></span>";
 		}
 	};
 

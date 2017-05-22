@@ -1050,10 +1050,12 @@ order by date_c, 2
 				}
 
 				val SQL = """
-					select pr.name, tded.tooth, ba.name, price/amount, amount, price, td.obs, 
+					select pr.name, tded.tooth, ba.name, price/amount, amount, 
+					price, td.obs, os.short_name,
 					td.external_id, td.id from treatmentdetail td
 					inner join product pr on (pr.id = td.activity or pr.id = td.product) and pr.productclass = ?
 					left join business_pattern ba on ba.id = td.auxiliar
+					left join offsale os on os.id = td.offsale
 					left join tdedoctus tded on tded.treatmentdetail = td.id
 					where td.company = ? and td.treatment = ? order by td.id
 		        	"""
