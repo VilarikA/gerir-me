@@ -134,15 +134,18 @@ var CalendarScreen = {
 	showCustomers : function(calEvent){
 		CalendarScreen.creatModalTreatmentClass(calEvent);
 	},
+
 	showTreatment: function(calEvent) {
 		CalendarScreen.creatModalTreatment(calEvent, false);
 		$("#treatment_id").val(calEvent.id);
 		TreatmentManger.creatTreatmentDetail(calEvent);
 	},
+
 	closeTreatmentPopUp: function() {
 		$('#treatment_add').modal('hide');
 		CalendarScreen.renewTratment();
 	},
+
 	getActivities: function() {
 		DataManager.getActivities($("#user_treatment").val(), function(activitysObj) {
 			global_activitiesObj = activitysObj;
@@ -154,6 +157,7 @@ var CalendarScreen = {
 			$('#activitys').append(ret);
 		});
 	},
+	
 	removeTreatmentShowModal: function() {
 		if (CalendarManager.calendarPermitions.deleteEvent) {
 			$("#treatment_remove").modal({
