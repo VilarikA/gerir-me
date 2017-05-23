@@ -273,11 +273,30 @@ class Treatment extends UserEvent with LogicalDelete[Treatment] with PerCompany 
         }
     }
 
-    def createOpenTreatment(user:User,customer:Customer, start:Date) : Treatment ={
+    def setStatusOpenTreatment(user:User,customer:Customer, 
+        start:Date, status:Int) = {
+        val treatments = Treatment.findAllInCompany(By(Treatment.dateEvent,start), 
+            By(Treatment.customer, customer),
+            NotBy (Treatment.status,Treatment.TreatmentStatus.Deleted))
+        if(treatments.size > 0){
+            if (treatments(0).status == Treatment.TreatmentStatus.Paid) {
+              throw new RuntimeException("Não é permitido alterar atendimento pago!")
+            } else {
+                if (status == 3) {
+                    treatments(0).markAsReady
+                    treatments(0).save
+                } else {
+                  throw new RuntimeException("Falta implementar set status " + status)
+                }
+            }
+        }
+    }
+
+    def createOpenTreatment(user:User,customer:Customer, start:Date) : Treatment = {
         val treatments = Treatment.findAllInCompany(By(Treatment.start,start), By(Treatment.customer, customer), By(Treatment.user, user) )
         if(treatments.size > 0){
             treatments(0)
-        }else{
+        } else {
             val treatment = Treatment.create
             treatment.customer(customer)
             treatment.user(user)
@@ -817,7 +836,7 @@ object Treatment extends Treatment with LongKeyedMapperPerCompany[Treatment] wit
     }
 	object TreatmentStatus extends Enumeration {
         type TreatmentStatus = Value
-        val Open, Missed, Arrived,Ready,Paid, Deleted, Confirmed, PreOpen, ReSchedule = Value
+        val Open, Missed, Arrived,Ready,Paid, Deleted, Confirmed, PreOpen, ReSchedule, Budget = Value
         // no pilates é imperativo separa a falta (missed) da remarcação (reschedule)
 	}
     def findAllInCompanyWithDeleteds(params: QueryParam[Treatment]*) = {
