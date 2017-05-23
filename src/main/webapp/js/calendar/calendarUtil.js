@@ -55,16 +55,18 @@ var processGlobalParameters = function(parameters){
 };
 processGlobalParameters();
 //SocialManager
+
 var sendEmailCustomer = function(calEvent){
 	if(confirm("Tem certeza que deseja enviar um e-mail para o cliente?")){
 		var url = "/social/treatments/notify_customer/"+calEvent.id;
 		$.ajax(url,{"type": "GET", "success" : function(){
 			alert("Enviado com sucesso!");
 		}, "error" : function(response){
-			alert("Erro ao enviar E-mail!");
+			alert("Erro ao enviar e-mail!");
 		}});
 	} 
 }
+
 var sendEmailUser = function(calEvent){
 	if(confirm("Tem certeza que deseja enviar um e-mail para o profissional?")){
 		var url = "/social/treatments/notify_user/"+calEvent.id;
