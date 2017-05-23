@@ -11,6 +11,26 @@
   </script>
   <script type="text/javascript" src="/js/product_control_panel.js">
   </script>
+  <script>
+    // testa se está on-line para não quebrar executando local sem internet
+    // por causa do gráfico google
+    // trocar a imagem por uma fixa, pois essa da company pode ser trocada e 
+    // excluída - usar por exemplo a de cliente
+    // falta refinar - rigel 22/05/2017
+    function doConnectFunction() {
+      //alert ("online")
+    }
+    function doNotConnectFunction() {
+      alert ("offline")
+    }
+
+    var i = new Image();
+    i.onload = doConnectFunction;
+    i.onerror = doNotConnectFunction;
+    // CHANGE IMAGE URL TO ANY IMAGE YOU KNOW IS LIVE
+    i.src = 'http://images.vilarika.com.br/company/thumb_F1068126063644CD1WLM.png.png?d=' + escape(Date());
+    // escape(Date()) is necessary to override possibility of image coming from cache
+  </script>
   <script type="text/javascript">
   $(function(){
     $("#unit").unitField(true,false);
