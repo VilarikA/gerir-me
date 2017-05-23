@@ -58,13 +58,22 @@ processGlobalParameters();
 var sendEmailCustomer = function(calEvent){
   if(confirm("Tem certeza que deseja enviar um e-mail para o cliente?")){
     var url = "/social/treatments/notify_customer/"+calEvent.id;
-    $.ajax(url,{"type": "GET", "success" : function(){
-      alert("Enviado com sucesso!");
+    $.ajax(url,{"type": "GET", "success" : function(response){
+      // TESTAR no sendEmailUser também
+      //
+      eval("var t ="+response);
+      if (t.message) {
+	    alert("Erro ao enviar E-mail no sucesso!" + t.message);
+      } else {
+      	alert("Enviado com sucesso!");
+      }
     }, "error" : function(response){
-      alert("Erro ao enviar E-mail!");
+      eval("var t ="+response);
+      alert("Erro ao enviar E-mail!" + t.message);
     }});
   } 
 }
+
 var sendEmailUser = function(calEvent){
   if(confirm("Tem certeza que deseja enviar um e-mail para o profissional?")){
     var url = "/social/treatments/notify_user/"+calEvent.id;
