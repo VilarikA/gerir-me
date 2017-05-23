@@ -50,6 +50,10 @@ object  TreatmentService extends net.liftweb.common.Logger {
                 // unidade vilarika
                 CompanyUnit.findByKey(7).get
             }
+        if (customer.email.is.toString == "") {
+		    throw new RuntimeException(customer.name.is + " não possui email cadastrado.")
+        }
+
 		EmailUtil.sendMailToCustomer(cunit,
 			Company.findByKey (customer.company).get, 
 			customer.email.is.toString,
@@ -91,6 +95,9 @@ object  TreatmentService extends net.liftweb.common.Logger {
                 // unidade vilarika
                 CompanyUnit.findByKey(7).get
             }
+        if (user.email.is.toString == "") {
+		    throw new RuntimeException(user.name.is + " não possui email cadastrado.")
+        }
 		EmailUtil.sendMailToCustomer(uunit,
 			Company.findByKey (user.company).get, 
 			user.email.is.toString,

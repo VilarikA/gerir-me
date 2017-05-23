@@ -28,8 +28,15 @@ object SocialNotificationApi extends RestHelper with net.liftweb.common.Logger  
 	val DAY_IN_MILESECOUNDS = 86400000;
 	serve {				
 		case "social" :: "treatments" ::  "notify_customer" :: id :: Nil JsonGet _ =>{
-			TreatmentService.sendTreatmentsEmailCustomer(id.toLong)
-			JInt(1)
+			try {
+				TreatmentService.sendTreatmentsEmailCustomer(id.toLong)
+				JInt(1)
+			} catch {
+				case e:RuntimeException => {
+					error(e) 
+					JsObj(("status","error"), ("message", e.getMessage))
+				}
+			}
 		}
 
 		case "social" :: "treatments" ::  "notify_user" :: id :: Nil JsonGet _ =>{

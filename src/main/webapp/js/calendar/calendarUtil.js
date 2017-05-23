@@ -57,7 +57,6 @@ processGlobalParameters();
 //SocialManager
 
 var sendEmailCustomer = function(calEvent){
-
 	if(confirm("Tem certeza que deseja enviar um e-mail para o cliente?")){
 		$.ajax(
 			"/social/treatments/notify_customer/" + calEvent.id,
@@ -69,9 +68,14 @@ var sendEmailCustomer = function(calEvent){
 		);
 	}
 
-	function onSuccess()
+	function onSuccess(response)
 	{
-		alert("E-mail enviado com sucesso!");
+		eval("var t = " + response);
+		if (t.message) {
+	    	alert("Erro ao enviar e-mail! " + t.message);
+     	} else {
+      		alert("Enviado com sucesso!");
+		}
 	}
 
 	function onError(jqXHR, textStatus)
@@ -100,9 +104,14 @@ var sendEmailUser = function(calEvent){
 			}
 		)
 
-		function onSuccess()
+		function onSuccess(response)
 		{
-			alert("E-mail enviado com sucesso!");
+			eval("var t = " + response);
+			if(t.message){
+				alert("Erro ao enviar e-mail! " + t.message);
+			} else {
+				alert("E-mail enviado com sucesso!");
+			}
 		}
 
 		function onError(jqXHR)
