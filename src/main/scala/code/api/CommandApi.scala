@@ -33,6 +33,22 @@ object CommandApi extends RestHelper with ReportRest with net.liftweb.common.Log
 	
 	serve {
 	
+		case "command" :: "setstatus" :: customerId :: Nil JsonGet _ => {
+			try{
+				def startValue = Project.strToDateOrToday("")
+				def customer = Customer.findByKey (customerId.toLong).get
+				// 3 Ready
+				Treatment.setStatusOpenTreatment (AuthUtil.user, customer, startValue, 3);
+				JsObj(("status","success"))
+			}catch{
+				case e:RuntimeException  => {
+					JsObj(("status","error"),("message",e.getMessage))
+				}				
+				case e:Exception  => JsObj(("status","error"),("message",e.getMessage))
+				case _ => JsObj(("status","error"),("message",false))
+			}
+		}
+
 		case "command" :: "usersales" :: Nil Post _ => {
 			try {
 				var userId:Long = S.param("user").get.toLong;

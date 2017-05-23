@@ -32,6 +32,7 @@
         <!--<a class="btn primary" href="/quiz/list_event">Lista</a>-->
         <input class="btn success lift:SecuritySnippet.isNotAdminRead" type="submit" value="Salvar">
         <input class="btn primary" id="edit_patient" type="button" value="Prontuário">
+        <input class="btn primary" id="set_tr_status" type="button" value="Encerra" title="Encerra atendimento, troca status">
         <input class="btn primary" id="edit_command" type="button" value="Agenda">
         <!--<a class="btn primary" href="/project/event">Inserir novo</a>-->
       </div>
@@ -157,6 +158,21 @@
     $(function(){
       $('#edit_patient').click(function (){
         window.open("/records/edit_patient?id=" + $('#business_pattern').val(),"_patient_maste")
+      });
+      $('#set_tr_status').click(function (){
+        url = "/command/setstatus/" + $('#business_pattern').val();
+        $.get(url, function(t) {
+          eval("var obj = " + t)
+          if (obj.status == 'success') {
+            alert("Atendimento encerrado com sucesso! ")
+          } else {
+            if (obj.message) {
+              alert(obj.message)
+            } else {
+              alert("Erro ao encerrar atendimento!")
+            }
+          }
+        });
       });
       $('#edit_command').click(function (){
         window.open("/command_full/user_command_full","_command_maste")
