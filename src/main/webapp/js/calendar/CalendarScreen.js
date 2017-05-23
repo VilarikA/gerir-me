@@ -128,8 +128,8 @@ var CalendarScreen = {
 			setTimeout('$("#cutomer_id_treatment").focus().change();', 500);
 		} else {
 			$("#cutomer_id_treatment").val('');
-			setTimeout("$('.name_customer_search span').html('');", 500)
-			//setTimeout("$('#cutomer_name_treatment').select2('open');$('.name_customer_search span').html('');", 500)
+			//setTimeout("$('.name_customer_search span').html('');", 500)
+			setTimeout("$('#cutomer_name_treatment').select2('open');$('.name_customer_search span').html('');", 500)
 		}	},
 	showCustomers : function(calEvent){
 		CalendarScreen.creatModalTreatmentClass(calEvent);
