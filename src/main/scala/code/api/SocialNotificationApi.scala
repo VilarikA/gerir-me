@@ -40,8 +40,15 @@ object SocialNotificationApi extends RestHelper with net.liftweb.common.Logger  
 		}
 
 		case "social" :: "treatments" ::  "notify_user" :: id :: Nil JsonGet _ =>{
-			TreatmentService.sendTreatmentsEmailUser(id.toLong)
-			JInt(1)
+			try {
+				TreatmentService.sendTreatmentsEmailUser(id.toLong)
+				JInt(1)
+			} catch {
+				case e:RuntimeException => {
+					error(e) 
+					JsObj(("status","error"), ("message", e.getMessage))
+				}
+			}
 		}
 
 		case "social" :: "treatments" ::  "email_customer" :: Nil Post _ =>{
