@@ -57,25 +57,68 @@ processGlobalParameters();
 //SocialManager
 
 var sendEmailCustomer = function(calEvent){
+
 	if(confirm("Tem certeza que deseja enviar um e-mail para o cliente?")){
-		var url = "/social/treatments/notify_customer/"+calEvent.id;
-		$.ajax(url,{"type": "GET", "success" : function(){
-			alert("Enviado com sucesso!");
-		}, "error" : function(response){
-			alert("Erro ao enviar e-mail!");
-		}});
-	} 
+		$.ajax(
+			"/social/treatments/notify_customer/" + calEvent.id,
+			{
+				type: "GET",
+				success: onSuccess,
+				error: onError
+			}
+		);
+	}
+
+	function onSuccess()
+	{
+		alert("E-mail enviado com sucesso!");
+	}
+
+	function onError(jqXHR, textStatus)
+	{
+		var allResponseHeaders = jqXHR.getAllResponseHeaders();
+
+		// Temporally poo-ta-rea to check if request is being cancelled by server.
+		// A bug which is happening even when email is being sent to the customer.
+		if(allResponseHeaders === ""){
+			return alert("E-mail enviado com sucesso!");
+		} else {
+			return alert("Ocorreu um erro ao enviar e-mail para o cliente.");
+		}
+	}
 }
 
 var sendEmailUser = function(calEvent){
-	if(confirm("Tem certeza que deseja enviar um e-mail para o profissional?")){
-		var url = "/social/treatments/notify_user/"+calEvent.id;
-		$.ajax(url,{"type": "GET", "success" : function(){
-			alert("Enviado com sucesso!");
-		}, "error" : function(response){
-			alert("Erro ao enviar E-mail!");
-		}});
-	} 
+	if(confirm("Tem certeza que deseja enviar um e-mail para o profissional?"))
+	{
+		$.ajax(
+			"/social/treatments/notify_user/" + calEvent.id,
+			{
+				type: "GET",
+				success: onSuccess,
+				error: onError
+			}
+		)
+
+		function onSuccess()
+		{
+			alert("E-mail enviado com sucesso!");
+		}
+
+		function onError(jqXHR)
+		{
+			var allResponseHeaders = jqXHR.getAllResponseHeaders();
+
+			// Temporally poo-ta-rea to check if request is being cancelled by server.
+			// A bug which is happening even when email is being sent to the customer.
+			if(allResponseHeaders === ""){
+				return alert("E-mail enviado com sucesso!");
+			} else {
+				return alert("Ocorreu um erro ao enviar e-mail para o cliente.");
+			}
+		}
+	}
+
 }
 
 //CalendarUtil
