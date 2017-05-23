@@ -312,28 +312,44 @@ var createHours = function(){
 	horarios += "</span>";
 	$(".wc-column-odd, .wc-column-even").html(horarios);
 };
+
+var addIntervalFields = function()
+{
+	var fieldsForm = '<form class="form-inline">' + 
+  					 '	<div class="form-group">' +
+  					 '		<div class="input-group">' +
+    				 '			<div class="input-group-addon"><img width="16" src="/images/calendar_addon.png"/></div>' +
+    			     '			<input type="text" class="form-control date" name="data_calendar" id="data_calendar">' +
+    				 '		</div>' +
+  					 '	</div>' +
+  					 '	<div class="form-group">' +
+  					 '		<div class="input-group">' +
+    				 '			<div class="input-group-addon"><img width="16" src="/images/calendar_addon.png"/></div>' +
+    				 '			<input type="text" class="form-control date" name="data_calendar_end" id="data_calendar_end">' +
+    				 '		</div>' +
+					 '	</div>' +
+					 '</form>';
+
+	$(".wc-toolbar").prepend(fieldsForm);
+};
+
+var addChangeIntervalButton = function()
+{
+	var buttonHtml = '<label for="toggle_interval" style="margin-right: 5px; float: right; line-height: 20px" class="btn ui-state-default">' +
+					 '	Alternar intervalo' +
+					 '</label>';
+
+	$(".wc-nav").after(buttonHtml);
+};
+
 var buildDataField = function(start, end){
 	updateParameter();
 	if(!stopProcess){
 		stopProcess = true;
 		if(($("#data_calendar").length === 0) && ($("#data_calendar_end").length === 0)){
 
-			div =	'<form class="form-inline">' + 
-  					'	<div class="form-group">' +
-  					'		<div class="input-group">' +
-    				'			<div class="input-group-addon"><img width="16" src="/images/calendar_addon.png"/></div>' +
-    				'			<input type="text" class="form-control date" name="data_calendar" id="data_calendar">' +
-    				'		</div>' +
-  					'	</div>' +
-  					'	<div class="form-group">' +
-  					'		<div class="input-group">' +
-    				'			<div class="input-group-addon"><img width="16" src="/images/calendar_addon.png"/></div>' +
-    				'			<input type="text" class="form-control date" name="data_calendar_end" id="data_calendar_end">' +
-    				'		</div>' +
-					'	</div>' +
-					'</form>';
-
-			$(".wc-toolbar").prepend(div);
+			addIntervalFields();
+			addChangeIntervalButton();
 
 			$("#data_calendar").val(getDateBr(start)).datepicker({
 				beforeShow: function() {

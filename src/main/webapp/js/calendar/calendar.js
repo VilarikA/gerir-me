@@ -31,14 +31,16 @@ var buildCalendar = function(users,treatments,interval,intervalAlt,startCalendar
 					// });
 				}else{
 					$("#show_conflits").hide();
+					
 					var toggle = true;
+
 					$('#toggle_interval').click(function() {
 						if (toggle) {				
 							$('#calendar').weekCalendar('option', 'timeslotsPerHour', 60/intervalAlt);
 							global_interval = intervalAlt; //15;	
 						} else {					
 							$('#calendar').weekCalendar('option', 'timeslotsPerHour', 60/interval);
-							global_interval = interval;	
+							global_interval = interval;
 						}
 
 						toggle = !toggle;
@@ -271,42 +273,23 @@ var buildCalendar = function(users,treatments,interval,intervalAlt,startCalendar
 						'</form>'
 					);
 
-
-					/*
-					$("#calendar").html(
-						'<div style="float:left; padding-right:10px" class="input-prepend">' +
-						'	<span class="add-on" style="height: 17px;">' + 
-						'		<img width="16" src="/images/calendar_addon.png"/>' + 
-						'	</span>' + 
-						'	<input type="text" size="19" name="data_calendar" id="data_calendar" class="input-small date" style="height: 17px;">' + 
-						'</div>' + 
-						'<div style="float:left; padding-right:10px" class="input-prepend">' + 
-						'	<span class="add-on" style="height: 17px;">' + 
-						'		<img width="16" src="/images/calendar_addon.png"/>' + 
-						'	</span>' + 
-						'	<input type="text" size="19" name="data_calendar_end" id="data_calendar_end" class="input-small date" style="height: 17px;">' + 
-						'</div>'
-					);
-					*/
-
 					$("#data_calendar").datepicker({
-													    beforeShow: function() {
-													        setTimeout(function(){
-													            $('#ui-datepicker-div').css('z-index',10000);
-													            
-													        }, 0);
-													    }
-													})
-										.val(Date.toDay().getDateBr());
+						beforeShow: function() {
+							setTimeout(function(){
+								$('#ui-datepicker-div').css('z-index',10000);
+								
+							}, 0);
+						}
+					}).val(Date.toDay().getDateBr());
+
 					$("#data_calendar_end").datepicker({
-													    beforeShow: function() {
-													        setTimeout(function(){
-													            $('#ui-datepicker-div').css('z-index',10000);
-													            
-													        }, 0);
-													    }
-													})
-										.val(Date.toDay().getDateBr());
+						beforeShow: function() {
+							setTimeout(function(){
+								$('#ui-datepicker-div').css('z-index',10000);
+								
+							}, 0);
+						}
+					}).val(Date.toDay().getDateBr());
 
 				}
 			};
