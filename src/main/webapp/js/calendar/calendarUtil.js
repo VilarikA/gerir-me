@@ -63,13 +63,13 @@ var sendEmailCustomer = function(calEvent){
       //
       eval("var t ="+response);
       if (t.message) {
-	    alert("Erro ao enviar E-mail no sucesso!" + t.message);
+	    alert("Erro ao enviar E-mail! " + t.message);
       } else {
       	alert("Enviado com sucesso!");
       }
     }, "error" : function(response){
       eval("var t ="+response);
-      alert("Erro ao enviar E-mail!" + t.message);
+      alert("Erro ao enviar E-mail! " + t.message);
     }});
   } 
 }
