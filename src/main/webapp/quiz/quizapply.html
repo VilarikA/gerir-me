@@ -12,6 +12,10 @@
       if($("#business_pattern").val() && $("#business_pattern").val() != '0'){
         $("#business_pattern").change();
       }
+      if ($("#quiz").val() == "0" || $("#quiz").val() == "") {
+        alert ("Um modelo de prontuário/questionário precisa ser selecionado.\n\nUm modelo padrão pode ser informado no grupo do profissional para inserção automática.\n\n");
+        return
+      }
 //      getQuestons($("#quiz").val());
         DataManager.getQuestions($("#quiz").val(), function(quetionsObj) {
           //global_quetionsObj = quetionsObj;

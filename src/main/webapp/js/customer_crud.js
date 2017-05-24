@@ -541,6 +541,12 @@ $(function() {
     });
 
     $("#quiz_add").click(function() {
+      //alert ($("#quiz_quiz").val());
+      if ($("#quiz_quiz").val() == "0" || $("#quiz_quiz").val() == ""
+          || $("#quiz_quiz").val() == null) {
+        alert ("Um modelo de prontuário/questionário precisa ser selecionado")
+        return
+      }
       $.post("/api/v2/quiz", {
         date: $("#quiz_date").val(),
         quiz: $("#quiz_quiz").val(),
