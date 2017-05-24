@@ -340,19 +340,24 @@
 		</div>
 	</div>  
 
-	<div id="treatment_remove" class="modal hide fade">
-			<div class="modal-header">
-							<a href="#" class="close">&times;</a>
-						<h3>Excluir Atendimento</h3>
+	<div id="treatment_remove" class="modal fade">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+					<h3>Excluir atendimento</h3>
 				</div>
-			<div class="modal-body ">
-				Essa ação excluirá permanentemente esse atendimento e todos seus dados.
-				Tem certeza que deseja excluir esse atendimento?
-						 <div class="modal-footer">
-					<input type="button" class="btn danger" value="Sim" onclick="CalendarScreen.removeTreatment();"/>
-					<input type="button" class="btn primary" value="Não" onclick="$('#treatment_remove').modal('hide');"/>             
-							</div>
+				<div class="modal-body">
+					Essa ação excluirá permanentemente esse atendimento e todos os seus dados.
+					Tem certeza que realmente deseja excluir esse atendimento?
+				</div>
+				<div class="modal-footer">
+					<input type="button" class="btn btn-danger" value="Sim" onclick="CalendarScreen.removeTreatment();"/>
+					<input type="button" class="btn btn-default" value="Não" onclick="$('#treatment_remove').modal('hide');"/>  
+				</div>
 			</div>
+		</div>
 	</div>
+	
 	</body>
 </html>
