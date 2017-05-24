@@ -52,6 +52,9 @@
           } else if (status == 'ReSchedule') {
             statstr = 'ReSchedule'
             title ='desmarcou'
+          } else if (status == 'Budget') {
+            statstr = 'Budget'
+            title ='orçamento'
           }
     return "<img title='" + title + "' src='/images/treatment_"+status.toLowerCase()+".png' width='24'/>" +
         "<img title='" + title + "' src='/images/treatment_"+statstr.toLowerCase()+"1.png' width='24'/>"

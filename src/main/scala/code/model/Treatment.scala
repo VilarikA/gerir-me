@@ -390,7 +390,8 @@ class Treatment extends UserEvent with LogicalDelete[Treatment] with PerCompany 
                         t.status.is != Treatment.TreatmentStatus.Paid &&
                         t.status.is != Treatment.TreatmentStatus.Ready &&
                         t.status.is != Treatment.TreatmentStatus.Missed &&
-                        t.status.is != Treatment.TreatmentStatus.ReSchedule
+                        t.status.is != Treatment.TreatmentStatus.ReSchedule &&
+                        t.status.is != Treatment.TreatmentStatus.Budget
                     )
                     ::: BusyEvent.constraintDate(userObj,st, AuthUtil.unit)
                 )
@@ -442,7 +443,8 @@ class Treatment extends UserEvent with LogicalDelete[Treatment] with PerCompany 
             this.status == Treatment.TreatmentStatus.Deleted ||
             this.status == Treatment.TreatmentStatus.Confirmed ||
             this.status == Treatment.TreatmentStatus.PreOpen ||
-            this.status == Treatment.TreatmentStatus.ReSchedule) {
+            this.status == Treatment.TreatmentStatus.ReSchedule ||
+            this.status == Treatment.TreatmentStatus.Budget) {
             this.status2.set (this.status.is)
         } else if (
             this.status == Treatment.TreatmentStatus.Paid &&
@@ -604,6 +606,10 @@ class Treatment extends UserEvent with LogicalDelete[Treatment] with PerCompany 
     def markAsConfirmed {
         this.status(Treatment.TreatmentStatus.Confirmed)
     }
+
+    def markAsBudget {
+        this.status(Treatment.TreatmentStatus.Budget)
+    }    
 
 
     def sendToFacebook {
@@ -850,7 +856,7 @@ object Treatment extends Treatment with LongKeyedMapperPerCompany[Treatment] wit
         val status = ByList(Treatment.status, List(TreatmentStatus.Open, TreatmentStatus.PreOpen, 
             TreatmentStatus.Missed, TreatmentStatus.ReSchedule, 
             TreatmentStatus.Arrived, TreatmentStatus.Ready, 
-            TreatmentStatus.Paid, TreatmentStatus.Confirmed))
+            TreatmentStatus.Paid, TreatmentStatus.Confirmed)) // sem o budget por enquanto
         super.findAllInCompany( status :: params.toList :_*)
     }    
 }
