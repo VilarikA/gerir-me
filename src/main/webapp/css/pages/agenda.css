@@ -4,3 +4,13 @@
  **/
 
 .row.filter { margin: 10px 0; }
+
+
+/* 
+ * Add treatment modal
+ */
+#treatment_add .row.header .btn{
+    height: 100%;
+    padding: 15px;
+    width: 100%;
+}
