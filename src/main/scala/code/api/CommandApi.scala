@@ -38,7 +38,13 @@ object CommandApi extends RestHelper with ReportRest with net.liftweb.common.Log
 				def startValue = Project.strToDateOrToday("")
 				def customer = Customer.findByKey (customerId.toLong).get
 				// 3 Ready
-				Treatment.setStatusOpenTreatment (AuthUtil.user, customer, startValue, 3);
+				// user na verdade nao usa
+				//
+				// a data poderia vir do prontuário - para nao encerra um atendimento de hj
+				// clicando num prontuário antigo
+				//
+				Treatment.setStatusOpenTreatment (AuthUtil.user, customer, 
+					startValue, 3);
 				JsObj(("status","success"))
 			}catch{
 				case e:RuntimeException  => {

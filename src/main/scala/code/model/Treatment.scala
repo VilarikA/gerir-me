@@ -282,12 +282,16 @@ class Treatment extends UserEvent with LogicalDelete[Treatment] with PerCompany 
             if (treatments(0).status == Treatment.TreatmentStatus.Paid) {
               throw new RuntimeException("Não é permitido alterar atendimento pago!")
             } else {
-                if (status == 3) {
-                    treatments(0).markAsReady
-                    treatments(0).save
-                } else {
+               if (status == 3) {
+                  if (treatments(0).status == Treatment.TreatmentStatus.Ready) {
+                      throw new RuntimeException("Atendimento já havia sido encerrado!")
+                  } else {  
+                     treatments(0).markAsReady
+                     treatments(0).save
+                  }
+               } else {
                   throw new RuntimeException("Falta implementar set status " + status)
-                }
+               }
             }
         }
     }

@@ -106,10 +106,10 @@ object CustomerReportApi extends RestHelper with ReportRest {
 					(qu.message <> ''), qa.message, qu.showinrecords, bp.name			  
 				    from quizapplying qa 
 					inner join business_pattern bp on bp.id = qa.business_pattern
-					inner join quiz qu on qu.id = qa.quiz
+					left join quiz qu on qu.id = qa.quiz
 					left join usergroup ug on ug.id = qu.usergroup
 					where qa.company = ? and bp.id = ?
-					and (qu.share = true or qu.usergroup = (select bp1.group_c from business_pattern bp1 where bp1.id = ?) 
+					and (qa.quiz is null or qu.share = true or qu.usergroup = (select bp1.group_c from business_pattern bp1 where bp1.id = ?) 
 					    or qu.usergroup in (select uu.group_c from userusergroup uu where uu.user_c = ?)
 					    %s)
 					--order by bp.id, qa.applydate desc

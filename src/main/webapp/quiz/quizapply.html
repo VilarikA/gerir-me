@@ -12,6 +12,10 @@
       if($("#business_pattern").val() && $("#business_pattern").val() != '0'){
         $("#business_pattern").change();
       }
+      if ($("#quiz").val() == "0" || $("#quiz").val() == "") {
+        alert ("Um modelo de prontuário/questionário precisa ser selecionado.\n\nUm modelo padrão pode ser informado no grupo do profissional para inserção automática.\n\n");
+        return
+      }
 //      getQuestons($("#quiz").val());
         DataManager.getQuestions($("#quiz").val(), function(quetionsObj) {
           //global_quetionsObj = quetionsObj;
@@ -32,7 +36,7 @@
         <!--<a class="btn primary" href="/quiz/list_event">Lista</a>-->
         <input class="btn success lift:SecuritySnippet.isNotAdminRead" type="submit" value="Salvar">
         <input class="btn primary" id="edit_patient" type="button" value="Prontuário">
-        <input class="btn primary" id="set_tr_status" type="button" value="Encerra" title="Encerra atendimento, troca status">
+        <input class="btn primary" id="set_tr_status" type="button" value="Encerra" title="Encerra atendimento (status atendido), volta para comanda/agenda">
         <input class="btn primary" id="edit_command" type="button" value="Agenda">
         <!--<a class="btn primary" href="/project/event">Inserir novo</a>-->
       </div>
@@ -160,11 +164,17 @@
         window.open("/records/edit_patient?id=" + $('#business_pattern').val(),"_patient_maste")
       });
       $('#set_tr_status').click(function (){
+        //
+        // a data poderia vir do prontuário - para nao encerra um atendimento de hj
+        // clicando num prontuário antigo
+        //
         url = "/command/setstatus/" + $('#business_pattern').val();
         $.get(url, function(t) {
           eval("var obj = " + t)
           if (obj.status == 'success') {
-            alert("Atendimento encerrado com sucesso! ")
+            // se faz o alert não vai pra outra aba
+            // mostra na aba que recarregou mas nao abre
+            // alert("Atendimento encerrado com sucesso! ")
           } else {
             if (obj.message) {
               alert(obj.message)
@@ -173,6 +183,7 @@
             }
           }
         });
+        window.open("/command_full/user_command_full","_command_maste")
       });
       $('#edit_command').click(function (){
         window.open("/command_full/user_command_full","_command_maste")

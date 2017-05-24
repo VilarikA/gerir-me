@@ -143,7 +143,16 @@ class Customer extends BusinessPattern[Customer]{
                 deliveryToUse.treatmentDetail(treatmentDetailId).paymentDetail(paymentDetailId).used_?(true).efetivedate(efetivedate).save
             }
         }else{
-            throw new PaymentDeliveryNotEnough("Este cliente não possui pacote(s) suficiente(s) para %s!".format(Product.findByKey(productId).get.name.is))
+            throw new PaymentDeliveryNotEnough(
+                """
+                %s não possui pacote(s) suficiente(s) para %s!
+
+                Formas de pagamento marcadas como baixa de pacote só podem ser usadas para itens constantes de pacotes ativos, e não devem ser combinadas com outros tipos de forma de pagamento.
+
+                É possível usar a opção de ignorar itens do caixa, usar a baixa de pacote e posteriormente pagar os demais itens.
+
+                """.
+                format(this.name, Product.findByKey(productId).get.name.is))
         }
     }
 
