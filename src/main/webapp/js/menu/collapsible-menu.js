@@ -20,7 +20,7 @@
          */
         (function initialize()
         {
-            if ( ! isScreenTooBig())
+            if ( isScreenTooBig() )
                 return false;
 
             loadMenuElement();
@@ -52,7 +52,7 @@
          */
         function isThereMenuElement()
         {
-            return ( ! self.__menuElement || self.__menuElement.length < 1 );
+            return ( self.__menuElement || self.__menuElement.length > 0 );
         }
 
         /*
@@ -70,8 +70,8 @@
 
             $(self.__toggleButton).click(function()
             {
-                if(isMenuOpened()) closeMenu();
-                else openMenu();
+                if(isMenuOpened()) hideMenu();
+                else showMenu();
             });
         }
 
@@ -86,7 +86,7 @@
         /*
          * Hides the menu element.
          */
-        function closeMenu()
+        function hideMenu()
         {
             $(self.__menuElement).hide();
         }
@@ -94,7 +94,7 @@
         /*
          * Shows the menu element.
          */
-        function openMenu()
+        function showMenu()
         {
             $(self.__menuElement).show();
         }
