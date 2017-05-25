@@ -2,7 +2,7 @@
 (function() {
   $(function() {
     ProductLine.getListLineFromServer("#lines");
-    ProductLine.getlistCategoryFromServer("#category_select");
+    ProductLine.getlistTypeFromServer("#category_select");
     $(".product_select_thuch").productSearch({
       createName: false,
       iconElement: ".add-on",

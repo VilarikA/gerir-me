@@ -77,7 +77,7 @@ var DataManagerClass = function() {
 		return this.getSelectDataSource("/offsale", callback);
 	};
 	this.getProductType = function(callback) {
-		return this.getSelectDataSource("/product/product_category", callback);
+		return this.getSelectDataSource("/product/product_type", callback);
 	};
 	this.getLines = function(callback) {
 		return this.getSelectDataSource("/product/product_line", callback);

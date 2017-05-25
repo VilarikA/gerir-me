@@ -420,6 +420,25 @@ object Reports2 extends RestHelper with ReportRest with net.liftweb.common.Logge
 					}
 				}
 
+				def producttype = S.param("category_select") match {
+					case Full(p) if(p != "")=> " and pr.typeproduct in(%s)".format(p)
+					case _ => S.param("category_select[]") match {
+						case Full(p) if(p != "") => " and pr.typeproduct in(%s)".format(S.params("category_select[]").foldLeft("0")(_+","+_))
+						case _ => " and 1=1 " 
+					}
+				}	
+				def prod = 	 S.param("product") match {
+					case Full(p) if(p != "")=> " and pr.id in(%s)".format(p)
+					case _ => S.param("product[]") match {
+						case Full(p) if(p != "") => " and pr.id in(%s)".format(S.params("product[]").foldLeft("0")(_+","+_))
+						case _ => " and 1=1 " 
+					}
+				}
+				def classes:String = S.param("productclass") match {
+					case Full(p) => p
+					case _ => "0,1";
+				} 
+
 				def start:Date = S.param("start") match {
 					case Full(p) => Project.strToDateOrToday(p)
 					case _ => new Date()
@@ -452,7 +471,7 @@ object Reports2 extends RestHelper with ReportRest with net.liftweb.common.Logge
 					select cu.short_name, bp.name as profissional, tr.dateevent as data, 
 					pr.name as servico, td.amount, td.price, bc.name as cliente, bc.email,
 					trim (bc.mobile_phone || ' ' || bc.phone || ' ' || bc.email_alternative) as telefone,
-					bc.id from treatment tr 
+					bc.id, bp.id from treatment tr 
 					inner join business_pattern bc on bc.id = tr.customer
 					inner join treatmentdetail td on td.treatment = tr.id
 					left join business_pattern bp on bp.id = tr.user_c
@@ -464,10 +483,14 @@ object Reports2 extends RestHelper with ReportRest with net.liftweb.common.Logge
 					and bc.id not in (select tr1.customer from treatment tr1 where tr1.company = tr.company and tr1.customer = bc.id 
 					and tr1.dateevent between ? and ?)
 					%s %s %s
+					%s
+					%s
+					and pr.productclass in (%s)
 					order by cu.short_name, bp.name, tr.dateevent					
 				"""
 					//LogActor ! SQL
-				toResponse(SQL.format(unit, offsale, user),List(AuthUtil.company.id.is, start, end, start2, end2))
+				toResponse(SQL.format(unit, offsale, user, prod, producttype, classes),
+					List(AuthUtil.company.id.is, start, end, start2, end2))
 			}
 
 

@@ -7,10 +7,8 @@
   <script src="/select2/select2.js"></script><script src="/select2/select2_locale_pt-BR.js"></script>
   <script src="/js/reports.js"></script>
   <script src="/js/jquery.tablesorter.pager.js"></script>
-  <script type="text/javascript" src="/js/product_line.js">
-  </script>
-  <script type="text/javascript" src="/js/product_control_panel.js">
-  </script>
+  <script type="text/javascript" src="/js/product_line.js"></script>
+  <script type="text/javascript" src="/js/product_control_panel.js"></script>
   <script>
     // testa se está on-line para não quebrar executando local sem internet
     // por causa do gráfico google
@@ -61,7 +59,7 @@
   <form id="form_report" class="well form-search" method='get'>
     <h1>
       <span class="lift:CompanySnippet.thumb"> </span>
-      <input class="report_title local_storage" id="title_sales_report" name="title_sales_report" size="30" type="text" value="Relatório de Vendas de produtos/serviços Mês a Mês"/>
+      <input class="report_title local_storage" id="title_sales_report" name="title_sales_report" size="30" type="text" value="Relatório de Vendas de Produtos/Serviços Mês a Mês"/>
     </h1>
     <span class='row'>
       <span class='span8'>
@@ -111,15 +109,14 @@
             </div>
         </div>
         <div class="clearfix">
-          <label for="type">Tipo</label>
+          <label for="productclass">Classe</label>
             <div class="input">
               <div class="inline-inputs">
-                  <select class="local_storage" name="type" id="type">
+                  <select class="local_storage" name="productclass" id="productclass">
                       <option value='1,0'>Todos</option>
                       <option value='1'>Produtos</option>
                       <option value='0'>Serviços</option>
                    </select>
-                   <span class="help-block">Tipos de Comissões (ex: Prod / Ser)</span>
               </div>
             </div>
         </div>

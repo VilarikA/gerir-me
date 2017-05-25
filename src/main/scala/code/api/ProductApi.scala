@@ -97,12 +97,12 @@ object ProductApi extends RestHelper {
 				"%"+barcodeStr+"%", 0, user, category + " and "+id).map(asJson))
 		}
 		case "product" :: "product_line" :: Nil JsonGet _ =>{
-			JsArray(ProductLine.findAllInCompany.map((pl) =>{
+			JsArray(ProductLine.findAllInCompany(OrderBy (ProductLine.name, Ascending)).map((pl) =>{
 				JsObj(("name",pl.name.is), ("id", pl.id.is))
 			}))
 		}
-		case "product" :: "product_category" :: Nil JsonGet _ =>{
-			JsArray(ProductType.findAllInCompany.map((pl) =>{
+		case "product" :: "product_type" :: Nil JsonGet _ =>{
+			JsArray(ProductType.findAllInCompany(OrderBy (ProductType.name, Ascending)).map((pl) =>{
 				JsObj(("name",pl.name.is), ("id", pl.id.is))
 			}))
 		}		

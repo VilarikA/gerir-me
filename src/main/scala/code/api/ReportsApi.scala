@@ -995,12 +995,12 @@ object Reports extends RestHelper with ReportRest with net.liftweb.common.Logger
 				}
 */
 				def producttype = S.param("category_select") match {
-					case Full(p) if(p != "")=> " and pt.id in(%s)".format(p)
+					case Full(p) if(p != "")=> " and pr.typeproduct in(%s)".format(p)
 					case _ => S.param("category_select[]") match {
-						case Full(p) if(p != "") => " and pt.id in(%s)".format(S.params("category_select[]").foldLeft("0")(_+","+_))
+						case Full(p) if(p != "") => " and pr.typeproduct in(%s)".format(S.params("category_select[]").foldLeft("0")(_+","+_))
 						case _ => " and 1=1 " 
 					}
-				}			
+				}	
 				def prod = 	 S.param("product") match {
 					case Full(p) if(p != "")=> " and pr.id in(%s)".format(p)
 					case _ => S.param("product[]") match {
@@ -1008,6 +1008,10 @@ object Reports extends RestHelper with ReportRest with net.liftweb.common.Logger
 						case _ => " and 1=1 " 
 					}
 				}
+				def classes:String = S.param("productclass") match {
+					case Full(p) => p
+					case _ => "0,1";
+				} 
 
 				def start:Date = S.param("start") match {
 					case Full(p) => Project.strToDateOrToday(p)
@@ -1025,11 +1029,6 @@ object Reports extends RestHelper with ReportRest with net.liftweb.common.Logger
 					case Full(p) if(p != "")=> "bp.short_name || ' - ' ||"
 					case _ => ""
 				}			
-				def classes:String = S.param("type") match {
-					case Full(p) => p
-					case _ => "0,1";
-				} 
-//					and pr.typeproduct in (%s)
 
 				val SQL = """
 					select short_name_year, %s pr.name, %s from dates 
