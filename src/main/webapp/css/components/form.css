@@ -15,12 +15,18 @@ form.vr-form label {
 form.vr-form input,
 form.vr-form select,
 form.vr-form button,
+form.vr-form a[type=button],
 form.vr-form .select2-container,
 form.vr-form .select2-choice,
 form.vr-form .select2-choices {
 	display: block;
 	height: 44px;
 	width: 100%;
+}
+
+form.vr-form a[type=button] {
+	line-height: 44px;
+	padding: 0;
 }
 
 form.vr-form button.with-hint { 
@@ -69,10 +75,16 @@ form.vr-form .name_customer_search { top: 0; }
 	form.vr-form input,
 	form.vr-form select,
 	form.vr-form button,
+	form.vr-form a[type=button],
 	form.vr-form .select2-container,
 	form.vr-form .select2-choice,
 	form.vr-form .select2-choices {
 		height: 34px;
+	}
+
+	form.vr-form a[type=button] {
+		line-height: 34px;
+		padding: 0;
 	}
 
 	form.vr-form .select2-choices { min-height: 34px; }

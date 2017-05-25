@@ -1,11 +1,3 @@
-window.onbeforeunload = function()
-{
-	return "Do you really wanna leave, my friend?";
-}
-
-
-
-
 var CalendarScreen = {
 	creatModalTreatmentClass : function(calEvent){
 		$("#treatment_class").modal({
@@ -169,13 +161,11 @@ var CalendarScreen = {
 		if (CalendarManager.calendarPermitions.deleteEvent) {
 			console.log("Being excluded");
 
-			/*
 			$("#treatment_remove").modal({
 				"show": true,
 				"keyboard": true,
 				"backdrop": true
 			});
-			*/
 		} else {
 			alert ("Suas permissões não permitem excluir agendamento");
 		}
