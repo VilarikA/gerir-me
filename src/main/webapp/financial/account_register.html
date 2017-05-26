@@ -325,19 +325,9 @@
                   <div class="clearfix">
                     <label for="account_select">Conta</label>
                     <div class="input">
-                      <div class="inline-inputs">
-                        <span class='account_to'>De </span>
-                          <select id='account_select' class="account_select url_parameter" name='account'>
-                          </select>
-                        <span class='account_to'>
-                          Para 
-                          <select id='account_select_to' class="account_select url_parameter" name='account_to'>
-                          </select>
-                        </span>
-                        <span class="help-block">
-                          Conta que será debitada ou creditada
-                        </span>
-                      </div>
+                      <select id='account_select' class="account_select url_parameter" name='account'>
+                      </select>
+                      <span class="help-block">Conta que será debitada ou creditada</span>
                     </div>
                   </div>
                   <div class="clearfix cashier_select_span">
@@ -346,9 +336,26 @@
                         <div class="inline-inputs">
                             <select class="xlarge" name="cashiers_select" id='cashiers_select'>
                             </select>
-                            <input type="text" name="cashier_number" id="cashier_number" value="" />
+                            <input type="text" class="mini" name="cashier_number" id="cashier_number" value="" />
                         </div>
                         <span class="help-block">Caixas abertos</span>
+                     </div>
+                  </div>
+                  <div class="clearfix account_to">
+                    <label for="account_select_to">Conta Para</label>
+                    <div class="input">
+                          <select id='account_select_to' class="account_select url_parameter" name='account_to'>
+                          </select>
+                    </div>
+                  </div>
+                  <div class="clearfix cashier_select_to_span">
+                    <label for="cashiers_select_to">Caixa Para</label>
+                     <div class="input">
+                        <div class="inline-inputs">
+                            <select class="xlarge" name="cashiers_select_to" id='cashiers_select_to'>
+                            </select>
+                            <input type="text" class="mini" name="cashier_number_to" id="cashier_number_to" value="" />
+                        </div>
                      </div>
                   </div>
                   <div class="clearfix">
