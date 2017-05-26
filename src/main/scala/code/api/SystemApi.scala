@@ -136,7 +136,7 @@ object SystemApi extends RestHelper {
 			JsObj(("free",JInt(Runtime.getRuntime.freeMemory)),("total",JInt(Runtime.getRuntime.totalMemory)));
 		}
 
-		case "system" :: "theads"  :: Nil JsonGet _ => {
+		case "system" :: "threads"  :: Nil JsonGet _ => {
 			JsObj(("active",JInt(Thread.activeCount)));
 		}
 
