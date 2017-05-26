@@ -309,14 +309,13 @@ object EmailUtil {
     sendMailTo(admins,notificationRegistrationHtml(company, product1),"Novo cliente" + product1 + local1);
   }
 
+  def  limitDiskPercent = 45;
   def sendDailyUtilization = {
-    sendMailTo(admins,code.daily.DailyReport.dailyUtilizationInHtml,"Report Diário " + code.daily.DailyReport.diskUsed +"%")
+    sendMailTo(admins,code.daily.DailyReport.dailyUtilizationInHtml,"Report Diário " + code.daily.DailyReport.diskUsed +"%/"+limitDiskPercent)
   }
-
   def sendDiskSpaceAlert = {
-    val limit = 45;
-    if (code.daily.DailyReport.diskUsed > limit) {
-      sendMailTo(admins,code.daily.DailyReport.diskSpaceAlertInHtml,"Disk Space Alert " + code.daily.DailyReport.diskUsed +"/"+limit)
+    if (code.daily.DailyReport.diskUsed > limitDiskPercent) {
+      sendMailTo(admins,code.daily.DailyReport.diskSpaceAlertInHtml,"Disk Space Alert " + code.daily.DailyReport.diskUsed +"/"+limitDiskPercent)
     }
   }
 
