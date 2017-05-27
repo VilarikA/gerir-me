@@ -120,6 +120,7 @@
       this.transitioning = 0
       this.$element
         .removeClass('collapsing')
+        .removeClass("collapse in")
         .addClass('collapse')
         .trigger('hidden.bs.collapse')
     }
