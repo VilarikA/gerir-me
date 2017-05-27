@@ -3,7 +3,10 @@
  * @author: Stanley Sathler <stanleysathlerpinto@gmail.com>
  **/
 
-nav.navbar { text-align: center; }
-nav.navbar .navbar-header { float: none; }
-nav.navbar .navbar-header,
-nav.navbar .navbar-collapse { display: inline-block !important; }
+/*
+ * Avoids right-side dropdown to be inserted on a new line
+ */
+#main-menu { float: left; }
+.vr-toolbar .navbar-toggle { float: none; }
+.vr-toolbar .navbar-header { display: inline-block; float: left; }
+.vr-toolbar .navbar-right { float: right; }

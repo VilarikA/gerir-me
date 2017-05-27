@@ -1,10 +1,4 @@
-<!-- =============================
-  == JS FILES
-  ============================ -->
-<script src="/js/menu/collapsible-menu.js"></script>
-
-
-<div class="topbar-wrapper" style="z-index: 5;">
+<div class="topbar-wrapper vr-toolbar" style="z-index: 5;">
  
 	<div id="help_modal" class="modal fade">
 		<div class="modal-header">
@@ -85,36 +79,46 @@
 	============================== -->
 	<nav class="navbar navbar-inverse navbar-fixed-top" data-dropdown="dropdown">
 
-		<div class="navbar-header">
-			<a class="navbar-brand" href="/index">
-				<img src="/images/logo.png"/>
-			</a>
-		</div>
+		<div class="container">
 
-		<div class="collapse navbar-collapse" id="main-menu">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#main-menu" aria-expanded="false">
+					<span class="sr-only">Toggle navigation</span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
 
-			<!-- Menu items built by Lift Framework -->
-			<lift:Menu.builder
-				linkToSelf="true"
-				li_item:linkToSelf="true"
-				ul:class="nav navbar-nav"
-				li:class="menuitem"
-				li_item:class="selectedMenu"
-				li_item:onclick="javascript:alert('Already selected!');"
-			></lift:Menu.builder>
+				<a class="navbar-brand" href="/index">
+					<img src="/images/logo.png"/>
+				</a>
+			</div>
 
-			<!-- Section which appears when user is not logged -->
-			<span class="navbar-left">
-				<script class="lift:SecuritySnippet.unLogged">
-					var logged = false;
-				</script>
-				<form method="post" class="lift:SecuritySnippet.unLogged login_form">
-					<a class="btn btn-success" href="/v2/login">Entrar</a>
-				</form>
-			</span>
+			<div class="collapse navbar-collapse" id="main-menu">
+
+				<!-- Menu items built by Lift Framework -->
+				<lift:Menu.builder
+					linkToSelf="true"
+					li_item:linkToSelf="true"
+					ul:class="nav navbar-nav"
+					li:class="menuitem"
+					li_item:class="selectedMenu"
+					li_item:onclick="javascript:alert('Already selected!');"
+				></lift:Menu.builder>
+
+				<!-- Section which appears when user is not logged -->
+				<span class="navbar-left">
+					<script class="lift:SecuritySnippet.unLogged">
+						var logged = false;
+					</script>
+					<form method="post" class="lift:SecuritySnippet.unLogged login_form">
+						<a class="btn btn-success" href="/v2/login">Entrar</a>
+					</form>
+				</span>
+			</div>
 
 			<!-- Section which appears when user is logged, showing 
-				 some options to the user -->
+			     some options to the user -->
 			<span class="navbar-right">
 				<script> 
 					var logged = true; 
@@ -202,6 +206,7 @@
 					</li>
 				</ul>
 			</span>
-		</div>
+
+		</div><!-- //.container-fluid -->
 	</nav>
 </div><!-- /topbar-wrapper -->
