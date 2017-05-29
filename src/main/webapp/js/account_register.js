@@ -682,6 +682,13 @@
       var e;
       try {
         if (Account.actualId) {
+          //alert ("vaiii ==== " + $("#recurrence_id").val())
+          if ($("#recurrence_all").is(":checked")) {
+             if (confirm("Tem certeza que deseja atualizar este lançamentos e inclusive os futuros?")) {
+             } else {
+              return
+             } 
+          }
           return $.post("/accountpayable/edit/" + Account.actualId, new Account(), function(t) {
             if (t == 'true') {
               alert("Lançamento alterado com sucesso!");
