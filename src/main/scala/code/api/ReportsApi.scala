@@ -995,12 +995,12 @@ object Reports extends RestHelper with ReportRest with net.liftweb.common.Logger
 				}
 */
 				def producttype = S.param("category_select") match {
-					case Full(p) if(p != "")=> " and pt.id in(%s)".format(p)
+					case Full(p) if(p != "")=> " and pr.typeproduct in(%s)".format(p)
 					case _ => S.param("category_select[]") match {
-						case Full(p) if(p != "") => " and pt.id in(%s)".format(S.params("category_select[]").foldLeft("0")(_+","+_))
+						case Full(p) if(p != "") => " and pr.typeproduct in(%s)".format(S.params("category_select[]").foldLeft("0")(_+","+_))
 						case _ => " and 1=1 " 
 					}
-				}			
+				}	
 				def prod = 	 S.param("product") match {
 					case Full(p) if(p != "")=> " and pr.id in(%s)".format(p)
 					case _ => S.param("product[]") match {
@@ -1008,6 +1008,10 @@ object Reports extends RestHelper with ReportRest with net.liftweb.common.Logger
 						case _ => " and 1=1 " 
 					}
 				}
+				def classes:String = S.param("productclass") match {
+					case Full(p) => p
+					case _ => "0,1";
+				} 
 
 				def start:Date = S.param("start") match {
 					case Full(p) => Project.strToDateOrToday(p)
@@ -1025,11 +1029,6 @@ object Reports extends RestHelper with ReportRest with net.liftweb.common.Logger
 					case Full(p) if(p != "")=> "bp.short_name || ' - ' ||"
 					case _ => ""
 				}			
-				def classes:String = S.param("type") match {
-					case Full(p) => p
-					case _ => "0,1";
-				} 
-//					and pr.typeproduct in (%s)
 
 				val SQL = """
 					select short_name_year, %s pr.name, %s from dates 
@@ -1831,6 +1830,20 @@ object Reports extends RestHelper with ReportRest with net.liftweb.common.Logger
 			def SQL = """select id, name,id, phone, contact, email, status, createdat from company where %s order by id desc"""
 			toResponse(SQL.format (status), Nil)
 		}
+
+		case "report" :: "modules" :: Nil Post _ =>{
+			val status:String = S.param("status") match {
+				case Full(p) if(p != "")=> " pm.status in (1,0) "
+				case _ => " pm.status in (1) "
+			}			
+			AuthUtil.checkSuperAdmin
+			def SQL = """select pm.name, dt.name, pm.status, pm.id from permissionmodule pm 
+				inner join company co on co.id = pm.company
+				left join domaintable dt on dt.domain_name = 'modulos' and dt.cod = pm.name
+				where pm.company = ? and %s order by pm.name;"""
+			toResponse(SQL.format (status), List (AuthUtil.company.id.is));
+		}
+
 		case "report" :: "paymenttype_summary" :: Nil Post _ => {
 			def units:String = S.param("unit") match {
 				case Full(s) if(s != "") => " and ca.unit = %s".format(s)

@@ -187,6 +187,9 @@
           } else if (status == '8') {
             statstr = 'ReSchedule'
             title ='desmarcou'
+          } else if (status == '9') {
+            statstr = 'Budget'
+            title ='orçamento'
           }
           // //"<img title='" + title + "' src='/images/treatment_"+statstr.toLowerCase()+".png' width='24'/>"
           return "<img title='" + title + "' src='/images/treatment_"+statstr.toLowerCase()+"1.png' width='24'/>"

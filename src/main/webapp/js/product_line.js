@@ -28,8 +28,8 @@
     });
   };
 
-  Product.getlistCategoryFromServer = function(id, callback) {
-    return $.get("/product/product_category", function(t) {
+  Product.getlistTypeFromServer = function(id, callback) {
+    return $.get("/product/product_type", function(t) {
       var obj, ret, _i, _len;
       eval("var list = " + t);
       ret = "";

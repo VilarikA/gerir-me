@@ -291,6 +291,8 @@ object  TreatmentService extends net.liftweb.common.Logger {
 			treatment.markAsPreOpen
 		}else if(status == "open"){
 			treatment.markAsOpen
+		}else if(status == "budget"){
+			treatment.markAsBudget
 		}
 		if(validate){
 			treatment.save

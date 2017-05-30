@@ -284,12 +284,28 @@ with CanCloneThis[AccountPayable] {
     }
   }
 
-  def transferTo(toAccount:Long){
+  def transferTo(toAccount:Long, toout_of_cacashier:String, cashierTo:String, cashier_numberTo:String){
+    def cashierToObj = Cashier.findByKey(cashierTo.toLong)
+    def cashierToBox:Box[Cashier] = cashierToObj match {
+      case Full(c:Cashier) => Full(c)
+      case _ => if(cashier_numberTo != "") {
+        Full(Cashier.findByCompanyId(cashier_numberTo.toInt))
+      }else{
+        Empty
+      }
+    }
+
     val accountPayable = this.clone()
     if(accountPayable.typeMovement == AccountPayable.IN){
       accountPayable.typeMovement(AccountPayable.OUT)
     }else{
       accountPayable.typeMovement(AccountPayable.IN)
+    }
+    if(toout_of_cacashier.toBoolean) {
+      accountPayable.cashier(cashierToBox)
+    } else {
+      // para colocar Empty - garantir 
+      accountPayable.cashier(Empty)
     }
     accountPayable.debted_?(false).account(toAccount).save
   }

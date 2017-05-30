@@ -324,7 +324,8 @@ object BusinessRulesUtil{
 	def md5(value:String) = Project.md5(value)
 	def toCamelCase(value:String) = {
 		if (value != null && value.trim() != EMPTY){
-			value split(" ") filter( _!="" ) map(_.toLowerCase) map( (current:String) => {  if( !notCamelize.contains(current)) { current.capitalize }else{ current } } ) reduceLeft(_+" "+_)
+			val val_camel = value split(" ") filter( _!="" ) map(_.toLowerCase) map( (current:String) => {  if( !notCamelize.contains(current)) { current.capitalize }else{ current } } ) reduceLeft(_+" "+_)
+      val_camel.substring(0,1).toUpperCase + val_camel.substring(1,val_camel.length)
 		} else {
 			EMPTY
 		}

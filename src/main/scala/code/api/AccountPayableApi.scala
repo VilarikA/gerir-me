@@ -128,14 +128,21 @@ object AccountPayableApi extends RestHelper with ReportRest with net.liftweb.com
 					recurrence_term_type <- S.param("recurrence_term_type") ?~ "date_of_end parameter missing" ~> 400
 					recurrence_term <- S.param("recurrence_term") ?~ "recurrence_term parameter missing" ~> 400
 					user = S.param("user") openOr "0"
+
 					out_of_cacashier <- S.param("out_of_cacashier") ?~ "out_of_cacashier parameter missing" ~> 400
 					cashier <- S.param("cashier") ?~ "cashier parameter missing" ~> 400
 					cashier_number <- S.param("cashier_number") ?~ "cashier_number parameter missing" ~> 400
 					accountStr <- S.param("account") ?~ "account parameter missing" ~> 400
+
 					user_parcels <- S.param("user_parcels") ?~ "user_parcels parameter missing" ~> 400
 					user_parceled <- S.param("user_parceled") ?~ "user_parceled parameter missing" ~> 400
 					transfer = S.param("transfer") openOr "False"
+
+					out_of_cacashierTo <- S.param("out_of_cacashier_to") ?~ "out_of_cacashier_to parameter missing" ~> 400
+					cashierTo <- S.param("cashier_to") ?~ "cashier_to parameter missing" ~> 400
+					cashier_numberTo <- S.param("cashier_number_to") ?~ "cashier_number_to parameter missing" ~> 400
 					accountTo <- S.param("account_to") ?~ "account_to parameter missing" ~> 400
+
 					amount <- S.param("amount") ?~ "amount parameter missing" ~> 400
 					costcenter <- S.param("costcenter") ?~ "costcenter parameter missing" ~> 400
 					unitvalue <- S.param("unitvalue") ?~ "unitvalue parameter missing" ~> 400
@@ -198,8 +205,9 @@ object AccountPayableApi extends RestHelper with ReportRest with net.liftweb.com
 							.paymentType(paymentTypeId)
 							.cheque(chequeId)
 
-							if(out_of_cacashier.toBoolean)
+							if(out_of_cacashier.toBoolean) {
 								account.cashier(cashierBox)
+							}
 							if(recurrence.toBoolean){
 								account
 								.parcelTot(recurrence_term.toInt)
@@ -208,7 +216,8 @@ object AccountPayableApi extends RestHelper with ReportRest with net.liftweb.com
 							account.save
 							apAuxId = account.id.is;
 							if(transfer.toBoolean){
-								account.transferTo(accountTo.toLong)
+								account.transferTo(accountTo.toLong, out_of_cacashierTo,
+									cashierTo, cashier_numberTo)
 							}
 						}
 
@@ -374,7 +383,6 @@ object AccountPayableApi extends RestHelper with ReportRest with net.liftweb.com
 					} catch {
 						case e:Exception => JString(e.getMessage)
 					}
-
 				}
 
 			}

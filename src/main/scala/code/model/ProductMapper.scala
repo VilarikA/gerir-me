@@ -166,6 +166,15 @@ trait ProductMapper[OwnerType <: ProductMapper[OwnerType]] extends Audited[Owner
         if(TreatmentDetail.count(By(TreatmentDetail.product, this.id)) > 0){
             throw new RuntimeException("Existe atendimento com este serviço/produto!")
         }
+
+        if(ProductBOM.count(By(ProductBOM.product, this.id)) > 0){
+            throw new RuntimeException("Existe item de pacote para este serviço/produto!")
+        }
+
+        if(ProductBOM.count(By(ProductBOM.product_bom, this.id)) > 0){
+            throw new RuntimeException("Este serviço/produto é item de pacote!")
+        }
+
         if(TreatmentDetail.count(By(TreatmentDetail.activity, this.id)) > 0){
             throw new RuntimeException("Existe atendimento com este serviço/produto!")
         }      

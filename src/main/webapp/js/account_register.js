@@ -99,13 +99,19 @@
       this.recurrence_term = $("#recurrence_term").val();
       this.user = $("#user_select").val();
       this.type = Account.getType();
-      this.out_of_cacashier = $("#cashiers_select").val() !== "" || ($("#cashier_number").val() !== "" && parseFloat($("#cashier_number").val()) != 0);
       this.user_parceled = $("#user_parcels").val() > 1;
       this.user_parcels = $("#user_parcels").val();
+
+      this.out_of_cacashier = $("#cashiers_select").val() !== "" || ($("#cashier_number").val() !== "" && parseFloat($("#cashier_number").val()) != 0);
+      this.account = $("#account_select").val();
       this.cashier = $("#cashiers_select").val();
       this.cashier_number = $("#cashier_number").val();
-      this.account = $("#account_select").val();
+
+      this.out_of_cacashier_to = $("#cashiers_select_to").val() !== "" || ($("#cashier_number_to").val() !== "" && parseFloat($("#cashier_number_to").val()) != 0);
       this.account_to = $("#account_select_to").val();
+      this.cashier_to = $("#cashiers_select_to").val();
+      this.cashier_number_to = $("#cashier_number_to").val();
+
       this.transfer = $("#type_select option:checked").data('transfer') === true;
       this.amount = $("#amount").val();
       this.parcelnum = $("#parcelnum").val();
@@ -579,13 +585,17 @@
         $("#user_select").val("");
       }
       if (category.typeMovement == 2) {
-        return $(".account_to").show();
+        $(".cashier_select_to_span").show();
+        $(".account_to").show();
+        return 
       } else {
-        return $(".account_to").hide();
+        $(".cashier_select_to_span").hide();
+        $(".account_to").hide();
+        return 
       }
       return $("#account_select").focus().select2('open');
     });
-    $(".account_select").change(function() {
+    $("#account_select").change(function() {
       var account;
       account = AccountMovement.getById($(this).val());
       if (account && account.allowCashierOut) {
@@ -593,6 +603,17 @@
       } else {
         $(".cashier_select_span").hide();
         $("#cashiers_select").val("").change();
+      }
+      return $("#obs_account").focus();
+    });
+    $("#account_select_to").change(function() {
+      var account;
+      account = AccountMovement.getById($(this).val());
+      if (account && account.allowCashierOut) {
+        $(".cashier_select_to_span").show();
+      } else {
+        $(".cashier_select_to_span").hide();
+        $("#cashiers_select_to").val("").change();
       }
       return $("#obs_account").focus();
     });
@@ -661,6 +682,13 @@
       var e;
       try {
         if (Account.actualId) {
+          //alert ("vaiii ==== " + $("#recurrence_id").val())
+          if ($("#recurrence_all").is(":checked")) {
+             if (confirm("Tem certeza que deseja atualizar este lançamentos e inclusive os futuros?")) {
+             } else {
+              return
+             } 
+          }
           return $.post("/accountpayable/edit/" + Account.actualId, new Account(), function(t) {
             if (t == 'true') {
               alert("Lançamento alterado com sucesso!");
@@ -697,11 +725,16 @@
       showOn: 'button'
     });
     $("#cashiers_select").cashierField(true, "open");
+    $("#cashiers_select_to").cashierField(true, "open");
     $("#type_select").change(function() {
       if ($("#type_select option:checked").data('transfer')) {
-        return $(".account_to").show();
+        $(".cashier_select_to_span").show();
+        $(".account_to").show();
+        return 
       } else {
-        return $(".account_to").hide();
+        $(".cashier_select_to_span").hide();
+        $(".account_to").hide();
+        return 
       }
     });
     $("#unit").unitField(false, false, true);
@@ -714,7 +747,10 @@
     $(".account_select:input").accountField(false, function(items) {
       return AccountMovement.list = items;
     });
+
+    $(".cashier_select_to_span").hide();
     $(".account_to").hide();
+
     return $("#dre_send").click(function() {
       $("#grid_dre").html("Aguarde um instante, o DRE está sendo gerado...");
       $("#dre_modal").modal({
