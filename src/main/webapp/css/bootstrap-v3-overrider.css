@@ -1,7 +1,6 @@
 /**
  * Navbar
  **/
-
 nav.navbar {
 	border-radius: 0;
 }
@@ -69,6 +68,7 @@ table.vr-table .btn {
 
 table td.actions { max-width: 100px; }
 
+
 /**
  * Containers and general divs
  **/
@@ -82,6 +82,12 @@ table td.actions { max-width: 100px; }
 	border-bottom: 1px solid #dcdcdc;
 
 	padding-left: 60px;
+}
+
+@media (min-width: 1200px) {
+	.container {
+		width: 1000px;
+	}
 }
 
 
@@ -98,6 +104,7 @@ table td.actions { max-width: 100px; }
     margin: 20px 10px;
 
 }
+
 
 /**
  * Twipsy
@@ -157,6 +164,7 @@ aside.vr-sidebar-icons ul li {
 div.vr-content {
 	position: relative;
 }
+
 
 /*
  * Columns
