@@ -927,7 +927,7 @@
         */
         $calendarContainer.find('.wc-time-header-cell').css({
           //height: (options.timeslotHeight * options.timeslotsPerHour) - 11, // original component's code
-          height: (options.timeslotHeight * options.timeslotsPerHour) - 4, // by VilarikA
+          height: (options.timeslotHeight * options.timeslotsPerHour) - (options.timeslotsPerHour + 1), // by VilarikA
           padding: 5
         });
         //add the user data to every impacted column
