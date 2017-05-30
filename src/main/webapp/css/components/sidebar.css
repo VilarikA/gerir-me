@@ -4,9 +4,13 @@
  **/
 
 nav.vr-sidebar {
-	background-color: #324555;
+	--primary-normal-color: #324555;
+	--primary-dark-color: #21323d;
+	--content-color: #f2f2f2;
+
+	background-color: var(--primary-normal-color);
 	bottom: 0;
-	color: #f2f2f2;
+	color: var(--content-color);
 	left: 0;
 	padding: 25px 0;
 	position: fixed;
@@ -16,7 +20,7 @@ nav.vr-sidebar {
 
 	nav.vr-sidebar,
 	nav.vr-sidebar a {
-		color: #f2f2f2;
+		color: var(--content-color);
 		text-decoration: none;
 	}
 
@@ -37,11 +41,17 @@ nav.vr-sidebar .menu {
 	padding-left: 0;
 }
 
-	nav.vr-sidebar .menu li {
-		border-bottom: 1px solid #21323d;
+	nav.vr-sidebar .menu li a {
+		border-bottom: 1px solid var(--primary-dark-color);
+		display: inline-block;
 		height: 44px;
 		line-height: 44px;
 		padding-left: 10px;
+		width: 100%;
+	}
+
+	nav.vr-sidebar .menu li a:hover {
+		background-color: var(--primary-dark-color);
 	}
 
 
