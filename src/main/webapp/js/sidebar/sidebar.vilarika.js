@@ -10,8 +10,10 @@
 
     function SidebarComponent(element)
     {
-        this.$element;
-        this.$ulElements;
+        this.$root;
+        this.$rootUl;
+        this.$liList = [];
+
         var self = this;
 
         (function initialize()
@@ -23,7 +25,7 @@
             }
 
             populateInstanceProperties();
-            loadUlElementsHierarchically();
+            loadLiParentElements();
         })();
 
         function areConstructorParamsValid()
@@ -34,13 +36,38 @@
 
         function populateInstanceProperties()
         {
-            self.$element = $(element);
+            self.$root = $(element);
+            self.$rootUl = self.$root.find("ul.menu").first();
         }
 
-        function loadUlElementsHierarchically()
+        function loadLiParentElements()
         {
-            //
+            var $liElements = self.$rootUl.find("li.parent");
+            $liElements.each(function(index)
+            {
+                addLiElementInTheList( $(this) );
+                addClickListener( index );
+            });
+
+            function addLiElementInTheList($liElement)
+            {
+                self.$liList.push({
+                    $li: $liElement,
+                    $childUl: $liElement.find("ul.menu").first()
+                });
+            }
+
+            function addClickListener(index)
+            {
+                var $element = self.$liList[index];
+                $element.$li.click(function(){
+                    console.log("Clicked element's child ul:");
+                    console.log($element.$childUl);
+                });
+            }
         }
     }
+
+    window.VrSidebarComponent = SidebarComponent;
 
 })();
