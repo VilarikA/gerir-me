@@ -10,6 +10,7 @@ nav.vr-sidebar {
 
 	background-color: var(--primary-normal-color);
 	bottom: 0;
+	box-shadow: 0 5px 5px rgba(0, 0, 0, 0.4);
 	color: var(--content-color);
 	left: 0;
 	padding: 25px 0;
