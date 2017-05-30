@@ -158,100 +158,122 @@
 <body>
 
 	<!-- Include main top menu using Lift -->
+	<!--
 	<div id="toolbar" class="lift:surround?with=toolbar-redesign;at=toolbar"></div>
+	-->
+	
+	<!-- =============================== 
+		     TOOLBAR MENU 
+		================================ -->
+	<!--<div id="sidebar" class="lift:surround?with=sidebar-redesign;at=sidebar"></div>-->
 
-	<!-- Page content goes here -->
+
+	<!-- =============================== 
+		     SIDE ICONS
+		================================ -->
+	<!--
 	<div class="container-fluid vr-content">
 		<aside class="vr-sidebar-icons">
 			<div>
 				<h5>Agenda</h5>
 				<ul>
 					<li>
-					 <a href="/calendar" class="_popover_basic" rel="popover" data-content="Agenda Geral" data-original-title="Agenda">
-						<img width='32' src="/images/calendar.png"/>
-					</a>
-				</li>
-				<li>
-				 <a href="/activity/busy_manager" class="_popover_basic" rel="popover" data-content="Bloqueios de agenda. Ex: Reunião, Feriado." data-original-title="Bloqueios">
-					<img width='32' src="/images/busy_event.jpg"/>
-				</a>
-			</li>
-			<li class="lift:SecuritySnippet.isNotEgrexSystem">
-			 <a href="/user/list_terms" class="_popover_basic" rel="popover" data-content="Termos e condições" data-original-title="Termos">
-				<img width='32' src="/images/termsconditions.png"/>
-			</a>
-		</li>
-		<li class="lift:SecuritySnippet.isNotEgrexSystem">
-			 <a href="/user/list_jobrequisition" class="_popover_basic" rel="popover" data-content="Vagas de trabalho" data-original-title="Vagas">
-				<img width='32' src="/images/Person-group-add.png"/>
-			</a>
-		</li>
-		<li>
-			<a href="/command_full/user_command_full" target= "_command_maste" class="_popover_basic" rel="popover" data-content="Agenda do Profissional" data-original-title="Agenda">
-				<img width='32' src="/images/movement.png"/>
-			</a>
-		</li>
-</ul>
-<h5 class="lift:SecuritySnippet.isNotEgrexSystem">Folha de Pagamento</h5>
-<ul class="lift:SecuritySnippet.isNotEgrexSystem">
-	<li>
-		<a href="/financial/event_payroll_register" class="_popover_basic" rel="popover" data-content="Consulta e lançamentos de verbas de folha de pagamento" data-original-title="Lançamentos">
-			<img width='32' src="/images/payroll.png"/>
-		</a>
-	</li>
-	<li>
-		<a href="/financial/payslip_generate" class="_popover_basic" rel="popover" data-content="Geração de  verbas de folha baseados em comissões e adiantamentos/vales no intervalo informado" data-original-title="Geração">
-			<img width='32' src="/images/generate.png"/>
-		</a>
-	</li>
-	<li>
-		<a href="/financial/payslip" class="_popover_basic" rel="popover" data-content="Demonstrativo de pagamento" data-original-title="Demonstrativo">
-			<img width='32' src="/images/payslip.png"/>
-		</a>
-	</li>
-</ul>
-<h5 class="lift:SecuritySnippet.isNotEgrexSystem">Relatórios</h5>
-<ul class="lift:SecuritySnippet.isNotEgrexSystem">
-	<li>
-		<a href="/financial_admin/rank" class="_popover_basic" rel="popover" data-content="Ranking de Profissionais" data-original-title="Ranking">
-			<img width='32' src="/images/control.png"/>
-		</a>
-	</li>
-	<li>
-		<a href="/financial/payroll_liquid" target="_blank" class="_popover_basic" rel="popover" data-content="Relatório para Crédito de Pagamento" data-original-title="Crédito de Pagamento">
-			<img width='32' src="/images/money.png"/>
-		</a>
-	</li>
-</ul>
-</div>
-</div>
+						<a href="/calendar" class="_popover_basic" rel="popover" data-content="Agenda Geral" data-original-title="Agenda">
+							<img width='32' src="/images/calendar.png"/>
+						</a>
+					</li>
+					<li>
+				 		<a href="/activity/busy_manager" class="_popover_basic" rel="popover" data-content="Bloqueios de agenda. Ex: Reunião, Feriado." data-original-title="Bloqueios">
+							<img width='32' src="/images/busy_event.jpg"/>
+						</a>
+					</li>
+					<li class="lift:SecuritySnippet.isNotEgrexSystem">
+			 			<a href="/user/list_terms" class="_popover_basic" rel="popover" data-content="Termos e condições" data-original-title="Termos">
+							<img width='32' src="/images/termsconditions.png"/>
+						</a>
+					</li>
+					<li class="lift:SecuritySnippet.isNotEgrexSystem">
+			 			<a href="/user/list_jobrequisition" class="_popover_basic" rel="popover" data-content="Vagas de trabalho" data-original-title="Vagas">
+							<img width='32' src="/images/Person-group-add.png"/>
+						</a>
+					</li>
+					<li>
+						<a href="/command_full/user_command_full" target= "_command_maste" class="_popover_basic" rel="popover" data-content="Agenda do Profissional" data-original-title="Agenda">
+							<img width='32' src="/images/movement.png"/>
+						</a>
+					</li>
+				</ul>
 
-<div class="container">
-	<div class="content span18">
-		<div class="page-header span18">
-			<h1>
-				<span class="lift:CompanySnippet.thumb"></span><span class="lift:Menu.title"></span><small> - <span class='system-name'></span> Gestão Integrada</span></small>
-			</h1>
-		</div>
+				<h5 class="lift:SecuritySnippet.isNotEgrexSystem">Folha de Pagamento</h5>
+				<ul class="lift:SecuritySnippet.isNotEgrexSystem">
+					<li>
+						<a href="/financial/event_payroll_register" class="_popover_basic" rel="popover" data-content="Consulta e lançamentos de verbas de folha de pagamento" data-original-title="Lançamentos">
+							<img width='32' src="/images/payroll.png"/>
+						</a>
+					</li>
+					<li>
+						<a href="/financial/payslip_generate" class="_popover_basic" rel="popover" data-content="Geração de  verbas de folha baseados em comissões e adiantamentos/vales no intervalo informado" data-original-title="Geração">
+							<img width='32' src="/images/generate.png"/>
+						</a>
+					</li>
+					<li>
+						<a href="/financial/payslip" class="_popover_basic" rel="popover" data-content="Demonstrativo de pagamento" data-original-title="Demonstrativo">
+							<img width='32' src="/images/payslip.png"/>
+						</a>
+					</li>
+				</ul>
 
-		<div class="row">
-			<span class="messages">
-				<div class="lift:Msgs?showAll=true"></div>
-			</span>
+				<h5 class="lift:SecuritySnippet.isNotEgrexSystem">Relatórios</h5>
+				<ul class="lift:SecuritySnippet.isNotEgrexSystem">
+					<li>
+						<a href="/financial_admin/rank" class="_popover_basic" rel="popover" data-content="Ranking de Profissionais" data-original-title="Ranking">
+							<img width='32' src="/images/control.png"/>
+						</a>
+					</li>
+					<li>
+						<a href="/financial/payroll_liquid" target="_blank" class="_popover_basic" rel="popover" data-content="Relatório para Crédito de Pagamento" data-original-title="Crédito de Pagamento">
+							<img width='32' src="/images/money.png"/>
+						</a>
+					</li>
+				</ul>
 
-			<!-- Subtemplates are surrounded right here -->
-			<div id="content">
-				<h2>Main content</h2>
+			</div>
+		</aside>
+	</div>
+	-->
+
+	<!-- =============================== 
+		     CONTENT CONTAINER
+		================================ -->
+	<div class="container">
+		<div class="content span18">
+			<div class="page-header span18">
+				<h1>
+					<span class="lift:CompanySnippet.thumb"></span>
+					<span class="lift:Menu.title"></span>
+					<small> - <span class="system-name"></span> Gestão Integrada</span></small>
+				</h1>
+			</div>
+
+			<div class="row">
+				<span class="messages">
+					<div class="lift:Msgs?showAll=true"></div>
+				</span>
+
+				<!-- Subtemplates are surrounded right here -->
+				<div id="content">
+					<h2>Main content</h2>
+				</div>
 			</div>
 		</div>
-	</div>
 
-	<footer>
-		<div class="lift:surround?with=footer-redesign;at=footer"></div>
-	</footer>
-</div> <!-- /container -->
-</div>
-<div id="customer_search" class="modal hide fade">
+		<footer>
+			<div class="lift:surround?with=footer-redesign;at=footer"></div>
+		</footer>
+	</div> <!-- /container -->
+
+
+<div id="customer_search" class="modal fade">
 	<div class="modal-header">
 		<a href="#" class="close">&times;</a>
 		<h3>Buscar Cliente</h3>
