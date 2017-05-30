@@ -88,7 +88,19 @@ object SecurityApi extends RestHelper with net.liftweb.common.Logger {
       S.redirectTo("/calendar")
       JInt(1)
     }
-   case "security" :: "login_face" :: Nil Post (r) => {
+    case "security" :: "useModule" :: Nil JsonGet (r) => {
+      AuthUtil.checkSuperAdmin
+      val ac = PermissionModule.findByKey((S.param("id") openOr "0").toLong).get
+      if (ac.status == 1) {
+        ac.status (0);
+      } else {
+        ac.status (1);
+      }
+      ac.save
+      S.redirectTo("/manager/modules")
+      JInt(1)
+    }
+    case "security" :: "login_face" :: Nil Post (r) => {
       val json = parse(new String(r.body.get))
       val loginDto = json.extract[LoginFaceDto]
       val users = User.findByFacebook(loginDto.facebookId, loginDto.facebookAccessToken).filter( (u) =>{

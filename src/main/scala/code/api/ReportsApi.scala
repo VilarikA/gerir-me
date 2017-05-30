@@ -1830,6 +1830,20 @@ object Reports extends RestHelper with ReportRest with net.liftweb.common.Logger
 			def SQL = """select id, name,id, phone, contact, email, status, createdat from company where %s order by id desc"""
 			toResponse(SQL.format (status), Nil)
 		}
+
+		case "report" :: "modules" :: Nil Post _ =>{
+			val status:String = S.param("status") match {
+				case Full(p) if(p != "")=> " pm.status in (1,0) "
+				case _ => " pm.status in (1) "
+			}			
+			AuthUtil.checkSuperAdmin
+			def SQL = """select pm.name, dt.name, pm.status, pm.id from permissionmodule pm 
+				inner join company co on co.id = pm.company
+				left join domaintable dt on dt.domain_name = 'modulos' and dt.cod = pm.name
+				where pm.company = ? and %s order by pm.name;"""
+			toResponse(SQL.format (status), List (AuthUtil.company.id.is));
+		}
+
 		case "report" :: "paymenttype_summary" :: Nil Post _ => {
 			def units:String = S.param("unit") match {
 				case Full(s) if(s != "") => " and ca.unit = %s".format(s)
