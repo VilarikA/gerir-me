@@ -10,3 +10,4 @@
 .vr-toolbar .navbar-toggle { float: none; }
 .vr-toolbar .navbar-header { display: inline-block; float: left; }
 .vr-toolbar .navbar-right { float: right; }
+.vr-toolbar #ajax_loader { float: right; }
