@@ -218,7 +218,7 @@
       fields[12] = {
         type : "format",
         decode: function(name, row) {
-          return "<a class='btn primary' onclick='Manager.new_detail(" + row[11] +")' title='Inserir novo serviço para este cliente/paciente' target=''>Inserir novo</a> " +
+          return "<a class='btn primary' onclick='Manager.new_detail(" + row[11] +',"' +row[0]+ '"' + ")'" + " title='Inserir novo serviço para este cliente/paciente' target=''>Inserir novo</a> " +
                 "<a class='btn danger' onclick='Manager.del_detail(" + row[12] +")'  target=''>Excluir</a>"
           //      "<a class='btn primary' onclick='Manager.new_fit(" +row[0].replace (':','.') +")' title='Inserir novo serviço neste mesmo horário' target=''>Encaixar</a> " +
         }
@@ -269,7 +269,7 @@
           // por que a função no Manager não funciona
 //          return "<a class='btn success' href='/command/setaux?user=" + (Manager.user())+ "&tdid="+row[5]+"'>XML</a>"
 //          return "<a class='btn success' onclick='Manager.set_auxiliar(" + (Manager.user()) + "," +row[5]+")'  target='_tissxml_maste'>XML1</a>"
-          return "<a class='btn primary' onclick='Manager.new_detail("+row[7]+")' title='Inserir novo serviço para este cliente/paciente' target=''>Inserir novo</a> " +
+          return "<a class='btn primary' onclick='Manager.new_detail("+row[7]+ ',"' +row[0]+ '"' + ")'" + " title='Inserir novo serviço para este cliente/paciente' target=''>Inserir novo</a> " +
           "<a class='btn success' onclick='set_auxiliar(" + (Manager.user()) + "," +row[6]+")'  target=''>Gravar assistente</a> " +
           "<a class='btn danger' onclick='del_auxiliar(" + (Manager.user()) + "," +row[6]+")'  target=''>Excluir assistente</a>"
         }
@@ -291,8 +291,9 @@
       Manager.new ();
     };
 
-    Manager.new_detail = function (customerId) {
+    Manager.new_detail = function (customerId, start_hour) {
         $("#customer").val(customerId)
+        $("#hour_start").val(start_hour)
         $("#new").click();
     };
 
@@ -457,7 +458,12 @@
     $("#new").click(function() {
       var agora = getHourBr(FactoryDate.byTime(Date.toDay().getTime()));
       //alert (" agora ==== " + getHourBr(FactoryDate.byTime(agora)))
-      $("#hour_start").val(agora);
+      
+      if (!$("#hour_start").val()) {
+         $("#hour_start").val(agora);
+      } else {
+        // aceita hora de atendiemto existente do cliente
+      }
       Manager.new ();
 /*
       if ((!$("#user").val()) || (parseFloat($("#user").val()) == 0)) {
