@@ -45,7 +45,7 @@ var CalendarScreen = {
 						"		<a onclick='setTreatmentGlobalFromId("+id+"); TreatmentStatusManager.markAsReady();' type='button' class='btn'>"+
 						"			<img src='/images/treatment_ready.png' style='width: 16px;'>"+
 						"			Atendido"+
-						"		</a>			            	"+
+						"		</a>							"+
 						"	</span>"+
 						"	<span class='hide_on_paid'>"+
 						"		<a onclick='setTreatmentGlobalFromId("+id+"); TreatmentStatusManager.markAsMissed();' type='button' class='btn'>"+
