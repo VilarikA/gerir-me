@@ -157,6 +157,9 @@ var CalendarScreen = {
 				ret += "<option value='" + activitysObj[i].id + "'>" + activitysObj[i].name + "</option>";
 			}
 			$('#activitys').append(ret);
+
+			// Change the label which appears as pre-selected on select component
+			$("#activitys").next().find("a.select2-choice > span").text(activitysObj[0].name);
 		});
 	},
 
