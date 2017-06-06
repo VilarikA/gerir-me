@@ -19,7 +19,7 @@
 
 
 		<!-- =============================== 
-		     CSS FILES 
+			 CSS FILES 
 		================================ -->
 
 		<!-- Vendor -->
@@ -50,7 +50,7 @@
 
 
 		<!-- =============================== 
-		     JS FILES 
+			 JS FILES 
 		================================ -->
 
 		<!-- Vendor -->
@@ -71,7 +71,7 @@
 		<script src="/js/bootstrap-dropdown.js"></script>
 		<script src="/js/bootstrap-scrollspy.js"></script>
 		<script src="/js/bootstrap-tabs.js"></script>
-		<script src="/js/product_search.js"></script>    
+		<script src="/js/product_search.js"></script>	
 		<script src="/js/default/global.js"></script>
 		<script src="/js/default/date.js"></script>
 		<script src="/js/default/js_increment.js"></script>
@@ -88,6 +88,9 @@
 		<script src="/js/mousetrap.min.js"></script>
 		<script src="/js/bootstrap-v3-transition.js"></script>
 		<script src="/js/bootstrap-v3-collapse.js"></script>
+
+		<!-- Built by team -->
+		<script src="/js/utilities/json.vilarika.js"></script>
 
 		<!-- Analytics JS -->
 		<script type="text/javascript">
@@ -117,13 +120,13 @@
 
 
 		<!-- =============================== 
-		     TOOLBAR MENU 
+			 TOOLBAR MENU 
 		================================ -->
 		<div class="lift:surround?with=toolbar-redesign;at=toolbar"></div>
 
 
 		<!-- =============================== 
-		     MESSAGES 
+			 MESSAGES 
 		================================ -->
 		<span class="messages">
 			<div class="lift:Msgs?showAll=true"></div>
@@ -131,13 +134,13 @@
 
 
 		<!-- =============================== 
-		     CONTENT CONTAINER (INCLUDED TEMPLATE GOES HERE)
+			 CONTENT CONTAINER (INCLUDED TEMPLATE GOES HERE)
 		================================ -->
 		<div class="container-fluid" id="content"></div>
 
 
 		<!-- =============================== 
-		     SEARCH CUSTOMER MODAL
+			 SEARCH CUSTOMER MODAL
 		================================ -->
 		<div id="customer_search" class="modal fade">
 
@@ -151,7 +154,7 @@
 			<form class="lift:form.ajax">
 						<div class="well">
 							<input class="btn success" type="submit" value="Buscar">
-						</div>    
+						</div>	
 							<span class='lift:CustomerSnippet.formSeachCustomer'>
 								<div class="clearfix">
 									<label for="name">Nome</label>
@@ -159,7 +162,7 @@
 											<input class="medium customer_name" id="name" name="name" size="30" type="text"/>
 											<span class="help-block">Nome completo</span>
 									 </div>
-								</div>        
+								</div>		
 								<div class="clearfix">
 									<label for="document">Telefone</label>
 									 <div class="input">
@@ -178,7 +181,7 @@
 							<input type="hidden" id="id_customer_search_form" name='id_customer_search_form'/>
 					</form> 
 					<table id='table_customer' class="zebra-striped">
-					</table>    
+					</table>	
 			</div>  
 			<div class="modal-footer">
 			</div>
@@ -186,7 +189,7 @@
 
 		
 		<!-- =============================== 
-		     RAPID ADD CUSTOMER MODAL
+			 RAPID ADD CUSTOMER MODAL
 		================================ -->
 		<div id="customer_rapid_add" class="vr-modal modal fade">
 			<div class="modal-dialog">
@@ -276,7 +279,7 @@
 										<label for="rapid_customer_obs">Observação</label>
 										<textarea class="form-control" id="rapid_customer_obs" name="rapid_customer_obs"></textarea>
 									</div>
-								</div>           
+								</div>		   
 							</span>
 						</form>	
 					</div>
@@ -297,7 +300,7 @@
 		<form>
 					<div class="well">
 						<input class="btn success" id="b_pet_rapid_add" type="button" value="Salvar" onclick='AnimalRapidAdd()'>
-					</div>    
+					</div>	
 						<span>
 							<div class="clearfix">
 								<label for="name">Nome</label>
@@ -305,14 +308,14 @@
 										<input class="xlarge" id="rapid_pet_name" name="rapid_pet_name" size="30" type="text"/>
 										<span class="help-block">Nome do pet</span>
 								 </div>
-							</div>        
+							</div>		
 						<div class="clearfix">
 							<label for="bp_manager">Tutor</label>
 							 <div class="input">
 									<span>
 										<img class="customer_search_button" width='24' src="/images/search.png"/>
 										<input class='mini id_customer_search' id='rapid_pet_bp_manager' name="rapid_pet_bp_manager" /> 
-										<input class="name_customer_search" name="rapid_pet_manager" id="rapid_customer_manager"  size="30" type="text" placeholder="Nome"/>    
+										<input class="name_customer_search" name="rapid_pet_manager" id="rapid_customer_manager"  size="30" type="text" placeholder="Nome"/>	
 									</span>
 									<span class="help-block">Tutor</span>
 							 </div>
@@ -323,19 +326,19 @@
 									<span>
 										<img class="customer_search_button" width='24' src="/images/search.png"/>
 										<input class='mini id_customer_search' id='rapid_pet_bp_indicatedby' name="rapid_pet_bp_indicatedby" /> 
-										<input class="name_customer_search" name="rapid_pet_indicatedby" id="rapid_customer_indicatedby"  size="30" type="text" placeholder="Nome"/>    
+										<input class="name_customer_search" name="rapid_pet_indicatedby" id="rapid_customer_indicatedby"  size="30" type="text" placeholder="Nome"/>	
 									</span>
 									<span class="help-block">Indicado por</span>
 							 </div>
 						</div>
 						<div class="clearfix">
-							<label for="obs">Obs</label>        
+							<label for="obs">Obs</label>		
 							 <div class="input">
 									<div class='inline-inputs'>
 											<input class="" id="rapid_pet_obs" name="rapid_pet_obs" size="30" type="textarea"/>
 									</div>
 							 </div>
-						</div>           
+						</div>		   
 						</span>
 				</form>
 		</div>

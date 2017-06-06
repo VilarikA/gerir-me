@@ -79,6 +79,7 @@ var CalendarScreen = {
 		}
 		return treatments;
 	},
+
 	creatModalTreatment: function(calEvent, isNew) {
 		CalendarScreen.renewTratment();
 		$('.hide_on_paid').show();
