@@ -79,6 +79,7 @@
 	<script language="javascript" src="/js/default/bar_code_controller.js"></script>
 	<script language="javascript" src="/js/default/jquery_fields.js"></script>
 	<script language="javascript" src="/js/default/jquery_plugins.js"></script>
+	<script src="/js/sidebar/sidebar.vilarika.js"></script>
 
 	<style type="text/css">
 		/* Override some defaults */
@@ -158,16 +159,15 @@
 <body>
 
 	<!-- Include main top menu using Lift -->
-	
+	<!--
 	<div id="toolbar" class="lift:surround?with=toolbar-redesign;at=toolbar"></div>
+	-->
 	
 	
 	<!-- =============================== 
 		 TOOLBAR MENU 
 	================================ -->
-	<!--
 	<div id="sidebar" data-lift="surround?with=sidebar-redesign;at=sidebar"></div>
-	-->
 
 
 	<!-- =============================== 
@@ -316,5 +316,11 @@
 	<div class="modal-footer">
 	</div>
 </div>
+
+<script>
+	$(document).ready(function(){
+		(new Vilarika.Component.Sidebar("#vr-sidebar"));
+	});
+</script>
 </body>
 </html>

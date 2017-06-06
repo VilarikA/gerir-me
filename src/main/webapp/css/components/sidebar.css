@@ -39,6 +39,7 @@ nav.vr-sidebar .header {
 
 nav.vr-sidebar .menu {
 	list-style-type: none;
+	overflow-y: hidden;
 	padding-left: 0;
 }
 

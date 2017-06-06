@@ -1,73 +1,111 @@
 /**
  * Sidebar component created by VilarikA's team.
  * It uses an accordion effect to produce a hierarchical menu.
- * 
- * @author Stanley Sathler <stanleysathlerpinto@gmail.com>
- * @requires jQuery 1+
  **/
 
 (function(){
 
-    function SidebarComponent(element)
-    {
-        this.$root;
-        this.$rootUl;
-        this.$liList = [];
+	function SidebarComponent(rootSelector)
+	{
+		this.$root = null;
+		this.$rootUl = null;
+		this.$liList = [];
 
-        var self = this;
+		var SUBITEM_LEFT_SPACE = 20;
 
-        (function initialize()
-        {
-            try {
-                areConstructorParamsValid();
-            } catch(error) {
-                throw new Error(error);
-            }
+		var self = this;
 
-            populateInstanceProperties();
-            loadLiParentElements();
-        })();
+		(function initialize()
+		{
+			try {
+				areConstructorParamsValid();
+			} catch(error) {
+				throw new Error(error);
+			}
 
-        function areConstructorParamsValid()
-        {
-            if( ! $(element) || $(element).length < 1 )
-                throw new Error("Given element doesn't exist.");
-        }
+			populateInstanceProperties();
+			loadLiParentElements();
+		})();
 
-        function populateInstanceProperties()
-        {
-            self.$root = $(element);
-            self.$rootUl = self.$root.find("ul.menu").first();
-        }
+		function areConstructorParamsValid()
+		{
+			var $element = $(rootSelector);
 
-        function loadLiParentElements()
-        {
-            var $liElements = self.$rootUl.find("li.parent");
-            $liElements.each(function(index)
-            {
-                addLiElementInTheList( $(this) );
-                addClickListener( index );
-            });
+			if( ! $element || $element.length < 1 )
+				throw new Error("SidebarComponent: Given element doesn't exist.");
+		}
 
-            function addLiElementInTheList($liElement)
-            {
-                self.$liList.push({
-                    $li: $liElement,
-                    $childUl: $liElement.find("ul.menu").first()
-                });
-            }
+		function populateInstanceProperties()
+		{
+			self.$root = $(rootSelector);
+			self.$rootUl = self.$root.find("ul.menu").first();
+		}
 
-            function addClickListener(index)
-            {
-                var $element = self.$liList[index];
-                $element.$li.click(function(){
-                    console.log("Clicked element's child ul:");
-                    console.log($element.$childUl);
-                });
-            }
-        }
-    }
+		function loadLiParentElements()
+		{
+			var $liElements = self.$rootUl.find("li.parent");
+			$liElements.each(function(index)
+			{
+				var $liElement = $(this);
+				var $ulElement = $liElement.find("ul.menu").first();
 
-    window.VrSidebarComponent = SidebarComponent;
+				addLiElementInTheList( $liElement, $ulElement );
+				addClickListener( $liElement, $ulElement );
+				hideUlElement( $ulElement );
+				addLeftSpacesOnSubMenus( $ulElement, (index + 1));
+			});
+		}
+
+		function addLiElementInTheList($liElement, $ulElement)
+		{
+			self.$liList.push({
+				$li: $liElement,
+				$childUl: $ulElement
+			});
+		}
+
+		function addClickListener($liElement, $ulElement)
+		{
+			$liElement.click(function(){
+				toggleUlElement($ulElement);
+			});
+		}
+
+		function toggleUlElement($ulElement)
+		{
+			var height = parseInt($ulElement.css("height"));
+
+			if(height == 0) showUlElement($ulElement);
+			else hideUlElement($ulElement);
+		}
+
+		function showUlElement($ulElement)
+		{
+			$ulElement.css("height", "auto");
+		}
+
+		function hideUlElement($ulElement)
+		{
+			$ulElement.css("height", 0);
+		}
+
+		function addLeftSpacesOnSubMenus($ulElement, hierarchicalLevel)
+		{
+			$ulElement.find("> li").each(function(){
+				var $childLi = $(this);
+				var $childA = $childLi.find("> a");
+
+				// parseInt() removes "px" and returns only the number
+				var alreadyExistentPadding = parseInt($childA.css("padding-left"));
+
+				var leftPaddingSize = (alreadyExistentPadding) + (hierarchicalLevel * SUBITEM_LEFT_SPACE);
+				$childA.css("padding-left", leftPaddingSize + "px");
+			});
+		}
+	}
+
+	window.Vilarika = window.Vilarika || {};
+	window.Vilarika.Component = window.Vilarika.Component || {};
+	window.Vilarika.Component.Sidebar = SidebarComponent;
 
 })();
