@@ -245,7 +245,7 @@ var TreatmentManger = {
 			$("#table_detail_table tbody").html(table);
 			translateStatus();
 			$("#treatment_detail_div").show();
-			$("#activitys").select2('open');
+			//$("#activitys").select2('open');
 		});
 		global_calEvent = calEvent;
 	},
