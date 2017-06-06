@@ -3,10 +3,10 @@ var parent_customer_search = null;
 $(function() {
 	var prepareSearch = function() {
 		var recordsStr = ""
-	    var hasEdoctusSystem = $('.has-edoctus-system').length > 0;
-	    var hasEphysioSystem = $('.has-ephysio-system').length > 0;
-	    var hasEsmileSystem = $('.has-esmile-system').length > 0;
-	    if (hasEdoctusSystem || hasEphysioSystem || hasEsmileSystem) {
+		var hasEdoctusSystem = $('.has-edoctus-system').length > 0;
+		var hasEphysioSystem = $('.has-ephysio-system').length > 0;
+		var hasEsmileSystem = $('.has-esmile-system').length > 0;
+		if (hasEdoctusSystem || hasEphysioSystem || hasEsmileSystem) {
 //		if ((document.location.href.indexOf("edoctus") != -1) ||
 //			(document.location.href.indexOf("ephysio") != -1)) {
 			recordsStr = '<a href="#" title="Ir para prontuário" class="openRecordsSelected"><img src="/images/records.png" class="img_customer_search" width="32">'
@@ -49,7 +49,7 @@ $(function() {
 				placeholder: "Digite o nome do cliente",
 				minimumInputLength: 3,
 				formatNoMatches: function(val) {
-					return "<a href='#' onclick='Customer.rapidCreate(\"" + val + "\");'><img src='/images/add.png' width='16'> (" + val + ").Deseja adicionar?</a>";
+					return "<a href='#' onclick='Customer.rapidCreate(\"" + val + "\");'><img src='/images/add.png' width='16'> (" + val + "). Deseja criá-lo?</a>";
 				},
 				id: function(a) {
 					return a.name;
@@ -152,7 +152,7 @@ $(function() {
 		});
 	});
 	$("#b_customer_rapid_add").click(function() {
-        var opparm = $("#rapid_customer_mobile_phone_op").val() || '0';
+		var opparm = $("#rapid_customer_mobile_phone_op").val() || '0';
 
 		Customer.rapidCreate($("#rapid_customer_name").val(), 
 			$("#rapid_customer_phone").val(), 
