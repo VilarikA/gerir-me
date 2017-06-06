@@ -108,12 +108,14 @@ var CalendarScreen = {
 			global_commandControl == 1 /* daily */) {
 			$.get("/calendar/" + encodeURIComponent(getDateBr(calEvent.start)) + 
 				"/getNextCommandId", function(t) {
-				$($inputs.get(0)).val(t);
+
+				$("#command_treatment", "#treatment_add").val(t);
 				if (!isNew)
 					$(".command").change();
 			});
 		} else {
-			$($inputs.get(0)).val(calEvent.command);
+			$("#command_treatment", "#treatment_add").val(calEvent.command);
+			//$($inputs.get(0)).val(calEvent.command);
 		}
 		if(calEvent.customerId){
 			$("#cutomer_id_treatment").val(calEvent.customerId);

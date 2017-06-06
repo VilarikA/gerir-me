@@ -32,7 +32,7 @@ var TreatmentManger = {
 			alert ("Suas permissões não permitem editar agendamento");
 				// o refresh aqui nao funcionou - 05/05/2017 rigel
 				//	refreshCalendarByAjax();
-			    $('#calendar').weekCalendar("refresh");
+				$('#calendar').weekCalendar("refresh");
 		}
 	},
 	saveTreatment: function(force) {
@@ -149,22 +149,22 @@ var TreatmentManger = {
 				// usado tambem na comanda e na agenda e no caixa
 				// duplicado no register_payment.js
 				//
-		        return $.post("/command/setaux", {
-		          "user": userId,
-		          "tdid": detailId,
-		          "command": "0" // agenda 1 seria commanda
-		        }, function(results) {
-		          if(results === 1 || results == "1"){
-		          	if (userId == "0") {
-			            alert("Assistente excluído com sucesso");
-		          	} else {
-			            alert("Assistente cadastrado com sucesso");
-		          	}
+				return $.post("/command/setaux", {
+				  "user": userId,
+				  "tdid": detailId,
+				  "command": "0" // agenda 1 seria commanda
+				}, function(results) {
+				  if(results === 1 || results == "1"){
+				  	if (userId == "0") {
+						alert("Assistente excluído com sucesso");
+				  	} else {
+						alert("Assistente cadastrado com sucesso");
+				  	}
 					TreatmentManger.creatTreatmentDetail(global_calEvent);
-		          }else{
-		            alert(eval(results));
-		          }
-		        });
+				  }else{
+					alert(eval(results));
+				  }
+				});
 			}
 		} else {
 			alert ("Suas permissões não permitem editar agendamento");
@@ -185,40 +185,40 @@ var TreatmentManger = {
 				// usado tambem na comanda e na agenda e no caixa
 				// duplicado no register_payment.js
 				//
-		        return $.post("/command/setpet", {
-		          "animal": petId,
-		          "tdid": detailId,
-		          "command": "0" // agenda 1 seria commanda
-		        }, function(results) {
-		          if(results === 1 || results == "1"){
-		          	if (petId == "0") {
-			            alert("Pet excluído com sucesso");
-		          	} else {
-			            alert("Pet cadastrado com sucesso");
-		          	}
+				return $.post("/command/setpet", {
+				  "animal": petId,
+				  "tdid": detailId,
+				  "command": "0" // agenda 1 seria commanda
+				}, function(results) {
+				  if(results === 1 || results == "1"){
+				  	if (petId == "0") {
+						alert("Pet excluído com sucesso");
+				  	} else {
+						alert("Pet cadastrado com sucesso");
+				  	}
 					TreatmentManger.creatTreatmentDetail(global_calEvent);
-		          }else{
-		            alert(eval(results));
-		          }
-		        });
+				  }else{
+					alert(eval(results));
+				  }
+				});
 			}
 		} else {
 			alert ("Suas permissões não permitem editar agendamento");
 		}
 	},
 	creatTreatmentDetail: function(calEvent) {
-	    var decodeStatus = function(status){
-	    	// duplicado do treatments_conference.js
-	      return "<img src='/images/treatment_"+status.toLowerCase()+".png' width='24'/>"
-	    };
+		var decodeStatus = function(status){
+			// duplicado do treatments_conference.js
+		  return "<img src='/images/treatment_"+status.toLowerCase()+".png' width='24'/>"
+		};
 		var url = "/treatment/by_customer/" + calEvent.customerId + "/" + encodeURIComponent(getDateBr(calEvent.start)) + "/details";
 		$.get(url, function(ret) {
 			var details = [];
 			eval("details=" + ret);
 			var table = "";
-	        var hasAuxiliarModule = $('.has-auxiliar-module').length > 0;
-	        var hasUnitModule = $('.has-unit-module').length > 0;
-	        var hasPetSystem = $('.has-pet-system').length > 0;
+			var hasAuxiliarModule = $('.has-auxiliar-module').length > 0;
+			var hasUnitModule = $('.has-unit-module').length > 0;
+			var hasPetSystem = $('.has-pet-system').length > 0;
 			for (var i = details.length - 1; i >= 0; i--) {
 				detail = details[i];
 				var auxAux = "<a href='/customer/edit?id=" + detail.auxiliarId + "' target='_customer_maste'>" + detail.auxiliar + "</a>"

@@ -14,7 +14,8 @@
 	{
 		function parse(jsonString)
 		{
-			eval("var result = " + jsonString);
+			var result;
+			eval("result = " + jsonString);
 			return result;
 		}
 
