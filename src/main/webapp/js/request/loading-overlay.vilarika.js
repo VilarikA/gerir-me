@@ -10,12 +10,12 @@
 
 	"use strict";
 
-	var self = this;
-	this.$loadingOverlay = null;
-	this.$loadingText = null;
-
 	function LoadingOverlay()
 	{
+		var self = this;
+		this.$loadingOverlay = null;
+		this.$loadingText = null;
+
 		(function initialize()
 		{
 			createElements();
@@ -27,6 +27,7 @@
 			self.$loadingOverlay = $('<div class="loading-overlay"></div>');
 			self.$loadingText = $('<span class="text"></span>');
 
+			self.$loadingOverlay.appendTo("body");
 			self.$loadingOverlay.append(self.$loadingText);
 		}
 
@@ -42,7 +43,7 @@
 				"background-color": "rgba(0, 0, 0, 0.6)"
 			});
 
-			self.$loadingOverlay.css({
+			self.$loadingText.css({
 				"color": "white",
 				"display": "inline-block",
 				"position": "fixed",
@@ -97,7 +98,9 @@
 		};
 	}
 
-	window.Vilarika = window.Vilarika || {};
-	window.Vilarika.Request = window.Vilarika.Request || {};
-	window.Vilarika.Request.LoadingOverlay = window.Vilarika.Request.LoadingOverlay || new LoadingOverlay();
+	$(document).ready(function(){
+		window.Vilarika = window.Vilarika || {};
+		window.Vilarika.Request = window.Vilarika.Request || {};
+		window.Vilarika.Request.LoadingOverlay = window.Vilarika.Request.LoadingOverlay || new LoadingOverlay();
+	});
 })();
