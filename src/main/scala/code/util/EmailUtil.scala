@@ -97,7 +97,7 @@ object EmailUtil {
 
   val from:String = Props.get("mail.user") openOr ""
   val admins = if ((S.hostName.contains ("local")) || (S.hostName.contains ("rigel"))) {
-      "rigel.ferreira@gmail.com" :: "rigel.ferreira@hotmail.com" :: "rigel.ferreira@vilarika.com.br" :: Nil
+      "rigel.ferreira@vilarika.com.br" :: Nil
     } else {
       "mateus.freira@gmail.com" :: "rigel.ferreira@hotmail.com" :: 
       "rigel.ferreira@gmail.com" :: 
