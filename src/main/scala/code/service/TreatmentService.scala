@@ -146,7 +146,7 @@ object  TreatmentService extends net.liftweb.common.Logger {
 						 )
 	}	
 	def loadTreatmentByCustomerNotPaid(customer:Customer,date:Date) = {
-		loadTreatmentByCustomer(customer,date).filter(_.status != Treatment.TreatmentStatus.Paid)
+		loadTreatmentByCustomer(customer,date).filter(_.status != Treatment.Paid)
 	}
 
 	def loadTreatmentByCustomer(customer:Customer,date:Date):List[Treatment] = {
@@ -260,9 +260,10 @@ object  TreatmentService extends net.liftweb.common.Logger {
 		}
 	}
 
-	def updateTreatmentHours(id:String,user:Long,start:Date,end:Date, status:String = "", validate:Boolean = true) = {
+	def updateTreatmentHours(id:String,user:Long,start:Date,end:Date, 
+		status:Int = 0, validate:Boolean = true) = {
 		var treatment = Treatment.findByKey(id.toLong).get
-		if (treatment.status.is == Treatment.TreatmentStatus.Paid) {
+		if (treatment.status.is == Treatment.Paid) {
 			// evita que atendimento pago seja alterado gerava erro de comissao se o atend
 			// fosse moviedo para outro usuario
 			TratmentServer ! TreatmentMessage("SaveUpdateTratment",end)		
@@ -277,21 +278,21 @@ object  TreatmentService extends net.liftweb.common.Logger {
 		treatment.user(user)
 		treatment.start(start)
 		treatment.end(end)
-		if(status == "arrived"){
+		if(status == Treatment.Arrived){
 			treatment.markAsArrived
-		}else if(status == "missed"){
+		}else if(status == Treatment.Missed){
 			treatment.markAsMissed
-		}else if(status == "reschedule"){
+		}else if(status == Treatment.ReSchedule){
 			treatment.markAsReSchedule
-		}else if(status == "confirmed"){
+		}else if(status == Treatment.Confirmed){
 			treatment.markAsConfirmed
-		}else if(status == "ready"){
+		}else if(status == Treatment.Ready){
 			treatment.markAsReady
-		}else if(status == "preopen"){
+		}else if(status == Treatment.PreOpen){
 			treatment.markAsPreOpen
-		}else if(status == "open"){
+		}else if(status == Treatment.Open){
 			treatment.markAsOpen
-		}else if(status == "budget"){
+		}else if(status == Treatment.Budget){
 			treatment.markAsBudget
 		}
 		if(validate){
@@ -328,7 +329,7 @@ object  TreatmentService extends net.liftweb.common.Logger {
 	 		conn =>
 	 			try{
 					val treatment = Treatment.findByKey(id).get
-					if(treatment.paid_?){
+					if(treatment.isPaid){
 						throw new RuntimeException("Não é possível adicionar serviço a um atendimento já pago!");
 					}
 					var detail = TreatmentDetail.createInCompany
@@ -452,7 +453,7 @@ object  TreatmentService extends net.liftweb.common.Logger {
         Treatment.findAll(
         				  OrderBy(Treatment.start,Ascending),
                           By(Treatment.company,AuthUtil.company),
-                          By(Treatment.status,Treatment.TreatmentStatus.Paid),
+                          By(Treatment.status,Treatment.Paid),
                           BySql("dateevent between date(?) and date(?)",IHaveValidatedThisSQL("dateevent","01-01-2012 00:00:00"),start,end)//fica preso ao postgress
                           )
     }
@@ -461,7 +462,7 @@ object  TreatmentService extends net.liftweb.common.Logger {
         Treatment.findAll(
                           By(Treatment.company,AuthUtil.company),
                           By(Treatment.user,u),
-                          By(Treatment.status,Treatment.TreatmentStatus.Paid),
+                          By(Treatment.status,Treatment.Paid),
                           BySql("dateevent between date(?) and date(?)",IHaveValidatedThisSQL("dateevent","01-01-2012 00:00:00"),start,end)//fica preso ao postgress
                           )
 	}    
@@ -470,7 +471,7 @@ object  TreatmentService extends net.liftweb.common.Logger {
         Treatment.count(
                           By(Treatment.company,AuthUtil.company),
                           By(Treatment.user,u),
-                          By(Treatment.status,Treatment.TreatmentStatus.Paid),
+                          By(Treatment.status,Treatment.Paid),
                           BySql("dateevent between date(?) and date(?)",IHaveValidatedThisSQL("dateevent","01-01-2012 00:00:00"),start,end)//fica preso ao postgress
                           )
 	}

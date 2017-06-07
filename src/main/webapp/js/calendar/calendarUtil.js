@@ -193,6 +193,7 @@ var Paid = 4; // pago
 var Confirmed =6;
 var PreOpen = 7; // pre agendado
 var ReSchedule = 8;
+var Budget = 9;
 var getStatus = function(status, hasFlit){
   if(hasFlit){
     return "<img width='16' src='/images/bell.png'/>";
@@ -214,6 +215,8 @@ var getStatus = function(status, hasFlit){
       return "<img width='16' src='./images/tick.png'/>";
     case Paid: 
       return "<img width='16' src='./images/money.png'/>";
+    case Budget:
+      return "<img width='16' src='./images/treatment_budget.png'/>";   
     default:
       return "<img width='16' src='/images/clock.png'/>";
   }

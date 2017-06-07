@@ -290,7 +290,8 @@
     if (treatments.length > 0) {
       treatment = treatments[0]; // rigel
       treatments = treatments.filter(function(t) {
-        return t.treatmentStatus != 'Paid';
+        //return t.treatmentStatus != 'Paid';
+        return t.treatmentStatus != 4; // paid
       });
       if (treatments.length == 0) {
         // rigel para mostrar o cliente mesmo já pago
@@ -311,7 +312,8 @@
       if (treatment.ignored) {
         continue;
       }
-      if (treatment.treatmentStatus == 'Paid') {
+//    if (treatment.treatmentStatus == 'Paid') {
+      if (treatment.treatmentStatus == 4 /* paid */) {
         treatments = [];
         return;
       }
@@ -1234,7 +1236,8 @@
       var customers = {};
       var numOfcustomers = 0;
       var treatmentsOpen = treatments.filter(function(t) {
-        return t.status != "Paid";
+        //return t.status != "Paid";
+        return t.status != 4; // paid 
       });
       treatmentsOpen.forEach(function(item) {
         if (customers[item.customerId]) {

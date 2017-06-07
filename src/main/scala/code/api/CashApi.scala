@@ -498,7 +498,7 @@ object CashApi extends RestHelper with net.liftweb.common.Logger  {
 				val json = parse(data)
 				val treatments = json.extract[List[TreatmentDTO]]
 				try{
-					PaymentService.processTreatments(treatments,command, Project.strOnlyDateToDate(date),Treatment.TreatmentStatus.Open,"")
+					PaymentService.processTreatments(treatments,command, Project.strOnlyDateToDate(date),Treatment.Open,"")
 					JsObj(("status","success"))
 				}catch{
 					case e:Exception => {

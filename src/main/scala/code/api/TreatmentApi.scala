@@ -74,9 +74,33 @@ object TreatmentApi extends RestHelper with net.liftweb.common.Logger {
 				def user:String = S.param("user") openOr "0"
 				def start:String = S.param("start") openOr "0"
 				def end:String = S.param("end") openOr "0"
-				def status = S.param("status") openOr ""
+				def status: String = S.param("status") openOr ""
 				def validate = (S.param("validate") openOr "true").toBoolean
-				TreatmentService.updateTreatmentHours(id,user.toLong,Project.strToDate(start),Project.strToDate(end), status, validate)
+				def statstr:String = if (status.toLowerCase == "open") {
+					"0"
+				} else if (status.toLowerCase == "missed") {
+					"1"
+				} else if (status.toLowerCase == "arrived") {
+					"2"
+				} else if (status.toLowerCase == "ready") {
+					"3"
+				} else if (status.toLowerCase == "paid") {
+					"4"
+				} else if (status.toLowerCase == "delete") {
+					"5"
+				} else if (status.toLowerCase == "confirmed") {
+					"6"
+				} else if (status.toLowerCase == "preopen") {
+					"7"
+				} else if (status.toLowerCase == "rescheduled") {
+					"8"
+				} else if (status.toLowerCase == "budget") {
+					"9"
+				} else {
+					status
+				}
+				TreatmentService.updateTreatmentHours(id,user.toLong,Project.strToDate(start),
+					Project.strToDate(end), statstr.toInt, validate)
 				JInt(1)
 			}catch{
 				case e:Exception => {

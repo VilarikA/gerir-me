@@ -25,7 +25,7 @@ var TreatmentStatusManager = {
 		//$('#treatment_class').modal('hide');
 	},
 	markAsReSchedule : function(){
-		TreatmentManger.updateTreatmentData(global_calEvent.id, global_usersIds[global_calEvent.userId],global_calEvent.start,global_calEvent.end, 'reschedule');
+		TreatmentManger.updateTreatmentData(global_calEvent.id, global_usersIds[global_calEvent.userId],global_calEvent.start,global_calEvent.end, 'rescheduled');
 		$('#treatment_add').modal('hide');
 		//$('#treatment_class').modal('hide');
 	},
