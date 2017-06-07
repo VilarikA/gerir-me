@@ -60,6 +60,10 @@ class Customer extends BusinessPattern[Customer]{
             //println ("vai =================== dentro ")
 
             message_aux = message_aux.replaceAll("##hoje##", Project.dateToExt(new Date()));
+            message_aux = message_aux.replaceAll("##mescorrente##", Project.monthToExt(new Date()));
+            message_aux = message_aux.replaceAll("##messeguinte##", Project.monthToExt(Project.nextMonth (new Date())));
+            message_aux = message_aux.replaceAll("##mesanterior##", Project.monthToExt(Project.prevMonth (new Date())));
+
             message_aux = message_aux.replaceAll("##logo##", "<img width='100px' src='" + AuthUtil.company.thumb_web + "'/>");
 
             message_aux = message_aux.replaceAll("##nome##", ac.name.is)
