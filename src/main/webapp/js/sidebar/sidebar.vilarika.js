@@ -11,7 +11,7 @@
 		this.$rootUl = null;
 		this.$liList = [];
 
-		var SUBITEM_LEFT_SPACE = 20;
+		var SUBITEM_LEFT_SPACE = 25;
 
 		var self = this;
 
@@ -51,8 +51,8 @@
 
 				addLiElementInTheList( $liElement, $ulElement );
 				addClickListener( $liElement, $ulElement );
-				hideUlElement( $ulElement );
-				addLeftSpacesOnSubMenus( $ulElement, (index + 1));
+				hideSubmenu( $liElement );
+				addLeftSpacesOnSubMenus( $ulElement );
 			});
 		}
 
@@ -67,29 +67,27 @@
 		function addClickListener($liElement, $ulElement)
 		{
 			$liElement.click(function(){
-				toggleUlElement($ulElement);
+				toggleSubmenu($liElement);
 			});
 		}
 
-		function toggleUlElement($ulElement)
+		function toggleSubmenu($element)
 		{
-			var height = parseInt($ulElement.css("height"));
-
-			if(height == 0) showUlElement($ulElement);
-			else hideUlElement($ulElement);
+			if($element.hasClass("open")) hideSubmenu($element);
+			else showSubmenu($element);
 		}
 
-		function showUlElement($ulElement)
+		function showSubmenu($element)
 		{
-			$ulElement.css("height", "auto");
+			$element.addClass("open");
 		}
 
-		function hideUlElement($ulElement)
+		function hideSubmenu($element)
 		{
-			$ulElement.css("height", 0);
+			$element.removeClass("open");
 		}
 
-		function addLeftSpacesOnSubMenus($ulElement, hierarchicalLevel)
+		function addLeftSpacesOnSubMenus($ulElement)
 		{
 			$ulElement.find("> li").each(function(){
 				var $childLi = $(this);
@@ -98,7 +96,7 @@
 				// parseInt() removes "px" and returns only the number
 				var alreadyExistentPadding = parseInt($childA.css("padding-left"));
 
-				var leftPaddingSize = (alreadyExistentPadding) + (hierarchicalLevel * SUBITEM_LEFT_SPACE);
+				var leftPaddingSize = (alreadyExistentPadding + SUBITEM_LEFT_SPACE);
 				$childA.css("padding-left", leftPaddingSize + "px");
 			});
 		}

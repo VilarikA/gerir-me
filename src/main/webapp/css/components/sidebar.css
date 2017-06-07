@@ -4,9 +4,11 @@
  **/
 
 nav.vr-sidebar {
-	--primary-normal-color: #324555;
-	--primary-dark-color: #21323d;
-	--content-color: #f2f2f2;
+	--primary-normal-color: #2f4050;
+	--primary-dark-color: #293846;
+	--content-color-normal: #a7b1c2;
+	--content-color-hover: #f2f2f2;
+	--secondary-normal-color: #19aa8d;
 
 	background-color: var(--primary-normal-color);
 	bottom: 0;
@@ -16,12 +18,12 @@ nav.vr-sidebar {
 	padding: 25px 0;
 	position: fixed;
 	top: 0;
-	width: 200px;
+	width: 230px;
 }
 
 	nav.vr-sidebar,
 	nav.vr-sidebar a {
-		color: var(--content-color);
+		color: var(--content-color-normal);
 		text-decoration: none;
 	}
 
@@ -43,17 +45,52 @@ nav.vr-sidebar .menu {
 	padding-left: 0;
 }
 
-	nav.vr-sidebar .menu li a {
-		border-bottom: 1px solid var(--primary-dark-color);
+nav.vr-sidebar li.item {
+	height: 44px;
+	overflow-y: hidden;
+
+	transition: all .4s;
+}
+
+	nav.vr-sidebar li.item .fa.arrow {
+		line-height: 44px;
+		float: right;
+	}
+
+	nav.vr-sidebar li.item .fa.arrow::before {
+		content: "\f104";
+	}
+
+	nav.vr-sidebar li.item.open .fa.arrow::before {
+		content: "\f107";
+	}
+
+	nav.vr-sidebar li.item .fa {
+		margin-right: 10px;
+	}
+
+	nav.vr-sidebar li.item a {
+		cursor: pointer;
 		display: inline-block;
 		height: 44px;
 		line-height: 44px;
-		padding-left: 10px;
+		padding-left: 20px;
+		padding-right: 10px;
 		width: 100%;
 	}
 
-	nav.vr-sidebar .menu li a:hover {
+	nav.vr-sidebar li.item a:hover {
 		background-color: var(--primary-dark-color);
+		color: var(--content-color-hover);
 	}
 
+	nav.vr-sidebar li.item.open {
+		background-color: var(--primary-dark-color);
+		border-left: 5px solid var(--secondary-normal-color);
 
+		height: auto;
+	}
+
+	nav.vr-sidebar li.item.open a {
+		padding-left: 15px;
+	}
