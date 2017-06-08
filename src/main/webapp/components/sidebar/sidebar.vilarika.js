@@ -19,8 +19,8 @@
 
 		var SUBITEM_LEFT_SPACE = 25;
 		var SIDEBAR_WIDTH_PX = 230;
-		var CLOSED_CLASS = "closed";
-		var OPEN_CLASS = "open";
+		var SIDEBAR_CLOSED_CLASS = "sidebar-closed";
+		var ITEM_OPEN_CLASS = "item-open";
 
 		var self = this;
 
@@ -57,6 +57,7 @@
 			self.$root = $(rootSelector);
 			self.$rootUl = self.$root.find("ul.menu").first();
 			self.$menuButton = $(menuButtonSelector);
+			self.$contentWrapper = $(contentWrapperSelector);
 		}
 
 		function loadLiParentElements()
@@ -94,24 +95,24 @@
 
 		function toggleSubmenu($element)
 		{
-			if($element.hasClass(OPEN_CLASS)) hideSubmenu($element);
+			if($element.hasClass(ITEM_OPEN_CLASS)) hideSubmenu($element);
 			else showSubmenu($element);
 		}
 
 		function showSubmenu($element)
 		{
-			$element.addClass(OPEN_CLASS);
+			$element.addClass(ITEM_OPEN_CLASS);
 		}
 
 		function hideSubmenu($element)
 		{
-			$element.removeClass(OPEN_CLASS);
+			$element.removeClass(ITEM_OPEN_CLASS);
 		}
 
 		function closeSubmenus()
 		{
 			self.$root.find("li.item.parent").each(function(){
-				$(this).removeClass(OPEN_CLASS);
+				$(this).removeClass(ITEM_OPEN_CLASS);
 			});
 		}
 
@@ -145,17 +146,19 @@
 
 		function isSidebarClosed()
 		{
-			return self.$root.hasClass(CLOSED_CLASS);
+			return self.$root.hasClass(SIDEBAR_CLOSED_CLASS);
 		}
 
 		function openSidebar()
 		{
-			self.$root.removeClass(CLOSED_CLASS);
+			self.$root.removeClass(SIDEBAR_CLOSED_CLASS);
+			self.$contentWrapper.removeClass(SIDEBAR_CLOSED_CLASS);
 		}
 
 		function closeSidebar()
 		{
-			self.$root.addClass(CLOSED_CLASS);
+			self.$root.addClass(SIDEBAR_CLOSED_CLASS);
+			self.$contentWrapper.addClass(SIDEBAR_CLOSED_CLASS);
 
 			closeSubmenus();
 		}

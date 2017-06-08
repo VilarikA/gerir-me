@@ -1,3 +1,7 @@
 .vr-content-wrapper {
 	margin-left: 230px;
 }
+
+.vr-content-wrapper.sidebar-closed {
+	margin-left: 65px;
+}

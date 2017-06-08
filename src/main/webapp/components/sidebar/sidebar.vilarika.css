@@ -21,7 +21,7 @@ nav.vr-sidebar {
 	width: 230px;
 }
 
-	nav.vr-sidebar.closed {
+	nav.vr-sidebar.sidebar-closed {
 		width: 65px;
 	}
 
@@ -36,7 +36,7 @@ nav.vr-sidebar .header {
 	text-align: center;
 }
 
-	nav.vr-sidebar.closed .header .picture img {
+	nav.vr-sidebar.sidebar-closed .header .picture img {
 		margin-bottom: 0;
 		width: 30px;
 	}
@@ -70,7 +70,7 @@ nav.vr-sidebar li.item {
 		content: "\f104";
 	}
 
-	nav.vr-sidebar li.item.open .fa.arrow::before {
+	nav.vr-sidebar li.item.item-open .fa.arrow::before {
 		content: "\f107";
 	}
 
@@ -93,13 +93,13 @@ nav.vr-sidebar li.item {
 		color: var(--content-color-hover);
 	}
 
-	nav.vr-sidebar li.item.open {
+	nav.vr-sidebar li.item.item-open {
 		background-color: var(--primary-dark-color);
 		border-left: 5px solid var(--secondary-normal-color);
 
 		height: auto;
 	}
 
-	nav.vr-sidebar li.item.open a {
+	nav.vr-sidebar li.item.item-open a {
 		padding-left: 15px;
 	}
