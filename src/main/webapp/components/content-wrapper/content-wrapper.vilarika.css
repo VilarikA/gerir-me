@@ -5,3 +5,7 @@
 .vr-content-wrapper.sidebar-closed {
 	margin-left: 65px;
 }
+
+	.vr-content-wrapper .content {
+		padding: 15px;
+	}
