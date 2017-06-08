@@ -36,7 +36,9 @@
 	<link href="/css/bootstrap-v3-overrider.css" rel="stylesheet"/>
 	<link href="/css/app.vilarika.css" rel="stylesheet"/>
 	<link href="/css/components/toolbar.css" rel="stylesheet"/>
-	<link href="/css/components/sidebar.css" rel="stylesheet"/>
+	<link href="/components/sidebar/sidebar.vilarika.css" rel="stylesheet"/>
+	<link href="/components/header/header.vilarika.css" rel="stylesheet"/>
+	<link href="/components/content-wrapper/content-wrapper.vilarika.css" rel="stylesheet"/>
 	<link href="/css/ebelle-responsive.css" rel="stylesheet"/>
 
 	
@@ -80,7 +82,7 @@
 	<script language="javascript" src="/js/default/bar_code_controller.js"></script>
 	<script language="javascript" src="/js/default/jquery_fields.js"></script>
 	<script language="javascript" src="/js/default/jquery_plugins.js"></script>
-	<script src="/js/sidebar/sidebar.vilarika.js"></script>
+	<script language="javascript" src="/components/sidebar/sidebar.vilarika.js"></script>
 
 	<style type="text/css">
 		/* Override some defaults */
@@ -90,9 +92,7 @@
 		li{
 			list-style:none;
 		}
-		body {
-			padding-top: 70px; /* 40px to make the container go all the way to the bottom of the topbar */
-		}
+
 		.container > footer p {
 			text-align: center; /* center align it with the container */
 		}
@@ -163,7 +163,6 @@
 	<!--
 	<div id="toolbar" class="lift:surround?with=toolbar-redesign;at=toolbar"></div>
 	-->
-	
 	
 	<!-- =============================== 
 		 TOOLBAR MENU 
@@ -246,8 +245,22 @@
 	-->
 
 	<!-- =============================== 
+	     CONTENT WRAPPER 
+	================================ -->
+	<div class="vr-content-wrapper">
+		
+		<!-- =============================== 
+		     HEADER 
+		================================ -->
+		<div id="header" data-lift="surround?with=header-redesign;at=header"></div>
+	
+		<h1>Conteúdo qualquer</h1>
+	</div>
+
+	<!-- =============================== 
 		 CONTENT CONTAINER
 	================================ -->
+	<!--
 	<div class="container">
 		<div class="content span18">
 			<div class="page-header span18">
@@ -263,7 +276,7 @@
 					<div class="lift:Msgs?showAll=true"></div>
 				</span>
 
-				<!-- Subtemplates are surrounded right here -->
+				<!-- Subtemplates are surrounded right here ->
 				<div id="content">
 					<h2>Main content</h2>
 				</div>
@@ -273,7 +286,6 @@
 		<footer>
 			<div class="lift:surround?with=footer-redesign;at=footer"></div>
 		</footer>
-	</div> <!-- /container -->
 
 
 <div id="customer_search" class="modal fade">
@@ -316,7 +328,7 @@
 	</div>
 	<div class="modal-footer">
 	</div>
-</div>
+</div>-->
 
 <script>
 	$(document).ready(function(){

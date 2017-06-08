@@ -1,0 +1,45 @@
+.vr-header {
+	--background-color-normal: #fff;
+	--primary-color-normal: #1ab394;
+	--content-color-normal: #f2f2f2;
+
+	background-color: var(--background-color-normal);
+	height: 60px;
+	padding: 8px 15px;
+}
+
+.vr-header .menu-button {
+	background-color: var(--primary-color-normal);
+	color: var(--content-color-normal);
+	height: 44px;
+	padding: 15px 12px;
+	width: 44px;
+
+	border-radius: 5px;
+	-webkit-border-radius: 5px;
+}
+
+	.vr-header .menu-button .bar {
+		background-color: var(--content-color-normal);
+		display: block;
+		height: 3px;
+		margin-bottom: 3px;
+		width: 20px;
+	}
+
+@media only screen and (min-width: 1200px) {
+
+	.vr-header {
+		padding: 14px 15px;
+	}
+
+	.vr-header .menu-button {
+		height: 32px;
+		width: 32px;
+		padding: 9px 7px;
+	}
+
+	.vr-header .menu-button .bar {
+		width: 18px;
+	}
+}
