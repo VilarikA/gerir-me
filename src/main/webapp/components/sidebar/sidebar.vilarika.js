@@ -5,13 +5,17 @@
 
 (function(){
 
-	function SidebarComponent(rootSelector)
+	function SidebarComponent(rootSelector, menuButtonSelector)
 	{
 		this.$root = null;
 		this.$rootUl = null;
 		this.$liList = [];
+		this.$menuButton = null;
 
 		var SUBITEM_LEFT_SPACE = 25;
+		var SIDEBAR_WIDTH_PX = 230;
+		var CLOSED_CLASS = "closed";
+		var OPEN_CLASS = "open";
 
 		var self = this;
 
@@ -25,20 +29,25 @@
 
 			populateInstanceProperties();
 			loadLiParentElements();
+			addMenuButtonListener();
 		})();
 
 		function areConstructorParamsValid()
 		{
 			var $element = $(rootSelector);
-
 			if( ! $element || $element.length < 1 )
-				throw new Error("SidebarComponent: Given element doesn't exist.");
+				throw new Error("SidebarComponent: Given root element selector doesn't exist.");
+		
+			var $menuButton = $(menuButtonSelector);
+			if ( ! $menuButton || $menuButton.length < 1)
+				throw new Error("SidebarComponent: Given menu button selector doesn't exist.");
 		}
 
 		function populateInstanceProperties()
 		{
 			self.$root = $(rootSelector);
 			self.$rootUl = self.$root.find("ul.menu").first();
+			self.$menuButton = $(menuButtonSelector);
 		}
 
 		function loadLiParentElements()
@@ -67,24 +76,34 @@
 		function addClickListener($liElement, $ulElement)
 		{
 			$liElement.click(function(){
+				if(isSidebarClosed())
+					openSidebar();
+				
 				toggleSubmenu($liElement);
 			});
 		}
 
 		function toggleSubmenu($element)
 		{
-			if($element.hasClass("open")) hideSubmenu($element);
+			if($element.hasClass(OPEN_CLASS)) hideSubmenu($element);
 			else showSubmenu($element);
 		}
 
 		function showSubmenu($element)
 		{
-			$element.addClass("open");
+			$element.addClass(OPEN_CLASS);
 		}
 
 		function hideSubmenu($element)
 		{
-			$element.removeClass("open");
+			$element.removeClass(OPEN_CLASS);
+		}
+
+		function closeSubmenus()
+		{
+			self.$root.find("li.item.parent").each(function(){
+				$(this).removeClass(OPEN_CLASS);
+			});
 		}
 
 		function addLeftSpacesOnSubMenus($ulElement)
@@ -100,6 +119,43 @@
 				$childA.css("padding-left", leftPaddingSize + "px");
 			});
 		}
+
+		function addMenuButtonListener()
+		{
+			self.$menuButton.click(function()
+			{
+				toggleSidebar();
+			});
+		}
+
+		function toggleSidebar()
+		{
+			if(isSidebarClosed()) openSidebar();
+			else closeSidebar();
+		}
+
+		function isSidebarClosed()
+		{
+			return self.$root.hasClass(CLOSED_CLASS);
+		}
+
+		function openSidebar()
+		{
+			self.$root.removeClass(CLOSED_CLASS);
+		}
+
+		function closeSidebar()
+		{
+			self.$root.addClass(CLOSED_CLASS);
+
+			closeSubmenus();
+		}
+
+		return {
+			open: openSidebar,
+			close: closeSidebar,
+			closeSubmenus: closeSubmenus 
+		};
 	}
 
 	window.Vilarika = window.Vilarika || {};

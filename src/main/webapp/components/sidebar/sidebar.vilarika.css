@@ -21,6 +21,10 @@ nav.vr-sidebar {
 	width: 230px;
 }
 
+	nav.vr-sidebar.closed {
+		width: 70px;
+	}
+
 	nav.vr-sidebar,
 	nav.vr-sidebar a {
 		color: var(--content-color-normal);
@@ -32,10 +36,15 @@ nav.vr-sidebar .header {
 	text-align: center;
 }
 
-	nav.vr-sidebar .header .picture img { 
-		border: 2px solid white;
+	nav.vr-sidebar.closed .header .picture img {
+		margin-bottom: 0;
+		width: 30px;
+	}
+
+	nav.vr-sidebar .header .picture img {
 		border-radius: 50%;
 		display: inline-block;
+		margin-bottom: 30px;
 		width: 60px; 
 	}
 
@@ -74,7 +83,7 @@ nav.vr-sidebar li.item {
 		display: inline-block;
 		height: 44px;
 		line-height: 44px;
-		padding-left: 20px;
+		padding-left: 25px;
 		padding-right: 10px;
 		width: 100%;
 	}
