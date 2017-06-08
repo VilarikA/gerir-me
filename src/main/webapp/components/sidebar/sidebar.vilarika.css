@@ -11,12 +11,12 @@ nav.vr-sidebar {
 	--secondary-normal-color: #19aa8d;
 
 	background-color: var(--primary-normal-color);
-	bottom: 0;
-	box-shadow: 0 5px 5px rgba(0, 0, 0, 0.4);
+	box-shadow: 1px 0 3px rgba(0, 0, 0, 0.4);
 	color: var(--content-color);
+	min-height: 100vh;
 	left: 0;
 	padding: 25px 0;
-	position: fixed;
+	position: absolute;
 	top: 0;
 	width: 230px;
 }
