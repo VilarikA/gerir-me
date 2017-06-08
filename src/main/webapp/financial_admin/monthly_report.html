@@ -41,7 +41,8 @@
   </script>
   <form id="form_report" class="well form-search" method='get'>
     <h1>
-      <span class="lift:CompanySnippet.thumb"> </span>Relatório de Vendas de produtos/serviços Mês a Mês
+      <span class="lift:CompanySnippet.thumb"> </span>
+      <input class="report_title local_storage" id="title_monthly_report" name="title_monthly_report" size="30" type="text" value="Relatório de Boletos Mês a Mês"/>
     </h1>
     <span class='row'>
       <span class='span8'>
@@ -61,52 +62,33 @@
           </div>
         </div>
         <div class="clearfix">
-            <label for="user"><span data-i18n='Profissionais'></span></label>
+          <label for="rel_paid">
+            Pagas? 
+          </label>
             <div class="input">
-            <select multiple="multiple"  id='user' name="user">
-            </select>
-          </div>
+              <div class="inline-inputs">
+                <input class="local_storage url_parameter" name="rel_paid" id='rel_paid' type='checkbox' />
+                <span class="help-block">Mostrar as mensalidades pagas</span>
+              </div>
+            </div>
         </div>
         <div class="clearfix">
           <label for="unit">Unidade </label>
             <div class="input">
               <div class="inline-inputs">
                 <select id="unit" name="unit"></select>
-                <span class="help-block">Unidade do atendimento, mesmo que o <span data-i18n='Profissional'></span> tenha outra unidade no cadastro
-                </span>
+              <span class="help-block">Falta implementar</span>
+              </span>
               </div>
             </div>
         </div>
       </span>
       <span class='span8'>
         <div class="clearfix">
-          <label for="quantity">Qtde / <span data-i18n='Profissional'></span>
-          </label>
-            <div class="input">
-              <div class="inline-inputs">
-                <input class="url_parameter" name="quantity" id='quantity' type='checkbox' /> Mostra qtde
-                <input class="url_parameter" name="userbreak" id='userbreak' type='checkbox' /> Exibir <span data-i18n='Profissional'></span>
-                <span class="help-block">Mostrar número de vendas ao invés de valor / Exibir ou não o <span data-i18n='Profissional'></span></span>
-              </div>
-            </div>
-        </div>
-        <div class="clearfix">
-          <label for="type">Tipo</label>
-            <div class="input">
-              <div class="inline-inputs">
-                  <select class="local_storage" name="type" id="type">
-                      <option value='1,0'>Todos</option>
-                      <option value='1'>Produtos</option>
-                      <option value='0'>Serviços</option>
-                   </select>
-                   <span class="help-block">Tipos de Comissões (ex: Prod / Ser)</span>
-              </div>
-            </div>
-        </div>
-        <div class="clearfix">
           <label for="category_select">Tipos</label>
           <div class="input">
             <select multiple="multiple" id="category_select" class="category_select url_parameter" name="category_select"></select>
+            <span class="help-block">Falta implementar</span>
           </div>
         </div>
         <div class="clearfix">
@@ -114,6 +96,7 @@
             <div class="input">
                 <select multiple="multiple"  id='product' name="product">
                 </select>
+              <span class="help-block">Falta implementar</span>
             </div>
         </div>
       </span>
