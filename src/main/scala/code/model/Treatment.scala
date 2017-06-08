@@ -22,7 +22,12 @@ import JE._
 import org.joda.time.Minutes
 import org.joda.time.DateTime
 
-class Treatment extends UserEvent with LogicalDelete[Treatment] with PerCompany with PerUnit with IdPK with CreatedUpdated with OneToMany[Long, Treatment] with CreatedUpdatedBy with WithCustomer with net.liftweb.common.Logger{
+class Treatment extends UserEvent 
+with LogicalDelete[Treatment] with PerCompany 
+with PerUnit with IdPK with CreatedUpdated 
+with OneToMany[Long, Treatment] with CreatedUpdatedBy 
+with TreatmentStatus
+with WithCustomer with net.liftweb.common.Logger{
     def getSingleton = Treatment
     override def maxConflictsAllowed = {
         if(!details.isEmpty)
@@ -55,42 +60,43 @@ class Treatment extends UserEvent with LogicalDelete[Treatment] with PerCompany 
     object showInCalendar extends MappedBoolean(this){
         override def defaultValue = true
     }
-    object status2 extends MappedEnum(this,Treatment.TreatmentStatus)
+    object status2 extends MappedInt(this)//,Treatment.TreatmentStatus)
 
-    object status extends MappedEnum(this,Treatment.TreatmentStatus) with LifecycleCallbacks {
+//    object status extends MappedEnum(this,Treatment.TreatmentStatus) with LifecycleCallbacks {
+    object status extends MappedInt(this) with LifecycleCallbacks {
         override def afterSave() {
             super.afterSave;
             // criar parm na empresa para tirar o false
-            if (this.get == Treatment.TreatmentStatus.Ready && AuthUtil.company.bpmCommissionOnReady_?) {
+            if (this.get == Treatment.Ready && AuthUtil.company.bpmCommissionOnReady_?) {
                 //case class PaymentRequst(treatments:List[TreatmentDTO],payments:List[PaymentDTO],command:String,dataTreatments:String,cashier:String){
                 if (hasBpMonthly) {
                     PaymentService.processPaymentRequst(TreatmentService.generatePaymentFromTreatment(fieldOwner.asInstanceOf[Treatment], 0 /*bpmonthly*/));
                 }
             } 
-            if (this.get == Treatment.TreatmentStatus.Ready && AuthUtil.company.offCommissionOnReady_?) {
+            if (this.get == Treatment.Ready && AuthUtil.company.offCommissionOnReady_?) {
                 //case class PaymentRequst(treatments:List[TreatmentDTO],payments:List[PaymentDTO],command:String,dataTreatments:String,cashier:String){
                 if (hasOffSale) {
                     PaymentService.processPaymentRequst(TreatmentService.generatePaymentFromTreatment(fieldOwner.asInstanceOf[Treatment], 1 /* offsale */));
                 }
             }
-            if (this.get == Treatment.TreatmentStatus.Ready && AuthUtil.company.packCommissionOnReady_?) {
+            if (this.get == Treatment.Ready && AuthUtil.company.packCommissionOnReady_?) {
                 //case class PaymentRequst(treatments:List[TreatmentDTO],payments:List[PaymentDTO],command:String,dataTreatments:String,cashier:String){
                 if (hasPackage(details(0).activity.obj.get.id.is)) {
                     PaymentService.processPaymentRequst(TreatmentService.generatePaymentFromTreatment(fieldOwner.asInstanceOf[Treatment], 2 /*package*/));
                 }
             }
 
-            if (this.get == Treatment.TreatmentStatus.Missed && AuthUtil.company.bpmCommissionOnMissed_?) {
+            if (this.get == Treatment.Missed && AuthUtil.company.bpmCommissionOnMissed_?) {
                 if (hasBpMonthly) {
                     PaymentService.processPaymentRequst(TreatmentService.generatePaymentFromTreatment(fieldOwner.asInstanceOf[Treatment], 0 /* bpmonthly*/ ));
                 }
             }
-            if (this.get == Treatment.TreatmentStatus.Missed && AuthUtil.company.offCommissionOnMissed_?) {
+            if (this.get == Treatment.Missed && AuthUtil.company.offCommissionOnMissed_?) {
                 if (hasOffSale) {
                     PaymentService.processPaymentRequst(TreatmentService.generatePaymentFromTreatment(fieldOwner.asInstanceOf[Treatment], 1 /* offsale */ ));
                 }
             }
-            if (this.get == Treatment.TreatmentStatus.Missed && AuthUtil.company.packCommissionOnMissed_?) {
+            if (this.get == Treatment.Missed && AuthUtil.company.packCommissionOnMissed_?) {
                 if (hasPackage(details(0).activity.obj.get.id.is)) {
                     PaymentService.processPaymentRequst(TreatmentService.generatePaymentFromTreatment(fieldOwner.asInstanceOf[Treatment], 2 /* package */ ));
                 }
@@ -277,13 +283,13 @@ class Treatment extends UserEvent with LogicalDelete[Treatment] with PerCompany 
         start:Date, status:Int) = {
         val treatments = Treatment.findAllInCompany(By(Treatment.dateEvent,start), 
             By(Treatment.customer, customer),
-            NotBy (Treatment.status,Treatment.TreatmentStatus.Deleted))
+            NotBy (Treatment.status,Treatment.Deleted))
         if(treatments.size > 0){
-            if (treatments(0).status == Treatment.TreatmentStatus.Paid) {
+            if (treatments(0).status == Treatment.Paid) {
               throw new RuntimeException("Não é permitido alterar atendimento pago!")
             } else {
                if (status == 3) {
-                  if (treatments(0).status == Treatment.TreatmentStatus.Ready) {
+                  if (treatments(0).status == Treatment.Ready) {
                       throw new RuntimeException("Atendimento já havia sido encerrado!")
                   } else {  
                      treatments(0).markAsReady
@@ -304,7 +310,7 @@ class Treatment extends UserEvent with LogicalDelete[Treatment] with PerCompany 
             val treatment = Treatment.create
             treatment.customer(customer)
             treatment.user(user)
-            treatment.status(Treatment.TreatmentStatus.Open)
+            treatment.status(Treatment.Open)
             treatment.start(start)
             treatment.end(getEndDate(start))
         }
@@ -338,21 +344,21 @@ class Treatment extends UserEvent with LogicalDelete[Treatment] with PerCompany 
         cal.getTime
     }
 
-    def paid_? = status.is == Treatment.TreatmentStatus.Paid 
+    //def paid_? = status.is == Treatment.Paid 
 
     def validatePaid = {
-        if(paid_?){
+        if(this.isPaid){
             throw new RuntimeException("Não é permitido alterar atendimento pago!")
         }
         this
     }
     
     override def delete_! = {
-        if(paid_?){
+        if(this.isPaid){
             throw new RuntimeException("Não é permitido excluir atendimento pago!")
         }
-        this.status(Treatment.TreatmentStatus.Deleted).
-        status2(Treatment.TreatmentStatus.Deleted).
+        this.status(Treatment.Deleted).
+        status2(Treatment.Deleted).
         deleted_?(true).saveWithoutValidate
     }
 
@@ -387,11 +393,11 @@ class Treatment extends UserEvent with LogicalDelete[Treatment] with PerCompany 
                     .filter((t:Treatment) =>
                         TreatmentValidations.validateNotEquals(t,this) && 
                         !t.isConflitTreatment &&
-                        t.status.is != Treatment.TreatmentStatus.Paid &&
-                        t.status.is != Treatment.TreatmentStatus.Ready &&
-                        t.status.is != Treatment.TreatmentStatus.Missed &&
-                        t.status.is != Treatment.TreatmentStatus.ReSchedule &&
-                        t.status.is != Treatment.TreatmentStatus.Budget
+                        t.status.is != Treatment.Paid &&
+                        t.status.is != Treatment.Ready &&
+                        t.status.is != Treatment.Missed &&
+                        t.status.is != Treatment.ReSchedule &&
+                        t.status.is != Treatment.Budget
                     )
                     ::: BusyEvent.constraintDate(userObj,st, AuthUtil.unit)
                 )
@@ -436,23 +442,23 @@ class Treatment extends UserEvent with LogicalDelete[Treatment] with PerCompany 
         }
         // o status era feito no save, mas tava dando erro qdo tinha 
         // conflito na agenda - por isso trouxe pra cá
-        if (this.status == Treatment.TreatmentStatus.Open ||
-            this.status == Treatment.TreatmentStatus.Missed ||
-            this.status == Treatment.TreatmentStatus.Arrived ||
-            this.status == Treatment.TreatmentStatus.Ready ||
-            this.status == Treatment.TreatmentStatus.Deleted ||
-            this.status == Treatment.TreatmentStatus.Confirmed ||
-            this.status == Treatment.TreatmentStatus.PreOpen ||
-            this.status == Treatment.TreatmentStatus.ReSchedule ||
-            this.status == Treatment.TreatmentStatus.Budget) {
+        if (this.status == Treatment.Open ||
+            this.status == Treatment.Missed ||
+            this.status == Treatment.Arrived ||
+            this.status == Treatment.Ready ||
+            this.status == Treatment.Deleted ||
+            this.status == Treatment.Confirmed ||
+            this.status == Treatment.PreOpen ||
+            this.status == Treatment.ReSchedule ||
+            this.status == Treatment.Budget) {
             this.status2.set (this.status.is)
         } else if (
-            this.status == Treatment.TreatmentStatus.Paid &&
-            this.status2 != Treatment.TreatmentStatus.Missed &&
-            this.status2 != Treatment.TreatmentStatus.Ready) {
+            this.status == Treatment.Paid &&
+            this.status2 != Treatment.Missed &&
+            this.status2 != Treatment.Ready) {
             this.status2.set (this.status.is)
         }
-        if (this.status == Treatment.TreatmentStatus.Paid) {
+        if (this.status == Treatment.Paid) {
             // as vezes chega aqui sem empresa, deve ser feito na fila
             // por isso carrego e testo o co. pela company do treatment
             if (AuthUtil.company.id == this.company.is) {
@@ -480,9 +486,25 @@ class Treatment extends UserEvent with LogicalDelete[Treatment] with PerCompany 
         }
         super.save()
     }  
-    def isPaid = {
-        this.status.is == Treatment.TreatmentStatus.Paid;
+    def isOpen = {
+        this.status.is == Treatment.Open;
     }
+    def isPaid = {
+        this.status.is == Treatment.Paid;
+    }
+    def isReady = {  
+        this.status.is == Treatment.Ready;
+    }
+    def isMissed = {  
+        this.status.is == Treatment.Missed;
+    }
+    def isReScheduled = {  
+        this.status.is == Treatment.ReSchedule;
+    }
+    def isBudget = {  
+        this.status.is == Treatment.Budget;
+    }
+
     def validateCustomer {
         customer.obj match {
             case Full(c)=> 
@@ -498,8 +520,11 @@ class Treatment extends UserEvent with LogicalDelete[Treatment] with PerCompany 
     }
 
     override def save()={
-        if(showInCalendar.is && !isConflitTreatment && !this.isPaid)
+        if(showInCalendar.is && !isConflitTreatment 
+            && !this.isPaid && !this.isReady && !this.isMissed 
+            && !this.isReScheduled && !this.isBudget) {
             validateHours
+        }
         validateCustomer
         if (AuthUtil.company.appType.isEdoctus) {
             if (this.id > 0) {
@@ -559,7 +584,7 @@ class Treatment extends UserEvent with LogicalDelete[Treatment] with PerCompany 
 
     def markAsArrived {
         var minutes = 0;
-        this.status(Treatment.TreatmentStatus.Arrived)
+        this.status(Treatment.Arrived)
         if (AuthUtil.company.appType.isEdoctus) {
             if (this.id > 0) {
                 val today = Project.date_format_js.parse(Project.date_format_js.format(new Date()));
@@ -584,31 +609,31 @@ class Treatment extends UserEvent with LogicalDelete[Treatment] with PerCompany 
     }
 
     def markAsMissed {
-        this.status(Treatment.TreatmentStatus.Missed)
+        this.status(Treatment.Missed)
     }
 
     def markAsReady {
-        this.status(Treatment.TreatmentStatus.Ready)
+        this.status(Treatment.Ready)
     }
 
     def markAsOpen {
-        this.status(Treatment.TreatmentStatus.Open)
+        this.status(Treatment.Open)
     }    
      
     def markAsPreOpen {
-        this.status(Treatment.TreatmentStatus.PreOpen)
+        this.status(Treatment.PreOpen)
     }    
 
     def markAsReSchedule {
-        this.status(Treatment.TreatmentStatus.ReSchedule)
+        this.status(Treatment.ReSchedule)
     }    
 
     def markAsConfirmed {
-        this.status(Treatment.TreatmentStatus.Confirmed)
+        this.status(Treatment.Confirmed)
     }
 
     def markAsBudget {
-        this.status(Treatment.TreatmentStatus.Budget)
+        this.status(Treatment.Budget)
     }    
 
 
@@ -844,11 +869,7 @@ object Treatment extends Treatment with LongKeyedMapperPerCompany[Treatment] wit
             }
         }
     }
-	object TreatmentStatus extends Enumeration {
-        type TreatmentStatus = Value
-        val Open, Missed, Arrived,Ready,Paid, Deleted, Confirmed, PreOpen, ReSchedule, Budget = Value
-        // no pilates é imperativo separa a falta (missed) da remarcação (reschedule)
-	}
+
     def findAllInCompanyWithDeleteds(params: QueryParam[Treatment]*) = {
         super.findAllInCompany(params.toList :_*)
     }
@@ -885,7 +906,8 @@ object TreatmentValidations extends net.liftweb.common.Logger {
         a.end.is.getTime > b.start.is.getTime 
         //&& a.status != Treatment.paid
         ){
-        ValidationError("Atendimentos conflitantes\n%s\n\n%s".format(b.strDescription, a.strDescription), a)
+        // (c) centro só pra diferenciar uma da outra
+        ValidationError("Atendimentos conflitantes (c)\n%s\n\n%s".format(b.strDescription, a.strDescription), a)
     }else{
         EmptyValidation
     }
@@ -897,7 +919,8 @@ object TreatmentValidations extends net.liftweb.common.Logger {
     
 
     def validateEndBetween(a:UserEvent,b:Treatment):Validation = if(a.start.is.getTime > b.end.is.getTime && a.end.is.getTime < b.end.is.getTime){
-        ValidationError("Atendimentos conflitantes\n%s\n\n%s".format(b.strDescription, a.strDescription), a)
+        // (f) fim só pra diferenciar uma da outra
+        ValidationError("Atendimentos conflitantes (f)\n%s\n\n%s".format(b.strDescription, a.strDescription), a)
     }else{
         EmptyValidation
     }
@@ -933,3 +956,4 @@ case class ValidationError(message:String, userEvent:UserEvent) extends Validati
     def event = userEvent
     def exceptionMessage = message
 }
+

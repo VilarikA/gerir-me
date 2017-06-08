@@ -40,7 +40,7 @@ class TreatEdoctus extends Audited[TreatEdoctus] with IdPK with CreatedUpdated w
     
     override def delete_! = {
         treatment.obj match {
-            case Full(t)  if(t.paid_?)=> { throw new RuntimeException(" Não é permitido excluir atendimento pago!") }
+            case Full(t)  if(t.isPaid)=> { throw new RuntimeException(" Não é permitido excluir atendimento pago!") }
             case _ => 
         } 
         super.delete_!

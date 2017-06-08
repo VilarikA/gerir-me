@@ -199,10 +199,10 @@ object Project{
     aux_format.format(date)
   }
 
-  def monthToExt (date:Date) = {
+  def monthToExt (date:Date) : String = {
     val date1 = new java.util.GregorianCalendar();
     date1.setTime(date);
-    val month = date1.get(java.util.Calendar.MONTH)
+    val month = date1.get(java.util.Calendar.MONTH) + 1
     if (month == 1) {
       "Janeiro"
     } else if (month == 2) {
@@ -227,6 +227,8 @@ object Project{
       "Novembro"
     } else if (month == 12) {
       "Dezembro"
+    } else {
+      "Mês inválido!"
     }
   }
   

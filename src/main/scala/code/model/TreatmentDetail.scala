@@ -63,7 +63,7 @@ class TreatmentDetail extends Audited[TreatmentDetail] with IdPK with CreatedUpd
 
     override def delete_! = {
         treatment.obj match {
-            case Full(t)  if(t.paid_?)=> { throw new RuntimeException(" Não é permitido excluir atendimento pago!") }
+            case Full(t)  if(t.isPaid)=> { throw new RuntimeException(" Não é permitido excluir atendimento pago!") }
             case _ => 
         } 
         super.delete_!
@@ -138,7 +138,7 @@ class TreatmentDetail extends Audited[TreatmentDetail] with IdPK with CreatedUpd
                 case Full(u)=> u.id.is
                 case _ => 0
             }
-        } else {
+        } else { 
             0
         }
     }

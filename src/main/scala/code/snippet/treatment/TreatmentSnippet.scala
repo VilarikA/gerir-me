@@ -45,6 +45,10 @@ class  TreatmentSnippet extends PaginatorSnippet [Treatment] {
 		case _ => ""
 	}	
 
+	val status = Seq(
+	  				Treatment.Open.toString -> "Agendado" ,
+	  				Treatment.Budget.toString -> "Orçamento"
+	)
 //	def products = ("0", "Selecione um Serviço") :: Activity.findAllInCompany.map(t => (t.id.is.toString,t.name.is))
 	def users = ("0", "Selecione um Profissional") :: User.findAllInCompany(OrderBy(User.name, Ascending)).map(t => (t.id.is.toString, t.name.is))
 	def units = ("0", "Selecione uma Unidade") :: CompanyUnit.findAllInCompany(OrderBy(CompanyUnit.name, Ascending)).map(t => (t.id.is.toString, t.name.is))
@@ -80,7 +84,7 @@ class  TreatmentSnippet extends PaginatorSnippet [Treatment] {
 
 //	def findForListParams: List[QueryParam[Treatment]] = List(Like(Treatment.search_name,"%"+BusinessRulesUtil.clearString(name)+"%"),OrderBy(Treatment.name, Ascending), StartAt(curPage*itemsPerPage), MaxRows(itemsPerPage))
 	def findForListParams: List[QueryParam[Treatment]] = 
-		List(By (Treatment.id,1053838),By (Treatment.hasDetail, true), NotBy (Treatment.status,Treatment.TreatmentStatus.Deleted),
+		List(By (Treatment.id,1053838),By (Treatment.hasDetail, true), NotBy (Treatment.status,Treatment.Deleted),
 		Like(Treatment.obs,"%"+BusinessRulesUtil.clearString(obs)+"%"),OrderBy(Treatment.dateEvent, Descending), StartAt(curPage*itemsPerPage), MaxRows(itemsPerPage))
 
 
@@ -155,6 +159,7 @@ class  TreatmentSnippet extends PaginatorSnippet [Treatment] {
 						(date:String) => {
 							ac.end(Project.strOnlyDateToDate(date))
 						}))&
+		    "name=status" #> (SHtml.select(status,Full(ac.status.is.toString),(v:String) => ac.status(v.toInt)))&
 		    "name=unit" #> (SHtml.select(units,Full(ac.unit.is.toString),(v:String) => ac.unit(v.toLong)))&
 //			"name=icd" #> (SHtml.select(icds,Full(ac.getTreatEdoctus.icd.is.toString), (s:String) => ac.getTreatEdoctus.icd(s.toLong)))&
 			"name=icd" #> (SHtml.text(ac.getTreatEdoctus.icd.is.toString, (p:String) => ac.getTreatEdoctus.icd(p.toLong)))&

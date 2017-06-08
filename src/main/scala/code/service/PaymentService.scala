@@ -23,7 +23,7 @@ object  PaymentService extends  net.liftweb.common.Logger  {
 		}
 	}
 	def processTreatments(treatments:List[TreatmentDTO],command:String,dateTreatment:Date,
-		status:Treatment.TreatmentStatus.TreatmentStatus,
+		status:Int,
 		status2:String,
 		processInventory:Boolean=false, 
 		payment:Box[Payment]=Empty, 
@@ -77,7 +77,7 @@ object  PaymentService extends  net.liftweb.common.Logger  {
 					} */
 					val processedTreatments = processTreatments(request.treatments, request.command, 
 						request.dataTreatmentsAsDate, 
-						Treatment.TreatmentStatus.Paid, request.status2,
+						Treatment.Paid, request.status2,
 						true, Full(payment), false)
 					payment.customer(processedTreatments.head.customer)
 					processedTreatments.foreach((t) => payment.treatments += t)
