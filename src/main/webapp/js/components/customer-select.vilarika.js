@@ -1,71 +1,26 @@
-/**
- * Customer Select is a little select component which 
- * searches by registered customers and professionals.
- * 
- * It also contains a little function to rapid addition in 
- * case of non-existent registers.
- */
-
+//Customer Serch
 var parent_customer_search = null;
-
 $(function() {
-
-	var self = this;
-
-	this.hasEdoctusSystem = false;
-	this.hasEphysioSystem = false;
-	this.hasEsmileSystem = false;
-
-	this.$customerNameSearch = null;
-	this.$customerIdSearch = null;
-
-	(function initialize()
-	{
-		self.hasEdoctusSystem = hasSystem(".has-edoctus-system");
-		self.hasEphysioSystem = hasSystem(".has-ephysio-system");
-		self.hasEsmileSystem = hasSystem(".has-esmile-system");
-
-		self.$customerNameSearch = $("[x-customer-name-search]");
-		self.$customerIdSearch = $("[x-customer-id-search]");
-
-		addNameSearchActions();
-	})();
-
-	function hasSystem(systemClassName)
-	{
-		var element = $(systemClassName);
-		return element && element.length > 0;
-	}
-
-	function addNameSearchActions()
-	{
-		if (self.hasEdoctusSystem || self.hasEphysioSystem || self.hasEsmileSystem) {
+	var prepareSearch = function() {
+		var recordsStr = ""
+		var hasEdoctusSystem = $('.has-edoctus-system').length > 0;
+		var hasEphysioSystem = $('.has-ephysio-system').length > 0;
+		var hasEsmileSystem = $('.has-esmile-system').length > 0;
+		if (hasEdoctusSystem || hasEphysioSystem || hasEsmileSystem) {
+//		if ((document.location.href.indexOf("edoctus") != -1) ||
+//			(document.location.href.indexOf("ephysio") != -1)) {
 			recordsStr = '<a href="#" title="Ir para prontuário" class="openRecordsSelected"><img src="/images/records.png" class="img_customer_search" width="32">'
 		}
 
-		var toBeAppended = "";
-		if(doesFieldUseFontAwesome(self.$customerNameSearch)) {
-			toBeAppended = '' +
-				'<div class="vr-circle-icon openCustomerSelected"' +
-				'	<i class="fa fa-user" aria-hidden="true"></i>' + 
-				'</div>' + recordsStr;
+		var nameCustomerSearchElement = $(".name_customer_search");
+
+		if(nameCustomerSearchElement.hasClass("use-fa")){
+			nameCustomerSearchElement.parent().append('<div class="vr-circle-icon openCustomerSelected"><i class="fa fa-users" aria-hidden="true" title="Ir para o cadastro"></i></div>' + recordsStr);
 		} else {
-			toBeAppended = '' + 
-				'<a href="#" title="Ir para cadastro" class="openCustomerSelected">' +
-				'	<img src="/images/customers.png" class="img_customer_search" width="32">' +
-				recordsStr;
+			nameCustomerSearchElement.parent().append('<a href="#" title="Ir para cadastro" class="openCustomerSelected"><img src="/images/customers.png" class="img_customer_search" width="32">' + recordsStr);
 		}
-
-		self.$customerNameSearch.parent().append(toBeAppended);
-	}
-
-	function doesFieldUseFontAwesome(field)
-	{
-		return field.hasClass("use-fa");
-	}
-
-	var prepareSearch = function() 
-	{
+		
+		
 		$(".openRecordsSelected").click(function(){
 			$parent = $(this).parent();
 			var id = $(".id_customer_search", $parent).val();
@@ -75,7 +30,6 @@ $(function() {
 				alert ("Nenhum paciente selecionado!");
 			}
 		});
-		
 		$(".openCustomerSelected").click(function(){
 			$parent = $(this).parent();
 			var id = $(".id_customer_search", $parent).val();
