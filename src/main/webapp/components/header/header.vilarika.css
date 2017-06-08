@@ -1,7 +1,7 @@
 .vr-header {
 	--background-color-normal: #fff;
 	--primary-color-normal: #1ab394;
-	--content-color-normal: #f2f2f2;
+	--content-color-normal: #fff;
 
 	background-color: var(--background-color-normal);
 	height: 60px;

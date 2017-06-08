@@ -5,12 +5,17 @@
 
 (function(){
 
-	function SidebarComponent(rootSelector, menuButtonSelector)
+	function SidebarComponent(
+		rootSelector, 
+		menuButtonSelector, 
+		contentWrapperSelector
+	)
 	{
 		this.$root = null;
 		this.$rootUl = null;
 		this.$liList = [];
 		this.$menuButton = null;
+		this.$contentWrapper = null;
 
 		var SUBITEM_LEFT_SPACE = 25;
 		var SIDEBAR_WIDTH_PX = 230;
@@ -41,6 +46,10 @@
 			var $menuButton = $(menuButtonSelector);
 			if ( ! $menuButton || $menuButton.length < 1)
 				throw new Error("SidebarComponent: Given menu button selector doesn't exist.");
+
+			var $contentWrapper = $(contentWrapperSelector);
+			if( ! $contentWrapper || $contentWrapper.length < 1)
+				throw new Error("SidebarComponent: Given content wrapper selector doesn't exist.");
 		}
 
 		function populateInstanceProperties()
