@@ -72,9 +72,9 @@ var sendEmailCustomer = function(calEvent){
 	{
 		eval("var t = " + response);
 		if (t.message) {
-	    	alert("Erro ao enviar e-mail! " + t.message);
-     	} else {
-      		alert("Enviado com sucesso!");
+			alert("Erro ao enviar e-mail! " + t.message);
+	 	} else {
+	  		alert("Enviado com sucesso!");
 		}
 	}
 
@@ -221,7 +221,7 @@ var onCustomerSelect = function(){
 		if(!global_calEvent || $("#cutomer_id_treatment").val() != global_calEvent.customerId){
 			TreatmentManger.saveTreatment();
 		}
-	}     
+	}	 
 };
 Customer.addonsListeners.push($.throttle(500, onCustomerSelect));
 var refreshCalendarByAjax = function(time){
@@ -238,32 +238,35 @@ var Paid = 4; // pago
 var Confirmed =6;
 var PreOpen = 7; // pre agendado
 var ReSchedule = 8;
+var Budget = 9;
 var getStatus = function(status, hasFlit){
-	if(hasFlit){
-		return "<img width='16' src='/images/bell.png'/>";
-	}     
-	switch(status){
-		case Open:
-			return "<img width='16' src='./images/open.png'/>";
-		case PreOpen:
-			return "<img width='16' src='./images/preopen.png'/>";
-		case Confirmed:
-			return "<img width='16' src='./images/confirmed.png'/>";
-		case Missed:
-			return "<img width='16' src='./images/missed.png'/>";   
-		case ReSchedule:
-			return "<img width='16' src='./images/treatment_reschedule.png'/>";   
-		case Arrived:
-			return "<img width='16' src='./images/good.png'/>";
-		case Ready: 
-			return "<img width='16' src='./images/tick.png'/>";
-		case Paid: 
-			return "<img width='16' src='./images/money.png'/>";
-		default:
-			return "<img width='16' src='/images/clock.png'/>";
-	}
+  if(hasFlit){
+	return "<img width='16' src='/images/bell.png'/>";
+  }	 
+  switch(status){
+	case Open:
+	  return "<img width='16' src='./images/open.png'/>";
+	case PreOpen:
+	  return "<img width='16' src='./images/preopen.png'/>";
+	case Confirmed:
+	  return "<img width='16' src='./images/confirmed.png'/>";
+	case Missed:
+	  return "<img width='16' src='./images/missed.png'/>";   
+	case ReSchedule:
+	  return "<img width='16' src='./images/treatment_reschedule.png'/>";   
+	case Arrived:
+	  return "<img width='16' src='./images/good.png'/>";
+	case Ready: 
+	  return "<img width='16' src='./images/tick.png'/>";
+	case Paid: 
+	  return "<img width='16' src='./images/money.png'/>";
+	case Budget:
+	  return "<img width='16' src='./images/treatment_budget.png'/>";   
+	default:
+	  return "<img width='16' src='/images/clock.png'/>";
+  }
 };
-var getColor = function(status,status2){    
+var getColor = function(status,status2){	
 	//if (!global_calendarShowLight) {
 	if (true) {
 		switch(status){
@@ -328,9 +331,9 @@ var getColor = function(status,status2){
 				}
 			default:
 				return  { "color" : "#68a1e5", 'headColor':"#2b72d0"};;
-		}    
+		}	
 	}
-};    
+};	
 var lastCallTreatmentsByApi = 0;
 var refreshCalendar = function(treatments){
 	global_treatments = treatTreatmentsServer(treatments);
@@ -372,15 +375,15 @@ var addIntervalFields = function()
 	var fieldsForm = '<form class="form-inline">' + 
   					 '	<div class="form-group">' +
   					 '		<div class="input-group">' +
-    				 '			<div class="input-group-addon"><img width="16" src="/images/calendar_addon.png"/></div>' +
-    			     '			<input type="text" class="form-control date" name="data_calendar" id="data_calendar">' +
-    				 '		</div>' +
+					 '			<div class="input-group-addon"><img width="16" src="/images/calendar_addon.png"/></div>' +
+					 '			<input type="text" class="form-control date" name="data_calendar" id="data_calendar">' +
+					 '		</div>' +
   					 '	</div>' +
   					 '	<div class="form-group">' +
   					 '		<div class="input-group">' +
-    				 '			<div class="input-group-addon"><img width="16" src="/images/calendar_addon.png"/></div>' +
-    				 '			<input type="text" class="form-control date" name="data_calendar_end" id="data_calendar_end">' +
-    				 '		</div>' +
+					 '			<div class="input-group-addon"><img width="16" src="/images/calendar_addon.png"/></div>' +
+					 '			<input type="text" class="form-control date" name="data_calendar_end" id="data_calendar_end">' +
+					 '		</div>' +
 					 '	</div>' +
 					 '</form>';
 

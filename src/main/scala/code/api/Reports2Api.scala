@@ -837,52 +837,62 @@ object Reports2 extends RestHelper with ReportRest with net.liftweb.common.Logge
 					case Full(p) => Project.strToDateOrToday(p)
 					case _ => new Date()
 				}
+				val rel_paid:String = S.param("rel_paid") match {
+					case Full(p) if(p != "")=> " and mo.paid = true "
+					case _ => " and mo.paid = false "
+				}			
 
 				val SQL = """
-select * from (
-select * from (
-select to_char (date('2001-01-01'),'MON/YY'), bc.name, 
-sum (mo.value), date('2001-01-01') as date_c, true from 
-monthly mo
-left join business_pattern bc on bc.id = mo.business_pattern
-where mo.company = ? and mo.status = 1 --and mo.paid = true 
-and mo.value > 0.01
-and mo.dateexpiration between date (now())-400 and date (now())
-group by bc.name
-order by bc.name) as data1
-union  
-select * from (
-select short_name_year, bc.name, 
-sum (mo.value), date_c, mo.paid from dates 
-left join monthly mo on mo.company = ? and mo.status = 1
-and mo.dateexpiration between start_of_month and end_of_month 
-left join business_pattern bc on bc.id = mo.business_pattern
-where date_c between date (now())-400 and date (now()) and day = 1 
-group by date_c, short_name_year, bc.name, mo.paid
-order by date_c, short_name_year, bc.name, mo.paid) as data1
-union  
-select * from (select short_name_year, 'V ' || (select name from company where id = 1) , 
-sum (mo.value), date_c, true from dates 
-left join monthly mo on mo.company = ? and mo.status = 1
-and mo.dateexpiration between start_of_month and end_of_month 
-where date_c between date (now())-400 and date (now()) and day = 1 
-group by date_c, short_name_year
-order by date_c, short_name_year) as data2
-union
-select * from (select short_name_year, 'Q ' || (select name from company where id = 1) , 
-count (mo.value), date_c, true from dates 
-left join monthly mo on mo.company = ? and mo.status = 1
-and mo.dateexpiration between start_of_month and end_of_month 
-where date_c between date (now())-400 and date (now()) and day = 1 
-group by date_c, short_name_year
-order by date_c, short_name_year) as data2
-) 
-as data3
-order by date_c, 2
-				"""
-				toResponse(SQL,
-					List(AuthUtil.company.id.is,AuthUtil.company.id.is,
-						AuthUtil.company.id.is,AuthUtil.company.id.is)) //, start, end)) 
+				select * from (
+				select * from (
+				select to_char (date('2001-01-01'),'MON/YY'), bc.name, 
+				sum (mo.value), date('2001-01-01') as date_c, true from 
+				monthly mo
+				left join business_pattern bc on bc.id = mo.business_pattern
+				where mo.company = ? and mo.status = 1 --and mo.paid = true 
+				and mo.value > 0.01
+				and mo.dateexpiration between date (?) and date (?)
+				%s
+				group by bc.name
+				order by bc.name) as data1
+				union  
+				select * from (
+				select substr (short_name_year || mo.paid,1,7), bc.name, 
+				sum (mo.value), date_c, mo.paid from dates 
+				left join monthly mo on mo.company = ? and mo.status = 1
+				and mo.dateexpiration between start_of_month and end_of_month 
+				left join business_pattern bc on bc.id = mo.business_pattern
+				where date_c between date (?) and date (?) and day = 1 and mo.value > 0.02
+				%s
+				group by date_c, short_name_year, bc.name, mo.paid
+				order by date_c, short_name_year, bc.name, mo.paid) as data1
+				union  
+				select * from (select substr (short_name_year || mo.paid,1,7), 'V ' || (select name from company where id = mo.company) , 
+				sum (mo.value), date_c, mo.paid from dates 
+				left join monthly mo on mo.company = ? and mo.status = 1
+				and mo.dateexpiration between start_of_month and end_of_month 
+				where date_c between date (?) and date (?) and day = 1 and mo.value > 0.02
+				%s
+				group by date_c, short_name_year, mo.paid, mo.company
+				order by date_c, short_name_year, mo.paid, mo.company) as data2
+				union
+				select * from (select substr (short_name_year || mo.paid,1,7), 'Q ' || (select name from company where id = mo.company) , 
+				count (distinct mo.business_pattern), date_c, mo.paid from dates 
+				left join monthly mo on mo.company = ? and mo.status = 1
+				and mo.dateexpiration between start_of_month and end_of_month 
+				where date_c between date (?) and date (?) and day = 1 and mo.value > 0.02
+				%s
+				group by date_c, short_name_year, mo.paid, mo.company
+				order by date_c, short_name_year, mo.paid, mo.company) as data2
+				) 
+				as data3
+				order by date_c, 2
+								"""
+				toResponse(SQL.format (rel_paid, rel_paid, rel_paid, rel_paid),
+					List(AuthUtil.company.id.is, start, end ,
+						AuthUtil.company.id.is, start, end ,
+						AuthUtil.company.id.is, start, end ,
+						AuthUtil.company.id.is, start, end )) //, start, end)) 
 			} 
 
 			case "report" :: "sql_command" :: Nil Post _ => {

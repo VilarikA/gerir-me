@@ -28,7 +28,7 @@ object EventAggregator  extends  net.liftweb.common.Logger {
 	}
 
 	def onPaymentRemoved(event:PaymentRemovedMessage){
-		event.payment.treatments.foreach(_.status(Treatment.TreatmentStatus.Open).status2(Treatment.TreatmentStatus.Open).payment(0).saveWithoutValidate)
+		event.payment.treatments.foreach(_.status(Treatment.Open).status2(Treatment.Open).payment(0).saveWithoutValidate)
 		FidelityService.removePayment(event.payment)
 		MonthlyTreatmentService.removePayment(event.payment)
 		DebitService.removePayment(event.payment)

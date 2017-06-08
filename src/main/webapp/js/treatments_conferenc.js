@@ -17,47 +17,47 @@
     // duplicado no treatmentManger.js
           var statstr = '' 
           var title = ''
-          if (status == 'Open') {
+          if (status == 'Open' || status == '0') {
             statstr = 'open'
             title ='agendado'
-          } else if (status == 'Missed') {
+          } else if (status == 'Missed' || status == '1') {
             statstr = 'Missed'
             title ='faltou'
-          } else if (status == 'Arrived') {
+          } else if (status == 'Arrived' || status == '2') {
             statstr = 'Arrived'
             title ='chegou'
-          } else if (status == 'Ready') {
+          } else if (status == 'Ready' || status == '3') {
             statstr = 'Ready'
             title ='atendido'
-          } else if (status == 'Paid') {
-            if (status2 == 'Ready') {
+          } else if (status == 'Paid' || status == '4') {
+            if (status2 == 'Ready' || status2 == '3') {
               statstr = 'ready_paid'
               title ='atendido / pago'
-            } else if (status2 == 'Missed') {
+            } else if (status2 == 'Missed' || status2 == '1') {
               statstr = 'missed_paid'
               title ='faltou / pago'
             } else {
               statstr = 'paid'
               title ='pago'
             }
-          } else if (status == 'Deleted') {
+          } else if (status == 'Deleted' || status == '5') {
             statstr = 'Deleted'
             title ='excluído'
-          } else if (status == 'Confirmed') {
+          } else if (status == 'Confirmed' || status == '6') {
             statstr = 'Confirmed'
             title ='confirmado'
-          } else if (status == 'PreOpen') {
+          } else if (status == 'PreOpen' || status == '7') {
             statstr = 'PreOpen'
             title ='pré agendado'
-          } else if (status == 'ReSchedule') {
+          } else if (status == 'ReSchedule' || status == '8') {
             statstr = 'ReSchedule'
             title ='desmarcou'
-          } else if (status == 'Budget') {
+          } else if (status == 'Budget' || status == '9') {
             statstr = 'Budget'
             title ='orçamento'
           }
-    return "<img title='" + title + "' src='/images/treatment_"+status.toLowerCase()+".png' width='24'/>" +
-        "<img title='" + title + "' src='/images/treatment_"+statstr.toLowerCase()+"1.png' width='24'/>"
+          //"<img title='" + title + "' src='/images/treatment_"+statstr.toLowerCase()+".png' width='24'/>" +
+    return "<img title='" + title + "' src='/images/treatment_"+statstr.toLowerCase()+"1.png' width='24'/>"
   };
   $(function(){
       var hasUnitModule = $('.has-unit-module').length > 0;

@@ -19,8 +19,8 @@ object MonthlyService {
 	private def findMonthlyNotPaid(customer:Customer, company:Company, date:Date) = {
 		Treatment.findAll(
 			By(Treatment.customer, customer),
-			NotBy(Treatment.status, Treatment.TreatmentStatus.Paid),
-			NotBy(Treatment.status, Treatment.TreatmentStatus.Deleted),
+			NotBy(Treatment.status, Treatment.Paid),
+			NotBy(Treatment.status, Treatment.Deleted),
 			BySql("dateEvent >=? and dateEvent < (date(?)+12)",IHaveValidatedThisSQL("",""),date, date),
 			BySql("id not in(select treatment from monthly where company_customer=? and treatment is not null)",IHaveValidatedThisSQL("",""),company.id.is),
 			BySql(""" id in(

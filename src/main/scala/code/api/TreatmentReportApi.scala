@@ -386,25 +386,27 @@ object TreatmentReportApi extends RestHelper with ReportRest with net.liftweb.co
 			lazy val status = S.param("status") match {
 				case Full(s) if(s != "All") => {
 					val statusFilter = if(s == "7") {
-						Treatment.TreatmentStatus.PreOpen
+						Treatment.PreOpen
 					}else if(s == "0"){
-						Treatment.TreatmentStatus.Open
+						Treatment.Open
 					}else if(s == "1"){
-						Treatment.TreatmentStatus.Missed
+						Treatment.Missed
 					}else if(s == "8"){
-						Treatment.TreatmentStatus.ReSchedule
+						Treatment.ReSchedule
 					}else if(s == "2"){
-						Treatment.TreatmentStatus.Arrived
+						Treatment.Arrived
 					}else if(s == "3"){
-						Treatment.TreatmentStatus.Ready
+						Treatment.Ready
 					}else if(s == "4"){
-						Treatment.TreatmentStatus.Paid
+						Treatment.Paid
 					}else if(s == "5"){
-						Treatment.TreatmentStatus.Deleted
+						Treatment.Deleted
 					}else if(s == "6"){
-						Treatment.TreatmentStatus.Confirmed
+						Treatment.Confirmed
+					}else if(s == "9"){
+						Treatment.Budget
 					}else{
-						Treatment.TreatmentStatus.Deleted
+						Treatment.Deleted
 					}
 					By(Treatment.status2, statusFilter)
 				}

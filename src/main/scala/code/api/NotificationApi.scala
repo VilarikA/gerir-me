@@ -60,7 +60,8 @@ object NotificationApi extends RestHelper with ReportRest {
           val customers: List[Customer] = if (customers_str == "all") {
             Customer.findAllInCompany
           } else if (customers_str == "company") {
-            List(Customer.createInCompany.email(AuthUtil.user.email.is).name(AuthUtil.user.name.is))
+            Customer.findAllInCompany(By (Customer.id, AuthUtil.user.id.is))
+            //List(Customer.createInCompany.email(AuthUtil.user.email.is).name(AuthUtil.user.name.is))
           } else {
             customers_str.split(",").map((id) => {
               Customer.findByKey(id.toLong).get
