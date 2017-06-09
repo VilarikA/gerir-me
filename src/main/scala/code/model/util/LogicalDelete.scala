@@ -26,7 +26,7 @@ trait  LogicalDelete[OwnerType <: LongKeyedMapper[OwnerType]] extends LongKeyedM
       override def dbColumnName = "deleted"
       override def dbIndexed_? = true
     }
-    def insecuriDelete_! = {
+    def insecureDelete_! = {
       super.delete_!
     }
     override def delete_! = {

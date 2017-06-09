@@ -112,7 +112,7 @@ class WorkHouer extends Audited[WorkHouer] with PerCompany with PerUnit with IdP
             By(BusyEvent.user,this.user),
             By(BusyEvent.unit,AuthUtil.unit.id)
             ).foreach((be) =>{
-            be.insecuriDelete_!
+            be.insecureDelete_!
         })
     }
     override def delete_! = {
