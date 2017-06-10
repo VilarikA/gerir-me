@@ -20,7 +20,7 @@
                           <div class="input">
                             <div class="inline-inputs">
                             <span>
-                              <input name="customer" class="mini id_customer_search"> 
+                              <input name="customer" id="customer" class="mini id_customer_search"> 
                               <input placeholder="Nome" type="text" size="30" name="name_customer" class="name_customer_search normal_name"/>
                             </span>  
                             <span class="help-block"><span data-i18n='Cliente'></span></span>
@@ -159,6 +159,7 @@
                   <label for="send"></label>
                   <div class="input">
                     <button type="button" id="go" class="btn success">Buscar</button>
+                    <button type="button" id="godelete" class="btn danger" title="Exclui os atendimentos/agendamentos coletivamente, é preciso selecionar um cliente e um serviço e <Buscar> antes de excluir">Excluir</button>
                   </div>
                 </div>
                 <input type="hidden" class="has-financial-access lift:SecuritySnippet.isFinancialUser" value="1">
