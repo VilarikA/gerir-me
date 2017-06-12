@@ -21,9 +21,9 @@ var CompanyValidations = {
 		var nameValid =  !nameInvalidChars.some(function(charapter){
 			return contact.indexOf(charapter) != -1;
 		});
-		var contactLength =  contact.length > 3;
-		var companyNameLength =  companyName.length > 3;
-		var phoneValid =  phone.length > 13;
+		var contactLength =  contact.trim().length > 3;
+		var companyNameLength =  companyName.trim().length > 3;
+		var phoneValid =  phone.trim().length > 13;
 		return {email: emailValid, contact : nameValid, phone : phoneValid, contactLength : contactLength,  companyNameLength: companyNameLength }
 	}
 };
