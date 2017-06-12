@@ -111,7 +111,25 @@ object TreatmentApi extends RestHelper with net.liftweb.common.Logger {
 		}
 //-------------------------------events
 		case "userEvent" :: id :: Nil Delete _ =>{
-			BusyEvent.findByKey(id.toLong).get.delete_!
+			try{
+				BusyEvent.findByKey(id.toLong).get.delete_!
+			}catch{
+				case e:Exception => {
+					try {
+						// se já tem um excluído logicamente não deixa excluir outro
+						// pq duplica a chave
+						//
+						// Aqui faz deleção física mesmo
+						//
+						BusyEvent.findByKey(id.toLong).get.insecureDelete_!
+						JString(e.getMessage())
+					}catch{
+						case e:Exception => {
+							JString(e.getMessage())
+						}
+					}
+				}
+			}
 			JInt(1)
 		}	
 		case "userEvent" :: id :: Nil Post _ =>{
