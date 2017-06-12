@@ -12,12 +12,12 @@
 	)
 	{
 		this.$root = null;
-		this.$rootUl = null;
-		this.$liList = [];
+		this.$listParentLi = [];
+
 		this.$menuButton = null;
 		this.$contentWrapper = null;
 
-		var SUBITEM_LEFT_SPACE = 25;
+		var SUBITEM_LEFT_SPACE = 30;
 		var SIDEBAR_WIDTH_PX = 230;
 		var SIDEBAR_CLOSED_CLASS = "sidebar-closed";
 		var ITEM_OPEN_CLASS = "item-open";
@@ -26,107 +26,80 @@
 
 		(function initialize()
 		{
-			try {
-				areConstructorParamsValid();
-			} catch(error) {
-				throw new Error(error);
-			}
+			if( ! rootSelector || ! menuButtonSelector || ! contentWrapperSelector )
+				throw new Error("Constructor parameters are invalid.");
 
-			populateInstanceProperties();
-			loadLiParentElements();
+			self.$root = loadRoot();
+			self.$listParentLi = loadListParentLi(self.$root);
+			self.$menuButton = loadMenuButton();
+			self.$contentWrapper = loadContentWrapper();
+			
+			hideSubmenus();
+			addSubItemsSlideEffect();
+			addSubItemsLeftPadding(self.$root.find("> ul.menu"));
+
+			/*
 			addMenuButtonListener();
+			*/
 		})();
 
-		function areConstructorParamsValid()
+		function loadRoot()
 		{
-			var $element = $(rootSelector);
+			return loadElement(rootSelector);
+		}
+
+		function loadListParentLi($root)
+		{
+			return $root.find("li.item.parent");
+		}
+
+		function loadMenuButton()
+		{
+			return loadElement(menuButtonSelector);
+		}
+
+		function loadContentWrapper()
+		{
+			return loadElement(contentWrapperSelector);
+		}
+
+		function loadElement(selector, exceptionMessage)
+		{
+			var $element = $(selector);
 			if( ! $element || $element.length < 1 )
-				throw new Error("SidebarComponent: Given root element selector doesn't exist.");
-		
-			var $menuButton = $(menuButtonSelector);
-			if ( ! $menuButton || $menuButton.length < 1)
-				throw new Error("SidebarComponent: Given menu button selector doesn't exist.");
+				throw new Error(exceptionMessage);
 
-			var $contentWrapper = $(contentWrapperSelector);
-			if( ! $contentWrapper || $contentWrapper.length < 1)
-				throw new Error("SidebarComponent: Given content wrapper selector doesn't exist.");
+			return $element;
 		}
 
-		function populateInstanceProperties()
+		function hideSubmenus()
 		{
-			self.$root = $(rootSelector);
-			self.$rootUl = self.$root.find("ul.menu").first();
-			self.$menuButton = $(menuButtonSelector);
-			self.$contentWrapper = $(contentWrapperSelector);
+			self.$listParentLi.find("ul.menu").hide();
 		}
 
-		function loadLiParentElements()
+		function addSubItemsSlideEffect()
 		{
-			var $liElements = self.$rootUl.find("li.parent");
-			$liElements.each(function(index)
-			{
-				var $liElement = $(this);
-				var $ulElement = $liElement.find("ul.menu").first();
-
-				addLiElementInTheList( $liElement, $ulElement );
-				addClickListener( $liElement, $ulElement );
-				hideSubmenu( $liElement );
-				addLeftSpacesOnSubMenus( $ulElement );
+			self.$listParentLi.each(function(){
+				$(this).click(function(){
+					$(this).find("> ul.menu").slideToggle(300);
+				});
 			});
 		}
 
-		function addLiElementInTheList($liElement, $ulElement)
+		function addSubItemsLeftPadding($itemsParent)
 		{
-			self.$liList.push({
-				$li: $liElement,
-				$childUl: $ulElement
-			});
-		}
+			$itemsParent.find("> li.item.parent").each(function(){
+				var $li = $(this);
 
-		function addClickListener($liElement, $ulElement)
-		{
-			$liElement.click(function(){
-				if(isSidebarClosed())
-					openSidebar();
-				
-				toggleSubmenu($liElement);
-			});
-		}
+				$li.find("> ul.menu > li.item > a").each(function(){
+					$a = $(this);
 
-		function toggleSubmenu($element)
-		{
-			if($element.hasClass(ITEM_OPEN_CLASS)) hideSubmenu($element);
-			else showSubmenu($element);
-		}
+					var existentPadding = parseInt($a.css("padding-left"));
+					var leftPadding = (existentPadding + SUBITEM_LEFT_SPACE);
+					$a.css("padding-left", leftPadding + "px");
+				});
 
-		function showSubmenu($element)
-		{
-			$element.addClass(ITEM_OPEN_CLASS);
-		}
-
-		function hideSubmenu($element)
-		{
-			$element.removeClass(ITEM_OPEN_CLASS);
-		}
-
-		function closeSubmenus()
-		{
-			self.$root.find("li.item.parent").each(function(){
-				$(this).removeClass(ITEM_OPEN_CLASS);
-			});
-		}
-
-		function addLeftSpacesOnSubMenus($ulElement)
-		{
-			$ulElement.find("> li").each(function(){
-				var $childLi = $(this);
-				var $childA = $childLi.find("> a");
-
-				// parseInt() removes "px" and returns only the number
-				var alreadyExistentPadding = parseInt($childA.css("padding-left"));
-
-				var leftPaddingSize = (alreadyExistentPadding + SUBITEM_LEFT_SPACE);
-				$childA.css("padding-left", leftPaddingSize + "px");
+				//addSubItemsLeftPadding($li.find("> ul.menu"));
 			});
 		}
 
@@ -159,14 +132,11 @@
 		{
 			self.$root.addClass(SIDEBAR_CLOSED_CLASS);
 			self.$contentWrapper.addClass(SIDEBAR_CLOSED_CLASS);
-
-			closeSubmenus();
 		}
 
 		return {
 			open: openSidebar,
-			close: closeSidebar,
-			closeSubmenus: closeSubmenus 
+			close: closeSidebar 
 		};
 	}
 

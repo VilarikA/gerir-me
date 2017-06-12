@@ -54,32 +54,24 @@ nav.vr-sidebar .menu {
 	padding-left: 0;
 }
 
-nav.vr-sidebar li.item {
-	height: 44px;
-	overflow: hidden;
-
-	transition: all .4s;
-	-webkit-transition: all .4s;
-}
-
-	nav.vr-sidebar li.item .fa.arrow {
+	nav.vr-sidebar .menu li.item .fa.arrow {
 		line-height: 44px;
 		float: right;
 	}
 
-	nav.vr-sidebar li.item .fa.arrow::before {
+	nav.vr-sidebar .menu li.item .fa.arrow::before {
 		content: "\f104";
 	}
 
-	nav.vr-sidebar li.item.item-open .fa.arrow::before {
+	nav.vr-sidebar .menu li.item.item-open .fa.arrow::before {
 		content: "\f107";
 	}
 
-	nav.vr-sidebar li.item .fa {
+	nav.vr-sidebar .menu li.item .fa {
 		margin-right: 10px;
 	}
 
-	nav.vr-sidebar li.item a {
+	nav.vr-sidebar .menu li.item a {
 		cursor: pointer;
 		display: inline-block;
 		height: 44px;
@@ -89,12 +81,12 @@ nav.vr-sidebar li.item {
 		width: 100%;
 	}
 
-	nav.vr-sidebar li.item a:hover {
+	nav.vr-sidebar .menu li.item a:hover {
 		background-color: var(--primary-dark-color);
 		color: var(--content-color-hover);
 	}
 
-	nav.vr-sidebar li.item.item-open {
+	nav.vr-sidebar .menu li.item.item-open {
 		background-color: var(--primary-dark-color);
 		border-left: 5px solid var(--secondary-normal-color);
 
