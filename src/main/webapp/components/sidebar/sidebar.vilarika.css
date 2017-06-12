@@ -56,9 +56,10 @@ nav.vr-sidebar .menu {
 
 nav.vr-sidebar li.item {
 	height: 44px;
-	overflow-y: hidden;
+	overflow: hidden;
 
 	transition: all .4s;
+	-webkit-transition: all .4s;
 }
 
 	nav.vr-sidebar li.item .fa.arrow {
