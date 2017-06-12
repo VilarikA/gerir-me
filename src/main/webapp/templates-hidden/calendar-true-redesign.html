@@ -81,7 +81,6 @@
 		<script src="/js/default/util.js"></script>
 		<script src="/js/default/jquery_fields.js"></script>
 		<script src="/js/default/jquery_plugins.js"></script>
-		<script src="/js/default/customer_select.js"></script>
 		<script src="/js/default/startup.js"></script>
 		<script src="/js/default/mouse_trap.js"></script>
 		<script src="/js/default/bar_code_controller.js"></script>
@@ -90,6 +89,7 @@
 		<script src="/js/bootstrap-v3-collapse.js"></script>
 
 		<!-- Built by team -->
+		<script src="/js/default/customer_select.js"></script>
 		<script src="/js/utilities/json.vilarika.js"></script>
 		<script src="/js/request/loading-overlay.vilarika.js"></script>
 
@@ -144,7 +144,59 @@
 			 SEARCH CUSTOMER MODAL
 		================================ -->
 		<div id="customer_search" class="modal fade">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal">&times;</button>
+						<h3>Buscar <span data-i18n="Cliente"></span></h3>
+					</div>
 
+					<div class="modal-body">
+						<form class="lift:form.ajax" class="vr-form">
+
+							<div class="well">
+								<input class="btn btn-success" type="submit" value="Buscar">
+							</div>
+
+							<span data-lift="CustomerSnippet.formSeachCustomer">
+								<div class="row">
+									<div class="col-lg-12">
+										<label for="name">Nome:</label>
+										<input class="form-control customer_name" id="name" name="name" size="30"/>
+										<span class="help-block">Nome completo</span>
+									</div>
+								</div>
+
+								<div class="row">
+									<div class="col-lg-12 child-form-control">
+										<label for="document">Telefone:</label>
+										<input class="customer_document" id="document" name="document" size="30" type="text"/>
+										<span class="help-block">Use um hífen para separar os últimos 4 dígitos</span>
+									</div>
+								</div>
+
+								<div class="row">
+									<div class="col-lg-12">
+										<label for="email">Email:</label>
+										<input class="form-control customer_email" id="email" name="email" size="30" type="text"/>
+										<span class="help-block">Use apenas letras minúsculas</span>
+									</div>
+								</div>
+							</span>
+
+							<input type="hidden" id="id_customer_search_form" name='id_customer_search_form'/>
+						</form>
+
+						<table id='table_customer' class="table table-bordered table-striped"></table>
+					</div>
+
+					<div class="modal-footer">
+						
+					</div>
+				</div>
+			</div>
+
+			<!--
 			<div class="modal-header">
 				<a href="#" class="close">&times;</a>
 				<h3>Buscar <span data-i18n='Cliente'></span></h3>
@@ -186,6 +238,7 @@
 			</div>  
 			<div class="modal-footer">
 			</div>
+			-->
 		</div>
 
 		

@@ -375,13 +375,13 @@ var addIntervalFields = function()
 	var fieldsForm = '<form class="form-inline">' + 
   					 '	<div class="form-group">' +
   					 '		<div class="input-group">' +
-					 '			<div class="input-group-addon"><img width="16" src="/images/calendar_addon.png"/></div>' +
+					 '			<div class="input-group-addon interval-icon"><img width="16" src="/images/calendar_addon.png"/></div>' +
 					 '			<input type="text" class="form-control date" name="data_calendar" id="data_calendar">' +
 					 '		</div>' +
   					 '	</div>' +
   					 '	<div class="form-group">' +
   					 '		<div class="input-group">' +
-					 '			<div class="input-group-addon"><img width="16" src="/images/calendar_addon.png"/></div>' +
+					 '			<div class="input-group-addon interval-icon"><img width="16" src="/images/calendar_addon.png"/></div>' +
 					 '			<input type="text" class="form-control date" name="data_calendar_end" id="data_calendar_end">' +
 					 '		</div>' +
 					 '	</div>' +
@@ -424,7 +424,7 @@ var buildDataField = function(start, end){
 				}
 			});
 
-			$(".add-on").click(function(){
+			$(".interval-icon").click(function(){
 				$(this).next().focus();
 			});//setfous in datepiker ao clicar no calendariozinho
 

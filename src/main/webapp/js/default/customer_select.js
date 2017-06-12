@@ -15,7 +15,7 @@ $(function() {
 		var nameCustomerSearchElement = $(".name_customer_search");
 
 		if(nameCustomerSearchElement.hasClass("use-fa")){
-			nameCustomerSearchElement.parent().append('<div class="vr-circle-icon openCustomerSelected"><i class="fa fa-user" aria-hidden="true"></i></div>' + recordsStr);
+			nameCustomerSearchElement.parent().append('<div class="vr-circle-icon openCustomerSelected"><i class="fa fa-users" aria-hidden="true" title="Ir para o cadastro"></i></div>' + recordsStr);
 		} else {
 			nameCustomerSearchElement.parent().append('<a href="#" title="Ir para cadastro" class="openCustomerSelected"><img src="/images/customers.png" class="img_customer_search" width="32">' + recordsStr);
 		}
@@ -128,6 +128,26 @@ $(function() {
 			}
 		}
 	});
+
+	$("[x-search-customer-button]").click(function() {
+		parent_customer_search = $(this).parent().parent();
+
+		$("#customer_search").modal({
+			"backdrop": true,
+			'keyboard': true,
+			'show': true
+		});
+
+		$("#customer_search").css("overflow", "auto");
+
+		$(".customer_name").val("");
+		$(".id_customer_search_form").val("");
+
+		setTimeout(function() {
+			$(".customer_name").focus();
+		}, 200);
+	});
+
 	$(".customer_search_button").click(function() {
 		parent_customer_search = $(this).parent().parent();
 		$("#customer_search").modal({
