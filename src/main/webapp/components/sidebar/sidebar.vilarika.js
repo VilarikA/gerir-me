@@ -38,9 +38,7 @@
 			addSubItemsSlideEffect();
 			addSubItemsLeftPadding(self.$root.find("> ul.menu"));
 
-			/*
-			addMenuButtonListener();
-			*/
+			self.$menuButton.click(toggleSidebar);
 		})();
 
 		function loadRoot()
@@ -81,6 +79,7 @@
 		{
 			self.$listParentLi.each(function(){
 				$(this).click(function(){
+					$(this).toggleClass("item-open");
 					$(this).find("> ul.menu").slideToggle(300);
 				});
 			});
@@ -100,14 +99,6 @@
 				});
 
 				//addSubItemsLeftPadding($li.find("> ul.menu"));
-			});
-		}
-
-		function addMenuButtonListener()
-		{
-			self.$menuButton.click(function()
-			{
-				toggleSidebar();
 			});
 		}
 
