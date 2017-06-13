@@ -26,19 +26,3 @@
 		margin-bottom: 3px;
 		width: 20px;
 	}
-
-@media only screen and (min-width: 1200px) {
-
-	.vr-header {
-		padding: 14px 15px;
-	}
-
-	.vr-header .menu-button {
-		height: 32px;
-		width: 32px;
-	}
-
-	.vr-header .menu-button .bar {
-		width: 18px;
-	}
-}
