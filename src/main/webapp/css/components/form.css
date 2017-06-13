@@ -46,12 +46,12 @@ form.vr-form .select2-container.with-icons.one-icon {
 	width: calc(100% - 35px) !important;
 }
 
-form.vr-form .select2-container.with-icons.three-icons {
-	width: calc(100% - 105px) !important;
-}
-
 form.vr-form .select2-container.with-icons.two-icons {
 	width: calc(100% - 75px) !important;
+}
+
+form.vr-form .select2-container.with-icons.three-icons {
+	width: calc(100% - 105px) !important;
 }
 
 form.vr-form .openCustomerSelected img { top: 0; }

@@ -10,6 +10,7 @@
 }
 
 .vr-customer-select.with-icons.two-icons { width: calc(100% - 37px); }
+.vr-customer-select.with-icons.three-icons { width: calc(100% - 100px); }
 
 .vr-customer-select .id_customer_search { width: 100px; }
 span.vr-customer-select .select2-container.with-icons.two-icons { width: calc(100% - 35px - 105px) !important; }
