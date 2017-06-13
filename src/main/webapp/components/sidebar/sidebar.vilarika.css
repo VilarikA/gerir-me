@@ -4,11 +4,11 @@
  **/
 
 nav.vr-sidebar {
-	--primary-normal-color: #2f4050;
-	--primary-dark-color: #293846;
+	--primary-normal-color: #232323;
+	--primary-dark-color: #1b1b1b;
 	--content-color-normal: #a7b1c2;
 	--content-color-hover: #f2f2f2;
-	--secondary-normal-color: #19aa8d;
+	--secondary-normal-color: #a7b1c2;
 
 	background-color: var(--primary-normal-color);
 	color: var(--content-color);
