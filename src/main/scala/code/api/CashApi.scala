@@ -239,42 +239,57 @@ object CashApi extends RestHelper with net.liftweb.common.Logger  {
 			}))
 		}
 
-		case "cash" :: "getUsersCurrentUnitCommand" :: Nil JsonGet _ => if (AuthUtil.user.isSimpleUserCommand) {
-			JsArray(User.findAllInCompanyOrdened.map( (u) => {
-				JsObj(("status","success"),("name",u.short_name.is),("id",u.id.is)
-					,("idForCompany",BusinessRulesUtil.zerosNoLimit(u.idForCompany.is.toString,3)))
-			}))
-		} else {
-			JsArray(User.findAllInCompany(
-        BySql(" (unit = ? or (id in (select uu.user_c from usercompanyunit uu where uu.unit = ? and uu.company = ?))) ",IHaveValidatedThisSQL("",""), AuthUtil.unit.id, AuthUtil.unit.id, AuthUtil.company.id),
-        By(User.userStatus, User.STATUS_OK), 
-        OrderBy(User.short_name, Ascending)).map( (u) => {
-						JsObj(("status","success"),("name",u.short_name.is),("id",u.id.is)
-					,("idForCompany",BusinessRulesUtil.zerosNoLimit(u.idForCompany.is.toString,3)))
+		case "cash" :: "getUsersCurrentUnitCashier" :: Nil JsonGet _ => {
+				JsArray(User.findAllInCompany(
+					By (User.showInCashier_?,true),
+			        BySql(" (unit = ? or (id in (select uu.user_c from usercompanyunit uu where uu.unit = ? and uu.company = ?))) ",IHaveValidatedThisSQL("",""), AuthUtil.unit.id, AuthUtil.unit.id, AuthUtil.company.id),
+			        By(User.userStatus, User.STATUS_OK), 
+			        OrderBy(User.short_name, Ascending)).map( (u) => {
+					JsObj(("status","success"),("name",u.short_name.is),("id",u.id.is)
+						,("idForCompany",BusinessRulesUtil.zerosNoLimit(u.idForCompany.is.toString,3)))
 			}))
 		}
 
-		case "cash" :: "getAuxiliarsCurrentUnitCommand" :: Nil JsonGet _ => if (AuthUtil.user.isSimpleUserCommand) {
-			JsArray(Customer.findAllInCompany(By (Customer.is_auxiliar_?, true),
-				OrderBy(Customer.short_name, Ascending)).map( (u) => {
-				JsObj(("status","success"),("name",u.short_name.is),("id",u.id.is)
-					,("idForCompany",BusinessRulesUtil.zerosNoLimit(u.idForCompany.is.toString,3)))
+		case "cash" :: "getUsersCurrentUnitCommand" :: Nil JsonGet _ => 
+			if (AuthUtil.user.isSimpleUserCommand) {
+				JsArray(User.findAllInCompanyOrdened(By (User.showInCommand_?,true)).map( (u) => {
+					JsObj(("status","success"),("name",u.short_name.is),("id",u.id.is)
+						,("idForCompany",BusinessRulesUtil.zerosNoLimit(u.idForCompany.is.toString,3)))
+				}))
+			} else {
+				JsArray(User.findAllInCompany(
+					By (User.showInCommand_?,true),
+			        BySql(" (unit = ? or (id in (select uu.user_c from usercompanyunit uu where uu.unit = ? and uu.company = ?))) ",IHaveValidatedThisSQL("",""), AuthUtil.unit.id, AuthUtil.unit.id, AuthUtil.company.id),
+			        By(User.userStatus, User.STATUS_OK), 
+			        OrderBy(User.short_name, Ascending)).map( (u) => {
+					JsObj(("status","success"),("name",u.short_name.is),("id",u.id.is)
+						,("idForCompany",BusinessRulesUtil.zerosNoLimit(u.idForCompany.is.toString,3)))
 			}))
-		} else {
-			JsArray(Customer.findAllInCompany(
-        BySql(" (unit = ? or (id in (select uu.user_c from usercompanyunit uu where uu.unit = ? and uu.company = ?))) ",IHaveValidatedThisSQL("",""), AuthUtil.unit.id, AuthUtil.unit.id, AuthUtil.company.id),
-        By(Customer.is_auxiliar_?, true), 
-        OrderBy(Customer.short_name, Ascending)).map( (u) => {
-						JsObj(("status","success"),("name",u.short_name.is),("id",u.id.is)
-					,("idForCompany",BusinessRulesUtil.zerosNoLimit(u.idForCompany.is.toString,3)))
-			}))
+		}
+
+		case "cash" :: "getAuxiliarsCurrentUnitCommand" :: Nil JsonGet _ => 
+			if (AuthUtil.user.isSimpleUserCommand) {
+				JsArray(Customer.findAllInCompany(
+					By (Customer.is_auxiliar_?, true),
+					OrderBy(Customer.short_name, Ascending)).map( (u) => {
+					JsObj(("status","success"),("name",u.short_name.is),("id",u.id.is)
+						,("idForCompany",BusinessRulesUtil.zerosNoLimit(u.idForCompany.is.toString,3)))
+				}))
+			} else {
+				JsArray(Customer.findAllInCompany(
+			        BySql(" (unit = ? or (id in (select uu.user_c from usercompanyunit uu where uu.unit = ? and uu.company = ?))) ",IHaveValidatedThisSQL("",""), AuthUtil.unit.id, AuthUtil.unit.id, AuthUtil.company.id),
+			        By(Customer.is_auxiliar_?, true), 
+			        OrderBy(Customer.short_name, Ascending)).map( (u) => {
+								JsObj(("status","success"),("name",u.short_name.is),("id",u.id.is)
+							,("idForCompany",BusinessRulesUtil.zerosNoLimit(u.idForCompany.is.toString,3)))
+				}))
 		}
 
 		case "cash" :: "getUsersCurrentUnit" :: Nil JsonGet _ =>{
 			JsArray(User.findAllInCompany(
-        BySql(" (unit = ? or (id in (select uu.user_c from usercompanyunit uu where uu.unit = ? and uu.company = ?))) ",IHaveValidatedThisSQL("",""), AuthUtil.unit.id, AuthUtil.unit.id, AuthUtil.company.id),
-        By(User.showInCalendar_?, true), (By(User.userStatus, User.STATUS_OK)), 
-        OrderBy(User.short_name, Ascending)).map( (u) => {
+		        BySql(" (unit = ? or (id in (select uu.user_c from usercompanyunit uu where uu.unit = ? and uu.company = ?))) ",IHaveValidatedThisSQL("",""), AuthUtil.unit.id, AuthUtil.unit.id, AuthUtil.company.id),
+		        By(User.showInCalendar_?, true), (By(User.userStatus, User.STATUS_OK)), 
+		        OrderBy(User.short_name, Ascending)).map( (u) => {
 				JsObj(("status","success"),("name",u.short_name.is),("id",u.id.is)
 					,("idForCompany",BusinessRulesUtil.zerosNoLimit(u.idForCompany.is.toString,3)))
 			}))
