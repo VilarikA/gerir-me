@@ -11,9 +11,9 @@
 .vr-header .menu-button {
 	background-color: var(--primary-color-normal);
 	color: var(--content-color-normal);
-	height: 44px;
-	padding: 15px 12px;
-	width: 44px;
+	height: 38px;
+	padding: 12px 9px;
+	width: 38px;
 
 	border-radius: 3px;
 	-webkit-border-radius: 3px;
@@ -36,7 +36,6 @@
 	.vr-header .menu-button {
 		height: 32px;
 		width: 32px;
-		padding: 9px 7px;
 	}
 
 	.vr-header .menu-button .bar {
