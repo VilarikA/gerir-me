@@ -32,7 +32,7 @@
 	gulp.task("sass:app", function()
 	{
 		return gulp
-			.src(["components/main.scss"])
+			.src(["components/main.sass"])
 			.pipe(sass({outputStyle: "compressed"}))
 			.pipe(rename("main.min.css"))
 			.pipe(gulp.dest("dist/css"));
