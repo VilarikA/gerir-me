@@ -34,7 +34,7 @@ object SendDailyTreatmentsReport{
                     if(customer.email.is != ""){
                         val mail = code.daily.DailyReport.treatmentsTodayCustomer(customer,company, date)
                         //EmailUtil.sendMailTo(customer.email.is.toString,mail,"Atendimento "+company.name.is,company)
-                        EmailUtil.sendMailToCustomer(cunit,
+                        EmailUtil.sendMailCustomer(cunit,
                             Company.findByKey (customer.company).get, 
                             customer.email.is, mail, "Atendimento "+company.name.is, 
                             customer.id.is)
@@ -53,7 +53,7 @@ object SendDailyTreatmentsReport{
                     if(user.email.is != ""){
                         val mail = code.daily.DailyReport.treatmentsTodayUser(user,company, date)
                         //EmailUtil.sendMailTo(user.email.is.toString,mail,"Agenda "+company.name.is,company)
-                        EmailUtil.sendMailToCustomer(uunit,
+                        EmailUtil.sendMailCustomer(uunit,
                             Company.findByKey (user.company).get, 
                             user.email.is, mail, "Agenda "+company.name.is, 
                             user.id.is)

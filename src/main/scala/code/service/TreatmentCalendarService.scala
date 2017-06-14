@@ -96,10 +96,16 @@ object TreatmentCalendarService {
     def str_phone:String = if (!AuthUtil.company.calendarShowPhone_?) {
         "''"
       } else {
-        if (!AuthUtil.user.isCustomer) {
-          "''"
+        if (AuthUtil.?) {
+          if (!AuthUtil.user.isCustomer) {
+            "''"
+          } else {
+            " trim (c.mobile_phone || ' ' || c.phone || ' ' || c.email_alternative) "
+          }
         } else {
-          " trim (c.mobile_phone || ' ' || c.phone || ' ' || c.email_alternative) "
+            // 13/06/2017 - rigel 
+            // login pelo customer não tem user
+            "''"
         }
       }
 

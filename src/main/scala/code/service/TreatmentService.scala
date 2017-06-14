@@ -54,7 +54,7 @@ object  TreatmentService extends net.liftweb.common.Logger {
 		    throw new RuntimeException(customer.name.is + " não possui email cadastrado.")
         }
 
-		EmailUtil.sendMailToCustomer(cunit,
+		EmailUtil.sendMailCustomer(cunit,
 			Company.findByKey (customer.company).get, 
 			customer.email.is.toString,
 			mail, 
@@ -98,7 +98,7 @@ object  TreatmentService extends net.liftweb.common.Logger {
         if (user.email.is.toString == "") {
 		    throw new RuntimeException(user.name.is + " não possui email cadastrado.")
         }
-		EmailUtil.sendMailToCustomer(uunit,
+		EmailUtil.sendMailCustomer(uunit,
 			Company.findByKey (user.company).get, 
 			user.email.is.toString,
 			mail,

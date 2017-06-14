@@ -193,7 +193,7 @@ object EmailUtil {
       })
   }
 
-  def sendMailToCustomer(companyUnit:CompanyUnit,company:Company,email:String,
+  def sendMailCustomer(companyUnit:CompanyUnit,company:Company,email:String,
     mail:NodeSeq,title:String,bp:Long,attachment:Attachment = EmptyAttachment()){
       //authDefaltUnit(companyUnit)
       email.split(",|;").foreach((email) => {
@@ -288,7 +288,7 @@ object EmailUtil {
       User.findByEmail(email).map((user)=>{
         //println ("vaiii ===================== " + user.email)
         //sendMailTo(user.email.is, rememberPasswordEMail(user.company.obj.get, user, product1, lnkProduct1), "Recuperar senha" + product1 + local1)
-        sendMailToCustomer(CompanyUnit.findByKey(user.unit).get,
+        sendMailCustomer(CompanyUnit.findByKey(user.unit).get,
             Company.findByKey (user.company).get, 
             user.email.is, rememberPasswordEMail(user.company.obj.get, user, product1, lnkProduct1), 
             "Recuperar senha" + product1 + local1, user.id.is)
@@ -306,7 +306,7 @@ object EmailUtil {
                                       </div>
 
   def sendNotificationRegistration(company:Company)={
-    sendMailTo(admins,notificationRegistrationHtml(company, product1),"Novo cliente" + product1 + local1);
+    sendMailTo(admins,notificationRegistrationHtml(company, company.appShortName),"Novo cliente " + company.appShortName + local1);
   }
 
   def  limitDiskPercent = 45;
