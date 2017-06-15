@@ -96,8 +96,10 @@ object MobileApi extends RestHelper with net.liftweb.common.Logger {
         AuthUtil << customerAsUser
         AuthUtil << userObj.unit.obj.get
 
-        val treatment = TreatmentService.factoryTreatment("", customer.id.is.toString, user, date, hour_start, hour_start, "", "Agendamento Online","", true).get
+        var treatment = TreatmentService.factoryTreatment("", customer.id.is.toString, user, date, hour_start, hour_start, "", "Agendamento Online","", true).get
         TreatmentService.addDetailTreatmentWithoutValidate(treatment.id.is, activity.toLong, 0l, 0l, 0l)
+        treatment.markAsPreOpen
+        treatment.save
         JInt(1)
       }
     }    
