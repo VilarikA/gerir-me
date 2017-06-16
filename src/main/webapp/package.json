@@ -1,0 +1,26 @@
+{
+  "name": "gerir-me-frontend",
+  "version": "1.0.0",
+  "description": "Front-end module built for Gerir-me system.",
+  "main": "server.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "author": "Stanley Sathler <stanleysathlerpinto@gmail.com>",
+  "license": "ISC",
+  "devDependencies": {
+    "bower": "^1.8.0",
+    "gulp": "^3.9.1",
+    "gulp-concat": "^2.6.1",
+    "gulp-jshint": "^2.0.4",
+    "gulp-rename": "^1.2.2",
+    "gulp-sass": "^3.1.0",
+    "gulp-uglify": "^3.0.0",
+    "jshint": "^2.9.4",
+    "pipeline-minify-css": "^1.0.1"
+  }
+}

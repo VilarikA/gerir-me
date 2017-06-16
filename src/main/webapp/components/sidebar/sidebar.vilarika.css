@@ -4,14 +4,13 @@
  **/
 
 nav.vr-sidebar {
-	--primary-normal-color: #2f4050;
-	--primary-dark-color: #293846;
+	--primary-normal-color: #232323;
+	--primary-dark-color: #1b1b1b;
 	--content-color-normal: #a7b1c2;
 	--content-color-hover: #f2f2f2;
-	--secondary-normal-color: #19aa8d;
+	--secondary-normal-color: #a7b1c2;
 
 	background-color: var(--primary-normal-color);
-	box-shadow: 1px 0 3px rgba(0, 0, 0, 0.4);
 	color: var(--content-color);
 	min-height: 100vh;
 	left: 0;
@@ -19,10 +18,17 @@ nav.vr-sidebar {
 	position: absolute;
 	top: 0;
 	width: 230px;
+
+	transition: width .3s;
 }
 
 	nav.vr-sidebar.sidebar-closed {
 		width: 65px;
+	}
+
+	nav.vr-sidebar.sidebar-closed .item-label,
+	nav.vr-sidebar.sidebar-closed .fa.arrow {
+		display: none;
 	}
 
 	nav.vr-sidebar,
@@ -94,5 +100,5 @@ nav.vr-sidebar .menu {
 	}
 
 	nav.vr-sidebar li.item.item-open a {
-		padding-left: 15px;
+		padding-left: 20px;
 	}

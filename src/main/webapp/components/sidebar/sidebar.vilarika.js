@@ -35,12 +35,10 @@
 			self.$contentWrapper = loadContentWrapper();
 			
 			hideSubmenus();
-			addSubItemsSlideEffect();
+			addSubItemsClickListener();
 			addSubItemsLeftPadding(self.$root.find("> ul.menu"));
 
-			/*
-			addMenuButtonListener();
-			*/
+			self.$menuButton.click(toggleSidebar);
 		})();
 
 		function loadRoot()
@@ -75,12 +73,35 @@
 		function hideSubmenus()
 		{
 			self.$listParentLi.find("ul.menu").hide();
+			self.$listParentLi.removeClass("item-open");
+		}
+
+		function addSubItemsClickListener()
+		{
+			var $lis = self.$root.find("li.item");
+			$lis.each(function()
+			{
+				var $li = $(this);
+
+				$li.click(function()
+				{
+					if(isSidebarClosed())
+						openSidebar();
+
+					if( $li.hasClass("parent") )
+					{
+						$(this).toggleClass("item-open");
+						$(this).find("> ul.menu").slideToggle(300);
+					}
+				});
+			});
 		}
 
 		function addSubItemsSlideEffect()
 		{
 			self.$listParentLi.each(function(){
 				$(this).click(function(){
+					$(this).toggleClass("item-open");
 					$(this).find("> ul.menu").slideToggle(300);
 				});
 			});
@@ -103,18 +124,14 @@
 			});
 		}
 
-		function addMenuButtonListener()
-		{
-			self.$menuButton.click(function()
-			{
-				toggleSidebar();
-			});
-		}
-
 		function toggleSidebar()
 		{
-			if(isSidebarClosed()) openSidebar();
-			else closeSidebar();
+			if( isSidebarClosed() ){
+				openSidebar();
+			} else { 
+				closeSidebar();
+				hideSubmenus();
+			}
 		}
 
 		function isSidebarClosed()

@@ -1,0 +1,23 @@
+{
+  "name": "gerir-me-frontend",
+  "homepage": "https://github.com/HeiderMaciel/gerir-me",
+  "authors": [
+    "Stanley Sathler <stanleysathlerpinto@gmail.com>"
+  ],
+  "description": "Front-end module built for Gerir-me system.",
+  "main": "",
+  "license": "ISC",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "src/main/webapp/v2/libs/",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery": "^3.2.1",
+    "bootstrap": "^3.3.7"
+  }
+}
