@@ -461,7 +461,9 @@
   };
   var getUsers = function() {
     url = $('#cash_form').attr('action');
-    url += "/getUsers";
+    //url += "/getUsers"; trazia profs independente de unidade e flag de showincashier
+    // 13/06/2017 - rigel
+    url += "/getUsersCurrentUnitCashier";
     $.get(url, function(t) {
       eval("userObj = " + t);
       $('#user').append("<option value=''>Selecione um profissional</option>");

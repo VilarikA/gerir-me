@@ -60,7 +60,9 @@ object NotificationApi extends RestHelper with ReportRest {
           val customers: List[Customer] = if (customers_str == "all") {
             Customer.findAllInCompany
           } else if (customers_str == "company") {
-            Customer.findAllInCompany(By (Customer.id, AuthUtil.user.id.is))
+            // findAll sem company mesmo pra nós da vilarika podermos testar 
+            // pra nós mesmos emails de clientes de outras empresas
+            Customer.findAll(By (Customer.id, AuthUtil.user.id.is))
             //List(Customer.createInCompany.email(AuthUtil.user.email.is).name(AuthUtil.user.name.is))
           } else {
             customers_str.split(",").map((id) => {
@@ -71,15 +73,8 @@ object NotificationApi extends RestHelper with ReportRest {
           customers.foreach((customer) => {
             if (customer.email.is != "") {
               var message_aux = Customer.replaceMessage (customer, message_obj.message.is)
-/* - validando pode excluir maio/2016 rigel
-              var message_aux = message_obj.message.is.replaceAll("##nome##", customer.name.is)
-                  // tentei short_name search_name não consegui              
-                  message_aux = message_aux.replaceAll ("##apelido##", customer.district.is)
-                  message_aux = message_aux.replaceAll ("##prinome##", customer.firstName)
-                  //println ("========== >>>  >>> " + message_aux)
-*/
               val final_message = <span>{ Unparsed(message_aux) }</span>
-              EmailUtil.sendMailToCustomer( AuthUtil.unit,AuthUtil.company, customer.email.is, final_message, message_obj.subject.is, customer.id.is)
+              EmailUtil.sendMailCustomer( AuthUtil.unit,AuthUtil.company, customer.email.is, final_message, message_obj.subject.is, customer.id.is)
             }
           })
           JInt(1)        

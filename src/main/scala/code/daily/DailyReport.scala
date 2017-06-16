@@ -27,7 +27,7 @@ object DailyReport{
                     if(customer.email.is != ""){
                         val mail = code.daily.DailyReport.treatmentsTodayCustomer(customer,company, date)
                         //EmailUtil.sendMailTo(customer.email.is.toString,mail,"Atendimento "+company.name.is,company)
-                        EmailUtil.sendMailToCustomer(cunit,
+                        EmailUtil.sendMailCustomer(cunit,
                             Company.findByKey (customer.company).get, 
                             customer.email.is, mail, "Atendimento "+company.name.is, 
                             customer.id.is)
@@ -46,7 +46,7 @@ object DailyReport{
                     if(user.email.is != ""){
                         val mail = code.daily.DailyReport.treatmentsTodayUser(user,company, date)
                         //EmailUtil.sendMailTo(user.email.is.toString,mail,"Agenda "+company.name.is,company)
-                        EmailUtil.sendMailToCustomer(uunit,
+                        EmailUtil.sendMailCustomer(uunit,
                             Company.findByKey (user.company).get, 
                             user.email.is, mail, "Agenda "+company.name.is, 
                             user.id.is)
@@ -92,7 +92,7 @@ object DailyReport{
 	                            CompanyUnit.findByKey(7).get
 	                        }
 				        //EmailUtil.sendMailTo(company,mail, company.name.is + " contas a pagar/receber hoje")			
-	                    EmailUtil.sendMailToCustomer(uunit,
+	                    EmailUtil.sendMailCustomer(uunit,
 	                        Company.findByKey (user.company).get, 
 	                        user.email.is, mail, company.name.is + " contas a pagar/receber " + extDay(date), 
 	                        user.id.is)
@@ -115,7 +115,7 @@ object DailyReport{
         //var mailxml = XML.loadString (mail) //<div> {mail} </div>
         var mailxml = scala.xml.Unparsed (mail)
         if(customer.email.is != ""){
-            EmailUtil.sendMailToCustomer(cunit,
+            EmailUtil.sendMailCustomer(cunit,
                 Company.findByKey (customer.company).get, 
                 customer.email.is, mailxml, title + " " +company.name.is, 
                 customer.id.is)
