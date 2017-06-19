@@ -358,7 +358,7 @@ object CashApi extends RestHelper with net.liftweb.common.Logger  {
 			if (userParm != 1l) {
 				val user = User.findByKey(userParm).get
 				JsArray(TreatmentService
-				.activitiesMapByUser(user).map((a) => {
+				.activitiesMapByUser(user, false).map((a) => {
 					JsObj(
 							("status","success"),
 							("name",a.name.is),
@@ -370,7 +370,7 @@ object CashApi extends RestHelper with net.liftweb.common.Logger  {
 					}))
 		    } else {
 		    	// busca todas as atividades da empresa corrente
-				JsArray(AuthUtil.company.activities.map((a) => {
+				JsArray(AuthUtil.company.activities (false).map((a) => {
 					JsObj(
 							("status","success"),
 							("name",a.name.is),

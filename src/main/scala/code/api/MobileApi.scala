@@ -71,7 +71,11 @@ object MobileApi extends RestHelper with net.liftweb.common.Logger {
         password <- S.param("password") ?~ "password parameter missing" ~> 400
       } yield {
         val customer = Customer.login(email, password)
-        val users = User.findAll(By(User.company, customer.company)).map( (u) =>
+        val users = User.findAll(
+          By(User.company, customer.company),
+          By(User.userStatus, 1),
+          By(User.showInCalendarPub_?, true),
+          OrderBy (User.name, Ascending)).map( (u) =>
           JsObj(
                 ("name",u.name.is),
                 ("id",u.id.is),
@@ -110,8 +114,10 @@ object MobileApi extends RestHelper with net.liftweb.common.Logger {
         user <- S.param("user") ?~ "user parameter missing" ~> 400
       } yield {
         val customer = Customer.login(email, password)
-        val userObj = User.findAll(By(User.company, customer.company),By(User.id, user.toLong))(0)
-        val activities = TreatmentService.activitiesMapByUser(userObj).map( (u) =>
+        val userObj = User.findAll(
+          By(User.company, customer.company),
+          By(User.id, user.toLong))(0)
+        val activities = TreatmentService.activitiesMapByUser(userObj, true).map( (u) =>
           JsObj(
                 ("name",u.name.is),
                 ("id",u.id.is)
