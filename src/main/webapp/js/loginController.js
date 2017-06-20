@@ -1,20 +1,36 @@
-var loginModule  = angular.module('LoginModule',['br']);
-var LoginController = function($scope, $http){
-	var loginSoccess = function(r){
-		eval('var result ='+r);
-		if(result.success){
-			if(result.companys.length ==1){
-				document.location.href = result.goTo;
-			}else{
-				$scope.companys = result.companys;
-			}
-		}else{
-			alert(result.message);
+var loginModule  = angular.module('LoginModule',['br', 'LocalStorageModule']);
+var LoginController = function($scope, $window, $http, LocalStorage){
+
+	/*
+	 * Handle success login
+	 */
+	var onLoginSuccess = function(response)
+	{
+		eval("response = " + response);
+
+		if( ! response.success)
+			return alert(response.message);
+
+		var menus = {};
+		LocalStorage.set("menus", menus);
+
+		var companies = response.companys;
+		if( isThereSingleCompany(companies) ){
+			document.location.href = response.goTo;
+		} else {
+			$scope.companys = companies;
 		}
-	};
+	}
+
+	function isThereSingleCompany(companies)
+	{
+		return companies.length == 1;
+	}
+
 	var loginError = function(r){
 		alert("Erro ao efetuar login, tente novamente!");
 	};
+
 	//
 	//  Rigel - 03/03/2017
 	//  ALTERACAO DE VERSAO DO APLICATIVO DEVE SER FEITA no face_prepare.js
@@ -30,17 +46,24 @@ var LoginController = function($scope, $http){
 			alert('Erro ao fazer login com facebook, tente novamente!');
 		});
 	};
+
 	$scope.loginWithCompany = function(company, email, password){
 		$http.post("/security/login_email", {company : company,email : email, password : password, hasCompany : true}).success(loginSoccess).error(loginError);
 	};
+
 	$scope.login = function(email, password){
-		if (document.location.href.indexOf("local") != -1) {
-			$http.post("/security/login_email", {company : "", email : email, password : password, hasCompany : false}).success(loginSoccess).error(loginError);
-		} else {
-			$http.post("/security/login_email", {company : "", email : email, password : password, hasCompany : false}).success(loginSoccess).error(loginError);
-			//$http.post("http://45.33.99.152:7171/security/login_email", {company : "", email : email, password : password, hasCompany : false}).success(loginSoccess).error(loginError);
-		}
+		var loginData = {
+			company: "",
+			email: email,
+			password: password,
+			hasCompany: false
+		};
+
+		$http.post("/security/login_email", loginData)
+			.success(onLoginSuccess)
+			.error(loginError);
 	};
+
 	$scope.rememberPassword = function(email){
 		var emailValidation = /^([a-z0-9._%\-+]+@(?:[a-z0-9\-]+\.)+[a-z]{2,4}$)/;
 		if (!emailValidation.test(email) && email.length > 10){
