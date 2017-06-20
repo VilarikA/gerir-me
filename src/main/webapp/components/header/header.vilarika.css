@@ -9,14 +9,13 @@
 }
 
 .vr-header .menu-button {
-	background-color: var(--primary-color-normal);
-	color: var(--content-color-normal);
+	border: 1px solid transparent;
 	height: 38px;
-	padding: 12px 9px;
+	padding: 11px 8px;
 	width: 38px;
 
-	border-radius: 3px;
-	-webkit-border-radius: 3px;
+	border-radius: 4px;
+	-webkit-border-radius: 4px;
 }
 
 	.vr-header .menu-button .bar {

@@ -11,8 +11,7 @@ var LoginController = function($scope, $window, $http, LocalStorage){
 		if( ! response.success)
 			return alert(response.message);
 
-		var menus = {};
-		LocalStorage.set("menus", menus);
+		storeMenus(response.menus);
 
 		var companies = response.companys;
 		if( isThereSingleCompany(companies) ){
@@ -25,6 +24,24 @@ var LoginController = function($scope, $window, $http, LocalStorage){
 	function isThereSingleCompany(companies)
 	{
 		return companies.length == 1;
+	}
+
+	function storeMenus(menus)
+	{
+		menus = [{
+			icon: "calendar",
+			label: "Profissionais",
+			children: [{
+				label: "Profissionais",
+				url: "/users/list"
+			}, 
+			{
+				label: "Grupos",
+				url: "/group/list"
+			}]
+		}];
+
+		LocalStorage.set("menus", menus);
 	}
 
 	var loginError = function(r){

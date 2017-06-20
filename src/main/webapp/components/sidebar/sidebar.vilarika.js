@@ -33,10 +33,13 @@
 			self.$listParentLi = loadListParentLi(self.$root);
 			self.$menuButton = loadMenuButton();
 			self.$contentWrapper = loadContentWrapper();
-			
+			self.$menuList = loadMenuList();
+
 			hideSubmenus();
 			addSubItemsClickListener();
 			addSubItemsLeftPadding(self.$root.find("> ul.menu"));
+
+			populateMenuList();
 
 			self.$menuButton.click(toggleSidebar);
 		})();
@@ -59,6 +62,11 @@
 		function loadContentWrapper()
 		{
 			return loadElement(contentWrapperSelector);
+		}
+
+		function loadMenuList()
+		{
+			return loadElement("[x-menu-list]");
 		}
 
 		function loadElement(selector, exceptionMessage)
@@ -122,6 +130,11 @@
 
 				//addSubItemsLeftPadding($li.find("> ul.menu"));
 			});
+		}
+
+		function populateMenuList()
+		{
+			
 		}
 
 		function toggleSidebar()
