@@ -10,19 +10,10 @@
 		</div>
 	</div>
 
-	<ul class="menu">
-		<li class="item">
-			<a href="#">
-				<i class="fa fa-calendar"></i> 
-				<span class="item-label">Agenda</span>
-			</a>
-		</li>
-
-		<lift:Menu.item name="users">
-			<i class="fa fa-users"></i>
-			<span class="item-label">Profissionais</span>
-		</lift:Menu.item>
-	</ul>
+	<lift:Menu.builder
+		ul:class="menu"
+		li:class="item">
+	</lift:Menu.builder>
 
 	<!-- Menu List -->
 	<!--

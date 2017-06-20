@@ -371,17 +371,17 @@ class Boot {
 	}
 
 	// Build SiteMap
-	val usersMenu = Menu(Loc("users", Link(List("user"), true, "/user/list"), userMenuLabel, peopleManagerAccess))
+	val usersMenu = Menu(Loc("UsersMenu", Link(List("user"), true, "/user/list"), userMenuLabel, peopleManagerAccess))
 	val homeMenu = Menu(Loc("HomeMenu", Link(List("index"), true, "/index"), "index", Hidden))
+	val plansMenu = Menu(Loc("PlansMenu", Link(List("pricing"), true, pricingUrl), "Planos", Hidden))
+	val ephysioPlansMenu = Menu(Loc("EphysionPlansMenu", Link(List("pricing_ephysio"), true, "/pricing_ephysio"), "Planos", Hidden))
+	val docsMenu = Menu(Loc("DocsMenu", Link(List("docs"), true, "/docs/empty"), "Planos", Hidden))
 
 	def sitemap = SiteMap(
 		homeMenu,
-
-		//Menu.i("a") / "angular_resource",
-//		Menu(Loc("Login", Link(List("login"), true, "/login"),"Login",Hidden)),
-		Menu(Loc("Planos", Link(List("pricing"), true, pricingUrl), "Planos",Hidden)),
-		Menu(Loc("Planos Ephysio", Link(List("pricing_ephysio"), true, "/pricing_ephysio"), "Planos",Hidden)),
-		Menu(Loc("docs", Link(List("docs"), true, "/docs/empty"), "Planos",Hidden)),
+		plansMenu,
+		ephysioPlansMenu,
+		docsMenu,
 		Menu(Loc("LoginEmail", Link(List("login_email"), true, "/login_email"),"Login Email",Hidden)),
 		Menu(Loc("Unidade", Link(List("unit"), true, "/unit"),"Unidades",crudeAccess,Hidden)),
 		Menu(Loc("v2", Link(List("v2"), true, "/v2"),"v2",Hidden)),
