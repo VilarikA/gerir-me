@@ -77,7 +77,8 @@ nav.vr-sidebar .menu {
 		margin-right: 10px;
 	}
 
-	nav.vr-sidebar .menu li.item a {
+	nav.vr-sidebar .menu li.item a,
+	nav.vr-sidebar .menu li.item span:not(.item-label) {
 		cursor: pointer;
 		display: inline-block;
 		height: 44px;
@@ -87,7 +88,8 @@ nav.vr-sidebar .menu {
 		width: 100%;
 	}
 
-	nav.vr-sidebar .menu li.item a:hover {
+	nav.vr-sidebar .menu li.item a:hover,
+	nav.vr-sidebar .menu li.item span:not(.item-label):hover {
 		background-color: var(--primary-dark-color);
 		color: var(--content-color-hover);
 	}
