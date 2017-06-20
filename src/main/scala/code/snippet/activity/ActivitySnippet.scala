@@ -60,7 +60,7 @@ class  ActivitySnippet extends BootstrapPaginatorSnippet[Activity] with SnippetU
 
 	def genders = ((Activity.MALE, "Masculino")::(Activity.FEMALE, "Feminino")::(Activity.BOTH, "Ambos")::Nil).map(t => (t._1,t._2))
 
-	def activitiesForSelect = ("0" ,"Nenhum") :: AuthUtil.company.activities.map(a =>(a.id.is.toString,a.name.is))
+	def activitiesForSelect = ("0" ,"Nenhum") :: AuthUtil.company.activities(false).map(a =>(a.id.is.toString,a.name.is))
 
 	def activitys(xhtml: NodeSeq): NodeSeq = {
 			var id:String = ""
@@ -198,6 +198,7 @@ class  ActivitySnippet extends BootstrapPaginatorSnippet[Activity] with SnippetU
 		    "name=name" #> (SHtml.text(ac.name.is, ac.name(_)))&
 		    "name=short_name" #> (SHtml.text(ac.short_name.is, ac.short_name(_)))&
 		    "name=showInCommand" #> (SHtml.checkbox(ac.showInCommand_?.is, ac.showInCommand_?(_)))&
+		    "name=showInCalendarPub" #> (SHtml.checkbox(ac.showInCalendarPub_?.is, ac.showInCalendarPub_?(_)))&
 		    "name=orderInCommand" #> (SHtml.text(ac.orderInCommand.is.toString, (s:String) => ac.orderInCommand(s.toInt))) &
 		    "name=allowSimultaneos" #> (SHtml.checkbox(ac.allowSimultaneos_?.is, ac.allowSimultaneos_?(_)))&
 		    "name=customernotification" #> (SHtml.checkbox(ac.customernotification_?.is, ac.customernotification_?(_)))&

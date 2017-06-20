@@ -491,15 +491,15 @@ object  TreatmentService extends net.liftweb.common.Logger {
                           )
 	}	
 
-	def activitiesMapByUser(user:User):List[Activity] = {
+	def activitiesMapByUser(user:User, calendarPub:Boolean):List[Activity] = {
 		val company = user.company.obj.get
 		company.userActivityAssociate_?.is match {
 			case true => {
-				val array  = user.activitys.toArray
+				val array  = user.activitys(calendarPub).toArray
 				scala.util.Sorting.quickSort(array)
 				array.toList
 			}
-			case _ => company.activities
+			case _ => company.activities (calendarPub);
 		}
 	}
 	def animalsMapByCustomer(customer:Customer):List[Customer] = {
@@ -510,13 +510,14 @@ object  TreatmentService extends net.liftweb.common.Logger {
 	}
 
 	def activitiesMap:List[Activity] = {
-		AuthUtil.company.activities
+		AuthUtil.company.activities(false)
 	}	
 
 	def activitiesMapForTreatment(treatment_id:String) = {
 		AuthUtil.company.userActivityAssociate_?.is match {
-			case true => Treatment.findByKey(treatment_id.toLong).get.user.obj.get.activitys.map(a => (a.id.is.toString,a.name.is))
-			case _ => AuthUtil.company.activities.map(a => (a.id.is.toString,a.name.is))
+			case true => Treatment.findByKey(treatment_id.toLong).get.
+				user.obj.get.activitys (false).map(a => (a.id.is.toString,a.name.is))
+			case _ => AuthUtil.company.activities(false).map(a => (a.id.is.toString,a.name.is))
 		}
 	}
 

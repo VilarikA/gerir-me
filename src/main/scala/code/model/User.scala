@@ -340,9 +340,21 @@ class User extends  BusinessPattern[User] with UserIdAsString{
     }    
 
     def userActivities = UserActivity.findAll(By(UserActivity.user,this.id))
-    def activitys = {
+
+    def activitys (calendarPub:Boolean) = {
         val activitys = UserActivity.findAll(By(UserActivity.user,this.id))
-        activitys.filter((a) => a.activity.is !=0 && a.activity.obj.get.status.is == StatusConstants.STATUS_OK && a.activity.obj.get.productClass.is == ProductType.Types.Service ).map(_.activity.obj.get) ::: activitys.filter((a) => a.activity.is ==0).map(_.producttype.obj.get.activitys).foldLeft(scala.List[Activity]())(_:::_)
+        if (calendarPub) {
+            activitys.filter((a) => a.activity.is !=0 && 
+                a.activity.obj.get.status.is == StatusConstants.STATUS_OK && 
+                a.activity.obj.get.showInCalendarPub_? && 
+                a.activity.obj.get.productClass.is == ProductType.Types.Service ).
+                map(_.activity.obj.get) ::: activitys.filter((a) => a.activity.is ==0).map(_.producttype.obj.get.activitys).foldLeft(scala.List[Activity]())(_:::_)
+        } else {
+            activitys.filter((a) => a.activity.is !=0 && 
+                a.activity.obj.get.status.is == StatusConstants.STATUS_OK && 
+                a.activity.obj.get.productClass.is == ProductType.Types.Service ).
+                map(_.activity.obj.get) ::: activitys.filter((a) => a.activity.is ==0).map(_.producttype.obj.get.activitys).foldLeft(scala.List[Activity]())(_:::_)
+        }
     }
 
     def updateLocation(lat:String,lng:String,distance:Double){

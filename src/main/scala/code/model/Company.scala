@@ -381,8 +381,18 @@ class Company extends Audited[Company] with PerCompany with IdPK with CreatedUpd
   // to explain status
   object obs extends MappedPoliteString(this,255)
 
-  def activities =
-    Activity.findAllActive(By(Activity.company, this.id), OrderBy(Activity.name, Ascending))
+  def activities (calendarPub:Boolean) = {
+    if (calendarPub) {
+      Activity.findAllActive(
+        By(Activity.company, this.id), 
+        By(Activity.showInCalendarPub_?, true), 
+        OrderBy(Activity.name, Ascending))
+    } else {
+      Activity.findAllActive(
+        By(Activity.company, this.id), 
+        OrderBy(Activity.name, Ascending))
+    }
+  }
 
   def customers = Customer.findAllInCompany()
 
