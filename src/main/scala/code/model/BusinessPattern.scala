@@ -554,6 +554,15 @@ with PerCity{
         if(CompanyUnit.count(By(CompanyUnit.partner,this.id)) > 0){
             throw new RuntimeException("Existe unidade onde este parceiro é ligado!")
         }        
+        if(BpRelationship.count(By(BpRelationship.business_pattern,this.id)) > 0){
+            throw new RuntimeException("Existe relacionamento para este parceiro!")
+        }
+        if(BpRelationship.count(By(BpRelationship.bp_related,this.id)) > 0){
+            throw new RuntimeException("Existe relacionamento para este parceiro!")
+        }
+        if(QuizApplying.count(By(QuizApplying.business_pattern,this.id)) > 0){
+            throw new RuntimeException("Existe questionário/prontuário para este cliente/paciente!")
+        }
         super.delete_!
     }
 

@@ -311,6 +311,8 @@ class  CustomerSnippet extends BootstrapPaginatorSnippet[Customer] with net.lift
 			"name=number" #> (SHtml.text(ac.number.is, ac.number(_)))&
 			"name=complement" #> (SHtml.text(ac.complement.is, ac.complement(_)))&
 			"#img_thumb" #> ac.thumb&
+			"name=manager" #> (SHtml.text(ac.bp_managerName, (a:String) => {}))&
+			"name=indicatedby" #> (SHtml.text(ac.bp_indicatedbyName, (a:String) => {}))&
 			"name=bp_indicatedby" #> (SHtml.text(ac.bp_indicatedby.is.toString, (p:String) => ac.bp_indicatedby(p.toLong)))&
 			"name=bp_manager" #> (SHtml.text(ac.bp_manager.is.toString, (p:String) => { 
 					if(p != "")

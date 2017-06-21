@@ -495,6 +495,9 @@ class User extends  BusinessPattern[User] with UserIdAsString{
     }
 
     override def save() = {
+        if (this.parent_percent != 0.0 && this.parent.isEmpty) {
+            throw new RuntimeException ("Um profissional superior precisa ser informado, caso o percentual de comissão para o superior seja diferente de zero")
+        }
         if (this.is_person_?) {
             if (this.image.is == "" || this.image.is == "empresa.png") {
                 this.image.set ("cliente.png")
