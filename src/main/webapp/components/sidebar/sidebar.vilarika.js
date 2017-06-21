@@ -35,11 +35,10 @@
 			self.$contentWrapper = loadContentWrapper();
 			self.$menuList = loadMenuList();
 
+			populateMenuList();
 			hideSubmenus();
 			addSubItemsClickListener();
 			addSubItemsLeftPadding(self.$root.find("> ul.menu"));
-
-			populateMenuList();
 
 			self.$menuButton.click(toggleSidebar);
 		})();
@@ -132,9 +131,42 @@
 			});
 		}
 
-		function populateMenuList()
+		function populateMenuList($ulParent, listItems)
 		{
+			$ulParent = $ulParent || self.$menuList;
+			listItems = listItems || JSON.parse( localStorage.getItem("menus") ) || [];
+
+			if( listItems.length < 1 )
+				return true;
+
+			var $liItems = [];
 			
+			listItems.map(function(item){
+				
+				var url = item.url || "#";
+				var label = item.label || "";
+				var children = item.children || [];
+				var parentClass = children.length > 1 ? "parent" : "";
+
+				var $item = $(
+					'<li class="item ' + parentClass + '">' +
+					'	<a href="' + url + '">' +
+					'		<span class="item-label">' + label + '</span>' +
+					'	</a>' + 
+					'</li>'
+				);
+
+				if(children.length > 0){
+					$ulChild = $('<ul class="menu"></ul>');
+					populateMenuList($ulChild, children);
+
+					$item.append($ulChild);
+				}
+
+				$liItems.push( $item );
+			});
+
+			$ulParent.append($liItems);
 		}
 
 		function toggleSidebar()
