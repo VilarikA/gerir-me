@@ -103,28 +103,8 @@ object UserCreateActors extends LiftActor {
     val exampletype = ProductType.create.name("Tipo produto exemplo").company(company).createdBy(1).updatedBy(1)
     exampletype.save();
     Product.create.typeProduct(exampletype).name("Produto exemplo").purchasePrice(139.20).salePrice(141.50).minStock(0).commission(10.0).company(company).createdBy(1).updatedBy(1).save()
-    Product.create.name("<b> Conta cliente</b>").purchasePrice(0.0).salePrice(0.0).minStock(0).commission(0.0).company(company).createdBy(1).updatedBy(1).productClass(ProductType.Types.PreviousDebts).save()
-    Product.create.name("<b> Crédito Cliente</b>").purchasePrice(0.0).salePrice(0.0).minStock(0).commission(0.0).company(company).createdBy(1).updatedBy(1).productClass(ProductType.Types.CustomerCredits).save()
-/*
-    val shampoo = ProductType.create.name("Shampoo").company(company)
-    shampoo.save();
-    val condicionador = ProductType.create.name("Condicionador").company(company)
-    condicionador.save();
-    val alisante = ProductType.create.name("Alisante").company(company)
-    alisante.save();
-    Product.create.typeProduct(shampoo).name("Loção Capilar La Roche Posay Kerium Antiqueda 125ml").purchasePrice(139.20).salePrice(141.50).minStock(0).commission(10.0).company(company).save()
-    Product.create.typeProduct(shampoo).name("Shampoo La Roche-Posay Concentrado Anticaspa Kerium DS 125 ml ").purchasePrice(48.50).salePrice(50.50).minStock(0).commission(10.0).company(company).save()
-    Product.create.typeProduct(shampoo).name("Shampoo Payot para Cabelos Grisalhos 300ml").purchasePrice(20.00).salePrice(24.00).minStock(0).commission(10.0).company(company).save()
-
-    Product.create.typeProduct(condicionador).name("Condicionador Extraperfume Éh Cosméstico 300 ml ").purchasePrice(24.00).salePrice(26.50).minStock(0).commission(10.0).company(company).save()
-    Product.create.typeProduct(condicionador).name("Condicionador John Frieda Frizz-Ease Smooth Start Repairing 295ml ").purchasePrice(45.50).salePrice(58.50).minStock(0).commission(10.0).company(company).save()
-    Product.create.typeProduct(condicionador).name("Condicionador Pantene Cor Radiante 400ml").purchasePrice(12.90).salePrice(15.00).minStock(0).commission(10.0).company(company).save()
-
-    Product.create.typeProduct(alisante).name("ALISANTE SALON LINE SUPER COM HIDRÓXIDO DE SÓDIO 346G").purchasePrice(22.80).salePrice(25.50).minStock(0).commission(10.0).company(company).save()
-    Product.create.typeProduct(alisante).name("ALISANTE BEAUTY FLORA ANDIROBA & CUPUAÇU 480G").purchasePrice(25.10).salePrice(28.50).minStock(0).commission(10.0).company(company).save()
-    Product.create.typeProduct(alisante).name("ALISANTE LISA HAIR PROFISSIONAL 3º GERAÇÃO ZERO 550G").purchasePrice(24.05).salePrice(18.00).minStock(0).commission(10.0).company(company).save()
-    Product.create.typeProduct(alisante).name("ALISANTE LISA HAIR PROFISSIONAL 3º GERAÇÃO ZERO 550G").purchasePrice(24.05).salePrice(18.00).minStock(0).commission(10.0).company(company).save()
-*/
+    Product.create.name("Conta Cliente").purchasePrice(0.0).salePrice(0.0).minStock(0).commission(0.0).company(company).createdBy(1).updatedBy(1).productClass(ProductType.Types.PreviousDebts).save()
+    Product.create.name("Crédito Cliente").purchasePrice(0.0).salePrice(0.0).minStock(0).commission(0.0).company(company).createdBy(1).updatedBy(1).productClass(ProductType.Types.CustomerCredits).save()
   }
 
   def createAccount(company:Company) = {
@@ -136,32 +116,6 @@ object UserCreateActors extends LiftActor {
     val extype = ProductType.create.typeClass(ProductType.Types.Service).name("Tipo serviço exemplo").company(company).createdBy(1).updatedBy(1)
     extype.save();
     Activity.create.company(company).name("Serviço exemplo").duration("00:30").typeProduct(extype).salePrice(50.0).commission(50).createdBy(1).updatedBy(1).save()
-/*
-    val cabelo = ProductType.create.typeClass(ProductType.Types.Service).name("Cabelo").company(company)
-    cabelo.save();
-
-    val manicure = ProductType.create.typeClass(ProductType.Types.Service).name("Manicure").company(company)
-    manicure.save();
-
-    val estetica  = ProductType.create.typeClass(ProductType.Types.Service).name("Estética").company(company)
-    estetica.save();
-    
-    Activity.create.company(company).name("Corte Masculino").duration("00:30").typeProduct(cabelo).salePrice(25.0).commission(50).save()
-    Activity.create.company(company).name("Corte Feminino").duration("01:30").typeProduct(cabelo).salePrice(50.0).commission(50).save()
-    Activity.create.company(company).name("Manutenção de Corte Masculino").duration("00:10").typeProduct(cabelo).salePrice(20.0).commission(50).save()
-    Activity.create.company(company).name("Escova Cabelo Grande").duration("01:00").typeProduct(cabelo).salePrice(45.0).commission(50).save()
-    Activity.create.company(company).name("Escova Cabelo Pequeno").duration("00:30").typeProduct(cabelo).salePrice(25.0).commission(50).save()
-
-    Activity.create.company(company).name("Pé.").duration("00:30").typeProduct(manicure).salePrice(12.0).commission(50).save()
-    Activity.create.company(company).name("Mão").duration("00:45").typeProduct(manicure).salePrice(15.0).commission(50).save()
-    Activity.create.company(company).name("Pé e Mão").duration("01:30").typeProduct(manicure).salePrice(25.0).commission(50).save()
-
-    Activity.create.company(company).name("Depilação Buço").duration("00:15").typeProduct(estetica).salePrice(10.0).commission(50).save()
-    Activity.create.company(company).name("Depilação Virilha").duration("00:30").typeProduct(estetica).salePrice(25.0).commission(50).save()
-    Activity.create.company(company).name("Maquiagem Festa").duration("01:30").typeProduct(estetica).salePrice(75.0).commission(50).save()
-    Activity.create.company(company).name("Sobrancelhas").duration("01:30").typeProduct(estetica).salePrice(20.0).commission(50).save()
-    Activity.create.company(company).name("Sobrancelhas Definitivas").duration("03:00").typeProduct(estetica).salePrice(20.0).commission(50).save()
-*/
   }
 
   def createAccountCategoriesForStart (company:Company){
