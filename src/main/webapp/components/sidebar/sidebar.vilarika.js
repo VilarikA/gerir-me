@@ -13,7 +13,6 @@
 	{
 		this.$root = null;
 		this.$listParentLi = [];
-
 		this.$menuButton = null;
 		this.$contentWrapper = null;
 
@@ -29,44 +28,19 @@
 			if( ! rootSelector || ! menuButtonSelector || ! contentWrapperSelector )
 				throw new Error("Constructor parameters are invalid.");
 
-			self.$root = loadRoot();
-			self.$listParentLi = loadListParentLi(self.$root);
-			self.$menuButton = loadMenuButton();
-			self.$contentWrapper = loadContentWrapper();
-			self.$menuList = loadMenuList();
-
 			populateMenuList();
+
+			self.$root = loadElement(rootSelector);
+			self.$listParentLi = self.$root.find("li.item.parent");
+			self.$menuButton = loadElement(menuButtonSelector);
+			self.$contentWrapper = loadElement(contentWrapperSelector);
+
 			hideSubmenus();
 			addSubItemsClickListener();
 			addSubItemsLeftPadding(self.$root.find("> ul.menu"));
 
 			self.$menuButton.click(toggleSidebar);
 		})();
-
-		function loadRoot()
-		{
-			return loadElement(rootSelector);
-		}
-
-		function loadListParentLi($root)
-		{
-			return $root.find("li.item.parent");
-		}
-
-		function loadMenuButton()
-		{
-			return loadElement(menuButtonSelector);
-		}
-
-		function loadContentWrapper()
-		{
-			return loadElement(contentWrapperSelector);
-		}
-
-		function loadMenuList()
-		{
-			return loadElement("[x-menu-list]");
-		}
 
 		function loadElement(selector, exceptionMessage)
 		{
@@ -131,7 +105,7 @@
 
 		function populateMenuList($ulParent, listItems)
 		{
-			$ulParent = $ulParent || self.$menuList;
+			$ulParent = $ulParent || loadElement("[x-sidebar-menu]");
 			listItems = listItems || JSON.parse( localStorage.getItem("menus") ) || [];
 
 			if( listItems.length < 1 )

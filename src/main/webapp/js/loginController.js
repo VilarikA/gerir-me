@@ -28,12 +28,13 @@ var LoginController = function($scope, $window, $http, LocalStorage){
 
 	function storeMenus(menus)
 	{
+		// Temporally variable
 		menus = [{
 			icon: "calendar",
 			label: "Profissionais",
 			children: [{
 				label: "Profissionais",
-				url: "/users/list"
+				url: "/user/list"
 			}, 
 			{
 				label: "Grupos",
