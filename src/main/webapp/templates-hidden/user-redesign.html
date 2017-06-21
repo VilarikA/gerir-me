@@ -251,7 +251,9 @@
 	<!-- =============================== 
 		 CONTENT WRAPPER 
 	================================ -->
-	<div id="content-wrapper" class="vr-content-wrapper">
+	<div 
+		x-vr-content-wrapper 
+		class="vr-content-wrapper">
 		
 		<!-- =============================== 
 			 HEADER 
@@ -338,11 +340,7 @@
 
 <script>
 	$(document).ready(function(){
-		(new Vilarika.Component.Sidebar(
-			"#vr-sidebar", 
-			"#sidebar-button",
-			"#content-wrapper"
-		));
+		(new Vilarika.Component.Sidebar());
 	});
 </script>
 </body>

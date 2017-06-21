@@ -5,11 +5,7 @@
 
 (function(){
 
-	function SidebarComponent(
-		rootSelector, 
-		menuButtonSelector, 
-		contentWrapperSelector
-	)
+	function SidebarComponent()
 	{
 		this.$root = null;
 		this.$listParentLi = [];
@@ -25,21 +21,29 @@
 
 		(function initialize()
 		{
-			if( ! rootSelector || ! menuButtonSelector || ! contentWrapperSelector )
-				throw new Error("Constructor parameters are invalid.");
+			populateSidebar();
 
-			populateMenuList();
-
-			self.$root = loadElement(rootSelector);
+			self.$root = loadElement("[x-vr-sidebar]");
 			self.$listParentLi = self.$root.find("li.item.parent");
-			self.$menuButton = loadElement(menuButtonSelector);
-			self.$contentWrapper = loadElement(contentWrapperSelector);
+			self.$menuButton = loadElement("[x-vr-sidebar-button]");
+			self.$contentWrapper = loadElement("[x-vr-content-wrapper]");
 
 			hideSubmenus();
 			addSubItemsClickListener();
 			addSubItemsLeftPadding(self.$root.find("> ul.menu"));
 
 			self.$menuButton.click(toggleSidebar);
+
+			self.$root.find("li.item").click(function(){
+				if( isSidebarClosed() )
+					openSidebar();
+
+				if( $(this).hasClass("parent") ){
+					$(this).toggleClass("item-open");
+					$(this).find("> ul.menu").slideToggle(300);
+				}
+			});
+
 		})();
 
 		function loadElement(selector, exceptionMessage)
@@ -57,34 +61,11 @@
 			self.$listParentLi.removeClass("item-open");
 		}
 
-		function addSubItemsClickListener()
-		{
-			var $lis = self.$root.find("li.item");
-			$lis.each(function()
-			{
-				var $li = $(this);
-
-				$li.click(function()
-				{
-					if(isSidebarClosed())
-						openSidebar();
-
-					if( $li.hasClass("parent") )
-					{
-						$(this).toggleClass("item-open");
-						$(this).find("> ul.menu").slideToggle(300);
-					}
-				});
-			});
-		}
-
 		function addSubItemsSlideEffect()
 		{
-			self.$listParentLi.each(function(){
-				$(this).click(function(){
-					$(this).toggleClass("item-open");
-					$(this).find("> ul.menu").slideToggle(300);
-				});
+			self.$listParentLi.click(function(){
+				$(this).toggleClass("item-open");
+				$(this).find("> ul.menu").slideToggle(300);
 			});
 		}
 
@@ -103,9 +84,9 @@
 			});
 		}
 
-		function populateMenuList($ulParent, listItems)
+		function populateSidebar($ulParent, listItems)
 		{
-			$ulParent = $ulParent || loadElement("[x-sidebar-menu]");
+			$ulParent = $ulParent || loadElement("[x-vr-sidebar-menu]");
 			listItems = listItems || JSON.parse( localStorage.getItem("menus") ) || [];
 
 			if( listItems.length < 1 )
@@ -130,7 +111,7 @@
 
 				if(children.length > 0){
 					$ulChild = $('<ul class="menu"></ul>');
-					populateMenuList($ulChild, children);
+					populateSidebar($ulChild, children);
 
 					$item.append($ulChild);
 				}
