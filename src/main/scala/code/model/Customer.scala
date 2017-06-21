@@ -212,6 +212,23 @@ class Customer extends BusinessPattern[Customer]{
         }
     }
 
+    def bp_managerName : String = {
+        if (bp_manager != 0) {
+          val ac = Customer.findByKey(bp_manager).get
+          ac.name;
+        } else {
+          ""
+        }
+    }
+    def bp_indicatedbyName : String = {
+        if (bp_indicatedby != 0) {
+          val ac = Customer.findByKey(bp_indicatedby).get
+          ac.name;
+        } else {
+          ""
+        }
+    }
+
     override def save() = {
         if (this.is_person_?) {
             if (this.image.is == "" || this.image.is == "empresa.png") {

@@ -590,27 +590,33 @@ $(function() {
 //  $("#quiz_addd16").click(function() {
     //alert ("vaiii -- cliquei");
   });
+/*
+  Mudei a estratégia estava, o timeout com change era para mostrar o nome
+  dos parceiros qdo registro já existia, entrava em loop em determindas 
+  situações qdo os 2 parceiros era exibidos na tela. ficava flicando um e outro
+  e parece que ao salvar flicando ora salva um ora outro.
+  criei metodos no customer para trazer o nome pronto caso já existam e setei 
+  via snippet, se o parceiro for alterado seta o nome normalmente. O timeout 
+  ficou só no bp_manager que é menos comum que o indicated_by
+
+  observar - rigel 20/06/2017
+
   setTimeout(function() { //toIndicatedBy
     if ($('#bp_indicatedby').val() != "" && $('#bp_indicatedby').val() != "0") {
       $('#bp_indicatedby').change();
     }
+*/
     if ($('#bp_manager').val() != undefined) {
       setTimeout(function() { //toManager
         if ($('#bp_manager').val() != "" && $('#bp_manager').val() != "0") {
           $('#bp_manager').change();
-/*
-          return $.post("/customer/search/" + $('#bp_manager').val(), function(results) {
-              //alert(eval(results));
-              $('#namemanager').val(eval(results));
-              //$('#manager').val(eval(results));
-              //$("#manager").html(eval(results));
-              //$('#namemanager').change();
-          })
-*/
         }
-      }, 1000);
+      }, 600);
     }
+/*/
   }, 100);
+*/
+
   $("#bankaccount_bank").bankField();
   $("#quiz_quiz").quizField();
   $("#bpmonthly_product").activityField();

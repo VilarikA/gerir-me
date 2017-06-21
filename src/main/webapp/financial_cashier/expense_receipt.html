@@ -6,6 +6,7 @@
     var idcustomer1;
     $("#start").val("1");
     $("#end").val(new Date().getDate());    
+    var hasPetSystem = $('.has-pet-system').length > 0;
     var fields = [];
     fields[0] = "none";
     fields[1] = "none";
@@ -26,10 +27,23 @@
     fields[16] = "none";
     fields[17] = "none";
     fields[18] = "none";
-    fields[23] = "none";
-    fields[24] = "none";
-    fields[25] = "none";
-    fields[26] = "none";
+    // 19 product name
+    if (hasPetSystem) {
+    // 20 animal pet - se tiver
+    } else {
+      fields[20] = "none";
+    }
+    // 21 preço unitario
+    // 22 qtde
+    // 23 valor
+    var totalcol = 24;
+    fields[totalcol] = "none";
+    var citycol = 25;
+    fields[citycol] = "none";
+    var statecol = 26
+    fields[statecol] = "none";
+    var idcol = 27;
+    fields[idcol] = "none";
     var url = "/treatments/receipt_customer_unit";
     $("#command").html(gup("command"));
     var date =  gup("date") || getDateBr(new Date());
@@ -40,7 +54,7 @@
         var document_company = data[0][10];
         $("#document_company").html(document_company);
         // não é exeibido usado para envio de email
-        idcustomer1 = data[0][26];
+        idcustomer1 = data[0][idcol];
         var customer = data[0][0];
         $("#customer").html(customer);
         var phone = data[0][1];
@@ -59,11 +73,11 @@
         $("#cpostal_code").html(cpostal_code);
         var cextenso = data[0][8];
         $("#cextenso").html(cextenso);
-        var ccity = data[0][24];
+        var ccity = data[0][citycol];
         $("#ccity").html(ccity);
-        var cstate = data[0][25];
+        var cstate = data[0][statecol];
         $("#cstate").html(cstate);
-        var ctotal = data[0][23];
+        var ctotal = data[0][totalcol];
         $("#ctotal").html(ctotal);
         var uname = data[0][9];
         $("#uname").html(uname);
@@ -111,12 +125,13 @@
     // window.print(); aqui nao garante que o dado tá pronto
   });  
   </script>  
+  <input type="hidden" class="has-pet-system lift:SecuritySnippet.isEbellepetSystem" value="1">
   <table id="grid" class="zebra-striped print_command_table">
       <thead>
         <tr>
           <td colspan="6">
-            <span class="lift:CompanySnippet.logo"> </span>
             <center>
+              <span class="lift:CompanySnippet.logo"> </span>
               <style>
                 h3 {color:black;}
               </style>
@@ -132,14 +147,14 @@
             <span>Recebemos de </span>
             <input type="hidden" id="idcustomer" >
             <span id="customer"></span> - <span id="phone"></span>
-            <br>
+            <br/><br/>
             Cpf : <span id="document"></span>
             <span id="cstreet"></span>, <span id="cnumber_c"></span> <span id="ccomplement"></span>
-            <br>
+            <br/><br/>
             <span id="cdistrict"></span> - <span id="cpostal_code"></span>
-            <br>
+            <br/><br/>
             <span id="ccity"></span> - <span id="cstate"></span><br/>
-            <br/>
+            <br/><br/>
             <span style="font-size:18px;">
             O Valor de R$ <span id="ctotal"></span>
             (<span id="cextenso"></span>)<br/><br/>
@@ -158,8 +173,9 @@
         </tr>
         <tr>
           <td>Produtos/<span data-i18n='Serviços'></span></td>
-          <td>Qtde</td>
+          <td class="lift:SecuritySnippet.isEbellepetSystem">Pet</td>
           <td>Preço</td>
+          <td>Qtde</td>
           <td>Total</td>
         </tr>
       </thead>
@@ -195,9 +211,9 @@
           <td colspan="6">
             <center>
             <br/><br/><br/>
-            __________________________________________________<br/> 
-            Local: <span id="ucity"></span> - <span id="ustate"></span><br/>
-            Data : <span id="udate"></span><br/>
+            __________________________________________________<br/><br/> 
+            Local: <span id="ucity"></span> - <span id="ustate"></span><br/><br/>
+            Data : <span id="udate"></span><br/><br/>
             <span id="uname"></span> - <span id="udoc"></span>
             <br>
             </center>
