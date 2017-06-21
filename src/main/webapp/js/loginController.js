@@ -39,6 +39,18 @@ var LoginController = function($scope, $window, $http, LocalStorage){
 				label: "Grupos",
 				url: "/group/list"
 			}]
+		},
+		{
+			icon: "list",
+			label: "Serviços",
+			children: [{
+				label: "Serviços",
+				url: "/activity/list"
+			},
+			{
+				label: "Tipos",
+				url: "/activity/list_type"
+			}]
 		}];
 
 		LocalStorage.set("menus", menus);

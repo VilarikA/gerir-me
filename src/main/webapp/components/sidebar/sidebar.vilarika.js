@@ -126,8 +126,6 @@
 					var leftPadding = (existentPadding + SUBITEM_LEFT_SPACE);
 					$a.css("padding-left", leftPadding + "px");
 				});
-
-				//addSubItemsLeftPadding($li.find("> ul.menu"));
 			});
 		}
 
