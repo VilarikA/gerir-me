@@ -44,6 +44,8 @@
     fields[statecol] = "none";
     var idcol = 27;
     fields[idcol] = "none";
+    var uphonecol = 28
+    fields[uphonecol] = "none";
     var url = "/treatments/receipt_customer_unit";
     $("#command").html(gup("command"));
     var date =  gup("date") || getDateBr(new Date());
@@ -89,6 +91,8 @@
         $("#ustate").html(ustate);
         var udate = data[0][18];
         $("#udate").html(udate);
+        var uphone = data[0][uphonecol];
+        $("#uphone").html(uphone);
         //window.print();
       });
 
@@ -136,30 +140,30 @@
                 h3 {color:black;}
               </style>
               <h3><span class="lift:CompanySnippet.name"> </span></h3>
-              <p></p>
-              <p><h3><span class="lift:CompanySnippet.phone"> </span></h3></p>
-              <p><h3><span id="document_company"></span></h3></p>
+              <h3><span id="uphone"></span></h3>
+              <h3><span id="document_company"></span></h3>
             </center>
           </td>
         </tr>
         <tr>
           <td colspan="6">
-            <span>Recebemos de </span>
+            <span style="font-size:14px;">Recebemos de </span>
             <input type="hidden" id="idcustomer" >
-            <span id="customer"></span> - <span id="phone"></span>
+            <span style="font-size:14px;" id="customer"></span> - <span style="font-size:14px;" id="phone"></span>
             <br/><br/>
-            Cpf : <span id="document"></span>
-            <span id="cstreet"></span>, <span id="cnumber_c"></span> <span id="ccomplement"></span>
+            Cpf : <span style="font-size:14px;" id="document"></span>
+            <span style="font-size:14px;" id="cstreet"></span>, <span style="font-size:14px;" id="cnumber_c"></span> <span style="font-size:14px;" id="ccomplement"></span>
             <br/><br/>
-            <span id="cdistrict"></span> - <span id="cpostal_code"></span>
+            <span style="font-size:14px;" id="cdistrict"></span> - <span style="font-size:14px;" id="cpostal_code"></span>
             <br/><br/>
-            <span id="ccity"></span> - <span id="cstate"></span><br/>
+            <span style="font-size:14px;" id="ccity"></span> - <span style="font-size:14px;" id="cstate"></span><br/>
             <br/><br/>
             <span style="font-size:18px;">
             O Valor de R$ <span id="ctotal"></span>
             (<span id="cextenso"></span>)<br/><br/>
             </span>
-            Referente a Comanda : <span id="command"></span> - <span id="week_day"></span>  <span id="date"></span>
+            <span style="font-size:14px;">
+            Referente a Comanda : </span><span style="font-size:14px;" id="command"></span> - <span style="font-size:14px;" id="week_day"></span>  <span style="font-size:14px;" id="date"></span>
           </td>
         </tr>
 <!--
