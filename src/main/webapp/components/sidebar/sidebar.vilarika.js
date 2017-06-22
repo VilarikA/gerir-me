@@ -29,21 +29,13 @@
 			self.$contentWrapper = loadElement("[x-vr-content-wrapper]");
 
 			hideSubmenus();
-			addSubItemsClickListener();
 			addSubItemsLeftPadding(self.$root.find("> ul.menu"));
 
 			self.$menuButton.click(toggleSidebar);
 
 			self.$root.find("li.item").click(function(){
-				if( isSidebarClosed() )
-					openSidebar();
-
-				if( $(this).hasClass("parent") ){
-					$(this).toggleClass("item-open");
-					$(this).find("> ul.menu").slideToggle(300);
-				}
+				toggleSubmenu( $(this) );
 			});
-
 		})();
 
 		function loadElement(selector, exceptionMessage)
@@ -84,54 +76,103 @@
 			});
 		}
 
-		function populateSidebar($ulParent, listItems)
+		function populateSidebar($parentUl, childrenItems)
 		{
-			$ulParent = $ulParent || loadElement("[x-vr-sidebar-menu]");
-			listItems = listItems || JSON.parse( localStorage.getItem("menus") ) || [];
+			$parentUl = $parentUl || loadElement("[x-vr-sidebar-menu]");
+			childrenItems = childrenItems || JSON.parse( localStorage.getItem("menus") ) || [];
 
-			if( listItems.length < 1 )
-				return true;
+			if( childrenItems.length < 1 )
+				return;
 
-			var $liItems = [];
-			
-			listItems.map(function(item){
-				
-				var url = item.url || "#";
-				var label = item.label || "";
-				var children = item.children || [];
-				var parentClass = children.length > 1 ? "parent" : "";
+			var $items = [];
 
-				var $item = $(
-					'<li class="item ' + parentClass + '">' +
-					'	<a href="' + url + '">' +
-					'		<span class="item-label">' + label + '</span>' +
-					'	</a>' + 
-					'</li>'
-				);
+			childrenItems.map(function(item){
 
-				if(children.length > 0){
-					$ulChild = $('<ul class="menu"></ul>');
-					populateSidebar($ulChild, children);
+				var $li = createLi(item);
+				var $a = createA(item);
+				var $label = createLabel(item);
 
-					$item.append($ulChild);
+				if( item.icon )
+					$a.append( createIcon(item) );
+
+				$a.append($label);
+				$li.append($a);
+
+				if( item.children && item.children.length > 0 ){
+					var $ul = createUl();
+					populateSidebar($ul, item.children);
+
+					$li.append($ul);
 				}
 
-				$liItems.push( $item );
+				$items.push($li);
 			});
 
-			$ulParent.append($liItems);
-		}
+			$parentUl.append($items);
 
-		function toggleSidebar()
-		{
-			if( isSidebarClosed() ){
-				openSidebar();
-			} else { 
-				closeSidebar();
-				hideSubmenus();
+			function createLi(item)
+			{
+				var $li = $('<li class="item"></li>');
+				if( item.children && item.children.length > 0 )
+					$li.addClass("parent");
+
+				return $li;
+			}
+
+			function createA(item)
+			{
+				var $a = $('<a></a>');
+				if( item.url )
+					$a.attr("href", item.url);
+
+				return $a;
+			}
+			
+			function createIcon(item)
+			{
+				return $('<i class="fa fa-' + item.icon + '"></i>');
+			}
+
+			function createLabel(item)
+			{
+				return $('<span class="item-label">' + item.label + '</span>');
+			}
+
+			function createUl()
+			{
+				return $('<ul class="menu"></ul>');
 			}
 		}
 
+		/**
+		 * Toggle the given parent's submenu.
+		 * 
+		 * @param {*} $clickedParent
+		 */
+		function toggleSubmenu($clickedParent)
+		{
+			if( isSidebarClosed() )
+				openSidebar();
+
+			if( $clickedParent.hasClass("parent") ){
+				$clickedParent.toggleClass("item-open");
+				$clickedParent.find("> ul.menu").slideToggle(300);
+			}
+		}
+
+		/**
+		 * Toggle sidebar's open state.
+		 */
+		function toggleSidebar()
+		{
+			isSidebarClosed() ?
+				openSidebar() :
+				closeSidebar();
+		}
+
+		/**
+		 * Checks whether the sidebar is closed or not.
+		 */
 		function isSidebarClosed()
 		{
 			return self.$root.hasClass(SIDEBAR_CLOSED_CLASS);
@@ -147,6 +188,8 @@
 		{
 			self.$root.addClass(SIDEBAR_CLOSED_CLASS);
 			self.$contentWrapper.addClass(SIDEBAR_CLOSED_CLASS);
+
+			hideSubmenus();
 		}
 
 		return {
