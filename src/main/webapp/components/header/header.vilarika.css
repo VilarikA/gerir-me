@@ -1,15 +1,18 @@
 .vr-header {
 	--background-color-normal: #fff;
+	--border-color-normal: #d6d6d6;
 	--primary-color-normal: #1ab394;
 	--content-color-normal: #fff;
 
 	background-color: var(--background-color-normal);
+	border-bottom: 1px solid var(--border-color-normal);
 	height: 60px;
 	padding: 8px 15px;
 }
 
 .vr-header .menu-button {
 	border: 1px solid transparent;
+	display: inline-block;
 	height: 38px;
 	padding: 11px 8px;
 	width: 38px;
@@ -24,4 +27,28 @@
 		height: 3px;
 		margin-bottom: 3px;
 		width: 20px;
+	}
+
+.vr-header .navbar-right {
+	margin-right: 0;
+}
+
+.vr-header .dropdown-toggle {
+	border: 1px solid var(--background-color-normal);
+	padding: 10px;
+}
+
+	.vr-header .dropdown-toggle:hover {
+		background: none;
+		border: 1px solid var(--border-color-normal);
+		border-radius: 5px;
+	}
+
+	.vr-header .dropdown-toggle * {
+		vertical-align: middle;
+	}
+
+	.vr-header .dropdown-toggle img {
+		border-radius: 50%;
+		margin-right: 3px;
 	}
