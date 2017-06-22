@@ -38,8 +38,17 @@
 			});
 		})();
 
+		/**
+		 * Load an element from DOM structure and validates if 
+		 * it exists.
+		 * 
+		 * @param {*} selector 
+		 * @param {*} exceptionMessage 
+		 */
 		function loadElement(selector, exceptionMessage)
 		{
+			exceptionMessage = exceptionMessage || "Not a valid DOM element";
+
 			var $element = $(selector);
 			if( ! $element || $element.length < 1 )
 				throw new Error(exceptionMessage);
@@ -47,20 +56,21 @@
 			return $element;
 		}
 
+		/**
+		 * Hide all submenus which are open.
+		 */
 		function hideSubmenus()
 		{
 			self.$listParentLi.find("ul.menu").hide();
 			self.$listParentLi.removeClass("item-open");
 		}
 
-		function addSubItemsSlideEffect()
-		{
-			self.$listParentLi.click(function(){
-				$(this).toggleClass("item-open");
-				$(this).find("> ul.menu").slideToggle(300);
-			});
-		}
-
+		/**
+		 * Add left space on each subitem, creating a hierarchical
+		 * design.
+		 * 
+		 * @param {*}  
+		 */
 		function addSubItemsLeftPadding($itemsParent)
 		{
 			$itemsParent.find("> li.item.parent").each(function(){
@@ -76,6 +86,12 @@
 			});
 		}
 
+		/**
+		 * Populate the sidebar with menu options stored in Local Storage.
+		 * 
+		 * @param {*}  
+		 * @param {*} childrenItems 
+		 */
 		function populateSidebar($parentUl, childrenItems)
 		{
 			$parentUl = $parentUl || loadElement("[x-vr-sidebar-menu]");
