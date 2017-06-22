@@ -470,6 +470,70 @@ object BusinessRulesUtil{
 
     }
 
+    def dv_cpf (as_cpf : String):Boolean = {
+      // Descrição : Função para consistência de valores de CPF, através de
+      //             método próprio. 
+      //
+      // Sintax....: f_Valida_CPF (as_cpf_aux) 
+      //
+      // Argumentos: as_cpf_aux -> String contendo o número do CPF que se deseja
+      //                       consistir.
+      //
+      // Retorno...: TRUE ou FALSE, dependendo se o número estiver OK ou não.
+      //
+      // 24/10/01 - Patrícia - Verifica CPF que passa na conferência dos dígitos, porém é inválido
+      //////////////////////////////////////////////////////////////////////////
+
+      var li_i = 1 
+      var li_dig = new Array[Int](10)
+      var li_som = 0;
+      var li_pridig = 0;
+      var li_segdig = 0;
+      var as_cpf_aux = clearString(as_cpf);
+
+      for (li_i <- 1 to 9) {
+        /* Verifica CPF que passa na conferência dos dígitos, porém é inválido */
+        /* Ex: 11111111111, 22222222222, 33333333333, etc */
+
+        if (as_cpf_aux.trim == "".padTo (11,li_i.toString).mkString) {
+           return false
+        }
+        //li_dig[li_i] = Integer(Mid(as_cpf_aux,li_i,1))
+        li_dig(li_i) = as_cpf_aux.slice (li_i-1,li_i).toInt;
+      }
+
+      li_som = 10*li_dig(1) + 9*li_dig(2) + 8*li_dig(3) + 
+           7*li_dig(4) + 6*li_dig(5) + 5*li_dig(6) + 
+           4*li_dig(7) + 3*li_dig(8) + 2*li_dig(9);
+
+      //li_pridig = 11 - mod(li_som,11)
+      li_pridig = 11 - (li_som % 11);
+
+      if (li_pridig > 9) {
+        li_pridig = 0;
+      }
+
+      li_som = 11*li_dig(1) + 10* li_dig(2) + 9*li_dig(3) + 
+           8*li_dig(4) + 7*li_dig(5) + 6*li_dig(6) +
+           5*li_dig(7) + 4*li_dig(8) + 3*li_dig(9) + 
+           2*li_pridig;
+
+      //li_segdig = 11 - Mod(li_som,11)
+      li_segdig = 11 - (li_som % 11);
+
+      if (li_segdig > 9) {
+        li_segdig = 0
+      }
+      // Testa dígitos informados contra dígitos calculados, retornando o
+      // resultado da validação:
+      if ((li_pridig == as_cpf_aux.slice (10-1,10).toInt) &&
+            (li_segdig == as_cpf_aux.slice (11-1,11).toInt)) {
+        true
+      } else {
+        false
+      }
+    }
+
     def dv_modulo_11 (as_numero_str:String) = {
 
       var lc_numero_str = as_numero_str

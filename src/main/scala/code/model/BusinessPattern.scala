@@ -324,6 +324,12 @@ with PerCity{
         this.is_person_?.set(false)
         this.is_customer_?.set(false)
       }
+      if (document != "") {
+        if (!BusinessRulesUtil.dv_cpf (document)) {
+          throw new RuntimeException("CPF Inválido!")
+        }
+      }
+
       if (bp_manager == 0 && bp_indicatedby == 0 && is_animal_?) {
         // pelo menos um tem que ser informado
         throw new RuntimeException("Não é permitido cadastrar Pet sem tutor e quem indicou")
