@@ -118,6 +118,9 @@
 					var $ul = createUl();
 					populateSidebar($ul, item.children);
 
+					var $arrow = createArrow();
+					$a.append($arrow);
+
 					$li.append($ul);
 				}
 
@@ -157,6 +160,11 @@
 			function createUl()
 			{
 				return $('<ul class="menu"></ul>');
+			}
+
+			function createArrow()
+			{
+				return $('<i class="fa arrow"></i>');
 			}
 		}
 
