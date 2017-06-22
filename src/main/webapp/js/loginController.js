@@ -28,7 +28,12 @@ var LoginController = function($scope, $window, $http, LocalStorage){
 
 	function storeMenus(menus)
 	{
-		// Temporally variable
+		/*
+		 * This is a temporally variable approach 
+		 * which overrides 'menus' var.
+		 * 
+		 * These menus should come from server's response.
+		 */
 		menus = [{
 			icon: "calendar",
 			label: "Profissionais",
