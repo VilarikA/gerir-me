@@ -116,7 +116,23 @@ with PerCity{
     object document_state extends MappedPoliteString(this,20) // inscrição estadual
 
     object official_occupation extends MappedLong(this) // CBO criar tabela e FK
-    object council extends MappedLong(this) // conselho do profissional crm crefito
+    object council extends MappedLong(this){
+      // conselho do profissional crm crefito
+      override def defaultValue = {
+        if (AuthUtil.company.appType.isEdoctus) {
+          6
+        } else if (AuthUtil.company.appType.isEsmile) {
+          9
+        } else if (AuthUtil.company.appType.isEbellepet) {
+          12
+        } else if (AuthUtil.company.appType.isEphysio) {
+          5
+        } else {
+          0
+        }
+      }
+
+    }
     object document_council extends MappedPoliteString(this,20) // inscrição no conselho
     object document_offsale extends MappedPoliteString(this,20) // numero no conveio cliente
     object date_offsale extends EbMappedDate(this){ // validade da carteira do convenio cliente
