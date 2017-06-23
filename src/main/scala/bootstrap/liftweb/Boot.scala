@@ -473,7 +473,7 @@ class Boot {
     LiftRules.liftRequest.append { 
       case Req("favicon" :: Nil, "ico", GetRequest) => false
       case Req(_, "css", GetRequest) => false 
-      case Req(_, "js", GetRequest) => false 
+      case Req(_, "js", GetRequest) => false
     }
     
     LiftRules.liftRequest.append { 
@@ -482,7 +482,7 @@ class Boot {
       case Req("comet_request" :: _, _, _) => true
       case Req("favicon" :: Nil, "ico", GetRequest) => false
       case Req(_, "css", GetRequest) => false 
-      case Req(_, "js", GetRequest) => false 
+      case Req(_, "js", GetRequest) => false
     }
   */
   LiftRules.supplimentalHeaders = s => s.addHeaders(

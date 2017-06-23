@@ -1,4 +1,20 @@
-<nav class="vr-sidebar">
+
+<script src="/js/sidebar/sidebar.vilarika.js"></script>
+
+<!--
+<script>
+	$(document).ready(function(){
+		(new VrSidebarComponent("#vr-sidebar"));
+	});
+</script>
+-->
+
+<!-- =============================== 
+     CONTENT CONTAINER
+================================ -->
+<nav class="vr-sidebar" id="vr-sidebar">
+
+	<!-- Header -->
 	<div class="header">
 		<div class="picture">
 			<img src="https://www.youth4work.com/Images/Users/User-default-image-boy.png"/>
@@ -8,32 +24,31 @@
 		</div>
 	</div>
 
+	<!-- Menu List -->
 	<ul class="menu">
-		<!-- Agenda -->
+
 		<li><a href="#">Agenda</a></li>
 
-		<!-- Professionals -->
 		<li class="parent">
 			<a href="#">Profissionais</a>
+
 			<ul class="menu">
 				<li><a href="#">Profissionais</a></li>
 				<li><a href="#">Grupos</a></li>
 			</ul>
 		</li>
 
-		<!-- Customers -->
-		<li class="parent"><a href="#">Clientes</a></li>
+		<li><a href="#">Clientes</a></li>
 
-		<!-- Services -->
 		<li class="parent">
 			<a href="#">Serviços</a>
+
 			<ul class="menu">
 				<li><a href="#">Serviços</a></li>
 				<li><a href="#">Tipos</a></li>
 			</ul>
 		</li>
 
-		<!-- .. -->
 		<li class="parent">
 			<a href="#">Estoque</a>
 		</li>

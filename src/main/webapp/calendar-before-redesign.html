@@ -1,0 +1,367 @@
+<div id="main" class="lift:surround?with=calendar_true;at=content">
+	<script type="text/javascript" src="/js/event_busy_controller.js?_v25042015_"></script>
+	<script type="text/javascript" src="/js/calendar/CalendarManager.js?_v25042015_"></script>
+	<script type="text/javascript" src="/js/calendar/TreatmentStatusManager.js?_v25042015_"></script>
+	<script type="text/javascript" src="/js/calendar/TreatmentManger.js?_v25042015_"></script>
+	<script type="text/javascript" src="/js/calendar/CalendarScreen.js?_v25042015_"></script>
+	<script type="text/javascript" src="/js/calendar/calendarUtil.js?_v25042015_"></script>
+	<script type="text/javascript" src='/js/default/animal.js'>
+	</script>
+	<script type="text/javascript" src="/js/calendar/calendar.js?_v06012016_"></script>
+	<script type="text/javascript">
+/*
+	$("#pet_add_button").click(function() {
+		// acrescentei este parent aqui - as vezes inseria cliente na bola
+		// verde e não mostrava o nome
+		parent_pet_search = $(this).parent().parent();
+		$("#pet_rapid_add").modal({
+			"backdrop": true,
+			'keyboard': true,
+			'show': true
+		});
+	});
+*/
+	</script>
+	<span class='row'>
+		<span class='span16' style='width: 100%'>
+			<div class="clearfix ">
+				<div class="input">
+					<div class="inline-inputs">
+						<span class='calendar-filter lift:SecuritySnippet.hasUnitModule'>
+							<span class='label-calendar'>
+								Unidade : 	
+							</span class='label-calendar'>
+							<span style="position: relative; bottom: 0; top: -10px;">
+								<select class="notselect2" name="units" id='units'></select>
+							</span>
+						</span>
+						<span class='calendar-filter hide_mobile'>
+							<span class='label-calendar'>
+								Grupos : 	
+							</span class='label-calendar'>						
+							<select class="notselect21" name="groups" id='groups'></select>
+						</span>
+						<span class='calendar-filter'>
+							<span class='label-calendar'>
+								<span data-i18n='Profissional'></span> : 	
+							</span class='label-calendar'>						
+							<select class="notselect21" multiple="true" name="user" id='user'></select>
+							<!--<span class="label-calendar"> 
+								<button class="btn" id="show_conflits" alt='Mostrar conflitos'>
+									<img src="/images/conf_commision.png" style="width: 16px;"/>
+									Most. Conf
+								</button>
+							</span> -->
+							<span class="label-calendar hide_mobile">
+								<button class="btn" id="toggle_interval" alt='Alternar intervalo'>								
+									<img src="/images/open.png" style="width: 16px;"/>
+									Alternar intervalo
+								</button>
+							</span>
+						</span>
+						<span class='calendar-filter hide_mobile'>
+							<a data-original-title="Informação" data-content="clique para abrir a documentação" data-help-url='/docs/agenda.html' rel="popover" class="_popover_basic _help">
+								<img src="/images/info.gif" width="20">
+							</a>
+						</span>		                  	
+					</div>
+				</div>
+			</div>
+		</span>
+	</span>
+	<div id="calendar"></div>
+	<span class='lift:UserSnippet.usersJsonFromCalendar'>
+	</span>
+	<span class="lift:comet?type=TrasTratmentServerListener">
+	</span>
+	<div id="treatment_class" class="modal hide fade" style="">
+		<div class="modal-header" style="border-bottom:none">
+			<a href="#" class="close">&times;</a>
+			<h3 style="position: relative;top: 28px;margin: auto;margin-left: auto;margin-right: auto;text-align: center;">
+				Lista de <span data-i18n='Clientes'></span>
+			</h3>
+		</div>
+		<div class="modal-body ">
+			<div class="row">
+				<span class='span16'>
+					<table id="table_treatment_class" class="bordered-table zebra-striped">
+						<thead>
+							<th><span data-i18n='Cliente'></span></th>
+							<th>Status</th>
+							<th>Ação</th>
+						</thead>
+						<tbody>
+						</tbody>
+					</table>
+				</span>	
+			</div>
+		</div>
+	</div>
+	<div id="treatment_add" class="modal hide fade" style="">
+		<div class="modal-header" style="border-bottom:none">
+			<a href="#" class="close">&times;</a>
+			<h3 class='hide_mobile' style="position: relative;margin: auto;margin-left: 10px;margin-right: 10px;text-align: center;">
+				Adicionar Atendimento <span class="lift:CompanySnippet.thumb"> </span>
+			</h3>
+			<ul class="tabs">
+				<li class="dropdown" data-dropdown="dropdown">
+					<a href="#" class="dropdown-toggle btn">Status</a>
+					<ul class="dropdown-menu">
+						<li class='hide_on_paid'>
+							<a id="customer_preopen" type="button" >
+								<img src="/images/treatment_preopen1.png" style="width: 16px;">
+								Pré Agendado
+							</a>	
+						</li>
+						<li class='hide_on_paid'>
+							<a id="customer_open" type="button" >
+								<img src="/images/treatment_open1.png" style="width: 16px;">
+								Agendado
+							</a>	
+						</li>
+						<li class="hide_on_paid">
+							<a class="" id="customer_confirmed" type="button">
+								<img src="/images/treatment_confirmed1.png" style="width: 16px;">
+								Confirmado	
+							</a>
+						</li>
+						<li class="hide_on_paid">
+							<a class="" id="customer_arrived" type="button">
+								<img src="/images/treatment_arrived1.png" style="width: 16px;">
+								Chegou
+							</a>
+						</li>
+						<li class="divider"></li>
+						<li class='hide_on_paid'>
+							<a class="" id="customer_ready" type="button">
+								<img src="/images/treatment_ready1.png" style="width: 16px;">
+								Atendido
+							</a>			            	
+						</li>
+						<li class='hide_on_paid'>
+							<a class="" id="customer_missed" href="#" type="button">
+								<img src="/images/treatment_missed1.png" style="width: 16px;">
+								Faltou
+							</a>			            	
+							<a class="" id="customer_reschedule" href="#" type="button">
+								<img src="/images/treatment_reschedule1.png" style="width: 16px;">
+								Desmarcou
+							</a>			            	
+						</li>
+					</ul>
+				</li>
+				<li>
+					<a class="btn primary" id="treatment_fit_show" href="#" type="button">
+						<img src="/images/bell.png" style="width: 16px;">
+						Ver encaixe
+					</a>
+					<a class="btn primary" id="treatment_fit" href="#" type="button">
+						<img class='hide_mobile' src="/images/donw.png" style="width: 16px;">
+						Encaixar
+					</a>						
+				</li>
+				<li class='hide_mobile'>
+					<a class="btn primary" id="keep_with_customer" href="#" type="button">
+						<img src="/images/arrow_undo.png" style="width: 16px;">
+						<span id="keep_with_customer_text">Último <span data-i18n='Cliente'></span></span>
+					</a>				  		
+				</li>				
+				<li>
+					<a class="btn danger" id="start_block" href="#" type="button">
+						<img class='hide_mobile' src="/images/cancel.png" style="width: 16px;">
+						Bloqueio						
+					</a>				  		
+				</li>
+			</ul>
+		</div>
+		<div class="modal-body ">
+			<div class="row">				
+				<form>
+					<div id="treatment_div_span">
+						<div class="span12">
+							<div class="clearfix">
+								<label for="command"><span data-i18n='Comanda'</span> </label>
+								<div class="input">
+									<div class='inline-inputs'>
+										<div class="input-prepend" style='float:left; padding-right:10px'>
+											<input class='mini command' id="command_treatment" name='command' />
+										</div>
+										<div class="input-prepend" style='float:left; padding-right:10px'>
+											<b>
+												<span id='when_treatment'>
+												</span>
+											</b>
+										</div>
+										<div class="input-prepend" style='float:left; padding-right:10px'>
+												<img id='imgthumb_customer' style="width:80px"> </span>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="clearfix">
+								<label for='customer'>
+									<img class="customer_search_button" width='24' src="/images/search.png"/>
+								</label>
+								<div class="input">
+									<div class='inline-inputs'>
+										<span>
+											<input class='mini id_customer_search'  id="cutomer_id_treatment" name='customer' /> 
+											<input class="disabled name_customer_search" name="name_customer" id="cutomer_name_treatment" size="30" type="text" placeholder="Nome" disabled=""/>
+										</span>
+										<span class="help-block"><span data-i18n='Cliente'></span> que será atendido
+											<img id="customer_add_button" width='24' src="/images/add.png" alt="Cadastro rápido"/>
+										</span>
+									</div>
+								</div>
+							</div>
+							<div class="clearfix lift:SecuritySnippet.hasOffSaleModule">
+							  <label for="offsale">Convênio</label>
+							   <div class="input">
+							      <select name="offsale" id='offsale'></select>
+							   </div>
+							</div>                  
+							<div class="clearfix lift:SecuritySnippet.isEbellepetSystem">
+							  <label for="animal">Pet</label>
+							   	<div class="input">
+							      	<select name="animal" id="animal"></select>
+									<a href="#" title="Ir para animal"> <img src="/images/pets.png" width="32" onclick="openAnimalSelected()"></a>
+									<a href="#" title="Prontuário"> <img src="/images/records.png" width="32" onclick='openAnimalRecordSelected()'></a>
+									<a href="#" title="Cadastro rápido"> <img src="/images/add.png" width="32" onclick='openAnimalRapidAdd()'></a>
+								</div>
+							</div>                  
+						</div>
+						<div class="span12">
+							<div class="clearfix">
+								<label><span data-i18n='Profissional'></span> </label>
+								<div class="input">
+									<div class="inline-inputs">
+										<select name="users" class="notselect2" id="user_treatment" disabled></select>
+										Data : 
+										<input name="date" id="date_treatment" class="date small start_treatment"/>
+										<input  name="hour_start" id="hour_treatment" class="time mini"/>
+										<input  name="hour_end" id="hour_treatment_end" class="time mini"/>
+										<input type="hidden" name="id" id="treatment_add_form_id"/>
+									</div>
+								</div>
+							</div>
+							<div class="clearfix">
+								<label>Obs </label>
+								<div class="input">
+									<div class="inline-inputs">
+										<textarea name="obs" id="obs_treatment"></textarea>
+									</div>
+								</div>
+							</div>						         
+						</div>
+					</div>				            
+				</form>
+			</div>
+			<span id="treatment_detail_div">
+				<div class = "row">
+					<form>
+						<input type="hidden" class="has-edoctus-system lift:SecuritySnippet.isEdoctusSystem" value="1">
+						<input type="hidden" class="has-ephysio-system lift:SecuritySnippet.isEphysioSystem" value="1">
+                        <input type="hidden" class="has-pet-system lift:SecuritySnippet.isEbellepetSystem" value="1">
+                        <input type="hidden" class="has-auxiliar-module lift:SecuritySnippet.hasAuxiliarModule" value="1">
+                        <input type="hidden" class="has-unit-module lift:SecuritySnippet.hasUnitModule" value="1">
+						<div class="lift:SecuritySnippet.hasAuxiliarModule clearfix">
+							<label for="activitys"><span data-i18n='Serviço'></span> / <span data-i18n='Assistente'></span> </label>
+							<div class="input">
+								<span>
+									<select class="notselect2"  name="activitys" id="activitys">
+									</select> / 
+									<select name="auxiliar" id="auxiliar">
+									</select>									
+									<button type="button" id="add_detail_button" class="btn primary">
+										<img width="16px" src="/images/add.png">
+										Adicionar
+									</button>
+								</span>						                
+							</div>
+						</div>
+						<div class="lift:SecuritySnippet.hasNotAuxiliarModule clearfix">
+							<label for="activitys"><span data-i18n='Serviço'></span></label>
+							<div class="input">
+								<span>
+									<select class="notselect2"  name="activitys" id="activitys">
+									</select>
+									<button type="button" id="add_detail_button" class="btn primary">
+										<img width="16px" src="/images/add.png">
+										Adicionar
+									</button>
+								</span>						                
+							</div>
+						</div>
+						<span style="display:none">
+							<input type="text" name="treatment_id" id="treatment_id" />
+							<input type="text" name="treatment_parent_id" id="treatment_parent_id" />
+						</span>
+					</form>					
+				</div>
+				<div class = "row">
+				<form>
+					<div class="clearfix">
+					    <div class="input">
+					    	<a type="button" onclick="CalendarScreen.registerPayment()" class="btn success">
+								<img class='hide_mobile' width="16px" src="/images/paid.png">
+								Pagar
+							</a>
+					    	<a type="button" id="removetreatment_button" class="btn danger" onclick="CalendarScreen.removeTreatmentShowModal();">
+								<img class='hide_mobile' width="16px" src="/images/delete.png">
+								Excluir
+							</a>
+					    	<a type="button" class="hide_mobile btn primary send_email_customer">
+								<img width="16px" src="/images/messages_forward.png">
+								Notificar <span data-i18n='Cliente'></span>
+							</a>
+					    	<a type="button" class="hide_mobile lift:SecuritySnippet.isCustomer btn primary send_email_user">
+								<img width="16px" src="/images/messages_forward.png">
+								Not <span data-i18n='Profissional'></span>
+							</a>
+				        </div>					
+					</div>
+				</form>
+				</div>
+				<table id="table_detail_table" class="bordered-table zebra-striped" style="width:95%">
+					<thead>
+						<th><span data-i18n='Profissional'></span></th>
+						<th class="lift:SecuritySnippet.hasUnitModule">Unidade</th>
+						<th class="lift:SecuritySnippet.hasAuxiliarModule"><span data-i18n='Assistente'></span></th>
+						<th class="lift:SecuritySnippet.isEbellepetSystem">Pet</th>
+						<th><span data-i18n='Serviço'></span></th>
+						<th>Início</th>
+						<th>Fim</th>
+						<th>Status</th>
+						<th>Ações</th>
+					</thead>
+					<tbody>
+					</tbody>
+				</table>
+				<div class = "row">
+					<form>
+						<div class="clearfix">
+							<div class="input">
+								<a type="button" onclick="CalendarScreen.registerPayment()" class="btn success">
+									<img class='hide_mobile' width="16px" src="/images/paid.png">
+									Pagar
+								</a>
+								<a type="button" id="removetreatment_button" class="btn danger" onclick="CalendarScreen.removeTreatmentShowModal();">
+									<img class='hide_mobile' width="16px" src="/images/delete.png">
+									Excluir
+								</a>
+								<a type="button" class="btn primary send_email_customer">
+									<img class='hide_mobile' width="16px" src="/images/messages_forward.png">
+									Notificar <span data-i18n='Cliente'></span>
+								</a>
+								<a type="button" class="lift:SecuritySnippet.isCustomer btn primary send_email_user">
+									<img class='hide_mobile' width="16px" src="/images/messages_forward.png">
+									Not <span data-i18n='Profissional'></span>
+								</a>
+							</div>
+						</div>
+					</form>
+				</div>
+			</span>
+		</div>
+	</div>	
+</div>
