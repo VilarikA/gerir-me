@@ -442,6 +442,7 @@ var DataManagerClass = function() {
 	this.getCashiers = function(callback, open_or_close) {
 		if (!open_or_close)
 			open_or_close = "open";
+			
 		// rigel 22/06/2017
 		// coloque um false aqui na condição pq evitar carregar de novo tava 
 		// furando o teste pra nao abrir outro caixa na mesma data
