@@ -442,11 +442,7 @@ var DataManagerClass = function() {
 	this.getCashiers = function(callback, open_or_close) {
 		if (!open_or_close)
 			open_or_close = "open";
-		// rigel 22/06/2017
-		// coloque um false aqui na condição pq evitar carregar de novo tava 
-		// furando o teste pra nao abrir outro caixa na mesma data
-		//
-		if (false) { //(chashiers[open_or_close] && chashiers[open_or_close].length > 0) {
+		if (chashiers[open_or_close] && chashiers[open_or_close].length > 0) {
 			callback(chashiers[open_or_close]);
 		} else {
 			var url = "/cash/openCheckouts";
