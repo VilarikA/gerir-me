@@ -1,16 +1,24 @@
 var customers = [];
+var total_geral1 = 0.0
 var deleteStakeHolder = function(id) {
-	alert ("Falta implementar a deleção!!!")
-	return;
-	if (confirm("Deseja excluir o detalhe de atendimento?")) {
-		$.post("/project/remove_stakeholder/" + gup('id'), {
-				id: id
-			})
-			.success(function() {
-				$("#bp_stakeholder").val('').change();
+	//alert ("Falta implementar a deleção!!!")
+	//return;
+	if (confirm("Tem certeza que deseja excluir este serviço?")) {
+		var url = "/treatment/detail/" + id;
+		$.ajax(url, {
+			"type": "DELETE",
+			"success": function() {
+				total_geral1 = 0.0;
 				updateTDetailReport(0);
 				updateTDetailReport(1);
-			});
+			    setTimeout(function(){    
+				    $("#total").val(total_geral1.formatMoney());
+			    },600);
+			},
+			"error": function(response) {
+				alert("Erro ao exluir atendimento!\n Verifique se o atendimento não foi pago!");
+			}
+		});
 	}
 };
 var updateTDetailReport = function(classe) {
@@ -63,6 +71,7 @@ var updateTDetailReport = function(classe) {
 	          total_activities += parseFloat(row[5]);
 	        });
 	        $("#total_activities").val(total_activities.formatMoney());
+	        total_geral1 += total_activities
 	    });
 	} else {
 		renderReport("/report/td_activities", fields, {
@@ -73,24 +82,24 @@ var updateTDetailReport = function(classe) {
 	          total_products += parseFloat(row[5]);
 	        });
 	        $("#total_products").val(total_products.formatMoney());
+	        total_geral1 += total_products;
 	    });
 	}
 };
 
 $(function() {
 	if (gup('id')) {
+		total_geral1 = 0.0;
 		updateTDetailReport(0);
 		updateTDetailReport(1);
 	    setTimeout(function(){    
-	    	var total = 0.0;
 			if($("#add_td").length > 0){
 			$("#add_td").attr("href", $("#add_td").attr("href").replace("##", gup("id")));
 			}
 			if($("#add_td1").length > 0){
 			$("#add_td1").attr("href", $("#add_td1").attr("href").replace("##", gup("id")));
 			}
-			total = parseFloat($("#total_activities").val())+parseFloat($("#total_products").val())
-		    $("#total").val(total.formatMoney());
+		    $("#total").val(total_geral1.formatMoney());
 	    },600);
 	}
 

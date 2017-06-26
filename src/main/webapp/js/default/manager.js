@@ -39,9 +39,6 @@ var Customer = {
 	addonsListeners: [],
 	rapidCreate: function (name, phone, mobile_phone, mobile_phone_op,
 		email,obs, bp_indicatedby) {
-
-		Vilarika.Request.LoadingOverlay.show("Cadastrando cliente. Aguarde...");
-
 		$.post("/calendar/customer/add", {
 			"name": name,
 			"phone": phone,
@@ -51,8 +48,6 @@ var Customer = {
 			"obs": obs,
 			"bp_indicatedby": bp_indicatedby
 		}, function (result) {
-			Vilarika.Request.LoadingOverlay.hide();
-			
 			if (isNaN(result)) {
 				alert(eval(result));
 			} else {

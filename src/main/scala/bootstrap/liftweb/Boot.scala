@@ -370,18 +370,11 @@ class Boot {
 		}
 	}
 
-	// Build SiteMap
-	val usersMenu = Menu(Loc("UsersMenu", Link(List("user"), true, "/user/list"), userMenuLabel, peopleManagerAccess))
-	val homeMenu = Menu(Loc("HomeMenu", Link(List("index"), true, "/index"), "index", Hidden))
-	val plansMenu = Menu(Loc("PlansMenu", Link(List("pricing"), true, pricingUrl), "Planos", Hidden))
-	val ephysioPlansMenu = Menu(Loc("EphysionPlansMenu", Link(List("pricing_ephysio"), true, "/pricing_ephysio"), "Planos", Hidden))
-	val docsMenu = Menu(Loc("DocsMenu", Link(List("docs"), true, "/docs/empty"), "Planos", Hidden))
-
 	def sitemap = SiteMap(
-		homeMenu,
-		plansMenu,
-		ephysioPlansMenu,
-		docsMenu,
+		Menu(Loc("HomeMenu", Link(List("index"), true, "/index"), "index", Hidden)),
+		Menu(Loc("PlansMenu", Link(List("pricing"), true, pricingUrl), "Planos", Hidden)),
+		Menu(Loc("EphysionPlansMenu", Link(List("pricing_ephysio"), true, "/pricing_ephysio"), "Planos", Hidden)),
+		Menu(Loc("DocsMenu", Link(List("docs"), true, "/docs/empty"), "Planos", Hidden)),
 		Menu(Loc("LoginEmail", Link(List("login_email"), true, "/login_email"),"Login Email",Hidden)),
 		Menu(Loc("Unidade", Link(List("unit"), true, "/unit"),"Unidades",crudeAccess,Hidden)),
 		Menu(Loc("v2", Link(List("v2"), true, "/v2"),"v2",Hidden)),
@@ -406,8 +399,8 @@ class Boot {
 		Menu(Loc("Agenda", Link(List("calendar"), true, "/calendar"),"Agenda",calendarAccess)),
 		Menu(Loc("Atendimento", Link(List("treatment"), true, "/treatment/treatment"),"Atendimento",calendarAccess,Hidden)),
 		
-	//Crude
-	usersMenu,
+		//Crude
+		Menu(Loc("UsersMenu", Link(List("user"), true, "/user/list"), userMenuLabel, peopleManagerAccess)),
 	//Menu(Loc("Profissionais", Link(List("user"), true, "/user/list"), userMenuLabel, peopleManagerAccess)),
 //		Menu(Loc("Profissionais1", Link(List("usernew"), true, "v2/pages/user/edit"),"editnew",peopleManagerAccess,Hidden)),
 		
@@ -444,100 +437,100 @@ class Boot {
 		//Menu(Loc("Estoque_movements", Link(List("product_"), true, "/product/inventory_movements"),"inventory_movements",inventoryAccess,Hidden)),
 		Menu(Loc("Estouqe_admin", Link(List("product_admin"), true, "/product_admin/inventory"),"Estoque",inventoryManagerAccess,Hidden)),
  
-		//Financial
-		
-		Menu(Loc("Caixa", Link(List("financial_cashier"), true, "/financial_cashier/register_payment"),"Caixa", cashierAccess, Hidden)),
-		Menu(Loc("ComandaConference", Link(List("financial_cashier_ComandaConference"), true, "/financial_cashier/commands_missing"),"Caixa", cashierAccess, Hidden)),
-		
-		
-		//Menu(Loc("CiaxaAuxiliar", Link(List("financial_caixa"), true, "/financial/register_payment"),"Caixa",axiliarAcess, Hidden)),
-		Menu(Loc("Financeiro", Link(List("financial"), true, "/financial/account_register"),"Financeiro",financialAccess)),
-		Menu(Loc("cheques", Link(List("financial_cheques"), true, "/financial/control_panel"),"Cheques",financialAccess,Hidden)),
-		Menu(Loc("commission_conference_user", Link(List("commission_conference_user"), true, "/commission_conference_user"),"Comissão",simpleUserCommission)),
-//		Menu(Loc("/commission/commission_report_redirect", Link(List("commission"), true, "/commission/commission_report_redirect"),"Comissão_new",simpleUserCommission)),
-		Menu(Loc("/command/user_command", Link(List("command"), true, "/command/user_command_redirect"),"Comanda",simpleUserCommand)),
-		Menu(Loc("/command_full/user_command_full", Link(List("command_full"), true, "/command_full/user_command_full"),"Co1",commandAccess,Hidden)),
-		Menu(Loc("/command_full/user_command_term", Link(List("command_full_term"), true, "/command_full/user_command_term"),"Comanda",commandTermAccess)),
-		// estabilizado o esquema de comanda pode tirar as opções abaixo
-//		Menu(Loc("/command/user_command", Link(List("command"), true, "/command/user_command"),"Comanda",simpleUserCommand)),
-//		Menu(Loc("/command_full/user_command_full", Link(List("command_full"), true, "/command_full/user_command_full"),"Co1",commandAccess,Hidden)),
-		Menu(Loc("Mapa", Link(List("map"), true, "/map"),"Mapa",mapAccess, Hidden)),
-		Menu(Loc("Formas de Pagamento", Link(List("company"), true, "/company/payment_forms"),"",financialAccess,Hidden)),
-		Menu(Loc("busy_manager", Link(List("busy_manager"), true, "/activity/busy_manager"),"busy_manager",crudeAccess,Hidden)),
-		// antes T estava loggedin - os prof acessavam
-		Menu(Loc("treatments_conferenc", Link(List("treatments_conferenc"), true, "/treatments_conferenc"),"treatments_conferenc",customerAccess,Hidden)),
-		Menu(Loc("rank", Link(List("rank"), true, "/rank"),"rank",crudeAccess,Hidden)),
-		Menu(Loc("Relatórios", Link(List("/reports/center"), true, "/reports/center"),"Relatórios",reportNotEgrexAccess)),
-		Menu(Loc("Relatórios egrex", Link(List("/reports/center_egrex"), true, "/reports/center_egrex"),"Relatórios",isEgrex)),
-		Menu(Loc("Ad", Link(List("manager"), true, "/manager/index"), "Ad",superAdmin))
-		
-		
-		
-	)
-	/*
-	LiftRules.earlyInStateful.append(ExtSession.testCookieEarlyInStateful)
-	
-	LiftRules.liftRequest.append { 
-		case Req("favicon" :: Nil, "ico", GetRequest) => false
-		case Req(_, "css", GetRequest) => false 
-		case Req(_, "js", GetRequest) => false
-	}
-	
-	LiftRules.liftRequest.append { 
-		case Req("classpath" :: _, _, _) => true
-		case Req("ajax_request" :: _, _, _) => true
-		case Req("comet_request" :: _, _, _) => true
-		case Req("favicon" :: Nil, "ico", GetRequest) => false
-		case Req(_, "css", GetRequest) => false 
-		case Req(_, "js", GetRequest) => false
-	}
-	*/
-	LiftRules.supplimentalHeaders = s => s.addHeaders(
-		List(HTTPParam("X-Lift-Version", LiftRules.liftVersion),
-		HTTPParam("Access-Control-Allow-Origin", "*"),
-		HTTPParam("Access-Control-Allow-Credentials", "true"),
-		HTTPParam("Access-Control-Allow-Methods", "GET, POST, PUT,OPTIONS"),
-		HTTPParam("Access-Control-Allow-Headers", "Keep-Alive,User-Agent,X-Requested-With, Content-Type")
-		))
-	// set the sitemap.  Note if you don't want access control for
-	// each page, just comment this line out.
-	LiftRules.setSiteMapFunc(() => sitemap)
+        //Financial
+        
+        Menu(Loc("Caixa", Link(List("financial_cashier"), true, "/financial_cashier/register_payment"),"Caixa", cashierAccess, Hidden)),
+        Menu(Loc("ComandaConference", Link(List("financial_cashier_ComandaConference"), true, "/financial_cashier/commands_missing"),"Caixa", cashierAccess, Hidden)),
+        
+        
+        //Menu(Loc("CiaxaAuxiliar", Link(List("financial_caixa"), true, "/financial/register_payment"),"Caixa",axiliarAcess, Hidden)),
+        Menu(Loc("Financeiro", Link(List("financial"), true, "/financial/account_register"),"Financeiro",financialAccess)),
+        Menu(Loc("cheques", Link(List("financial_cheques"), true, "/financial/control_panel"),"Cheques",financialAccess,Hidden)),
+        Menu(Loc("commission_conference_user", Link(List("commission_conference_user"), true, "/commission_conference_user"),"Comissão",simpleUserCommission)),
+//        Menu(Loc("/commission/commission_report_redirect", Link(List("commission"), true, "/commission/commission_report_redirect"),"Comissão_new",simpleUserCommission)),
+        Menu(Loc("/command/user_command", Link(List("command"), true, "/command/user_command_redirect"),"Comanda",simpleUserCommand)),
+        Menu(Loc("/command_full/user_command_full", Link(List("command_full"), true, "/command_full/user_command_full"),"Co1",commandAccess,Hidden)),
+        Menu(Loc("/command_full/user_command_term", Link(List("command_full_term"), true, "/command_full/user_command_term"),"Comanda",commandTermAccess)),
+        // estabilizado o esquema de comanda pode tirar as opções abaixo
+//        Menu(Loc("/command/user_command", Link(List("command"), true, "/command/user_command"),"Comanda",simpleUserCommand)),
+//        Menu(Loc("/command_full/user_command_full", Link(List("command_full"), true, "/command_full/user_command_full"),"Co1",commandAccess,Hidden)),
+        Menu(Loc("Mapa", Link(List("map"), true, "/map"),"Mapa",mapAccess, Hidden)),
+        Menu(Loc("Formas de Pagamento", Link(List("company"), true, "/company/payment_forms"),"",financialAccess,Hidden)),
+        Menu(Loc("busy_manager", Link(List("busy_manager"), true, "/activity/busy_manager"),"busy_manager",crudeAccess,Hidden)),
+        // antes T estava loggedin - os prof acessavam
+        Menu(Loc("treatments_conferenc", Link(List("treatments_conferenc"), true, "/treatments_conferenc"),"treatments_conferenc",customerAccess,Hidden)),
+        Menu(Loc("rank", Link(List("rank"), true, "/rank"),"rank",crudeAccess,Hidden)),
+        Menu(Loc("Relatórios", Link(List("/reports/center"), true, "/reports/center"),"Relatórios",reportNotEgrexAccess)),
+        Menu(Loc("Relatórios egrex", Link(List("/reports/center_egrex"), true, "/reports/center_egrex"),"Relatórios",isEgrex)),
+        Menu(Loc("Ad", Link(List("manager"), true, "/manager/index"), "Ad",superAdmin))
+        
+        
+        
+    )
+    /*
+    LiftRules.earlyInStateful.append(ExtSession.testCookieEarlyInStateful)
+    
+    LiftRules.liftRequest.append { 
+      case Req("favicon" :: Nil, "ico", GetRequest) => false
+      case Req(_, "css", GetRequest) => false 
+      case Req(_, "js", GetRequest) => false 
+    }
+    
+    LiftRules.liftRequest.append { 
+      case Req("classpath" :: _, _, _) => true
+      case Req("ajax_request" :: _, _, _) => true
+      case Req("comet_request" :: _, _, _) => true
+      case Req("favicon" :: Nil, "ico", GetRequest) => false
+      case Req(_, "css", GetRequest) => false 
+      case Req(_, "js", GetRequest) => false 
+    }
+  */
+  LiftRules.supplimentalHeaders = s => s.addHeaders(
+      List(HTTPParam("X-Lift-Version", LiftRules.liftVersion),
+        HTTPParam("Access-Control-Allow-Origin", "*"),
+        HTTPParam("Access-Control-Allow-Credentials", "true"),
+        HTTPParam("Access-Control-Allow-Methods", "GET, POST, PUT,OPTIONS"),
+        HTTPParam("Access-Control-Allow-Headers", "Keep-Alive,User-Agent,X-Requested-With, Content-Type")
+      ))
+    // set the sitemap.  Note if you don't want access control for
+    // each page, just comment this line out.
+    LiftRules.setSiteMapFunc(() => sitemap)
 
-	// Use jQuery 1.4
-	LiftRules.jsArtifacts = net.liftweb.http.js.jquery.JQuery14Artifacts
+    // Use jQuery 1.4
+    LiftRules.jsArtifacts = net.liftweb.http.js.jquery.JQuery14Artifacts
 
-	//Show the spinny image when an Ajax call starts
-	LiftRules.ajaxStart =
-		Full(() => LiftRules.jsArtifacts.show("ajax-loader").cmd)
-	
-	// Make the spinny image go away when it ends
-	LiftRules.ajaxEnd =
-		Full(() => LiftRules.jsArtifacts.hide("ajax-loader").cmd)
+    //Show the spinny image when an Ajax call starts
+    LiftRules.ajaxStart =
+      Full(() => LiftRules.jsArtifacts.show("ajax-loader").cmd)
+    
+    // Make the spinny image go away when it ends
+    LiftRules.ajaxEnd =
+      Full(() => LiftRules.jsArtifacts.hide("ajax-loader").cmd)
 
-	// Force the request to be UTF-8
-	LiftRules.early.append(_.setCharacterEncoding("UTF-8"))
+    // Force the request to be UTF-8
+    LiftRules.early.append(_.setCharacterEncoding("UTF-8"))
 
-	// What is the function to test if a user is logged in?
-	//LiftRules.loggedInTest = Full(() => User.loggedIn_?)
+    // What is the function to test if a user is logged in?
+    //LiftRules.loggedInTest = Full(() => User.loggedIn_?)
 
-	// Use HTML5 for rendering
-	LiftRules.htmlProperties.default.set((r: Req) =>
-		new Html5Properties(r.userAgent))	
+    // Use HTML5 for rendering
+    LiftRules.htmlProperties.default.set((r: Req) =>
+      new Html5Properties(r.userAgent))    
 
-	// Make a transaction span the whole HTTP request
-	//S.addAround(DB.buildLoanWrapper)
+    // Make a transaction span the whole HTTP request
+    //S.addAround(DB.buildLoanWrapper)
 
-	startServices
-	LiftRules.unloadHooks.append(() => {
-	//  QuartzUtil.stop
-	})
-	}
-	def startServices = {
-	//QuartzUtil.start
-	CommisionQueeue.start
-	DeliveryQueeue.start
-	BusinessPatternLocationQueeue.start
-	}
+    startServices
+    LiftRules.unloadHooks.append(() => {
+    //  QuartzUtil.stop
+    })
+  }
+  def startServices = {
+    //QuartzUtil.start
+    CommisionQueeue.start
+    DeliveryQueeue.start
+    BusinessPatternLocationQueeue.start
+  }
 
 /*... */
 
