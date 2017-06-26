@@ -1,13 +1,8 @@
-/**
- * Style created by VilarikA's team
- * @author: Stanley Sathler <stanleysathlerpinto@gmail.com>
- **/
-
 /*
- * Avoids right-side dropdown to be inserted on a new line
+ * File created and maintained by VilarikA team
  */
-#main-menu { float: left; }
-.vr-toolbar .navbar-toggle { float: none; }
-.vr-toolbar .navbar-header { display: inline-block; float: left; }
-.vr-toolbar .navbar-right { float: right; }
-.vr-toolbar #ajax_loader { float: right; }
+
+nav.navbar { text-align: center; }
+nav.navbar .navbar-header { float: none; }
+nav.navbar .navbar-header,
+nav.navbar .navbar-collapse { display: inline-block !important; }

@@ -4,14 +4,9 @@
  **/
 
 nav.vr-sidebar {
-	--primary-normal-color: #324555;
-	--primary-dark-color: #21323d;
-	--content-color: #f2f2f2;
-
-	background-color: var(--primary-normal-color);
+	background-color: #324555;
 	bottom: 0;
-	box-shadow: 0 5px 5px rgba(0, 0, 0, 0.4);
-	color: var(--content-color);
+	color: #f2f2f2;
 	left: 0;
 	padding: 25px 0;
 	position: fixed;
@@ -21,7 +16,7 @@ nav.vr-sidebar {
 
 	nav.vr-sidebar,
 	nav.vr-sidebar a {
-		color: var(--content-color);
+		color: #f2f2f2;
 		text-decoration: none;
 	}
 
@@ -42,17 +37,11 @@ nav.vr-sidebar .menu {
 	padding-left: 0;
 }
 
-	nav.vr-sidebar .menu li a {
-		border-bottom: 1px solid var(--primary-dark-color);
-		display: inline-block;
+	nav.vr-sidebar .menu li {
+		border-bottom: 1px solid #21323d;
 		height: 44px;
 		line-height: 44px;
 		padding-left: 10px;
-		width: 100%;
-	}
-
-	nav.vr-sidebar .menu li a:hover {
-		background-color: var(--primary-dark-color);
 	}
 
 
