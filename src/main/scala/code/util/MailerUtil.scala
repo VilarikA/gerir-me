@@ -18,9 +18,9 @@ import javax.mail.internet._
 import java.util.Properties
 
 case class MailerUtil(companyUnit:CompanyUnit) extends Mailer with net.liftweb.common.Logger {
-  if(companyUnit.smtpServer.is == "" || companyUnit.userSmtp.is == "" || companyUnit.passwordSmtp.is == ""){
+  if(companyUnit.smtpServer.is == "" || companyUnit.passwordSmtp.is == "" || companyUnit.passwordSmtp.is == ""){
     // Seta os valores default de configuração
-    companyUnit.userSmtp(companyUnit.userSmtp.defaultValue).
+    companyUnit.
     userSmtp(companyUnit.userSmtp.defaultValue).
     passwordSmtp(companyUnit.passwordSmtp.defaultValue).
     port(companyUnit.port.defaultValue).

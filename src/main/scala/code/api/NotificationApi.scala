@@ -74,7 +74,9 @@ object NotificationApi extends RestHelper with ReportRest {
             if (customer.email.is != "") {
               var message_aux = Customer.replaceMessage (customer, message_obj.message.is)
               val final_message = <span>{ Unparsed(message_aux) }</span>
-              EmailUtil.sendMailCustomer( AuthUtil.unit,AuthUtil.company, customer.email.is, final_message, message_obj.subject.is, customer.id.is)
+              var subject_aux = Customer.replaceMessage (customer, message_obj.subject.is)
+              EmailUtil.sendMailCustomer( AuthUtil.unit,AuthUtil.company, customer.email.is, 
+                final_message, subject_aux, customer.id.is)
             }
           })
           JInt(1)        
