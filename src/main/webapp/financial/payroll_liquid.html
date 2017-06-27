@@ -35,7 +35,9 @@
   <div class='filter block-message success"'>
     <span class="filter_form">
       <form id="form_report" action=''>
-        <h1><span class="lift:CompanySnippet.thumb"> </span>Relatório para Crédito de Pagamento</h1>
+        <h1><span class="lift:CompanySnippet.thumb"> </span>
+        <input class="report_title local_storage" id="title_payroll_liquid" name="title_payroll_liquid" size="30" type="text" value="Relatório para Crédito de Pagamento"/>
+        </h1>
         <div class="span8">
           <div class="clearfix">
             <label for="start">Intervalo</label>
@@ -69,11 +71,12 @@
               <div class="inline-inputs">
                 <div style="float:left; padding-right:10px" class="input-prepend">
                   <span class="add-on"><img width="16" src="/images/money.png"></span>
-                  <input type="text" class="input-mini currency" id='start_value' name="start_value" placeholder="Mínimo" value="0.01"/>
+                  <input type="text" class="input-mini currency" id='start_value' name="start_value" placeholder="Mínimo"/>
                 </div>
                 <div style="float:left; padding-right:10px" class="input-prepend">
                   <span class="add-on"><img width="16" src="/images/money.png"></span>
-                  <input type="text" class="input-mini currency" id='end_value' name="end_value" placeholder="Máximo"/>
+                  <input type="text" class="input-mini currency" id='end_value' name="end_value" placeholder="Máximo"/>Valor Zero
+                      <input class="local_storage url_parameter" name="zero_val" id='zero_val' type='checkbox' />
                 </div>
               </div>
             </div>

@@ -1746,7 +1746,12 @@ object Reports extends RestHelper with ReportRest with net.liftweb.common.Logger
 				case Full(p) if(p != "") => p.toDouble
 				case _ => 9999999;
 			}
-			toResponse(PayrollEvent.SQL_LIQUID.format(unit),List(AuthUtil.company.id.is, start, end, start_value, end_value))
+			val zero_val:String = S.param("zero_val") match {
+				case Full(p) if(p != "")=> ""
+				case _ => " and valor_liquido <> 0.0 "
+			}			
+			toResponse(PayrollEvent.SQL_LIQUID.format(unit, zero_val),
+				List(AuthUtil.company.id.is, start, end, start_value, end_value))
 		}		
 		case "report" :: "offsale" :: Nil Post _ =>{
 			def start:Date = S.param("start") match {

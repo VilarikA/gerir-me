@@ -48,9 +48,9 @@ object PayrollEvent extends PayrollEvent with LongKeyedMapperPerCompany[PayrollE
                 left join business_pattern bp on bpr.business_pattern = bp.id
                 left join bpaccount bpa on bpa.business_pattern = bp.id
                 left join bank ba on ba.id = bpa.bank
-                where bpr.company = ? and date_c >= date(?) and date_c <= date(?) %s
+                where bpr.company = ? and date_c >= date(?) and date_c <= date(?) %s 
                 group by ba.short_name, bp.name, bp.id, bpa.agency, bpa.account
-                order by ba.short_name, bp.name, bp.id, bpa.agency, bpa.account) as data1 where valor_liquido between ? and ?;        
+                order by ba.short_name, bp.name, bp.id, bpa.agency, bpa.account) as data1 where valor_liquido between ? and ? %s;        
         """
         val SQL_PAYSHIP = """select pe.name,bppr.qtd,bppr.value,0.00 as discount from      
             businesspatternpayroll bppr 

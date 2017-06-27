@@ -467,6 +467,8 @@ class Boot {
         
         
     )
+//println ("vaiiii ====================== " + sitemap)
+
     /*
     LiftRules.earlyInStateful.append(ExtSession.testCookieEarlyInStateful)
     
