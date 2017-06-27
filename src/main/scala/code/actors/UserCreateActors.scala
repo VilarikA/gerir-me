@@ -24,6 +24,7 @@ object UserCreateActors extends LiftActor {
     createCustomerAtCompanyAdmin(company)
     createActivities(company)
     createProduts(company)
+    NotficationMessageSqlMigrate.createNotificationMessage(company);
     updateAccessMasterCompany(company)
 //    updateInventoryInfos(company)
     LogActor ! "Criando Usuario["+company.name+"] para empresa ["+company.id.is+"] "
@@ -176,6 +177,23 @@ object UtilSqlMigrate {
     DB.runUpdate(SQL_UPDATE_COMPANY_IN_COMPANY, Nil)
   }
 
+}
+
+object NotficationMessageSqlMigrate {
+  val SQL_CREATE_NOTIFICATIONMESSAGE = """
+    insert into notificationmessage 
+    (select ic.message, 
+    nextval ('notificationmessage_id_seq'), 
+    subject,
+    now(), now (),co.id,1,1
+    from notificationmessage ic
+    inner join company co on co.id = ?
+    where ic.company = 26 and ic.subject not in (select ic1.subject from notificationmessage ic1 where ic1.company = co.id ));
+  """
+  def createNotificationMessage (company:Company) {
+    val id = company.id.is
+    DB.runUpdate(SQL_CREATE_NOTIFICATIONMESSAGE, id :: Nil)
+  }
 }
 
 object PermissionModuleSqlMigrate {
