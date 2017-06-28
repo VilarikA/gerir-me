@@ -64,6 +64,7 @@ with WithCustomer with net.liftweb.common.Logger{
 
 //    object status extends MappedEnum(this,Treatment.TreatmentStatus) with LifecycleCallbacks {
     object status extends MappedInt(this) with LifecycleCallbacks {
+        override def defaultValue = Treatment.Budget;
         override def afterSave() {
             super.afterSave;
             // criar parm na empresa para tirar o false
