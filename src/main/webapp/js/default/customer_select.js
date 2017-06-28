@@ -2,22 +2,24 @@
 var parent_customer_search = null;
 $(function() {
 	var prepareSearch = function() {
+		var $nameCustomerSearch = $(".name_customer_search");
+
 		var recordsStr = ""
 		var hasEdoctusSystem = $('.has-edoctus-system').length > 0;
 		var hasEphysioSystem = $('.has-ephysio-system').length > 0;
 		var hasEsmileSystem = $('.has-esmile-system').length > 0;
 		if (hasEdoctusSystem || hasEphysioSystem || hasEsmileSystem) {
-//		if ((document.location.href.indexOf("edoctus") != -1) ||
-//			(document.location.href.indexOf("ephysio") != -1)) {
-			recordsStr = '<a href="#" title="Ir para prontuário" class="openRecordsSelected"><img src="/images/records.png" class="img_customer_search" width="32">'
+			if( $nameCustomerSearch.hasClass("use-fa") ){
+				recordsStr = '<div class="vr-circle-icon openRecordsSelected"><i class="fa fa-user-md" title="Ir para prontuário"></i></div>';
+			} else {
+				recordsStr = '<a href="#" title="Ir para prontuário 33" class="openRecordsSelected"><img src="/images/records.png" class="img_customer_search" width="32">';
+			}
 		}
 
-		var nameCustomerSearchElement = $(".name_customer_search");
-
-		if(nameCustomerSearchElement.hasClass("use-fa")){
-			nameCustomerSearchElement.parent().append('<div class="vr-circle-icon openCustomerSelected"><i class="fa fa-users" aria-hidden="true" title="Ir para o cadastro"></i></div>' + recordsStr);
+		if($nameCustomerSearch.hasClass("use-fa")){
+			$nameCustomerSearch.parent().append('<div class="vr-circle-icon openCustomerSelected"><i class="fa fa-users" aria-hidden="true" title="Ir para o cadastro"></i></div>' + recordsStr);
 		} else {
-			nameCustomerSearchElement.parent().append('<a href="#" title="Ir para cadastro" class="openCustomerSelected"><img src="/images/customers.png" class="img_customer_search" width="32">' + recordsStr);
+			$nameCustomerSearch.parent().append('<a href="#" title="Ir para cadastro" class="openCustomerSelected"><img src="/images/customers.png" class="img_customer_search" width="32">' + recordsStr);
 		}
 		
 		

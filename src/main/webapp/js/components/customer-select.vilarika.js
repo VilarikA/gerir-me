@@ -9,7 +9,7 @@ $(function() {
 		if (hasEdoctusSystem || hasEphysioSystem || hasEsmileSystem) {
 //		if ((document.location.href.indexOf("edoctus") != -1) ||
 //			(document.location.href.indexOf("ephysio") != -1)) {
-			recordsStr = '<a href="#" title="Ir para prontuário" class="openRecordsSelected"><img src="/images/records.png" class="img_customer_search" width="32">'
+			recordsStr = '<a href="#" title="Ir para prontuário 22" class="openRecordsSelected"><img src="/images/records.png" class="img_customer_search" width="32">'
 		}
 
 		var nameCustomerSearchElement = $(".name_customer_search");
