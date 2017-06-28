@@ -10,9 +10,9 @@ $(function() {
 		var hasEsmileSystem = $('.has-esmile-system').length > 0;
 		if (hasEdoctusSystem || hasEphysioSystem || hasEsmileSystem) {
 			if( $nameCustomerSearch.hasClass("use-fa") ){
-				recordsStr = '<div class="vr-circle-icon openRecordsSelected"><i class="fa fa-user-md" title="Ir para prontuário"></i></div>';
+				recordsStr = '<div class="vr-circle-icon openRecordsSelected"><i class="fa fa-file-text" title="Prontuário"></i></div>';
 			} else {
-				recordsStr = '<a href="#" title="Ir para prontuário 33" class="openRecordsSelected"><img src="/images/records.png" class="img_customer_search" width="32">';
+				recordsStr = '<a href="#" title="Ir para prontuário" class="openRecordsSelected"><img src="/images/records.png" class="img_customer_search" width="32">';
 			}
 		}
 
