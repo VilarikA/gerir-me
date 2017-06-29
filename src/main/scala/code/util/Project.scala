@@ -36,6 +36,13 @@ object Project{
     	new java.math.BigInteger(1, m.digest()).toString(16)
 	}
 
+  def tomorrow = {
+    val cal = Calendar.getInstance()
+    cal.setTime(new Date()); 
+    cal.add(java.util.Calendar.DATE, 1);
+    cal.getTime()
+  }
+
   def nextMonth (date:Date) : Date = {
       val cal = Calendar.getInstance()
       cal.setTime(date); 
