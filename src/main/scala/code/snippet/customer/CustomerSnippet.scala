@@ -27,7 +27,9 @@ class  CustomerSnippet extends BootstrapPaginatorSnippet[Customer] with net.lift
 
 	def pageObj = Customer
 
-	def operators = ("0" -> "Selecione uma operadora")::Operator.findAll(OrderBy(Operator.name, Ascending)).map(t => (t.id.is.toString,t.name.is))
+	def operators = ("0" -> "Selecione uma operadora")::DomainTable.findAll(
+		By(DomainTable.domain_name,"operadora"),
+		OrderBy(DomainTable.name, Ascending)).map(t => (t.cod.is,t.name.is))
 
 	def offsales = ("0" -> "Selecione um convênio")::OffSale.findAllInCompany(OrderBy(OffSale.name, Ascending)).map(t => (t.id.is.toString,t.name.is))
 

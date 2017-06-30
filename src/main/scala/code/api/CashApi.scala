@@ -97,12 +97,16 @@ object CashApi extends RestHelper with net.liftweb.common.Logger  {
 			}
 		}
 
+		// acho que não usa pra nada - em lugar nenhum
+		// rigel - 30/06/2017
 		case "cash" :: "operators" :: Nil JsonGet _ => {
 			JsArray(
-					Operator.findAll(OrderBy (Operator.name, Ascending)).map(
+					DomainTable.findAll(
+						By(DomainTable.domain_name,"operadora"),
+						OrderBy (DomainTable.name, Ascending)).map(
 						(u) => JsObj(("status","success"),
 									 ("name",u.name.is),
-									 ("id",u.id.is)
+									 ("id",u.cod.is)
 									 )
 							)
 					)

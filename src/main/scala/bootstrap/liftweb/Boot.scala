@@ -71,7 +71,7 @@ class Boot {
     Schemifier.schemify(true, Schemifier.infoF _, ProjectStage, ProjectType, ProjectClass, Project1, StakeHolderType, StakeHolder)
   
     Schemifier.schemify(true, Schemifier.infoF _, RelationshipType, Relationship, BpRelationship, InstructionDegree, Occupation,
-      Invoice, InvoiceTreatment, Operator)
+      Invoice, InvoiceTreatment)
     
     // Add a query logger
     /*DB.addLogFunc {
