@@ -57,7 +57,9 @@ class  UserSnippet extends BootstrapPaginatorSnippet[User] {
 
 	def honorifictitles = ("0" -> "Selecione uma forma de tratamento")::HonorificTitle.findAll(OrderBy(HonorificTitle.name, Ascending)).map(t => (t.id.is.toString,t.name.is))
 
-	def councils = ("0" -> "Selecione um conselho")::Council.findAll(OrderBy(Council.name, Ascending)).map(t => (t.id.is.toString,t.name.is))
+	def councils = ("0" -> "Selecione um conselho")::DomainTable.findAll(
+		By(DomainTable.domain_name,"conselhoprofissional"),
+		OrderBy(DomainTable.name, Ascending)).map(t => (t.cod.is,t.name.is))
 
 	def degrees = ("0" -> "Selecione um grau de instrução")::InstructionDegree.findAll(OrderBy(InstructionDegree.name, Ascending)).map(t => (t.id.is.toString,t.name.is))
 

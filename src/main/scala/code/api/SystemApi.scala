@@ -109,7 +109,7 @@ object SystemApi extends RestHelper {
 			JInt(1)
 		}		
 		case "system" :: "sendDailyAccountTomorrow"  :: Nil JsonGet _ => {
-			code.daily.DailyReport.sendAllAccountPayablesMail (tomorrow, Company.notifyForTomorrow)
+			code.daily.DailyReport.sendAllAccountPayablesMail (Project.tomorrow, Company.notifyForTomorrow)
 			JInt(1)
 		}		
 		
@@ -160,11 +160,12 @@ object SystemApi extends RestHelper {
            case _ => 0
         }
 
+/*
     def tomorrow = {
       val cal = Calendar.getInstance()
       cal.setTime(new Date()); 
       cal.add(java.util.Calendar.DATE, 1);
       cal.getTime()
     }
-
+*/
 }
