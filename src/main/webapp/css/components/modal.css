@@ -1,0 +1,32 @@
+/**
+ * Style created by VilarikA's team
+ * @author: Stanley Sathler <stanleysathlerpinto@gmail.com>
+ **/
+
+.vr-modal .modal-dialog { 
+	border-radius: 3px;
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+
+	max-height: 90%; 
+	overflow-y: auto; 
+}
+
+.vr-modal .modal-content .modal-header,
+.vr-modal .modal-content .modal-footer { 
+	border-radius: 0; 
+}
+
+.vr-modal .modal-header .title { text-align: center; }
+
+.vr-modal .modal-header .title * {
+	display: inline-block;
+	margin: 0;
+	vertical-align: middle;
+}
+
+@media only screen and (min-width: 768px) {
+	.vr-modal .modal-dialog {
+		width: 800px;
+	}
+}

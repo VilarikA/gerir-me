@@ -1,0 +1,116 @@
+/**
+ * Style created by VilarikA's team
+ * @author: Stanley Sathler <stanleysathlerpinto@gmail.com>
+ **/
+
+form.vr-form .columns { vertical-align: bottom; }
+
+form.vr-form label {
+	display: block;
+	line-height: 1.2em;
+	font-weight: bold;
+	width: 100%;
+}
+
+form.vr-form input,
+form.vr-form select,
+form.vr-form button,
+form.vr-form a[type=button],
+form.vr-form .select2-container,
+form.vr-form .select2-choice,
+form.vr-form .select2-choices {
+	display: block;
+	height: 44px;
+	width: 100%;
+}
+
+form.vr-form a[type=button] {
+	line-height: 44px;
+	padding: 0;
+}
+
+form.vr-form button.with-hint { 
+	display: inline-block; 
+	width: calc(100% - 30px); 
+}
+
+form.vr-form .fa-user-circle { font-size: 27px; }
+
+form.vr-form .select2-container.name_customer_search,
+form.vr-form .select2-container.with-icons { 
+	display: inline-block; 
+	vertical-align: middle; 
+}
+
+form.vr-form .select2-container.with-icons.one-icon {
+	width: calc(100% - 35px) !important;
+}
+
+form.vr-form .select2-container.with-icons.two-icons {
+	width: calc(100% - 75px) !important;
+}
+
+form.vr-form .select2-container.with-icons.three-icons {
+	width: calc(100% - 105px) !important;
+}
+
+form.vr-form .openCustomerSelected img { top: 0; }
+
+form.vr-form .select2-choices { min-height: 44px; }
+
+/* Makes select's text vertically aligned */
+form.vr-form .select2-choice span { line-height: 44px; }
+
+/* Makes select's arrow vertically aligned */
+form.vr-form .select2-choice div b { background-position-y: 9px; }
+
+/* Disables the top property which is inserted by another file */
+form.vr-form .name_customer_search { top: 0; }
+
+/* Copies Bootstrap's .form-control for Snippet substitution */
+.child-form-control input { 
+	display: block;
+	width: 100%;
+	height: 34px;
+	padding: 6px 12px;
+	font-size: 14px;
+	line-height: 1.42857143;
+	color: #555;
+	background-color: #fff;
+	background-image: none;
+	border: 1px solid #ccc;
+	border-radius: 4px;
+	-webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+	box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+	-webkit-transition: border-color ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;
+	-o-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+	transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+}
+
+/*
+ * Media queries for other devices 
+ */
+@media only screen and (min-width: 768px) {
+
+	form.vr-form input,
+	form.vr-form select,
+	form.vr-form button,
+	form.vr-form a[type=button],
+	form.vr-form .select2-container,
+	form.vr-form .select2-choice,
+	form.vr-form .select2-choices {
+		height: 34px;
+	}
+
+	form.vr-form a[type=button] {
+		line-height: 34px;
+		padding: 0;
+	}
+
+	form.vr-form .select2-choices { min-height: 34px; }
+
+	form.vr-form .select2-choice span { line-height: 34px; }
+
+	form.vr-form .select2-choice div b { background-position-y: 4px; }
+
+}
