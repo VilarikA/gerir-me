@@ -31,14 +31,16 @@ var buildCalendar = function(users,treatments,interval,intervalAlt,startCalendar
 					// });
 				}else{
 					$("#show_conflits").hide();
+					
 					var toggle = true;
+
 					$('#toggle_interval').click(function() {
 						if (toggle) {				
 							$('#calendar').weekCalendar('option', 'timeslotsPerHour', 60/intervalAlt);
 							global_interval = intervalAlt; //15;	
 						} else {					
 							$('#calendar').weekCalendar('option', 'timeslotsPerHour', 60/interval);
-							global_interval = interval;	
+							global_interval = interval;
 						}
 
 						toggle = !toggle;
@@ -265,25 +267,29 @@ var buildCalendar = function(users,treatments,interval,intervalAlt,startCalendar
 						dateFormat: "d/m/y"
 					});
 				}else{
-					$("#calendar").html('<div style="float:left; padding-right:10px" class="input-prepend"><span class="add-on" style="height: 17px;"><img width="16" src="/images/calendar_addon.png"></span> <input type="text" size="19" name="data_calendar" id="data_calendar" class="input-small date" style="height: 17px;"></div><div style="float:left; padding-right:10px" class="input-prepend"><span class="add-on" style="height: 17px;"><img width="16" src="/images/calendar_addon.png"></span> <input type="text" size="19" name="data_calendar_end" id="data_calendar_end" class="input-small date" style="height: 17px;"></div>');
+					$("#calendar").html(
+						'<form class="vr-form">' +
+						'	<input size="19" name="data_calendar_end" id="data_calendar_end" class="date">' + 
+						'</form>'
+					);
+
 					$("#data_calendar").datepicker({
-													    beforeShow: function() {
-													        setTimeout(function(){
-													            $('#ui-datepicker-div').css('z-index',10000);
-													            
-													        }, 0);
-													    }
-													})
-										.val(Date.toDay().getDateBr());
+						beforeShow: function() {
+							setTimeout(function(){
+								$('#ui-datepicker-div').css('z-index',10000);
+								
+							}, 0);
+						}
+					}).val(Date.toDay().getDateBr());
+
 					$("#data_calendar_end").datepicker({
-													    beforeShow: function() {
-													        setTimeout(function(){
-													            $('#ui-datepicker-div').css('z-index',10000);
-													            
-													        }, 0);
-													    }
-													})
-										.val(Date.toDay().getDateBr());
+						beforeShow: function() {
+							setTimeout(function(){
+								$('#ui-datepicker-div').css('z-index',10000);
+								
+							}, 0);
+						}
+					}).val(Date.toDay().getDateBr());
 
 				}
 			};
@@ -343,31 +349,28 @@ $(function(){
 		$($(".name_customer_search")[2]).select2("open")
 		$(".name_customer_search span").html("");
 	});
+
 	$("#treatment_div").click(function(){
 		TreatmentManger.saveTreatment();
 	});
+
 	$("#add_detail_button").click(function(){
-		var aux = $("#auxiliar").val();
-		var ani = $("#animal").val();
-		var off = $("#offsale").val();
-		if (!aux){
-			aux = 0;
-		}
-		if (!ani){
-			ani = 0;
-		}
-		if (!off){
-			off = 0;
-		}
-		//	TreatmentManger.addDetail($("#treatment_id").val(), $("#activitys").val(), 0, off);
-		//}else{
-			TreatmentManger.addDetail($("#treatment_id").val(), $("#activitys").val(), aux, ani, off);
-		//}
+		var aux = $("#auxiliar").val() 	|| 0;
+		var ani = $("#animal").val() 	|| 0;
+		var off = $("#offsale").val() 	|| 0;
+
+		var treatmentId = $("#treatment_id").val();
+		var activities = $("#activitys").val();
+		
+		TreatmentManger.addDetail(treatmentId, activities, aux, ani, off);
+		
 		$("#auxiliar").val("").change();
 	});
+
 	$(".send_email_customer").click(function(){
 		sendEmailCustomer({id:$("#treatment_id").val()});
 	});
+	
 	$(".send_email_user").click(function(){
 		sendEmailUser({id:$("#treatment_id").val()});
 	});
@@ -473,6 +476,7 @@ $(function(){
 		}
 	});
 	//setTimeout("createHours()",100);
+	
 	$("#keep_with_customer").click(function(){
 		if(Customer.current){
 			setTimeout('$("#cutomer_id_treatment").val('+Customer.current.id+').focus().change();', 500);
@@ -480,6 +484,7 @@ $(function(){
 			alert("Não há cliente selecionado");
 		}
 	});
+
 	$("#start_block").click(function() {
 		if(confirm("Tem certeza que deseja bloquear o horário de "+$("#hour_treatment").val()+" até "+$("#hour_treatment_end").val())){
 			var start = $("#date_treatment").val()+" "+$("#hour_treatment").val();

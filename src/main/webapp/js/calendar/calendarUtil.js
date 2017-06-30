@@ -55,34 +55,79 @@ var processGlobalParameters = function(parameters){
 };
 processGlobalParameters();
 //SocialManager
+
 var sendEmailCustomer = function(calEvent){
   if(confirm("Tem certeza que deseja enviar um e-mail para o cliente?")){
-    var url = "/social/treatments/notify_customer/"+calEvent.id;
-    $.ajax(url,{"type": "GET", "success" : function(response){
-      // TESTAR no sendEmailUser também
-      //
-      eval("var t ="+response);
-      if (t.message) {
-	    alert("Erro ao enviar E-mail! " + t.message);
-      } else {
-      	alert("Enviado com sucesso!");
+    $.ajax(
+      "/social/treatments/notify_customer/" + calEvent.id,
+      {
+        type: "GET",
+        success: onSuccess,
+        error: onError
       }
-    }, "error" : function(response){
-      eval("var t ="+response);
-      alert("Erro ao enviar E-mail! " + t.message);
-    }});
-  } 
+    );
+  }
+
+  function onSuccess(response)
+  {
+    eval("var t = " + response);
+    if (t.message) {
+      alert("Erro ao enviar e-mail! " + t.message);
+    } else {
+        alert("Enviado com sucesso!");
+    }
+  }
+
+  function onError(jqXHR, textStatus)
+  {
+    var allResponseHeaders = jqXHR.getAllResponseHeaders();
+
+    // Temporally poo-ta-rea to check if request is being cancelled by server.
+    // A bug which is happening even when email is being sent to the customer.
+    if(allResponseHeaders === ""){
+      return alert("E-mail enviado com sucesso!");
+    } else {
+      return alert("Ocorreu um erro ao enviar e-mail para o cliente.");
+    }
+  }
 }
 
 var sendEmailUser = function(calEvent){
-  if(confirm("Tem certeza que deseja enviar um e-mail para o profissional?")){
-    var url = "/social/treatments/notify_user/"+calEvent.id;
-    $.ajax(url,{"type": "GET", "success" : function(){
-      alert("Enviado com sucesso!");
-    }, "error" : function(response){
-      alert("Erro ao enviar E-mail!");
-    }});
-  } 
+  if(confirm("Tem certeza que deseja enviar um e-mail para o profissional?"))
+  {
+    $.ajax(
+      "/social/treatments/notify_user/" + calEvent.id,
+      {
+        type: "GET",
+        success: onSuccess,
+        error: onError
+      }
+    )
+
+    function onSuccess(response)
+    {
+      eval("var t = " + response);
+      if(t.message){
+        alert("Erro ao enviar e-mail! " + t.message);
+      } else {
+        alert("E-mail enviado com sucesso!");
+      }
+    }
+
+    function onError(jqXHR)
+    {
+      var allResponseHeaders = jqXHR.getAllResponseHeaders();
+
+      // Temporally poo-ta-rea to check if request is being cancelled by server.
+      // A bug which is happening even when email is being sent to the customer.
+      if(allResponseHeaders === ""){
+        return alert("E-mail enviado com sucesso!");
+      } else {
+        return alert("Ocorreu um erro ao enviar e-mail para o cliente.");
+      }
+    }
+  }
+
 }
 
 //CalendarUtil
@@ -176,7 +221,7 @@ var onCustomerSelect = function(){
     if(!global_calEvent || $("#cutomer_id_treatment").val() != global_calEvent.customerId){
       TreatmentManger.saveTreatment();
     }
-  }     
+  }  
 };
 Customer.addonsListeners.push($.throttle(500, onCustomerSelect));
 var refreshCalendarByAjax = function(time){
@@ -196,32 +241,32 @@ var ReSchedule = 8;
 var Budget = 9;
 var getStatus = function(status, hasFlit){
   if(hasFlit){
-    return "<img width='16' src='/images/bell.png'/>";
-  }     
+  return "<img width='16' src='/images/bell.png'/>";
+  }  
   switch(status){
-    case Open:
-      return "<img width='16' src='./images/open.png'/>";
-    case PreOpen:
-      return "<img width='16' src='./images/preopen.png'/>";
-    case Confirmed:
-      return "<img width='16' src='./images/confirmed.png'/>";
-    case Missed:
-      return "<img width='16' src='./images/missed.png'/>";   
-    case ReSchedule:
-      return "<img width='16' src='./images/treatment_reschedule.png'/>";   
-    case Arrived:
-      return "<img width='16' src='./images/good.png'/>";
-    case Ready: 
-      return "<img width='16' src='./images/tick.png'/>";
-    case Paid: 
-      return "<img width='16' src='./images/money.png'/>";
-    case Budget:
-      return "<img width='16' src='./images/treatment_budget.png'/>";   
-    default:
-      return "<img width='16' src='/images/clock.png'/>";
+  case Open:
+    return "<img width='16' src='./images/open.png'/>";
+  case PreOpen:
+    return "<img width='16' src='./images/preopen.png'/>";
+  case Confirmed:
+    return "<img width='16' src='./images/confirmed.png'/>";
+  case Missed:
+    return "<img width='16' src='./images/missed.png'/>";   
+  case ReSchedule:
+    return "<img width='16' src='./images/treatment_reschedule.png'/>";   
+  case Arrived:
+    return "<img width='16' src='./images/good.png'/>";
+  case Ready: 
+    return "<img width='16' src='./images/tick.png'/>";
+  case Paid: 
+    return "<img width='16' src='./images/money.png'/>";
+  case Budget:
+    return "<img width='16' src='./images/treatment_budget.png'/>";   
+  default:
+    return "<img width='16' src='/images/clock.png'/>";
   }
 };
-var getColor = function(status,status2){    
+var getColor = function(status,status2){  
   //if (!global_calendarShowLight) {
   if (true) {
     switch(status){
@@ -286,9 +331,9 @@ var getColor = function(status,status2){
         }
       default:
         return  { "color" : "#68a1e5", 'headColor':"#2b72d0"};;
-    }    
+    } 
   }
-};    
+};  
 var lastCallTreatmentsByApi = 0;
 var refreshCalendar = function(treatments){
   global_treatments = treatTreatmentsServer(treatments);
@@ -324,31 +369,62 @@ var createHours = function(){
   horarios += "</span>";
   $(".wc-column-odd, .wc-column-even").html(horarios);
 };
+
+var addIntervalFields = function()
+{
+  var fieldsForm = '<form class="form-inline">' + 
+             '  <div class="form-group">' +
+             '    <div class="input-group">' +
+           '      <div class="input-group-addon interval-icon"><img width="16" src="/images/calendar_addon.png"/></div>' +
+           '      <input type="text" class="form-control date" name="data_calendar" id="data_calendar">' +
+           '    </div>' +
+             '  </div>' +
+             '  <div class="form-group">' +
+             '    <div class="input-group">' +
+           '      <div class="input-group-addon interval-icon"><img width="16" src="/images/calendar_addon.png"/></div>' +
+           '      <input type="text" class="form-control date" name="data_calendar_end" id="data_calendar_end">' +
+           '    </div>' +
+           '  </div>' +
+           '</form>';
+
+  $(".wc-toolbar").prepend(fieldsForm);
+};
+
+var addChangeIntervalButton = function()
+{
+  var buttonHtml = '<label for="toggle_interval" style="margin-right: 5px; float: right; line-height: 20px" class="btn ui-state-default">' +
+           '  Alternar intervalo' +
+           '</label>';
+
+  $(".wc-nav").after(buttonHtml);
+};
+
 var buildDataField = function(start, end){
   updateParameter();
   if(!stopProcess){
     stopProcess = true;
     if(($("#data_calendar").length === 0) && ($("#data_calendar_end").length === 0)){
-      div = '<div style="float:left; padding-right:10px" class="input-prepend"><span class="add-on" style="height: 17px;"><img width="16" src="/images/calendar_addon.png"></span> <input type="text" size="19" name="data_calendar" id="data_calendar" class="input-small date" style="height: 17px;"></div>';
-      div += '<div style="float:left; padding-right:10px" class="input-prepend"><span class="add-on" style="height: 17px;"><img width="16" src="/images/calendar_addon.png"></span> <input type="text" size="19" name="data_calendar_end" id="data_calendar_end" class="input-small date" style="height: 17px;"></div>';
-      $(".wc-toolbar").prepend(div);
+
+      addIntervalFields();
+      addChangeIntervalButton();
+
       $("#data_calendar").val(getDateBr(start)).datepicker({
-                              beforeShow: function() {
-                                  setTimeout(function(){
-                                      $('#ui-datepicker-div').css('z-index',10000);
-                                      
-                                  }, 0);
-                              }
-                          });
+        beforeShow: function() {
+          setTimeout(function(){
+            $('#ui-datepicker-div').css('z-index',10000);         
+          }, 0);
+        }
+      });
+
       $("#data_calendar_end").val(getDateBr(end)).datepicker({
-                              beforeShow: function() {
-                                  setTimeout(function(){
-                                      $('#ui-datepicker-div').css('z-index',10000);
-                                      
-                                  }, 0);
-                              }
-                          });
-      $(".add-on").click(function(){
+        beforeShow: function() {
+          setTimeout(function(){
+            $('#ui-datepicker-div').css('z-index',10000);     
+          }, 0);
+        }
+      });
+
+      $(".interval-icon").click(function(){
         $(this).next().focus();
       });//setfous in datepiker ao clicar no calendariozinho
 
@@ -385,13 +461,13 @@ var buildDataField = function(start, end){
         updateParameter();
       };
       $("#data_calendar").change(function() {
-	        date = $("#data_calendar").datepicker('getDate');
-	        date_end = $("#data_calendar_end").datepicker('getDate');
-	        if(date.getTime() < date_end.getTime()){
-	          $("#data_calendar_end").val ($("#data_calendar").val());
-	        }
-	        changeDates();
-	  });
+          date = $("#data_calendar").datepicker('getDate');
+          date_end = $("#data_calendar_end").datepicker('getDate');
+          if(date.getTime() < date_end.getTime()){
+            $("#data_calendar_end").val ($("#data_calendar").val());
+          }
+          changeDates();
+    });
       $("#data_calendar_end").change(function() {
           changeDates();
       });
@@ -457,5 +533,4 @@ var setTreatmentGlobalFromId  = function(id){
     return t.id === id;
   })[0];
 };
-
 
