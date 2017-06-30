@@ -1,0 +1,19 @@
+/*
+ * CSS file created by VilarikA's team.
+ * @author Stanley Sathler <stanleysathlerpinto@gmail.com>
+ */
+
+.vr-customer-select,
+.vr-customer-select .id_customer_search,
+.vr-customer-select .name_customer_search {
+	display: inline-block;
+}
+
+.vr-customer-select.with-icons.two-icons { width: calc(100% - 37px); }
+.vr-customer-select.with-icons.three-icons { width: calc(100% - 100px); }
+
+.vr-customer-select .id_customer_search { width: 100px; }
+span.vr-customer-select .select2-container.with-icons.two-icons { width: calc(100% - 35px - 110px) !important; }
+span.vr-customer-select .select2-container.with-icons.three-icons { width: calc(100% - 35px - 144px) !important; }
+
+.vr-customer-select .vr-circle-icon { margin-right: 5px; }
