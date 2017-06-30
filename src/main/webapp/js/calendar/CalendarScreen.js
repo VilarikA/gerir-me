@@ -45,7 +45,7 @@ var CalendarScreen = {
 						"		<a onclick='setTreatmentGlobalFromId("+id+"); TreatmentStatusManager.markAsReady();' type='button' class='btn'>"+
 						"			<img src='/images/treatment_ready.png' style='width: 16px;'>"+
 						"			Atendido"+
-						"		</a>			            	"+
+						"		</a>							"+
 						"	</span>"+
 						"	<span class='hide_on_paid'>"+
 						"		<a onclick='setTreatmentGlobalFromId("+id+"); TreatmentStatusManager.markAsMissed();' type='button' class='btn'>"+
@@ -79,6 +79,7 @@ var CalendarScreen = {
 		}
 		return treatments;
 	},
+
 	creatModalTreatment: function(calEvent, isNew) {
 		CalendarScreen.renewTratment();
 		$('.hide_on_paid').show();
@@ -107,12 +108,14 @@ var CalendarScreen = {
 			global_commandControl == 1 /* daily */) {
 			$.get("/calendar/" + encodeURIComponent(getDateBr(calEvent.start)) + 
 				"/getNextCommandId", function(t) {
-				$($inputs.get(0)).val(t);
+
+				$("#command_treatment", "#treatment_add").val(t);
 				if (!isNew)
 					$(".command").change();
 			});
 		} else {
-			$($inputs.get(0)).val(calEvent.command);
+			$("#command_treatment", "#treatment_add").val(calEvent.command);
+			//$($inputs.get(0)).val(calEvent.command);
 		}
 		if(calEvent.customerId){
 			$("#cutomer_id_treatment").val(calEvent.customerId);
@@ -133,15 +136,18 @@ var CalendarScreen = {
 	showCustomers : function(calEvent){
 		CalendarScreen.creatModalTreatmentClass(calEvent);
 	},
+
 	showTreatment: function(calEvent) {
 		CalendarScreen.creatModalTreatment(calEvent, false);
 		$("#treatment_id").val(calEvent.id);
 		TreatmentManger.creatTreatmentDetail(calEvent);
 	},
+
 	closeTreatmentPopUp: function() {
 		$('#treatment_add').modal('hide');
 		CalendarScreen.renewTratment();
 	},
+
 	getActivities: function() {
 		DataManager.getActivities($("#user_treatment").val(), function(activitysObj) {
 			global_activitiesObj = activitysObj;
@@ -151,10 +157,16 @@ var CalendarScreen = {
 				ret += "<option value='" + activitysObj[i].id + "'>" + activitysObj[i].name + "</option>";
 			}
 			$('#activitys').append(ret);
+
+			// Change the label which appears as pre-selected on select component
+			$("#activitys").next().find("a.select2-choice > span").text(activitysObj[0].name);
 		});
 	},
+
 	removeTreatmentShowModal: function() {
 		if (CalendarManager.calendarPermitions.deleteEvent) {
+			console.log("Being excluded");
+
 			$("#treatment_remove").modal({
 				"show": true,
 				"keyboard": true,
