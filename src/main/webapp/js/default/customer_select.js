@@ -32,6 +32,7 @@ $(function() {
 				alert ("Nenhum paciente selecionado!");
 			}
 		});
+		
 		$(".openCustomerSelected").click(function(){
 			$parent = $(this).parent();
 			var id = $(".id_customer_search", $parent).val();
