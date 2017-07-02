@@ -2276,6 +2276,10 @@ var showMessages = function(messages) {
 		'" class="alert-message block-message error fade in" id="message_' + 
 		messages[i].id + '" data-alert="alert"><a class="close" href="#">×</a><b>De : </b>' + 
 		messages[i].of + '<br/><b>Título :' + messages[i].subject + '</b> <br/><p>' + 
+		'</p><br/><p> <b>Enviado : </b>' + sended.getTextWhen() + 
+		' às ' + sended.getHourBr() + '</p><div class="alert-actions"><a class="btn danger small" onclick="markMessageAsRead(' + messages[i].id + 
+		')" href="#">Excluir</a> <a class="btn small" onclick="markMessageAsHide(' + messages[i].id + 
+		')" href="#">Ler Depois!</a><br/><br/></div>' +
 		messages[i].message + '</p><br/><p> <b>Enviado : </b>' + sended.getTextWhen() + 
 		' às ' + sended.getHourBr() + '</p><div class="alert-actions"><a class="btn danger small" onclick="markMessageAsRead(' + messages[i].id + 
 		')" href="#">Excluir</a> <a class="btn small" onclick="markMessageAsHide(' + messages[i].id + 
