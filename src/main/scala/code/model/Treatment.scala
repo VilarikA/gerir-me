@@ -147,6 +147,14 @@ with WithCustomer with net.liftweb.common.Logger{
             case _ => ""
         }
     }
+    lazy val customerPhones:String = {
+        // pq vez por outra dava erro no rel T nas migraçãoes qd cliente era nulo ou invalido
+        // rigel 02/07/2017
+        customer.obj match {
+            case Full(c)=> c.mobilePhone.is + ' ' + c.phone.is + ' ' + c.email_alternative.is + ' ' + c.email.is
+            case _ => "Cliente/Paciente ===== inválido!"
+        }
+    }
     // rigel 28/07/2014
     lazy val customerShortName:String = {
         customer.obj match {

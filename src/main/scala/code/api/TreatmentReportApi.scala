@@ -447,7 +447,7 @@ object TreatmentReportApi extends RestHelper with ReportRest with net.liftweb.co
 					("payments",t.paymentDescription),
 					("command",t.command.is),
 					("cashier",t.cashier),
-					("phone",t.customer.obj.get.mobilePhone.is + ' ' + t.customer.obj.get.phone.is + ' ' + t.customer.obj.get.email_alternative.is + ' ' + t.customer.obj.get.email.is),
+					("phone",t.customerPhones), //t.customer.obj.get.mobilePhone.is + ' ' + t.customer.obj.get.phone.is + ' ' + t.customer.obj.get.email_alternative.is + ' ' + t.customer.obj.get.email.is),
 					("id",t.id.is),
 					("end", Project.dateToStrJs(t.end.is)),
 					("status2",t.status2.toString)
