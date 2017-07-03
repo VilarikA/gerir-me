@@ -62,3 +62,6 @@ npm-debug.log
 
 # Grunt
 test.logsrc/main/webapp/v2/_SpecRunner.html
+
+# Visual Code Studio
+.vscode

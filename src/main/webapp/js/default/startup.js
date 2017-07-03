@@ -1,4 +1,15 @@
 $(function() {
+
+	/*
+	 * Gets all selects in the system and makes them an instance of 
+	 * select 2 plugin.
+	 * 
+	 * Exceptions are those selects which have the "notselect2" class or 
+	 * sth-select attribute, which is another select plugin.
+	 */
+	$("select:not(.notselect2,[sth-select])").select2();
+
+
 	AuthUtil.updateDataCompany();
 	AuthUtil.updateDataUnit();
 	$.ajaxSetup({
@@ -141,7 +152,6 @@ $(function() {
 	loginInformationProcess();
 	processMessages();
 	try {
-		$("select:not(.notselect2)").select2();
 		$("select.alow_all").change(function() {
 			var val = $(this).val();
 			if (val && val.filter(function(value) {
