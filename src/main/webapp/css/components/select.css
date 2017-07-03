@@ -5,9 +5,9 @@
 
 /* Makes sth-overlay on top of the overlay created by Bootstrap Modal */
 .sth-overlay {
-    z-index: 1051;
+	z-index: 1051;
 }
 
 .sth-select-popup {
-    z-index: 1052;
+	z-index: 1052;
 }

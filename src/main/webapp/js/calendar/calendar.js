@@ -327,10 +327,12 @@ $(function(){
 		TreatmentManger.saveTreatment();
 	});
 
+	/*
 	$("#activitys").select2({ 
 		formatResult : Customer.hasEspecialFormat,
 		formatSelection: Customer.hasEspecialFormat
 	});
+	*/
 	
 	$("#treatment_fit_show").click(function(){
 		var treatment = global_treatments.filter(function(a){ return a.id==global_calEvent.id })[0];

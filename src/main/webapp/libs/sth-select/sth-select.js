@@ -252,13 +252,14 @@ var $ = window.jQuery;
 		(function initialize($this) {
 			_$originalSelect = $this;
 			_properties = buildDefault(properties);
-			_values = extractValues($this);
 			_$popup = new window.SthSelect.SthSelectPopup();
 			_$fakeSelect = fudgeSelect($this, properties);
 
 			_$popup.onSelect(applySelectedValue);
 
 			_$fakeSelect.click(function () {
+				_values = extractValues($this);
+
 				_$popup.setTitle(_properties.title);
 				_$popup.setItems(_values);
 				_$popup.show();
