@@ -42,7 +42,7 @@ trait PerCompany {
 	self: BaseMapper =>
 	object company extends MappedLongForeignKey(this.asInstanceOf[MapperType],Company){
 		override def dbIndexed_? = true
-		override def renderJs_? = false
+		//override def renderJs_? = false
 		override def defaultValue = {
 			if(AuthUtil ? )
 				AuthUtil.company.id.is

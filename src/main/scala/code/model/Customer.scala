@@ -311,8 +311,15 @@ class Customer extends BusinessPattern[Customer]{
 }
 
 object Customer extends Customer with BusinessPatternMeta[Customer]{
-    def login(email:String, password:String):Customer = {
-        val customers = findAll(By(Customer.email, email.trim.toLowerCase), By(Customer.password, Project.md5(password)))
+    def login(email:String, password:String, company:String):Customer = {
+        val customers = if (company == "") {
+            findAll(By(Customer.email, email.trim.toLowerCase), 
+            By(Customer.password, Project.md5(password)))
+        } else {
+            findAll(By(Customer.email, email.trim.toLowerCase), 
+            By(Customer.company, company.toLong),
+            By(Customer.password, Project.md5(password)))
+        }
         customers match {
             case customer::tail => {
                 LogActor ! "Login email customer company " + customer.company.is.toString + " " + customer.name.is + " " +new Date().toString
