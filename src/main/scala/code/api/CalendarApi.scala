@@ -65,7 +65,7 @@ object CalendarApi extends RestHelper with net.liftweb.common.Logger  {
 					JString(e.getMessage)
 				}
 				case _ =>{
-					JString("Erro desconhecido, ao cadastrar cliente!")
+					JString("Erro desconhecido, ao cadastrar " + AuthUtil.company.appCustName("Cliente") + "!")
 				}
 			}
 		}

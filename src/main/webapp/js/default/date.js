@@ -109,6 +109,10 @@ Date.prototype.getTextWhen = function(){
 	return i18n_days[this.getDay()]+" "+this.getDate()+" de "+i18n_months[this.getMonth()]+" de "+this.getFullYear();
 };
 
+Date.prototype.getTextWhenShort = function(){
+	return i18n_days[this.getDay()].substr(0,3)+" "+this.getDate()+" de "+i18n_months[this.getMonth()]+" de "+this.getFullYear();
+};
+
 Date.prototype.isItChristmas = function(){
 	return ((this.getDate() >= 1 && this.getMonth() == 11) || (this.getDate() <= 5 && this.getMonth() == 0));
 };

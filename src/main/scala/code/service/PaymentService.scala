@@ -19,6 +19,7 @@ object  PaymentService extends  net.liftweb.common.Logger  {
 		if(validate){
 			treatment.save
 		}else{
+			treatment.validateCustomer
 			treatment.saveWithoutValidate
 		}
 	}

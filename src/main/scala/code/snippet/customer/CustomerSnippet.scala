@@ -363,7 +363,7 @@ class  CustomerSnippet extends BootstrapPaginatorSnippet[Customer] with net.lift
 	  					val c =  AuthUtil.company.findCustomerByKey(ids.toLong)
 	  					c match {
 	  						case Full(customer) => JsRaw("selectCustomer('"+customer.id+"','"+customer.name+"', ["+customer.alerts_messages.map("'"+_+"'").join(",")+"])")
-	  						case _ => Alert(AuthUtil.company.appCustName("Cliente") + " "+ids+" Não existe!")&JsRaw("$('.id_customer_search').val('')")
+	  						case _ => Alert(AuthUtil.company.appCustName("Cliente") + " "+ids+" não existe!")&JsRaw("$('.id_customer_search').val('')")
 	  					}
 
 	  				}

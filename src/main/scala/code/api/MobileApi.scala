@@ -33,8 +33,9 @@ object MobileApi extends RestHelper with net.liftweb.common.Logger {
       for {
         email <- S.param("email") ?~ "email parameter missing" ~> 400
         password <- S.param("password") ?~ "password parameter missing" ~> 400
+        company <- S.param("company") ?~ "company parameter missing" ~> 400
       } yield {
-        val customer = Customer.login(email, password)
+        val customer = Customer.login(email, password, company)
         val customers = TreatmentService.customersWithTreatments(customer.company.obj.get, new Date())
         JsArray(
           customers.filter(_.mobilePhone.is != "").map((c: Customer) => {
@@ -48,20 +49,22 @@ object MobileApi extends RestHelper with net.liftweb.common.Logger {
       for {
         email <- S.param("email") ?~ "email parameter missing" ~> 400
         password <- S.param("password") ?~ "password parameter missing" ~> 400
+        company <- S.param("company") ?~ "company parameter missing" ~> 400
       } yield {
-        Customer.login(email, password).asJs
+        Customer.login(email, password, company).asJs
       }
     }
     case "mobile" :: "api" :: "history" :: Nil Post _ => {
       for {
         email <- S.param("email") ?~ "email parameter missing" ~> 400
         password <- S.param("password") ?~ "password parameter missing" ~> 400
+        company <- S.param("company") ?~ "company parameter missing" ~> 400
         startDate <- S.param("startDate") ?~ "startDate parameter missing" ~> 400
         endDate <- S.param("endDate") ?~ "endDate parameter missing" ~> 400
       } yield {
         val start = Project.strOnlyDateToDate(startDate)
         val end = Project.strOnlyDateToDate(endDate)
-        val customer = Customer.login(email, password)
+        val customer = Customer.login(email, password, company)
         JsArray(customer.history(start, end))
       }
     }
@@ -69,8 +72,9 @@ object MobileApi extends RestHelper with net.liftweb.common.Logger {
       for {
         email <- S.param("email") ?~ "email parameter missing" ~> 400
         password <- S.param("password") ?~ "password parameter missing" ~> 400
+        company <- S.param("company") ?~ "company parameter missing" ~> 400
       } yield {
-        val customer = Customer.login(email, password)
+        val customer = Customer.login(email, password, company)
         val users = User.findAll(
           By(User.company, customer.company),
           By(User.userStatus, 1),
@@ -89,12 +93,13 @@ object MobileApi extends RestHelper with net.liftweb.common.Logger {
       for {
         email <- S.param("email") ?~ "email parameter missing" ~> 400
         password <- S.param("password") ?~ "password parameter missing" ~> 400
+        company <- S.param("company") ?~ "company parameter missing" ~> 400
         user <- S.param("user") ?~ "user parameter missing" ~> 400
         date <- S.param("date") ?~ "date parameter missing" ~> 400
         hour_start <- S.param("hour_start") ?~ "customer parameter missing" ~> 400
         activity <- S.param("activity") ?~ "activity parameter missing" ~> 400
       } yield {
-        val customer = Customer.login(email, password)
+        val customer = Customer.login(email, password, company)
         val customerAsUser = User.findByKey(customer.id.is).get
         val userObj = User.findByKey(user.toLong).get
         AuthUtil << customerAsUser
@@ -111,9 +116,10 @@ object MobileApi extends RestHelper with net.liftweb.common.Logger {
       for {
         email <- S.param("email") ?~ "email parameter missing" ~> 400
         password <- S.param("password") ?~ "password parameter missing" ~> 400
+        company <- S.param("company") ?~ "company parameter missing" ~> 400
         user <- S.param("user") ?~ "user parameter missing" ~> 400
       } yield {
-        val customer = Customer.login(email, password)
+        val customer = Customer.login(email, password, company)
         val userObj = User.findAll(
           By(User.company, customer.company),
           By(User.id, user.toLong))(0)

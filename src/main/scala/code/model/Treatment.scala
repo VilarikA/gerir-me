@@ -147,6 +147,14 @@ with WithCustomer with net.liftweb.common.Logger{
             case _ => ""
         }
     }
+    lazy val customerPhones:String = {
+        // pq vez por outra dava erro no rel T nas migraçãoes qd cliente era nulo ou invalido
+        // rigel 02/07/2017
+        customer.obj match {
+            case Full(c)=> c.mobilePhone.is + ' ' + c.phone.is + ' ' + c.email_alternative.is + ' ' + c.email.is
+            case _ => "Cliente/Paciente ===== inválido!"
+        }
+    }
     // rigel 28/07/2014
     lazy val customerShortName:String = {
         customer.obj match {
@@ -508,10 +516,16 @@ with WithCustomer with net.liftweb.common.Logger{
 
     def validateCustomer {
         customer.obj match {
-            case Full(c)=> 
+            case Full(c)=> {
+                if (this.customerName != "") {
+
+                    } else {
+                        throw new RuntimeException(AuthUtil.company.appCustName("Cliente") + " inválido customerName!");
+                    }
+            }
             case _ => {
-                LogActor ! "Treatment com customer ( %s ) inválido, company (%s)!".format(customer.is, AuthUtil.company);
-                throw new RuntimeException("Cliente inválido!");
+                LogActor ! "Treatment com customer ( %s ) inválido, company (%s)!".format(customer.is, AuthUtil.company.id.is);
+                throw new RuntimeException(AuthUtil.company.appCustName("Cliente") + " inválido!");
             }
         }        
     }
@@ -527,6 +541,7 @@ with WithCustomer with net.liftweb.common.Logger{
             validateHours
         }
         validateCustomer
+
         if (AuthUtil.company.appType.isEdoctus) {
             if (this.id > 0) {
                 getTreatEdoctus.save
