@@ -39,7 +39,7 @@
 		/**
    * Shows the overlay.
    */
-		function show() {
+		function show(values) {
 			_$overlay.fadeIn(500);
 		}
 
@@ -62,14 +62,19 @@
 
 (function () {
 
-	function SthSelectPopup() {
+	function SthSelectPopup(properties) {
 
+		var self = this;
 		var _$popup = null;
 		var _$title = null;
 		var _$content = null;
+		var _$filter = null;
 		var _$overlay = null;
+		var _properties = properties;
 		var _onSelectCallback = null;
 		var _qntityOfItems = 0;
+		var _items = [];
+		var _filteredItems = [];
 
 		/**
    * Max of height (in pixels) that the popup can 
@@ -86,20 +91,29 @@
    */
 		(function create() {
 
-			_$overlay = new window.SthOverlay();
-
 			if (isAlreadyInDOM()) {
 				_$popup = $(".sth-select-popup");
 				_$title = $(".sth-select-title");
 				_$content = $(".sth-select-content");
-				return;
+				_$filter = $(".sth-select-filter");
+				_$overlay = $(".sth-overlay");
+			} else {
+				_$popup = $('<section class="sth-select-popup"></section>');
+				_$title = $('<div class="sth-select-title"></div>');
+				_$content = $('<div class="sth-select-content"></div>');
+				_$filter = $('<input class="sth-select-filter"/>');
+				_$overlay = new window.SthOverlay();
+
+				_$popup.append(_$title).append(_$filter).append(_$content).appendTo($("body"));
 			}
 
-			_$popup = $('<section class="sth-select-popup"></section>');
-			_$title = $('<div class="sth-select-title"></div>');
-			_$content = $('<div class="sth-select-content"></div>');
+			_$filter.keydown(function (e) {
+				_renderList();
+			});
 
-			_$popup.append(_$title).append(_$content).appendTo($("body"));
+			_items = properties.items;
+			_filteredItems = _items;
+			_qntityOfItems = _items.length;
 		})();
 
 		/**
@@ -114,8 +128,19 @@
 		/**
    * Shows the popup on the screen.
    */
-		function show() {
+		function show(values) {
 			_$overlay.show();
+
+			if (!_properties.hasFilter) _$filter.val("");
+
+			if (values && Array.isArray(values)){
+				_items = values;
+				_qntityOfItems = values.length;
+			}
+
+			_$title.text(_properties.title);
+			_controlFilterVisibility();
+			_renderList();
 
 			var height = _calculatePopupHeight();
 			_$popup.animate({ height: height }, 500);
@@ -147,7 +172,7 @@
 		/**
    * Add an item.
    */
-		function addItem(item, autoRender) {
+		function _addItem(item, autoRender) {
 			autoRender = autoRender || true;
 
 			var text = item.text;
@@ -159,35 +184,29 @@
 		}
 
 		/**
-   * Set items which will be added into the list.
-   * 
-   * #addItems() uses #addItem(), but renders all 
-   * added items at once for better performance.
+   * Renders all elements in the list of options.
    */
-		function setItems(items) {
-			// Clear old items
+		function _renderList() {
 			_clear();
 
-			// Save quantity of items added (useful for some tricks)
-			_qntityOfItems = items.length;
+			var rerenderOnEachItem = false;
+			var $listItems = $([]);
+			var textFilter = _$filter.val();
 
-			// Add each item into the list
-			var $options = $([]);
-			$.each(items, function (_, item) {
-				var $listItem = addItem(item, false);
+			_items.map(function (item) {
+				if (item.text.indexOf(textFilter) != -1) {
+					var $listItem = _addItem(item, rerenderOnEachItem);
+					$listItem.click(function () {
+						_onSelectCallback(item);
+						hide();
+					});
 
-				$options = $options.add($listItem);
-
-				$listItem.click(function () {
-					_onSelectCallback(item);
-					hide();
-				});
+					$listItems = $listItems.add($listItem);
+				}
 			});
 
-			// Append items into the DOM (and renders it)
-			_$content.append($options);
+			_$content.append($listItems);
 
-			// Set the list's height, applying scroll when needed
 			var popupHeight = _calculatePopupHeight();
 			var titleHeight = _$title.outerHeight();
 			_$content.outerHeight(popupHeight - titleHeight);
@@ -209,19 +228,22 @@
 		}
 
 		/**
-   * Sets the popup's title. 
+   * Sets the filter field visibility based on 
+   * hasFilter property.
    */
-		function setTitle(title) {
-			_$title.text(title);
+		function _controlFilterVisibility() {
+			var visibility = _properties.hasFilter ? "block" : "none";
+			_$filter.css("display", visibility);
+			_$filter.attr("placeholder", _properties.filterPlaceholder);
 		}
 
+		/**
+   * Public available methods.
+   */
 		return {
 			show: show,
 			hide: hide,
-			addItem: addItem,
-			setItems: setItems,
-			onSelect: onSelect,
-			setTitle: setTitle
+			onSelect: onSelect
 		};
 	}
 
@@ -243,6 +265,7 @@ var $ = window.jQuery;
 
 	$.fn.SthSelect = function SthSelect(properties) {
 
+		var _$self = $(this);
 		var _$originalSelect = null;
 		var _$popup = null;
 		var _$fakeSelect = null;
@@ -252,25 +275,28 @@ var $ = window.jQuery;
 		(function initialize($this) {
 			_$originalSelect = $this;
 			_properties = buildDefault(properties);
-			_$popup = new window.SthSelect.SthSelectPopup();
+			_values = extractValues($this);
 			_$fakeSelect = fudgeSelect($this, properties);
 
+			var popupProperties = {
+				items: _values,
+				title: _properties.title,
+				hasFilter: _properties.filter,
+				filterPlaceholder: _properties.filterPlaceholder
+			};
+			_$popup = new window.SthSelect.SthSelectPopup(popupProperties);
+
 			_$popup.onSelect(applySelectedValue);
-
-			_$fakeSelect.click(function () {
-				_values = extractValues($this);
-
-				_$popup.setTitle(_properties.title);
-				_$popup.setItems(_values);
-				_$popup.show();
-			});
+			_$fakeSelect.click(openPopup);
 		})($(this));
 
 		function buildDefault(properties) {
 			return $.extend({
 				title: "Select an option",
 				placeholder: "Choose an option",
-				autoSize: false
+				autoSize: false,
+				filter: false,
+				filterPlaceholder: "Search"
 			}, properties);
 		}
 
@@ -303,6 +329,10 @@ var $ = window.jQuery;
 			return $fakeSelect;
 		}
 
+		function openPopup() {
+			_$popup.show(extractValues(_$self));
+		}
+
 		function applySelectedValue(selectedValue) {
 			var value = selectedValue.value;
 			_$originalSelect.val(value);
@@ -319,7 +349,8 @@ var $ = window.jQuery;
 /*
  * Load all elements which use the component by HTML attributes API
  */
-$(document).ready(function loadFromHtmlAPI(){
+$(document).ready(function loadFromHtmlAPI() {
+
 	var $elements = $("select[sth-select]");
 
 	$elements.each(function () {
@@ -327,11 +358,15 @@ $(document).ready(function loadFromHtmlAPI(){
 		var title = $element.attr("sth-select-title");
 		var placeholder = $element.attr("sth-select-placeholder");
 		var autoSize = $element.attr("sth-select-autosize");
+		var filter = $element.attr("sth-select-filter");
+		var filterPlaceholder = $element.attr("sth-select-filter-placeholder");
 
 		$element.SthSelect({
 			title: title,
 			placeholder: placeholder,
-			autoSize: boolFromString(autoSize)
+			autoSize: boolFromString(autoSize),
+			filter: boolFromString(filter),
+			filterPlaceholder: filterPlaceholder
 		});
 	});
 
