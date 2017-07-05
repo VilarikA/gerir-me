@@ -131,7 +131,7 @@
 		function show(values) {
 			_$overlay.show();
 
-			if (!_properties.hasFilter) _$filter.val("");
+			if(_$filter && _$filter.length > 0) _$filter.val("");
 
 			if (values && Array.isArray(values)){
 				_items = values;
