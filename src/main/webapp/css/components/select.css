@@ -11,3 +11,13 @@
 .sth-select-popup {
 	z-index: 1052;
 }
+
+.sth-select {
+	background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0, #eeeeee), color-stop(0.5, white));
+	height: 44px;
+	padding: 12px;
+
+	border-radius: 4px;
+	-webkit-border-radius: 4px;
+	-moz-border-radius: 4px;
+}
