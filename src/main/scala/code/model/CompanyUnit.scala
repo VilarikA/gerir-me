@@ -42,8 +42,15 @@ class CompanyUnit
     override def defaultValue = 31
   }
   object defaultSex extends MappedPoliteString(this,8){
-      override val defaultValue = "F" 
+    override def defaultValue = {
+      if (AuthUtil.company.appType.isEbelle) {
+        "F" // só o ebelle o default é feminino
+      } else {
+        "N" // os outros é não informado
+      }
+    }
   }
+
   object costCenter extends MappedLongForeignKey(this, CostCenter) {
     override def dbIndexed_? = true
   }

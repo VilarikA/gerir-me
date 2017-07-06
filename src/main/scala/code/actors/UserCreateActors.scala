@@ -42,10 +42,16 @@ object UserCreateActors extends LiftActor {
     } else if (company.appType == Company.SYSTEM_ESMILE) {
       PermissionModule.setModule (company, "QUIZ");
       PermissionModule.setModule (company, "BUDGET");
+      PermissionModule.setModule (company, "ANVISA");
+
+      PermissionModule.resetModule (company, "FIDELITY");
       //"esmile"
     } else if (company.appType == Company.SYSTEM_EDOCTUS) {
       PermissionModule.setModule (company, "QUIZ");
       PermissionModule.setModule (company, "OFFSALE");
+      PermissionModule.setModule (company, "ANVISA");
+
+      PermissionModule.resetModule (company, "FIDELITY");
       //"edoctus"
     } else if (company.appType == Company.SYSTEM_EGREX) {
       //"egrex"
@@ -97,6 +103,11 @@ object UserCreateActors extends LiftActor {
 
   def createUnit(company:Company):Long = {
     val unit = CompanyUnit.create.company(company).name(company.name).showInCalendar_?(true)
+    if (company.appType.isEbelle) {
+      unit.defaultSex("F") // só o ebelle o default é feminino
+    } else {
+      unit.defaultSex("N") // os outros é não informado
+    }
     unit.save
     unit.id.is
   }

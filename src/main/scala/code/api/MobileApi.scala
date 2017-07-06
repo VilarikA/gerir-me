@@ -147,6 +147,33 @@ object MobileApi extends RestHelper with net.liftweb.common.Logger {
         )
       }
     }    
+    case "mobile" :: "api" :: "joinus" :: Nil Post _ => {
+      for {
+        company <- S.param("company") ?~ "company parameter missing" ~> 400
+        name <- S.param("name") ?~ "name parameter missing" ~> 400
+        mobilephone <- S.param("mobilephone") ?~ "mobilephone parameter missing" ~> 400
+        phone <- S.param("phone") ?~ "phone parameter missing" ~> 400
+        email <- S.param("email") ?~ "email parameter missing" ~> 400
+        password <- S.param("password") ?~ "password parameter missing" ~> 400
+      } yield {
+        var ac = Customer.findAll (By(Customer.company, company.toLong),
+          Like (Customer.email, "%"+email+"%"));
+        if (ac.length > 0) {
+
+        } else {
+          var customer = Customer.create
+          customer.company(company.toLong).
+          name (name).
+          email (email).
+          phone (phone).
+          mobilePhone (mobilephone).
+          password (password).
+          obs ("agenda online").
+          save
+        }
+        JInt(1)
+      }
+    }    
     case req if(req.requestType.method == "OPTIONS") => {
       JInt(1);
     }    
