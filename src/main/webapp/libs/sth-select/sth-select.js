@@ -176,8 +176,9 @@
 			var qntityOfItems = _qntityOfItems;
 			var allItemsHeight = singleItemHeight * qntityOfItems;
 			var titleHeight = _$title.outerHeight();
+			var filterHeight = _$filter.outerHeight();
 
-			var contentHeight = allItemsHeight + titleHeight;
+			var contentHeight = allItemsHeight + titleHeight + filterHeight;
 			return contentHeight < MAX_HEIGHT ? contentHeight : MAX_HEIGHT;
 		}
 
@@ -364,6 +365,15 @@ var $ = window.jQuery;
 
 			var text = selectedValue.text;
 			_$fakeSelect.find(".sth-select-text").text(text);
+		}
+
+		function clearValue() {
+			_$originalSelect.val(null);
+			_$fakeSelect.find(".sth-select-text").text(_properties.placeholder);
+		}
+
+		return {
+			clearValue: clearValue
 		}
 	};
 
