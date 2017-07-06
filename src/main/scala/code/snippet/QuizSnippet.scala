@@ -72,6 +72,7 @@ class  QuizSnippet extends BootstrapPaginatorSnippet[Quiz] {
 			bind("f", xhtml,"name" -> Text(ac.name.is),
 							"usergroup" -> Text(ac.userGroupName),
 							"share" -> Text(if(ac.share_?.is){ "Sim" }else{ "Não" }),
+							"showinrecords" -> Text(if(ac.showInRecords_?.is){ "Sim" }else{ "Não" }),
 							"actions" -> <a class="btn" href={"/quiz/quiz?id="+ac.id.is}>Editar</a>,
 							"delete" -> SHtml.submit("Excluir",delete,"class" -> "btn danger","data-confirm-message" -> {" excluir o(a) " + Quiz.quizLabel + " " + ac.name}),
 							"_id" -> SHtml.text(ac.id.is.toString, id = _),
