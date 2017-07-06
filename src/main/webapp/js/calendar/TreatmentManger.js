@@ -289,7 +289,11 @@ var TreatmentManger = {
 			$("#table_detail_table tbody").html(table);
 			translateStatus();
 			$("#treatment_detail_div").show();
+
+			/*
 			$("#activitys").select2('open');
+			*/
+
 		});
 		global_calEvent = calEvent;
 	},
@@ -315,7 +319,7 @@ var TreatmentManger = {
 				}
 			},
 			"error": function(response) {
-				alert("Erro ao exluir atendimento!\n Verifique se o atendimento não foi pago!");
+				alert("Erro ao excluir atendimento!\n Verifique se o atendimento não foi pago!");
 			}
 		});
 	},

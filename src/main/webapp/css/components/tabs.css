@@ -1,0 +1,24 @@
+/**
+ * Style created by VilarikA's team
+ * @author: Stanley Sathler <stanleysathlerpinto@gmail.com>
+ **/
+
+.nav.nav-tabs .btn-primary:hover {
+	border-color: #204d74;
+	background-color: #286090;
+}
+
+.nav.nav-tabs .btn-danger:hover {
+	border-color: #ac2925;
+	background-color: #c9302c;
+}
+
+.vr-tab-content {
+	border: 1px solid #ddd;
+	margin-bottom: 25px;
+	padding: 10px 20px;
+}
+
+.nav.nav-tabs ~ .vr-tab-content { border-top: none; }
+
+.vr-tab-content:last-child { margin-bottom: 0; }

@@ -2,26 +2,24 @@
 var parent_customer_search = null;
 $(function() {
 	var prepareSearch = function() {
-		var $nameCustomerSearch = $(".name_customer_search");
-
 		var recordsStr = ""
-
 		var hasEdoctusSystem = $('.has-edoctus-system').length > 0;
 		var hasEphysioSystem = $('.has-ephysio-system').length > 0;
 		var hasEsmileSystem = $('.has-esmile-system').length > 0;
 		if (hasEdoctusSystem || hasEphysioSystem || hasEsmileSystem) {
-			if( $nameCustomerSearch.hasClass("use-fa") ){
-				recordsStr = '<div class="vr-circle-icon openRecordsSelected"><i class="fa fa-file-text" title="Prontuário"></i></div>';
-			} else {
-				recordsStr = '<a href="#" title="Ir para prontuário" class="openRecordsSelected"><img src="/images/records.png" class="img_customer_search" width="32">';
-			}
+//		if ((document.location.href.indexOf("edoctus") != -1) ||
+//			(document.location.href.indexOf("ephysio") != -1)) {
+			recordsStr = '<a href="#" title="Ir para prontuário 22" class="openRecordsSelected"><img src="/images/records.png" class="img_customer_search" width="32">'
 		}
 
-		if($nameCustomerSearch.hasClass("use-fa")){
-			$nameCustomerSearch.parent().append('<div class="vr-circle-icon openCustomerSelected"><i class="fa fa-users" aria-hidden="true" title="Ir para o cadastro"></i></div>' + recordsStr);
+		var nameCustomerSearchElement = $(".name_customer_search");
+
+		if(nameCustomerSearchElement.hasClass("use-fa")){
+			nameCustomerSearchElement.parent().append('<div class="vr-circle-icon openCustomerSelected"><i class="fa fa-users" aria-hidden="true" title="Ir para o cadastro"></i></div>' + recordsStr);
 		} else {
-			$nameCustomerSearch.parent().append('<a href="#" title="Ir para cadastro" class="openCustomerSelected"><img src="/images/customers.png" class="img_customer_search" width="32">' + recordsStr);
+			nameCustomerSearchElement.parent().append('<a href="#" title="Ir para cadastro" class="openCustomerSelected"><img src="/images/customers.png" class="img_customer_search" width="32">' + recordsStr);
 		}
+		
 		
 		$(".openRecordsSelected").click(function(){
 			$parent = $(this).parent();
@@ -32,7 +30,6 @@ $(function() {
 				alert ("Nenhum paciente selecionado!");
 			}
 		});
-		
 		$(".openCustomerSelected").click(function(){
 			$parent = $(this).parent();
 			var id = $(".id_customer_search", $parent).val();
@@ -52,7 +49,7 @@ $(function() {
 				placeholder: "Digite o nome do cliente",
 				minimumInputLength: 3,
 				formatNoMatches: function(val) {
-					return "<a href='#' onclick='Customer.rapidCreate(\"" + val + "\");'><img src='/images/add.png' width='16'> (" + val + ").Deseja adicionar?</a>";
+					return "<a href='#' onclick='Customer.rapidCreate(\"" + val + "\");'><img src='/images/add.png' width='16'> (" + val + "). Deseja criá-lo?</a>";
 				},
 				id: function(a) {
 					return a.name;
@@ -155,7 +152,7 @@ $(function() {
 		});
 	});
 	$("#b_customer_rapid_add").click(function() {
-        var opparm = $("#rapid_customer_mobile_phone_op").val() || '0';
+		var opparm = $("#rapid_customer_mobile_phone_op").val() || '0';
 
 		Customer.rapidCreate($("#rapid_customer_name").val(), 
 			$("#rapid_customer_phone").val(), 
