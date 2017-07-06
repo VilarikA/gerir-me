@@ -29,8 +29,8 @@
 		})();
 
 		/**
-   * Checks if overlay is already inserted on the DOM.
-   */
+   		* Checks if overlay is already inserted on the DOM.
+   		*/
 		function _isAlreadyCreated() {
 			var alreadyExistent = $(".sth-overlay");
 			return alreadyExistent && alreadyExistent.length > 0;
@@ -119,7 +119,16 @@
 			});
 
 			_$filter.keydown(function (e) {
-				_renderList();
+				var BACKSPACE = 8;
+				var SPACE = 32;
+				var ZERO = 49;
+				var Z = 90;
+				var keyCode = e.keyCode;
+
+				if( (keyCode >= ZERO && keyCode <= Z) || (keyCode == SPACE || keyCode == BACKSPACE) )
+					setTimeout(function(){
+						_renderList();
+					});
 			});
 
 			_items = properties.items;
@@ -202,10 +211,10 @@
 
 			var rerenderOnEachItem = false;
 			var $listItems = $([]);
-			var textFilter = _$filter.val();
+			var textFilter = _$filter.val().toLowerCase();
 
 			_items.map(function (item) {
-				if (item.text.indexOf(textFilter) != -1) {
+				if (item.lowerCasedText.indexOf(textFilter) != -1) {
 					var $listItem = _addItem(item, rerenderOnEachItem);
 					$listItem.click(function () {
 						_onSelectCallback(item);
@@ -316,7 +325,11 @@ var $ = window.jQuery;
 			var values = [];
 			$this.find("option").each(function () {
 				var $option = $(this);
-				var content = { value: $option.val(), text: $option.text() };
+				var content = { 
+					value: $option.val(), 
+					text: $option.text(), 
+					lowerCasedText: $option.text().toLowerCase() 
+				};
 				values.push(content);
 			});
 
