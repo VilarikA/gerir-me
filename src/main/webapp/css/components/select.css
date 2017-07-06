@@ -21,3 +21,10 @@
 	-webkit-border-radius: 4px;
 	-moz-border-radius: 4px;
 }
+
+@media only screen and (min-width: 768px) {
+	.sth-select {
+		height: 34px;
+		padding: 6px 12px;
+	}
+}
