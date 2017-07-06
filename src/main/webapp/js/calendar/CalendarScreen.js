@@ -80,6 +80,7 @@ var CalendarScreen = {
 		return treatments;
 	},
 
+	// Called when an item on Week Calendar is clicked
 	creatModalTreatment: function(calEvent, isNew) {
 		CalendarScreen.renewTratment();
 		$('.hide_on_paid').show();
@@ -99,6 +100,14 @@ var CalendarScreen = {
 		$("#user_treatment").attr('disabled', 'disabled');
 
 		$inputs = $("input", "#treatment_add");
+
+		// Reset the #activitys field
+		var $activities = $("#activitys");
+		var $fudgedActivities = $activities.next(); // Gets the div created by sth-select
+		var placeholder = $activities.attr("sth-select-placeholder");
+		$fudgedActivities.find(".sth-select-text").text(placeholder);
+		$activities.val(null);
+
 		$("#treatment_add").modal({
 			"show": true,
 			"keyboard": true,

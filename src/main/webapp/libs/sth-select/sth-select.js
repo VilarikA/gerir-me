@@ -118,6 +118,11 @@
 				hide();
 			});
 
+			$(document).keydown(function (e) {
+				if(e.keyCode == 27) // ESC
+					hide();
+			});
+
 			_$filter.keydown(function (e) {
 				var BACKSPACE = 8;
 				var SPACE = 32;
@@ -286,6 +291,9 @@ var $ = window.jQuery;
 (function () {
 
 	$.fn.SthSelect = function SthSelect(properties) {
+
+		if(!properties)
+			return this;
 
 		var _$self = $(this);
 		var _$originalSelect = null;
