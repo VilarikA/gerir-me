@@ -78,6 +78,9 @@ object  UserGroupSnippet extends BootstrapPaginatorSnippet[UserGroup] {
 				   	S.notice("Grupo de profissionais salvo com sucesso!")
 				   	S.redirectTo("/group/edit?id="+ac.id.is)
 				}catch{
+					case (e:net.liftweb.http.ResponseShortcutException) =>{
+						throw e
+					}
 					case e:RuntimeException => S.error(e.getMessage)
 					case _ => S.error("Erro desconhecido tente novamente")
 				}
