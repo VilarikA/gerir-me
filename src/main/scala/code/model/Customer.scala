@@ -229,7 +229,23 @@ class Customer extends BusinessPattern[Customer]{
         }
     }
 
+    def hasUnit = unit.obj  match {
+        case Full(a) => true
+        case _ => false
+    }
+
     override def save() = {
+        if (!hasUnit) {
+           // se não tem unidade, pega a ativa mais antiga
+           // feito para o cadastramento - online 
+           // depois resolver/escolher unidade
+           var ac = CompanyUnit.findAll (
+              By(CompanyUnit.company, this.company),
+              By(CompanyUnit.status, 1),
+              OrderBy (CompanyUnit.id, Ascending)
+           )
+           this.unit.set (ac(0).id.is);
+        }
         if (this.is_person_?) {
             if (this.image.is == "" || this.image.is == "empresa.png") {
                 this.image.set ("cliente.png")
