@@ -67,6 +67,8 @@
 		var self = this;
 		var _$popup = null;
 		var _$title = null;
+		var _$titleText = null;
+		var _$titleClose = null;
 		var _$content = null;
 		var _$filter = null;
 		var _$overlay = null;
@@ -94,18 +96,27 @@
 			if (isAlreadyInDOM()) {
 				_$popup = $(".sth-select-popup");
 				_$title = $(".sth-select-title");
+				_$titleText = $(".sth-select-title-text");
+				_$titleClose = $(".sth-select-title-close");
 				_$content = $(".sth-select-content");
 				_$filter = $(".sth-select-filter");
 				_$overlay = $(".sth-overlay");
 			} else {
 				_$popup = $('<section class="sth-select-popup"></section>');
 				_$title = $('<div class="sth-select-title"></div>');
+				_$titleText = $('<span class="sth-select-title-text"></span>');
+				_$titleClose = $('<span class="sth-select-title-close">X</span>');
 				_$content = $('<div class="sth-select-content"></div>');
 				_$filter = $('<input class="sth-select-filter"/>');
 				_$overlay = new window.SthOverlay();
 
+				_$title.append(_$titleText).append(_$titleClose);
 				_$popup.append(_$title).append(_$filter).append(_$content).appendTo($("body"));
 			}
+
+			_$titleClose.click(function (e) {
+				hide();
+			});
 
 			_$filter.keydown(function (e) {
 				_renderList();
@@ -138,7 +149,7 @@
 				_qntityOfItems = values.length;
 			}
 
-			_$title.text(_properties.title);
+			_$titleText.text(_properties.title);
 			_controlFilterVisibility();
 			_renderList();
 
@@ -209,7 +220,8 @@
 
 			var popupHeight = _calculatePopupHeight();
 			var titleHeight = _$title.outerHeight();
-			_$content.outerHeight(popupHeight - titleHeight);
+			var filterHeight = _$filter.outerHeight();
+			_$content.outerHeight(popupHeight - titleHeight - filterHeight);
 		}
 
 		/**

@@ -46,13 +46,6 @@
   width: 100%;
   -webkit-tap-highlight-color: transparent;
 }
-.sth-select-popup .sth-select-filter {
-  border: none;
-  border-bottom: 1px solid #d2d2d2;
-  height: 44px;
-  padding: 12px 15px;
-  width: 100%;
-}
 .sth-select-popup .sth-select-content {
   cursor: pointer;
   max-height: 100%;
@@ -64,6 +57,23 @@
   height: 50px;
   line-height: 50px;
   padding: 0 10px;
+}
+.sth-select-popup .sth-select-title-close {
+  display: inline-block;
+  cursor: pointer;
+  height: 50px;
+  position: absolute;
+  right: 0;
+  text-align: center;
+  width: 50px;
+}
+.sth-select-popup .sth-select-filter {
+  border: none;
+  border-bottom: 1px solid #d2d2d2;
+  height: 44px;
+  padding: 5px 10px;
+  font-size: 1em;
+  width: 100%;
 }
 .sth-select-popup .sth-select-item {
   border-bottom: 1px solid #d2d2d2;
