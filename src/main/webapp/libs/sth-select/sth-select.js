@@ -262,6 +262,9 @@
 			var visibility = _properties.hasFilter ? "block" : "none";
 			_$filter.css("display", visibility);
 			_$filter.attr("placeholder", _properties.filterPlaceholder);
+
+			if(_properties.hasFilter)
+				_$filter.focus();
 		}
 
 		/**
