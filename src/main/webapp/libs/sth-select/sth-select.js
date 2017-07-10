@@ -77,6 +77,8 @@
 		var _qntityOfItems = 0;
 		var _items = [];
 		var _filteredItems = [];
+		var _selectedItemIndex = -1;
+		var _isOpen = false;
 
 		/**
    * Max of height (in pixels) that the popup can 
@@ -109,6 +111,16 @@
 				_$content = $('<div class="sth-select-content"></div>');
 				_$filter = $('<input class="sth-select-filter"/>');
 				_$overlay = new window.SthOverlay();
+
+				$(document).keydown(function(e){
+					if(e.which === 38){ // arrow down
+						_selectElementAbove();
+					} else if(e.which === 40){ // arrow up
+						_selectElementBelow();
+					} else if(e.which === 13){ // enter
+						_selectElement();
+					}
+				});
 
 				_$title.append(_$titleText).append(_$titleClose);
 				_$popup.append(_$title).append(_$filter).append(_$content).appendTo($("body"));
@@ -154,6 +166,9 @@
    * Shows the popup on the screen.
    */
 		function show(values) {
+			_isOpen = true;
+			_selectedItemIndex = -1;
+
 			_$overlay.show();
 
 			if(_$filter && _$filter.length > 0) _$filter.val("");
@@ -169,6 +184,39 @@
 
 			var height = _calculatePopupHeight();
 			_$popup.animate({ height: height }, 500);
+		}
+
+		function _selectElementAbove(){
+			if(!_isOpen) return false;
+
+			if(_selectedItemIndex > 0){
+				var items = $('.sth-select-item').toArray();
+				$(items[_selectedItemIndex]).removeClass("selected");
+
+				_selectedItemIndex--;
+				$(items[_selectedItemIndex]).addClass("selected");
+			}
+		}
+
+		function _selectElementBelow(){
+			if(!_isOpen) return false;
+
+			if(_selectedItemIndex < _qntityOfItems - 1){
+				var items = $('.sth-select-item').toArray();
+				$(items[_selectedItemIndex]).removeClass("selected");
+
+				_selectedItemIndex++;
+				$(items[_selectedItemIndex]).addClass("selected");
+			}
+		}
+
+		function _selectElement(){
+			hide();
+			if(_filteredItems.length < 1)
+				_filteredItems = _items;
+
+			var item = _filteredItems[_selectedItemIndex];
+			_onSelectCallback(item);
 		}
 
 		/**
@@ -191,6 +239,7 @@
    * Hides the popup on the screen.
    */
 		function hide() {
+			_isOpen = false;
 			_$overlay.hide();
 			_$popup.animate({ height: 0 }, 500);
 		}
@@ -219,7 +268,7 @@
 			var $listItems = $([]);
 			var textFilter = _$filter.val().toLowerCase();
 
-			_items.map(function (item) {
+			_filteredItems = _items.filter(function (item) {
 				if (item.lowerCasedText.indexOf(textFilter) != -1) {
 					var $listItem = _addItem(item, rerenderOnEachItem);
 					$listItem.click(function () {
@@ -228,6 +277,7 @@
 					});
 
 					$listItems = $listItems.add($listItem);
+					return true;
 				}
 			});
 
