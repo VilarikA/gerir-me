@@ -494,6 +494,9 @@ var unitListFromServer = function(){
             $("#units").append("<option value='"+obj.id+"'>"+obj.name+"</option>");
           }
         }
+
+        Select2Wrapper.forceLabelUpdate($('#units'));
+
         if(results.length == 1 && !global_load)
           $("#units").change();
       }
