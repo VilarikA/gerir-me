@@ -521,10 +521,3 @@ drwxr-xr-x 4 postgres postgres      4096 Abr 22  2014 Jetty_0_0_0_0_8081_test___
 drwx------ 2 postgres postgres      4096 Jun 25 13:31 Run.sh
 -rwxrwxrwx 1 postgres postgres   1334372 Jun  3 13:46 scsi_eh_320
 
-
-
-select obs, substr (obs,1, position ('inativo' in lower (obs))+7) || 'CX ' || substr (obs, position ('inativo' in lower (obs))+8,255) 
-from business_pattern where company = 341 and lower (obs) like '%inativo%'
-
-update business_pattern set obs = substr (obs,1, position ('inativo' in lower (obs))+7) || 'CX ' || substr (obs, position ('inativo' in lower (obs))+8,255) 
- where company = 341 and lower (obs) like '%inativo%'

@@ -286,15 +286,24 @@ object  PaymentService extends  net.liftweb.common.Logger  {
 		.save
 	}
 
-	def removePaymentByCommand(command:String,date:Date) ={
+	def removePaymentByCommand(command:String,customer:Long,date:Date) ={
 		DB.use(DefaultConnectionIdentifier) {
 			 conn =>
 			 try{		
-					val payments = Payment.findAllInCompany(
+					val payments = if (customer != 0) {
+						Payment.findAllInCompany(
+							By(Payment.customer,customer),
 							By(Payment.command,command),
 							BySql("date(datepayment) = date(?)",IHaveValidatedThisSQL("payment_date","01-01-2012 00:00:00"),date),
 							OrderBy(Payment.createdAt, Descending)
 							)
+					} else {
+						Payment.findAllInCompany(
+							By(Payment.command,command),
+							BySql("date(datepayment) = date(?)",IHaveValidatedThisSQL("payment_date","01-01-2012 00:00:00"),date),
+							OrderBy(Payment.createdAt, Descending)
+							)
+					}
 					if(payments.isEmpty){
 						throw new PaymentNotFound
 					}

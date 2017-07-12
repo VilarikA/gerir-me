@@ -409,13 +409,13 @@ object CashApi extends RestHelper with net.liftweb.common.Logger  {
 				}))
 		}
 		
-		case "cash" :: "removePayment" :: command :: date :: Nil JsonGet _ =>{
+		case "cash" :: "removePayment" :: command :: customer :: date :: Nil JsonGet _ =>{
 			try{
 				def dateValue = date match {
 					case (s:String) if(s != "" && s != "0") => Project.strOnlyDateToDate(date)
 					case _ => new Date()
 				}
-				PaymentService.removePaymentByCommand(command,dateValue)
+				PaymentService.removePaymentByCommand(command, customer.toLong, dateValue)
 				JInt(1)
 			}catch{
 				case e:CashierIsClosed =>{
