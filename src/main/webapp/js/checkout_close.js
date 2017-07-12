@@ -54,7 +54,7 @@ var callApiClose = function() {
     alert("Já existe um processo em andamento. Aguarde o fim do processamento para clicar novamente!");
   }
 }
-var openDetail = function() {
+var openDetail = function(cmd) {
   var id = null;
   cashierId = $('#cashiers_select').val();
   if (!cashierId){
@@ -66,7 +66,11 @@ var openDetail = function() {
         id = cashier.id;
       }
     }
-    document.location.href = "/financial_cashier/comman_conference?cashier=" + id + "&productclass=1,0";
+    if (cmd) {
+      document.location.href = "/financial_cashier/comman_conference?cashier=" + id + "&productclass=1,0";
+    } else {
+      document.location.href = "/financial_cashier/paymenttype_details?cashier=" + id + "&startDate=" + $("#opener_date").val() + "&endDate=" + $("#opener_date").val();
+    }
   }
 }
 var callApiGetValue = function() {

@@ -1,10 +1,62 @@
 <div id="main" class="lift:surround?with=calendar;at=content">
       <script type="text/javascript" src="/js/reports.js"></script>
-      <script src="/js/out_of_cashier.js"></script>
       <script src="/js/jquery.tablesorter.pager.js"></script>
+      <script type="text/javascript">
+      $(function(){
+        $('#cashier').cashierField(false,'all',function(){
+          $('#cashier').val(gup("cashier"));
+        });
+        $("#payment_type").paymentTypeField(true, true);
+        $("#unit").unitField(true);
+        var hasUnitModule = $('.has-unit-module').length > 0;
+        var startDate = function(){
+          return  encodeURIComponent($("#startDate").val() != "" ? $("#startDate").val() : getDateBr(new Date()));
+        }
+        var endDate = function(){
+          return encodeURIComponent($("#endDate").val() != "" ? $("#endDate").val() : getDateBr(new Date()));
+        }     
+        var fields = [];
+        fields[1] = {
+          type: "format",
+          decode: function(name, row) {
+            return "<a href='/customer/edit?id=" + row[0] + "' target='_customer_maste'>" + name + "</a>";
+          }
+        }
+        fields[4] = "real";
+        fields[5] = "real";
+        fields[7] = "date";
+        fields[8] = "date";
+        if (!hasUnitModule) {
+          fields[9] = "none";
+        }
+        var url = "/report/paymenttype_details";
+        var total_to_pay = 0.00;
+        var request = function(){
+          var total = 0.00;
+          var total_sale = 0.00;
+          var total_paid = 0.00;
+          var count = 0.0;
+          var params = $("#form_report").serializeObject();
+          renderReport(url,fields,Cachier.prepareCashierParams(params),"#grid", function(data){
+            data.forEach(function(row){
+              total_sale += parseFloat(row[4]);
+              total_paid += parseFloat(row[5]);
+              count += 1;
+            });
+            $("#total_sale").val(total_sale.formatMoney());
+            $("#total_paid").val(total_paid.formatMoney());
+            $("#count").val(count);
+          });
+        }
+        $("#send").click(request);
+        if (gup("cashier") != "") {
+          request();
+        }
+      });  
+      </script>
       <div>
         <form id="form_help"  action="/cash/"></form>
-        <form id="form_search" class="well form-search" method='get'>
+        <form id="form_report" class="well form-search" method='get'>
             <h1>
               <span class="lift:CompanySnippet.thumb"> </span>
               <input class="report_title local_storage" id="title_paymenttype_details" name="title_paymenttype_details" size="30" type="text" value="Relatório de Formas de Pagamento"/>
@@ -37,34 +89,17 @@
                           </div>
                         </div>
                     </div>
-                    <div class="clearfix">
-                      <label for="productclass">Tipo</label>
-                        <div class="input">
-                          <div class="inline-inputs">
-                              <select class="url_parameter" name="productclass" id="productclass">
-                                  <option value='1,0'>Todos</option>
-                                  <option value='1'>Produtos</option>
-                                  <option value='0'>Serviços</option>
-                               </select>
-                               <span class="help-block">Tipos de comissões (ex: Prod / Ser)</span>
-                          </div>
-                        </div>
+                    <input type="hidden" class="has-unit-module lift:SecuritySnippet.hasUnitModule" value="1">
+                    <div class="clearfix lift:SecuritySnippet.hasUnitModule">
+                      <label for="unit">Unidade</label>
+                       <div class="input">
+                          <select class="local_storage xlarge url_parameter" name="unit" id='unit'></select>
+                       </div>
                     </div>
                   </div>
                   <div class="span7">
                     <div class="clearfix">
-                      <label for="user">
-                        <span data-i18n='Profissionais'></span>
-                      </label>
-                        <div class="input">
-                          <div class="inline-inputs">
-                            <select class="url_parameter" name="user" id='user'></select>
-                            <span class="help-block"><span data-i18n='Profissionais'></span></span>
-                          </div>
-                        </div>
-                    </div>
-                    <div class="clearfix">
-                      <label for="cashier">Comandas Pagas </label>
+                      <label for="commands">Comandas Pagas </label>
                       <div class="input">
                         <div class="inline-inputs">
                           <input id="commands" class="url_parameter" name="commands">
@@ -73,9 +108,7 @@
                       </div>
                     </div>
                     <div class="clearfix">
-                      <label for="user">
-                        Formas de Pagamento
-                      </label>
+                      <label for="payment_type">Formas de Pagamento</label>
                         <div class="input">
                           <div class="inline-inputs">
                             <select class="url_parameter alow_all" multiple="multiple" name="payment_type" id='payment_type'>
@@ -88,10 +121,10 @@
             </div>
             <div class="clearfix">
               <label for="send"></label>
-              <div class="input">
-                <button type="submit" class="btn success">Buscar</button>
-              </div>
-            </div>                        
+                <div class="input">
+                    <button type="button" id="send" class="btn success">Buscar</button>
+                </div>
+            </div>
             <div class="clearfix">
               <label for="total">Totais </label>
               <div class="input">
@@ -103,49 +136,42 @@
                   </div>
                   <div class="input-prepend" style="float:left; padding-right:10px">
                     <span class="add-on"><img src="/images/money.png" width="16"></span>
-                    <input class="small" id="total" name="total" size="19" placeholder="0.00" type="text">
-                    <span class="help-block">Total de serviços</span>
+                    <input class="small" id="total_sale" name="total_sale" size="19" placeholder="0.00" type="text">
+                    <span class="help-block">Total de Venda</span>
                   </div>
                   <div class="input-prepend" style="float:left; padding-right:10px">
                     <span class="add-on"><img src="/images/remove.png" width="16"></span>
-                    <input class="small" id="total_out" name="total_out" size="19" placeholder="0.00" type="text">
-                    <span class="help-block">Saídas</span>
+                    <input class="small" id="total_paid" name="total_paid" size="19" placeholder="0.00" type="text">
+                    <span class="help-block">Total de Pagto</span>
                     <a href="" class="_popover_basic" rel="popover" data-content="Este relatório pode ser usado para conferência de comandas, acessado através do menu ou do atalho K, ou para conferência detalhada do caixa, acessado através da tela de fechamento. As saídas e o respectivo total, só são exibidos nesta segunda opção." data-original-title="Informação">
                       <img width='20' src="/images/info.gif"/>
                     </a>
-                  </div>
-                  <div class="input-prepend" style="float:left; padding-right:10px">
-                    <span class="add-on"><img src="/images/add.png" width="16"></span>
-                    <input class="small" id="total_in" name="total_in" size="19" placeholder="0.00" type="text">
-                    <span class="help-block">Entradas</span>
                   </div>
                 </div>
               </div>
             </div>
         </form>
       </div>
-    <table id="in_commands" class="bordered-table zebra-striped">
+    <table id="grid" class="bordered-table zebra-striped">
       <thead>
-        <th>Caixa</th>
-        <th>Data</th>
         <th>Id</th>
         <th>Nome <span data-i18n='Cliente'></span></th>
+        <th>Caixa</th>
         <th>Comanda</th>
-        <th><span data-i18n='Profissional'></span></th>
-        <th>Serv/Prod</th>
-        <th>F Pagto</th>
-        <th>Total Pago</th>
-        <th>Comissão</th>
-        <th>Comanda</th>
-        <th>Ticket</th>
-        <th>Recibo</th>
+        <th>Total Venda</th>
+        <th>Valor Pagto</th>
+        <th>Forma Pagto</th>
+        <th>Data</th>
+        <th>Vencimento</th>
+        <th class="clearfix lift:SecuritySnippet.hasUnitModule">Unidade</th>
         </tr>
       </thead>
+      <tbody>
+      </tbody>
     </table>
-    <script type="text/javascript" src="/js/comman_conference.js"></script>
     <script type="text/javascript">
       $(function(){
-        $("#in_commands").tablesorter();
+        $("#grid").tablesorter();
       });
     </script>
  </div>

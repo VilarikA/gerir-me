@@ -416,15 +416,6 @@ update logmailsend set times = 0 where read = false and times is null;
 select times, 1, * from logmailsend where read = true limit 50
 update logmailsend set times = 1 where read = true and times is null;
 
-
-
-rigel   120 vinhos    2 266,84   
-		501 apoio      
-		26 sacolao
-bia 	134           2 266.84	 20,84
-heider 	112
-adriano  67           2 266,84	199,84
-dani                  1 133,42	133,42
 	
 select bp.id, idforcompany as codigoexterno, bp.name as nome, bp.short_name as nomereduzido,
 bp.sex as sexo, bp.birthday as nascimento, bp.document as cpf,
@@ -531,3 +522,9 @@ drwx------ 2 postgres postgres      4096 Jun 25 13:31 Run.sh
 -rwxrwxrwx 1 postgres postgres   1334372 Jun  3 13:46 scsi_eh_320
 
 
+
+select obs, substr (obs,1, position ('inativo' in lower (obs))+7) || 'CX ' || substr (obs, position ('inativo' in lower (obs))+8,255) 
+from business_pattern where company = 341 and lower (obs) like '%inativo%'
+
+update business_pattern set obs = substr (obs,1, position ('inativo' in lower (obs))+7) || 'CX ' || substr (obs, position ('inativo' in lower (obs))+8,255) 
+ where company = 341 and lower (obs) like '%inativo%'

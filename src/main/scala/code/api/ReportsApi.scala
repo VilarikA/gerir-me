@@ -808,15 +808,70 @@ object Reports extends RestHelper with ReportRest with net.liftweb.common.Logger
 						}
 					}					
 				}
-				val cachier = S.param("cashier") openOr "0";
+				val cashier = S.param("cashier") openOr "0";
 				S.param("isIdForCompany") match {
-					case Full(p) if(p !="" && cachier != "") => {
-						searchByParams(Cashier.findOpenCashierByIdAndCompany(cachier.toInt).id.is.toString)
+					case Full(p) if(p !="" && cashier != "") => {
+						searchByParams(Cashier.findOpenCashierByIdAndCompany(cashier.toInt).id.is.toString)
 					}
 					case _ => {
 						searchByParams(S.param("cashier") openOr "0")
 					}
 				}
+			}
+			case "report" :: "paymenttype_details" :: Nil Post _ =>{
+				def start:Date = S.param("startDate") match {
+					case Full(p) => Project.strToDateOrToday(p)
+					case _ => new Date()
+				}
+
+				def end:Date = S.param("endDate") match {
+					case Full(p) => Project.strToDateOrToday(p)
+					case _ => new Date()
+				}
+				
+				def unit:String = S.param("unit") match {
+					case Full(p) if(p!="") => " ca.unit = %s ".format (p)
+					case _ => " 1=1 "
+				}
+				def commands:String = S.param("commands") match {
+					case Full(s) if(s != "") => " pa.command in ('" + s.replace (",", "','") + "')"
+					case _ => " 1=1 ";
+				}	
+
+				val parmcashier = S.param("cashier") openOr "0";
+				def cashier:String = S.param("isIdForCompany") match {
+					case Full(p) if(p !="" && parmcashier != "") => {
+						" pa.cashier = %s ".format (
+							Cashier.
+							findOpenCashierByIdAndCompany(parmcashier.toInt).id.is.toString);
+					}
+					case _ => {
+						S.param("cashier") match {
+						case Full(p) if(p!="") => " pa.cashier = %s ".format (p)
+						case _ => " 1=1 "
+						}
+					}
+				}
+				def paymentTypesWhere = filterSqlIn("payment_type", " pt.id in(%s)")
+				val SQL = """
+					select bc.id, bc.name as cliente, 
+					ca.idforcompany as caixa, pa.command as comanda, 
+					pa.value as total, pd.value, pt.name as forma, pa.datepayment as pagamento, pd.duedate, cu.name as unidade
+					from payment pa
+					inner join paymentdetail pd on pa.id = pd.payment
+					inner join paymenttype pt on pt.id = pd.typepayment
+					inner join cashier ca on ca.id = pa.cashier
+					inner join business_pattern bc on bc.id = pa.customer
+					inner join companyunit cu on cu.id = ca.unit
+					where pa.company = ? 
+					and pa.datepayment between ? and ?
+					and %s
+					and %s
+					and %s
+					and %s
+					order by pa.datepayment, ca.idforcompany, pd.duedate, bc.name, pa.command, pt.name
+				"""
+				toResponse(SQL.format(unit, paymentTypesWhere, cashier, commands),List(AuthUtil.company.id.is, start, end)) 
 			}
 			case "report" :: "accountpayable" :: Nil Post _ =>{
 				def dttypes:String = S.param("dttype") match {
