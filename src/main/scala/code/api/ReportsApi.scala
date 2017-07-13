@@ -1081,28 +1081,31 @@ object Reports extends RestHelper with ReportRest with net.liftweb.common.Logger
 					case _ => "sum (td.price)"
 				}			
 				val userbreak:String = S.param("userbreak") match {
-					case Full(p) if(p != "")=> "bp.short_name || ' - ' ||"
+					case Full(p) if(p != "")=> "coalesce (bp.short_name,'') || ' - ' ||"
 					case _ => ""
 				}			
 
 				val SQL = """
 					select short_name_year, %s pr.name, %s from dates 
 					left join treatment tr on tr.company = ? and tr.status = 4 
-						and tr.dateevent between start_of_month and end_of_month and tr.user_c is not null
+						and tr.dateevent between start_of_month and end_of_month 
+						--and tr.user_c is not null
+						--não faz mais pra trazer venda de produto sem user
+						--o coalesce no user break resolve o name null 
 					left join business_pattern bp on bp.id = tr.user_c
 					left join treatmentdetail td on td.treatment = tr.id
-					left join product pr on pr.id = td.activity or pr.id = td.product
+					left join product pr on (pr.id = td.activity or pr.id = td.product) 
 					left join producttype pt on pt.id = pr.typeproduct
 					where date_c between date (?) and date (?) and day = 1 
 					%s
 					%s
 					%s
 					%s
-					and pr.productclass in (%s)
+                    and pr.productclass in (%s)
 					group by date_c, short_name_year, %s pr.name
 					order by date_c, short_name_year, %s pr.name;
 				"""
-				toResponse(SQL.format(userbreak, valueOrQuantity,user,prod,unit,producttype,classes, userbreak, userbreak),
+				toResponse(SQL.format(userbreak, valueOrQuantity, user,prod,unit,producttype, classes, userbreak, userbreak),
 					List(AuthUtil.company.id.is, start, end)) 
 			} 
 
