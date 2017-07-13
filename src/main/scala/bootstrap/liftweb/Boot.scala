@@ -424,6 +424,7 @@ class Boot {
 
         Menu(Loc("Relacionamentos", Link(List("bprelationship"), true, "/bprelationship/list_bprelationship"),"Relacionamentos",customerAccess,Hidden)),
         Menu(Loc("Questionários", Link(List("quiz"), true, "/quiz/list"),quizMenuLabel,customerAccess,Hidden)),
+        Menu(Loc("Questionários_admin", Link(List("quiz_admin"), true, "/quiz_admin/quiz"),quizMenuLabel,serviceManagerAccess,Hidden)),
         Menu(Loc("Mensalidades", Link(List("bpmonthly"), true, "/bpmonthly/list_bpmonthly"),"Mensalidade",customerAccess,Hidden)),
 
         //Treatmemnts

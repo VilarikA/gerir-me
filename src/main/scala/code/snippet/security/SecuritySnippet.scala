@@ -243,6 +243,12 @@ object SecuritySnippet {
         else
           NodeSeq.Empty
       }      
+      def hasServiceModule(in:NodeSeq):NodeSeq ={
+        if (PermissionModule.service_?)
+          in
+        else
+          NodeSeq.Empty
+      }      
       // tá os 2 empty mesmo por enquanto
       def hasProjectModule(in:NodeSeq):NodeSeq ={
         if (PermissionModule.project_?)

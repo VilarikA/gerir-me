@@ -18,6 +18,7 @@ class PermissionModule extends LongKeyedMapper[PermissionModule] with PerCompany
 object PermissionModule extends PermissionModule with LongKeyedMapperPerCompany[PermissionModule]  with  OnlyActive[PermissionModule]{
 	lazy val FINANCIAL_MODULE_NAME = "FINANCIAL";
 	lazy val INVENTORY_MODULE_NAME = "INVENTORY";
+	lazy val SERVICE_MODULE_NAME = "SERVICE";
 	lazy val CRUDE_MODULE_NAME = "CRUDE";
 	lazy val TREATMENT_MODULE_NAME = "TREATMENT";
 	lazy val MAP_MODULE_NAME = "MAP";
@@ -63,7 +64,7 @@ object PermissionModule extends PermissionModule with LongKeyedMapperPerCompany[
 
 	def report_? = AuthUtil.user.isReportUser
 
-	def service_? = PermissionModule.countInCompany(By(PermissionModule.name,PermissionModule.INVENTORY_MODULE_NAME)) > 0 && AuthUtil.user.isServiceUser
+	def service_? = PermissionModule.countInCompany(By(PermissionModule.name,PermissionModule.SERVICE_MODULE_NAME)) > 0 && AuthUtil.user.isServiceUser
 
 	def serviceManager_? = PermissionModule.countInCompany(By(PermissionModule.name,PermissionModule.CRUDE_MODULE_NAME)) > 0 && AuthUtil.user.isServiceManager
 
