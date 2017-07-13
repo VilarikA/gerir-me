@@ -537,11 +537,15 @@ with PerCity{
       } else {
         " Obesidade III (mórbida) "
       }
-      if (bmistr.indexOf(".") != -1) {
-        // concat "00" pra garantir 2 casas após o .
-        bmistr.substring(0, (bmistr + "00").indexOf (".") + 3) + straux
+      if (bmi == 0.0) {
+        ""
       } else {
-        bmistr + straux
+        if (bmistr.indexOf(".") != -1) {
+          // concat "00000" pra garantir 2 casas após o .
+          bmistr.substring(0, (bmistr + "00000").indexOf (".") + 3) + straux
+        } else {
+          bmistr + straux
+        }
       }
     }
 
