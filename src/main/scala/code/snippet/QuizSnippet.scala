@@ -393,7 +393,7 @@ class  QuizSnippet extends BootstrapPaginatorSnippet[Quiz] {
 					ac.company(AuthUtil.company)
 					ac.save
 				   	S.notice(Quiz.quizLabel + " salvo(a) com sucesso! " + ac.message.length + " de um máximo de 40.000 caracteres")
-			   		S.redirectTo("/quiz/quiz?id="+ac.id.is)
+			   		S.redirectTo("/quiz_admin/quiz?id="+ac.id.is)
 		   		}catch{
 					case (e:net.liftweb.http.ResponseShortcutException) =>{
 						throw e

@@ -510,34 +510,36 @@ with PerCity{
         }
     }
 
-    // Body mass index - IMC
-    def BMI:String = {
-      var bmi:BigDecimal = if (height > 0.0) {
+
+    def bodyMassIndex:BigDecimal = if (height > 0.0) {
         weight / (height * height)
       } else {
         0.0
       }
 
-      var bmistr = bmi.toString;
+    // Body mass index - IMC
+    def BMI:String = {
 
-      var straux = if (bmi == 0.0) {
+      var bmistr = bodyMassIndex.toString;
+
+      var straux = if (bodyMassIndex == 0.0) {
         " "
-      } else if (bmi < 17) {  
+      } else if (bodyMassIndex < 17) {  
         " Muito abaixo do peso "
-      } else if (bmi < 18.49) {
+      } else if (bodyMassIndex < 18.49) {
         " Abaixo do peso "
-      } else if (bmi < 24.99) {
+      } else if (bodyMassIndex < 24.99) {
         " Peso normal "
-      } else if (bmi < 29.99) {
+      } else if (bodyMassIndex < 29.99) {
         " Acima do peso "
-      } else if (bmi < 34.99) {
+      } else if (bodyMassIndex < 34.99) {
         " Obesidade I "
-      } else if (bmi < 39.99) {
+      } else if (bodyMassIndex < 39.99) {
         " Obesidade II (severa) "
       } else {
         " Obesidade III (mórbida) "
       }
-      if (bmi == 0.0) {
+      if (bodyMassIndex == 0.0) {
         ""
       } else {
         if (bmistr.indexOf(".") != -1) {
