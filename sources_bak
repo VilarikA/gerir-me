@@ -113,3 +113,57 @@ done
 -rwxr-xr-x 1 jenkins jenkins    1071 May 14 16:55 conn.sh
 
 
+-- Function: fu_mgr_value(text)
+
+-- DROP FUNCTION fu_mgr_value(text);
+
+CREATE OR REPLACE FUNCTION fu_mgr_value(st_in text)
+  RETURNS numeric AS
+$BODY$
+
+/*
+recebe uma string e verifica nulo, R$ ",00" e retorna o number
+faz o camel tira . etc
+
+*/
+
+declare
+
+st_out    text;
+
+begin
+
+    st_out = st_in;
+
+    if (st_out is null) then
+  st_out = '0';
+    end if;
+
+    if (trim (st_out) = '') then
+  st_out = '0';
+    end if;
+
+    st_out = replace(st_out, ' ', ''); 
+    st_out = replace(st_out, 'R$', ''); 
+    st_out = replace(st_out, 'r$', ''); 
+    st_out = replace(st_out, '$', ''); 
+    if (st_out like '%,__') then
+  st_out = replace(st_out, '.', ''); 
+  st_out = replace(st_out, ',','.');
+    end if;
+
+    return to_number (st_out,'999999999.99');    
+end ;
+$BODY$
+  LANGUAGE plpgsql IMMUTABLE STRICT
+  COST 100;
+ALTER FUNCTION fu_mgr_value(text)
+  OWNER TO jenkins;
+GRANT EXECUTE ON FUNCTION fu_mgr_value(text) TO jenkins;
+GRANT EXECUTE ON FUNCTION fu_mgr_value(text) TO public;
+GRANT EXECUTE ON FUNCTION fu_mgr_value(text) TO "gerir-me";
+
+
+ALTER TABLE product ADD COLUMN markup numeric(16,4);
+ALTER TABLE product ADD COLUMN size_c character varying(20);
+
