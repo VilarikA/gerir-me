@@ -493,6 +493,82 @@ object Reports2 extends RestHelper with ReportRest with net.liftweb.common.Logge
 					List(AuthUtil.company.id.is, start, end, start2, end2))
 			}
 
+			case "report" :: "todo_list" :: Nil Post _=> {
+				val user_param_name = S.param("user[]") match {
+					case Full(p) => "user[]"
+					case _ => 
+				}
+
+				def user = S.param("user") match {
+					case Full(p) if(p != "")=> " and bp.id in(%s)".format(p)
+					case _ => S.param("user[]") match {
+						case Full(p) => " and bp.id in(%s)".format(S.params("user[]").filter(_ != "").foldLeft("0")(_+","+_))
+						case _ => " and 1=1 " 
+					}
+				}
+
+				def prod = 	 S.param("product") match {
+					case Full(p) if(p != "")=> " and pr.id in(%s)".format(p)
+					case _ => S.param("product[]") match {
+						case Full(p) if(p != "") => " and pr.id in(%s)".format(S.params("product[]").foldLeft("0")(_+","+_))
+						case _ => " and 1=1 " 
+					}
+				}
+
+				def start:Date = S.param("start") match {
+					case Full(p) => Project.strToDateOrToday(p)
+					case _ => new Date()
+				}
+				def end:Date = S.param("end") match {
+					case Full(p) => Project.strToDateOrToday(p)
+					case _ => new Date()
+				}
+
+				def unit:String = S.param("unit") match {
+					case Full(p) if(p != "") => " and tr.unit =%S".format(p) 
+					case _ => " and " + Treatment.unitsToShowSql
+				}			
+
+				def offsale:String = S.param("offsale") match {
+					case Full(s) if(s != "") => " and bc.offsale = %s".format(s)
+					case _ => " and 1 = 1 "
+				}
+
+				val SQL = """
+					select bc.id, tr.dateevent, 
+					fu_dt_humanize (tr.dateevent),
+					to_char (tr.start_c, 'hh24:mi'), tr.status, pr.name, bc.name as cliente, 
+					(select tr1.status || ' ' || tr1.detailtreatmentastext || ' ' || tr1.dateevent from treatment tr1 where tr1.customer = bc.id 
+					and tr1.id in 
+					(select max (tr2.id) from treatment tr2 where tr2.customer = tr.customer and tr2.status in (1,2) and tr2.dateevent < date(now()))),
+					trim (tr.obs || ' ' || td.obs), 
+					trim (bc.mobile_phone || ' ' || bc.phone || ' ' || bc.email_alternative || ' ' || bc.email) as telefone ,
+					cu.short_name,
+					bp.name as profissional, 
+					tr.id, /* action troca status atendido */ /* action edita obs */
+					/* action desmarca e cria outro */
+					bp.id
+					from treatment tr 
+					inner join business_pattern bc on bc.id = tr.customer
+					inner join business_pattern bp on bp.id = tr.user_c
+					inner join treatmentdetail td on td.treatment = tr.id
+					inner join companyunit cu on cu.id = tr.unit
+					inner join product pr on pr.id = td.activity and pr.crmservice = true
+					--left join project po ligar ao treatment para orçamento etc
+					where tr.status in (0,3) and tr.company = ? and tr.dateevent between (?) and (?)
+					%s
+					%s
+					%s
+					%s
+					/* cliente */
+					/* status */
+					/* project */
+					/* project class */
+					order by tr.dateevent desc, bp.name asc
+				"""
+				toResponse(SQL.format(unit, offsale, user, prod),
+					List(AuthUtil.company.id.is, start, end))
+			}
 
 			case "report" :: "birthdays" :: Nil Post _ => {
 				def mapicon = S.param("mapIcon") match {

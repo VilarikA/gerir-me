@@ -47,7 +47,8 @@
             total_to_pay = totalObj.total;
             // unit /0
             var unitparm = $("#unit").val() || '0';
-            $.get("/accountpayable/list_user/"+startDate()+"/"+endDate()+"/"+unitparm+"/"+$("#user").val()+"/"+$("#dttype").val(),function(results){
+            var dttypeparm = $("#dttype").val() || '1'; // competencia
+            $.get("/accountpayable/list_user/"+startDate()+"/"+endDate()+"/"+unitparm+"/"+$("#user").val()+"/"+dttypeparm,function(results){
                         var hasUnitModule = $('.has-unit-module').length > 0;
                         var ret = ""
                         var payments = [];
