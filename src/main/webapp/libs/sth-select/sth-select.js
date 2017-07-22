@@ -216,7 +216,8 @@
                 _filteredItems = _items;
 
             var item = _filteredItems[_selectedItemIndex];
-            _onSelectCallback(item);
+            var shouldTriggerEvent = false;
+            _onSelectCallback(item, shouldTriggerEvent);
         }
 
         /**
@@ -420,14 +421,15 @@ var $ = window.jQuery;
             _$popup.show(extractValues(_$self));
         }
 
-        function applySelectedValue(selectedValue) {
+        function applySelectedValue(selectedValue, shouldTriggerEvent) {
             var value = selectedValue.value;
             _$originalSelect.val(value);
 
             var text = selectedValue.text;
             _$fakeSelect.find(".sth-select-text").text(text);
 
-            _$originalSelect.trigger("SthSelect:afterSelect");
+            if(shouldTriggerEvent !== false)
+                _$originalSelect.trigger("SthSelect:afterSelect");
         }
 
         function clearValue() {
