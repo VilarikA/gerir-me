@@ -24,10 +24,48 @@ class UploadOfx extends Logger {
   object imageFile extends RequestVar[Box[FileParamHolder]](Empty)
   object fileName extends RequestVar[Box[String]](Full(Helpers.nextFuncName))
   private def prepareOfxFile(file:File){
-    val fileContent = Source.fromFile( file )(Codec.UTF8).mkString
+    // eu baixei arquivo no windows e trouxe por email pro linux
+    // dava erro com UTF8 - troquei para ISO como já tinha feito no
+    // contaazul - rigel 21/07/2017 - lá 
+    // val fileContent = Source.fromFile( file )(Codec.UTF8).mkString
+    val fileContent = Source.fromFile( file )(Codec.ISO8859).mkString
     val out = new PrintWriter( file , "UTF-8")
     try{ 
-        out.print( fileContent.replaceAll("\\,","\\.") ) 
+        out.print( fileContent.replaceAll("\\,","\\.")
+        // rigel 21/07/2017  
+        // a biblioteca java net.sf.ofx4j.io.AggregateUnmarshaller
+        // reclama do fechamento dessas tags que não tem sub tabs, só valor
+        // o santander não fecha mas o banco do brasil fecha
+        .replaceAll ("</CODE>","")
+        .replaceAll ("</SEVERITY>","") 
+
+        .replaceAll ("</DTSERVER>","")
+        .replaceAll ("</LANGUAGE>","") 
+        .replaceAll ("</ORG>","")
+        .replaceAll ("</FID>","") 
+        .replaceAll ("</TRNUID>","") 
+        .replaceAll ("</CURDEF>","") 
+
+        .replaceAll ("</BANKID>","") 
+        .replaceAll ("</BRANCHID>","") 
+        .replaceAll ("</ACCTID>","") 
+        .replaceAll ("</ACCTTYPE>","") 
+
+        .replaceAll ("</DTSTART>","") 
+        .replaceAll ("</DTEND>","") 
+
+        .replaceAll ("</TRNTYPE>","") 
+        .replaceAll ("</DTPOSTED>","") 
+        .replaceAll ("</TRNAMT>","") 
+        .replaceAll ("</FITID>","") 
+        .replaceAll ("</CHECKNUM>","") 
+        .replaceAll ("</REFNUM>","") 
+        .replaceAll ("</MEMO>","") 
+
+        .replaceAll ("</BALAMT>","") 
+        .replaceAll ("</DTASOF>","") 
+
+        ) 
       }finally{ 
         out.close 
       }
