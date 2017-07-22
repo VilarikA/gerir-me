@@ -1774,7 +1774,8 @@
           var pxTop = pxPerMillis * startMillis;
           var pxHeight = pxPerMillis * eventMillis;
           //var pxHeightFallback = pxPerMillis * (60 / options.timeslotsPerHour) * 60 * 1000;
-      $calEvent.css({top: pxTop, height: pxHeight || (pxPerMillis * 3600000 / options.timeslotsPerHour)});
+
+          $calEvent.css({top: pxTop, height: pxHeight || (pxPerMillis * 3600000 / options.timeslotsPerHour)});
       },
 
       /*
