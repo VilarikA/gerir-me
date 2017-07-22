@@ -72,6 +72,7 @@
         var _$content = null;
         var _$filter = null;
         var _$overlay = null;
+        var _$select = null;
         var _properties = properties;
         var _onSelectCallback = null;
         var _qntityOfItems = 0;
@@ -148,6 +149,7 @@
                     });
             });
 
+            _$select = properties.select;
             _items = properties.items;
             _filteredItems = _items;
             _qntityOfItems = _items.length;
@@ -366,7 +368,8 @@ var $ = window.jQuery;
                 items: _values,
                 title: _properties.title,
                 hasFilter: _properties.filter,
-                filterPlaceholder: _properties.filterPlaceholder
+                filterPlaceholder: _properties.filterPlaceholder,
+                select: _$originalSelect
             };
             _$popup = new window.SthSelect.SthSelectPopup(popupProperties);
 
@@ -421,15 +424,14 @@ var $ = window.jQuery;
             _$popup.show(extractValues(_$self));
         }
 
-        function applySelectedValue(selectedValue, shouldTriggerEvent) {
+        function applySelectedValue(selectedValue) {
             var value = selectedValue.value;
             _$originalSelect.val(value);
 
             var text = selectedValue.text;
             _$fakeSelect.find(".sth-select-text").text(text);
 
-            if(shouldTriggerEvent !== false)
-                _$originalSelect.trigger("SthSelect:afterSelect");
+            _$originalSelect.trigger("SthSelect:afterSelect");
         }
 
         function clearValue() {
