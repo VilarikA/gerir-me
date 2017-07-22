@@ -1764,6 +1764,39 @@ object Reports2 extends RestHelper with ReportRest with net.liftweb.common.Logge
 					List(AuthUtil.company.id.is, start, end, 
 						AuthUtil.company.id.is, start, end))
 			}
+			case "report" :: "account_ofx_conciliation" :: Nil Post _ => {
+
+				def account:String = S.param("account") match {
+					case Full(s) if(s != "") => "and ap2.account = %s".format (s)
+					case _ => " and 1 = 1 " 
+				}
+
+				def start:Date = S.param("start") match {
+					case Full(p) => Project.strToDateOrToday(p)
+					case _ => new Date()
+				}
+				def end:Date = S.param("end") match {
+					case Full(p) => Project.strToDateOrToday(p)
+					case _ => new Date()
+				}
+				lazy val SQL_REPORT = """
+select ap.paymentdate, ap.obs, ap.typemovement , ap.value, ap.id, 
+ap1.obs, ap1.value, ap1.id,
+ap2.obs, ap2.value, ap2.id
+from accountpayable ap 
+left join accountpayable ap1 on (ap1.paymentdate = ap.paymentdate or ap1.duedate = ap.paymentdate 
+or ap1.paymentdate = ap.duedate or ap1.duedate = ap.duedate) and ap1.value = ap.value and ap1.category <> ap.category and ap.company = ap1.company
+left join accountpayable ap2 on ap2.duedate between date(?) and date (?) and ap2.value = ap.value 
+and ap2.category <> ap.category and ap.company = ap2.company %s
+where ap.company = ? 
+and ap.paymentdate between date(?) and date (?)
+and ap.category = 9440
+order by --ap1.obs, 
+ap.duedate, ap.id
+					"""
+				toResponse(SQL_REPORT.format(account, account),
+					List(start, end, AuthUtil.company.id.is, start, end))
+			}
 			case "report" :: "offsaleproduct_cost" :: Nil Post _ =>{
 				val offsales_param_name = S.param("offsales[]") match {
 					case Full(p) => "offsales[]"

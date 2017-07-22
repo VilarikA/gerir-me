@@ -81,6 +81,25 @@ object AccountPayableApi extends RestHelper with ReportRest with net.liftweb.com
 					case e:Exception => JString(e.getMessage)
 				}
 			}
+			case "accountpayable" :: "conciliateofx" :: id :: idofx :: Nil JsonGet _ => {
+				try{
+					val apofx = AccountPayable.findByKey(idofx.toLong).get
+					val ap = AccountPayable.findByKey(id.toLong).get
+					if (!ap.paid_?) {
+						ap.paid_? (true);
+					}
+					// no ofx duedate sempre = data pagamento
+					// o arq é importado sem pagto para não alterar saldo 
+					// por isso usa duedate
+					ap.paymentDate (apofx.dueDate)
+					ap.account (apofx.account)
+					ap.makeAsConciliated
+					apofx.delete_!
+					JInt(1)
+				} catch {
+					case e:Exception => JString(e.getMessage)
+				}
+			}
 
 			case "accountpayable" :: "consolidate" :: id :: Nil JsonGet _ => {
 				try{
@@ -89,6 +108,25 @@ object AccountPayableApi extends RestHelper with ReportRest with net.liftweb.com
 						ap.paid_? (true);
 					}
 					ap.makeAsConsolidated
+					JInt(1)
+				} catch {
+					case e:Exception => JString(e.getMessage)
+				}
+			}
+			case "accountpayable" :: "consolidateofx" :: id :: idofx :: Nil JsonGet _ => {
+				try{
+					val apofx = AccountPayable.findByKey(idofx.toLong).get
+					val ap = AccountPayable.findByKey(id.toLong).get
+					if (!ap.paid_?) {
+						ap.paid_? (true);
+					}
+					// no ofx duedate sempre = data pagamento
+					// o arq é importado sem pagto para não alterar saldo 
+					// por isso usa duedate
+					ap.paymentDate (apofx.dueDate)
+					ap.account (apofx.account)
+					ap.makeAsConsolidated
+					apofx.delete_!
 					JInt(1)
 				} catch {
 					case e:Exception => JString(e.getMessage)

@@ -67,8 +67,7 @@ function renderReport(url, fields, filter, grid_selector, callback_report, isCro
 
   var integerNullDecode = function (value) {
     var ret = "";
-    //alert ("vaiiii   ="+value )
-    if (!value || value == "" || value == "0.0") {
+    if (!value || value == "" || value == "0") {
       ret = ""
     } else {
       ret = (parseInt(value));
