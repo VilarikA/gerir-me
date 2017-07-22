@@ -81,6 +81,9 @@
   height: 44px;
   padding: 12px 15px;
 }
+.sth-select-popup .sth-select-item.selected {
+  background-color: #d2d2d2;
+}
 .sth-overlay {
   box-sizing: border-box;
   background-color: rgba(0, 0, 0, 0.6);
