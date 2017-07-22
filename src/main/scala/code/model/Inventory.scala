@@ -59,6 +59,11 @@ class Product extends ProductMapper[Product]{
         }
         override def defaultValue = uom;
     }
+    object size extends MappedPoliteString(this,20)
+    object markup extends MappedDecimal(this,MathContext.DECIMAL64,4) {
+        override def defaultValue = 0.00
+    }
+
     object measureinUnit extends MappedDecimal(this,MathContext.DECIMAL64,2)
 
     def isInventoryControl = isProduct  && is_inentory_control_?.is

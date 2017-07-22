@@ -8,10 +8,11 @@ import SHtml._
 import util._ 
 import code.util._
 import code.service._
-import java.util.Calendar
+//import java.util.Calendar
 import net.liftweb.common.{Box,Full}
 import net.liftweb.proto._
 
+import _root_.java.math.MathContext; 
 import java.util.Date
 import java.util.Calendar
 
@@ -107,6 +108,12 @@ with PerCity{
             case null => 0l//(2206303200000l)*(-1)
             case d: java.util.Date => d.getTime
           }
+    }
+    object weight extends MappedDecimal(this,MathContext.DECIMAL64,3) {
+        override def defaultValue = 0.00
+    }
+    object height extends MappedDecimal(this,MathContext.DECIMAL64,2) {
+        override def defaultValue = 0.00
     }
     object document extends MappedPoliteString(this,20)
     object document_company extends MappedPoliteString(this,20)
@@ -501,6 +508,47 @@ with PerCity{
         }else{
             false
         }
+    }
+
+
+    def bodyMassIndex:BigDecimal = if (height > 0.0) {
+        weight / (height * height)
+      } else {
+        0.0
+      }
+
+    // Body mass index - IMC
+    def BMI:String = {
+
+      var bmistr = bodyMassIndex.toString;
+
+      var straux = if (bodyMassIndex == 0.0) {
+        " "
+      } else if (bodyMassIndex < 17) {  
+        " Muito abaixo do peso "
+      } else if (bodyMassIndex < 18.49) {
+        " Abaixo do peso "
+      } else if (bodyMassIndex < 24.99) {
+        " Peso normal "
+      } else if (bodyMassIndex < 29.99) {
+        " Acima do peso "
+      } else if (bodyMassIndex < 34.99) {
+        " Obesidade I "
+      } else if (bodyMassIndex < 39.99) {
+        " Obesidade II (severa) "
+      } else {
+        " Obesidade III (mórbida) "
+      }
+      if (bodyMassIndex == 0.0) {
+        ""
+      } else {
+        if (bmistr.indexOf(".") != -1) {
+          // concat "00000" pra garantir 2 casas após o .
+          bmistr.substring(0, (bmistr + "00000").indexOf (".") + 3) + straux
+        } else {
+          bmistr + straux
+        }
+      }
     }
 
     def ageBirth = Project.dateToAge (birthday)

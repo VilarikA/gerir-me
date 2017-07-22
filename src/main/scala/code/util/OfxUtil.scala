@@ -56,6 +56,12 @@ object OfxUtil {
                 }else{
                   amount * -1
                 }
+                // getCheckNumber() CHECKNUM
+                // getReferenceNumber() REFNUM
+                // getId () FITID
+                // getPayeeId() PAYEEID
+                // getTransactionType() TRNTYPE
+                //     XFER DEP CASH DEBIT (taxas) OTHER
                val movement = AccountPayable.createInCompany
                movement.invoice(transaction.getId())
                        .dueDate(transaction.getDatePosted())

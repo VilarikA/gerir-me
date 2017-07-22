@@ -34,6 +34,14 @@ var LoginController = function($scope, $http){
 		$http.post("/security/login_email", {company : company,email : email, password : password, hasCompany : true}).success(loginSoccess).error(loginError);
 	};
 	$scope.login = function(email, password){
+		if (email == undefined || email == "") {
+			alert ("Por favor informe um email!");
+			return
+		}
+		if (password == undefined || password == "") {
+			alert ("Por favor informe uma senha!")
+			return
+		}
 		if (document.location.href.indexOf("local") != -1) {
 			$http.post("/security/login_email", {company : "", email : email, password : password, hasCompany : false}).success(loginSoccess).error(loginError);
 		} else {

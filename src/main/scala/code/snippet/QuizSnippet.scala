@@ -73,7 +73,7 @@ class  QuizSnippet extends BootstrapPaginatorSnippet[Quiz] {
 							"usergroup" -> Text(ac.userGroupName),
 							"share" -> Text(if(ac.share_?.is){ "Sim" }else{ "Não" }),
 							"showinrecords" -> Text(if(ac.showInRecords_?.is){ "Sim" }else{ "Não" }),
-							"actions" -> <a class="btn" href={"/quiz/quiz?id="+ac.id.is}>Editar</a>,
+							"actions" -> <a class="btn" href={"/quiz_admin/quiz?id="+ac.id.is}>Editar</a>,
 							"delete" -> SHtml.submit("Excluir",delete,"class" -> "btn danger","data-confirm-message" -> {" excluir o(a) " + Quiz.quizLabel + " " + ac.name}),
 							"_id" -> SHtml.text(ac.id.is.toString, id = _),
 							"id" ->Text(ac.id.is.toString)
@@ -100,7 +100,7 @@ class  QuizSnippet extends BootstrapPaginatorSnippet[Quiz] {
 			bind("f", xhtml,"name" -> Text(ac.name.is),
 							"quizname" -> Text(ac.quizName),
 							"obs" -> Text(ac.obs.is),
-							"actions" -> <a class="btn" href={"/quiz/edit_section?id="+ac.id.is}>Editar</a>,
+							"actions" -> <a class="btn" href={"/quiz_admin/edit_section?id="+ac.id.is}>Editar</a>,
 							"delete" -> SHtml.submit("Excluir",delete,"class" -> "btn danger","data-confirm-message"->{" excluir a seção de " + Quiz.quizLabel + " " + ac.name}),
 							"_id" -> SHtml.text(ac.id.is.toString, id = _),
 							"id" ->Text(ac.id.is.toString)
@@ -127,7 +127,7 @@ class  QuizSnippet extends BootstrapPaginatorSnippet[Quiz] {
 			bind("f", xhtml,"name" -> Text(ac.name.is),
 							"quizsectionname" -> Text(ac.quizSectionName),
 							"obs" -> Text(ac.obs.is),
-							"actions" -> <a class="btn" href={"/quiz/edit_question?id="+ac.id.is}>Editar</a>,
+							"actions" -> <a class="btn" href={"/quiz_admin/edit_question?id="+ac.id.is}>Editar</a>,
 							"delete" -> SHtml.submit("Excluir",delete,"class" -> "btn danger","data-confirm-message"->{" excluir a questão "+ac.name}),
 							"_id" -> SHtml.text(ac.id.is.toString, id = _),
 							"id" ->Text(ac.id.is.toString)
@@ -153,7 +153,7 @@ class  QuizSnippet extends BootstrapPaginatorSnippet[Quiz] {
 			QuizDomain.findAllInCompany(OrderBy(QuizDomain.name,Ascending)).flatMap(ac => 
 			bind("f", xhtml,"name" -> Text(ac.name.is),
 							"obs" -> Text(ac.obs.is),
-							"actions" -> <a class="btn" href={"/quiz/edit_domain?id="+ac.id.is}>Editar</a>,
+							"actions" -> <a class="btn" href={"/quiz_admin/edit_domain?id="+ac.id.is}>Editar</a>,
 							"delete" -> SHtml.submit("Excluir",delete,"class" -> "btn danger","data-confirm-message"->{" excluir o domínio "+ac.name}),
 							"_id" -> SHtml.text(ac.id.is.toString, id = _),
 							"id" ->Text(ac.id.is.toString)
@@ -193,7 +193,7 @@ class  QuizSnippet extends BootstrapPaginatorSnippet[Quiz] {
 			bind("f", xhtml,"name" -> Text(ac.name.is),
 							"quizdomainname" -> Text(ac.quizDomainName),
 							"obs" -> Text(ac.obs.is),
-							"actions" -> <a class="btn" href={"/quiz/edit_domainitem?id="+ac.id.is}>Editar</a>,
+							"actions" -> <a class="btn" href={"/quiz_admin/edit_domainitem?id="+ac.id.is}>Editar</a>,
 							"delete" -> SHtml.submit("Excluir",delete,"class" -> "btn danger","data-confirm-message"->{" excluir o item de domínio "+ac.name}),
 							"_id" -> SHtml.text(ac.id.is.toString, id = _),
 							"id" ->Text(ac.id.is.toString)
@@ -393,7 +393,7 @@ class  QuizSnippet extends BootstrapPaginatorSnippet[Quiz] {
 					ac.company(AuthUtil.company)
 					ac.save
 				   	S.notice(Quiz.quizLabel + " salvo(a) com sucesso! " + ac.message.length + " de um máximo de 40.000 caracteres")
-			   		S.redirectTo("/quiz/quiz?id="+ac.id.is)
+			   		S.redirectTo("/quiz_admin/quiz?id="+ac.id.is)
 		   		}catch{
 					case (e:net.liftweb.http.ResponseShortcutException) =>{
 						throw e

@@ -59,7 +59,7 @@ object  ReportSales extends net.liftweb.common.Logger{
 		case _ => 0l;
 	}
 
-	def commans:List[String] = S.param("commands") match {
+	def commands:List[String] = S.param("commands") match {
 		case Full(s) if(s != "") => s.split(",").map(_.trim).toList
 		case _ => Nil;
 	}	
@@ -86,10 +86,10 @@ object  ReportSales extends net.liftweb.common.Logger{
 		val payments = (cashier match {
 				case (cs:List[Long]) if(!cs.isEmpty)=> {
 					cs.map((c:Long) => {
-						PaymentService.paymentsBetween(startDate,endDate,c.toInt,commans)
+						PaymentService.paymentsBetween(startDate,endDate,c.toInt,commands)
 					}).reduceLeft(_:::_)
 				}
-				case _ => PaymentService.paymentsBetween(startDate,endDate,commans)
+				case _ => PaymentService.paymentsBetween(startDate,endDate,commands)
 			}).filter((p) => {
 			payment_type.isEmpty || p.details.exists((d)=> payment_type.contains(d.typePayment.is))
 		})

@@ -15,22 +15,37 @@
     var fields = [];
     var total = 0;
     var totalcount = 0;
-    fields[1] = {
-      type: "format",
-      decode: function(name, row) {
-        return "<a href='/user/edit?id=" + row[10] + "' target='_user_maste'>" + name + "</a>";
-      }
-    }
-    fields[2] = "date";
-    fields[5] = {
+    fields[0] = "none"; // id customer
+    fields[1] = "date";
+    fields[4] = {
       type : "format",
-      decode : function(value){
-        var floatValue = parseFloat(value);
-        if(!isNaN(floatValue)) {
-          total += floatValue;
-          totalcount += 1;
+      decode: function(name, row){
+      // duplicado do treatments_conference.js
+      // e do user_command
+        var status = row[4];
+        var statstr = '' 
+        var title = ''
+        if (status == '0') {
+          statstr = 'open'
+          title ='agendado'
+        } else if (status == '1') {
+          statstr = 'missed'
+          title ='faltou'
+        } else if (status == '3') {
+          statstr = 'Ready'
+          title ='atendido'
+        } else if (status == '6') {
+          statstr = 'Confirmed'
+          title ='confirmado'
+        } else if (status == '7') {
+          statstr = 'PreOpen'
+          title ='pré agendado'
+        } else if (status == '8') {
+          statstr = 'ReSchedule'
+          title ='desmarcou'
         }
-        return floatValue.formatMoney();
+        // //"<img title='" + title + "' src='/images/treatment_"+statstr.toLowerCase()+".png' width='24'/>"
+        return "<img title='" + title + "' src='/images/treatment_"+statstr.toLowerCase()+"1.png' width='24'/>"
       }
     };
     fields[6] = {
@@ -38,17 +53,17 @@
       decode: function(name, row) {
         // para envio de email deve aparecer em um decode
         // tem exemplos de receber um id como parm ai usa push(id) como no birhtdays
-        customers.push(row[9]); 
-        return "<a href='/customer/edit?id=" + row[9] + "' target='_customer_maste'>" + name + "</a>";
+        customers.push(row[0]); 
+        return "<a href='/customer/edit?id=" + row[0] + "' target='_customer_maste'>" + name + "</a>";
       }
     }
-    fields[9] = {
-      type : "format",
-      decode : function(id){
-        customers.push(id);
-        return "<a class='btn' href='/customer/edit?id="+id+"' target='_blank'>Ir</a>"
+    fields[11] = {
+      type: "format",
+      decode: function(name, row) {
+        return "<a href='/user/edit?id=" + row[13] + "' target='_user_maste'>" + name + "</a>";
       }
     };
+
     $("#unit").unitField(true,false);
     DataManager.getActivities(function(userObj){
       user_str = "";
@@ -57,7 +72,7 @@
         }
         $("#product").html(user_str);     
     });    
-    var url = "/report/customer_missed";
+    var url = "/report/todo_list";
     var request = function(){
       customers = [];
       total = 0.00;
@@ -93,12 +108,12 @@
       <form id="form_report" class="well form-search" method='get'>
         <h1>
         <span class="lift:CompanySnippet.thumb"> </span>
-        <input class="report_title local_storage" id="title_customer_missed" name="title_customer_missed" size="30" type="text" value="Relatório de Clientes que não voltaram"/>
+        <input class="report_title local_storage" id="title_todo_list_report" name="title_todo_list_report" size="30" type="text" value="Relatório de Atividades"/>
         </h1>
         <div class="row">
           <div class="span8">
             <div class="clearfix">
-              <label for="start">Intervalo Veio</label>
+              <label for="start">Intervalo</label>
               <div class="input">
                 <div class="inline-inputs">
                   <div class="input-prepend" style="float:left; padding-right:10px">
@@ -107,22 +122,7 @@
                   </div>
                   <div class="input-prepend" style="float:left; padding-right:10px">
                     <span class="add-on"><img width="16" src="/images/calendar_addon.png"></span>
-                    <input type="text" class="input-small date start_of_month" id='end' name="end" placeholder="Fim"/>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="clearfix">
-              <label for="start2">Intervalo Não Veio</label>
-              <div class="input">
-                <div class="inline-inputs">
-                  <div class="input-prepend" style="float:left; padding-right:10px">
-                    <span class="add-on"><img width="16" src="/images/calendar_addon.png"></span>
-                    <input type="text" class="input-small date start_of_month" id='start2' name="start2" placeholder="Início"/>
-                  </div>
-                  <div class="input-prepend" style="float:left; padding-right:10px">
-                    <span class="add-on"><img width="16" src="/images/calendar_addon.png"></span>
-                    <input type="text" class="input-small date to_day" id='end2' name="end2" placeholder="Fim"/>
+                    <input type="text" class="input-small date end_of_month" id='end' name="end" placeholder="Fim"/>
                   </div>
                 </div>
               </div>
@@ -163,24 +163,6 @@
             </div>                        
           </div>
           <div class="span7">
-            <div class="clearfix">
-              <label for="productclass">Classe</label>
-                <div class="input">
-                  <div class="inline-inputs">
-                      <select class="local_storage" name="productclass" id="productclass">
-                          <option value='1,0'>Todos</option>
-                          <option value='1'>Produtos</option>
-                          <option value='0'>Serviços</option>
-                       </select>
-                  </div>
-                </div>
-            </div>
-            <div class="clearfix">
-              <label for="category_select">Tipos</label>
-              <div class="input">
-                <select multiple="multiple" id="category_select" class="category_select url_parameter" name="category_select"></select>
-              </div>
-            </div>
             <div class="clearfix">
                 <label for="product"><span data-i18n='Serviços'></span></label>
                 <div class="input">
@@ -234,15 +216,17 @@
   </div>
   <table id="grid" class="bordered-table zebra-striped">
       <thead>
-        <th>Unidade</th>
-        <th>Profissional</th>
         <th>Data</th>
-        <th>Prod/Serv</th>
-        <th>Qtde</th>
-        <th>Valor</th>
+        <th>Desc</th>
+        <th>Hora</th>
+        <th>Status</th>
+        <th>Atividade</th>
         <th>Nome_<span data-i18n='Cliente'></span></th>
-        <th>Email</th>
-        <th>Fone</th>
+        <th>Motivo</th>
+        <th>Descrição</th>
+        <th>Fone Email</th>
+        <th class="lift:SecuritySnippet.hasUnitModule" title="Unidade da atividade, não necessariamente a do cliente/paciente">Unidade</th>
+        <th>Profissional</th>
         <th>Ações</th>
       </thead>
       <tbody>

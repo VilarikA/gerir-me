@@ -372,7 +372,14 @@
     }
   };
   var removeTreatmentbyCommand = function() {
-    url = "/cash/removePayment/" + $('#command').val() + '/' + gatDateTreatmentOr0();
+    // antes exclusao de pagamento era por comanda apenas, nada data
+    // agora se tem cliente, ele vai junto
+    // rigel 12/07/2017
+    if (!$('#customer').val()) {
+      $('#customer').val("0")
+    }
+    url = "/cash/removePayment/" + $('#command').val() + 
+    '/' + $('#customer').val() + '/'+ gatDateTreatmentOr0();
     $.get(url, function(t) {
       t = eval(t);
       if (t == "1") {

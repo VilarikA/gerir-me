@@ -626,6 +626,8 @@ with WithCustomer with net.liftweb.common.Logger{
 
     def markAsMissed {
         this.status(Treatment.Missed)
+        // falta criar o parm
+        // zeroPrices
     }
 
     def markAsReady {
@@ -659,6 +661,14 @@ with WithCustomer with net.liftweb.common.Logger{
             val eventId = FacebookUtil.createEvent(customer.facebookAccessToken,customer.facebookId," Agendamento no %s".format(this.company.obj.get.name.is),this.start,this.end,this.descritionDetails).id
             this.facebookEventId(eventId).save
         }
+    }
+
+    // para o caso de parm que manda zerar o preço na falta na remarcacao
+    // falta criar o parm 
+    def zeroPrices = {
+        this.details.foreach((td)=>{
+            td.price(0).save
+        })
     }
 
     def revertPrices = {

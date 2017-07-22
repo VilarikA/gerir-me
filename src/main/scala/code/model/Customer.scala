@@ -80,6 +80,11 @@ class Customer extends BusinessPattern[Customer]{
             message_aux = message_aux.replaceAll ("##nasc_anos##", Project.dateToYears(ac.birthday))
             message_aux = message_aux.replaceAll ("##nasc_ext##", Project.dateToExt(ac.birthday))
 
+            message_aux = message_aux.replaceAll ("##peso##", ac.weight.toString)
+            message_aux = message_aux.replaceAll ("##altura##", ac.height.toString)
+            message_aux = message_aux.replaceAll ("##imc_num##", ac.BMI.substring(0,scala.math.min(ac.BMI.length, 5)))
+            message_aux = message_aux.replaceAll ("##imc_classe##", ac.BMI)
+
             message_aux = message_aux.replaceAll ("##convenio##", ac.offSaleShortName)
             message_aux = message_aux.replaceAll ("##profissao##", ac.occupationShortName)
 
