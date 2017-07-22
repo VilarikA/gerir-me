@@ -8,274 +8,274 @@
 
 (function () {
 
-	function SthOverlay() {
+    function SthOverlay() {
 
-		var _$overlay = null;
+        var _$overlay = null;
 
-		/**
+        /**
    * Constructor.
    * 
    * Creates the overlay only once.
    */
-		(function create() {
+        (function create() {
 
-			if (_isAlreadyCreated()) {
-				_$overlay = $(".sth-overlay");
-				return;
-			}
+            if (_isAlreadyCreated()) {
+                _$overlay = $(".sth-overlay");
+                return;
+            }
 
-			_$overlay = $('<div class="sth-overlay"></div>');
-			_$overlay.appendTo($("body"));
-		})();
+            _$overlay = $('<div class="sth-overlay"></div>');
+            _$overlay.appendTo($("body"));
+        })();
 
-		/**
-   		* Checks if overlay is already inserted on the DOM.
-   		*/
-		function _isAlreadyCreated() {
-			var alreadyExistent = $(".sth-overlay");
-			return alreadyExistent && alreadyExistent.length > 0;
-		}
+        /**
+           * Checks if overlay is already inserted on the DOM.
+           */
+        function _isAlreadyCreated() {
+            var alreadyExistent = $(".sth-overlay");
+            return alreadyExistent && alreadyExistent.length > 0;
+        }
 
-		/**
+        /**
    * Shows the overlay.
    */
-		function show(values) {
-			_$overlay.fadeIn(500);
-		}
+        function show(values) {
+            _$overlay.fadeIn(500);
+        }
 
-		/**
+        /**
    * Hides the overlay.
    */
-		function hide() {
-			_$overlay.fadeOut(500);
-		}
+        function hide() {
+            _$overlay.fadeOut(500);
+        }
 
-		return {
-			show: show,
-			hide: hide
-		};
-	}
+        return {
+            show: show,
+            hide: hide
+        };
+    }
 
-	window.SthOverlay = window.SthOverlay || SthOverlay;
+    window.SthOverlay = window.SthOverlay || SthOverlay;
 })();
 "use strict";
 
 (function () {
 
-	function SthSelectPopup(properties) {
+    function SthSelectPopup(properties) {
 
-		var self = this;
-		var _$popup = null;
-		var _$title = null;
-		var _$titleText = null;
-		var _$titleClose = null;
-		var _$content = null;
-		var _$filter = null;
-		var _$overlay = null;
-		var _properties = properties;
-		var _onSelectCallback = null;
-		var _qntityOfItems = 0;
-		var _items = [];
-		var _filteredItems = [];
+        var self = this;
+        var _$popup = null;
+        var _$title = null;
+        var _$titleText = null;
+        var _$titleClose = null;
+        var _$content = null;
+        var _$filter = null;
+        var _$overlay = null;
+        var _properties = properties;
+        var _onSelectCallback = null;
+        var _qntityOfItems = 0;
+        var _items = [];
+        var _filteredItems = [];
 
-		/**
+        /**
    * Max of height (in pixels) that the popup can 
    * assume when open.
    */
-		var MAX_HEIGHT = 500;
+        var MAX_HEIGHT = 500;
 
-		/**
+        /**
    * Constructor.
    * Creates the popup section element in the DOM.
    * 
    * The section is created only once. Several calls 
    * does not have effect.
    */
-		(function create() {
+        (function create() {
 
-			if (isAlreadyInDOM()) {
-				_$popup = $(".sth-select-popup");
-				_$title = $(".sth-select-title");
-				_$titleText = $(".sth-select-title-text");
-				_$titleClose = $(".sth-select-title-close");
-				_$content = $(".sth-select-content");
-				_$filter = $(".sth-select-filter");
-				_$overlay = $(".sth-overlay");
-			} else {
-				_$popup = $('<section class="sth-select-popup"></section>');
-				_$title = $('<div class="sth-select-title"></div>');
-				_$titleText = $('<span class="sth-select-title-text"></span>');
-				_$titleClose = $('<span class="sth-select-title-close">X</span>');
-				_$content = $('<div class="sth-select-content"></div>');
-				_$filter = $('<input class="sth-select-filter"/>');
-				_$overlay = new window.SthOverlay();
+            if (isAlreadyInDOM()) {
+                _$popup = $(".sth-select-popup");
+                _$title = $(".sth-select-title");
+                _$titleText = $(".sth-select-title-text");
+                _$titleClose = $(".sth-select-title-close");
+                _$content = $(".sth-select-content");
+                _$filter = $(".sth-select-filter");
+                _$overlay = $(".sth-overlay");
+            } else {
+                _$popup = $('<section class="sth-select-popup"></section>');
+                _$title = $('<div class="sth-select-title"></div>');
+                _$titleText = $('<span class="sth-select-title-text"></span>');
+                _$titleClose = $('<span class="sth-select-title-close">X</span>');
+                _$content = $('<div class="sth-select-content"></div>');
+                _$filter = $('<input class="sth-select-filter"/>');
+                _$overlay = new window.SthOverlay();
 
-				_$title.append(_$titleText).append(_$titleClose);
-				_$popup.append(_$title).append(_$filter).append(_$content).appendTo($("body"));
-			}
+                _$title.append(_$titleText).append(_$titleClose);
+                _$popup.append(_$title).append(_$filter).append(_$content).appendTo($("body"));
+            }
 
-			_$titleClose.click(function (e) {
-				hide();
-			});
+            _$titleClose.click(function (e) {
+                hide();
+            });
 
-			$(document).keydown(function (e) {
-				if(e.keyCode == 27) // ESC
-					hide();
-			});
+            $(document).keydown(function (e) {
+                if(e.keyCode == 27) // ESC
+                    hide();
+            });
 
-			_$filter.keydown(function (e) {
-				var BACKSPACE = 8;
-				var SPACE = 32;
-				var ZERO = 49;
-				var Z = 90;
-				var keyCode = e.keyCode;
+            _$filter.keydown(function (e) {
+                var BACKSPACE = 8;
+                var SPACE = 32;
+                var ZERO = 49;
+                var Z = 90;
+                var keyCode = e.keyCode;
 
-				if( (keyCode >= ZERO && keyCode <= Z) || (keyCode == SPACE || keyCode == BACKSPACE) )
-					setTimeout(function(){
-						_renderList();
-					});
-			});
+                if( (keyCode >= ZERO && keyCode <= Z) || (keyCode == SPACE || keyCode == BACKSPACE) )
+                    setTimeout(function(){
+                        _renderList();
+                    });
+            });
 
-			_items = properties.items;
-			_filteredItems = _items;
-			_qntityOfItems = _items.length;
-		})();
+            _items = properties.items;
+            _filteredItems = _items;
+            _qntityOfItems = _items.length;
+        })();
 
-		/**
+        /**
    * Checks if the popup is already inserted in DOM.
    * It prevents many insertions and performance loss.
    */
-		function isAlreadyInDOM() {
-			var $alreadyExistent = $(".sth-select-popup");
-			return $alreadyExistent && $alreadyExistent.length > 0;
-		}
+        function isAlreadyInDOM() {
+            var $alreadyExistent = $(".sth-select-popup");
+            return $alreadyExistent && $alreadyExistent.length > 0;
+        }
 
-		/**
+        /**
    * Shows the popup on the screen.
    */
-		function show(values) {
-			_$overlay.show();
+        function show(values) {
+            _$overlay.show();
 
-			if(_$filter && _$filter.length > 0) _$filter.val("");
+            if(_$filter && _$filter.length > 0) _$filter.val("");
 
-			if (values && Array.isArray(values)){
-				_items = values;
-				_qntityOfItems = values.length;
-			}
+            if (values && Array.isArray(values)){
+                _items = values;
+                _qntityOfItems = values.length;
+            }
 
-			_$titleText.text(_properties.title);
-			_controlFilterVisibility();
-			_renderList();
+            _$titleText.text(_properties.title);
+            _controlFilterVisibility();
+            _renderList();
 
-			var height = _calculatePopupHeight();
-			_$popup.animate({ height: height }, 500);
-		}
+            var height = _calculatePopupHeight();
+            _$popup.animate({ height: height }, 500);
+        }
 
-		/**
+        /**
    * Calculates pop-up's height based on 
    * number of added items.
    */
-		function _calculatePopupHeight() {
-			var singleItemHeight = _$content.find(".sth-select-item").first().outerHeight();
+        function _calculatePopupHeight() {
+            var singleItemHeight = _$content.find(".sth-select-item").first().outerHeight();
 
-			var qntityOfItems = _qntityOfItems;
-			var allItemsHeight = singleItemHeight * qntityOfItems;
-			var titleHeight = _$title.outerHeight();
-			var filterHeight = _$filter.outerHeight();
+            var qntityOfItems = _qntityOfItems;
+            var allItemsHeight = singleItemHeight * qntityOfItems;
+            var titleHeight = _$title.outerHeight();
+            var filterHeight = _$filter.outerHeight();
 
-			var contentHeight = allItemsHeight + titleHeight + filterHeight;
-			return contentHeight < MAX_HEIGHT ? contentHeight : MAX_HEIGHT;
-		}
+            var contentHeight = allItemsHeight + titleHeight + filterHeight;
+            return contentHeight < MAX_HEIGHT ? contentHeight : MAX_HEIGHT;
+        }
 
-		/**
+        /**
    * Hides the popup on the screen.
    */
-		function hide() {
-			_$overlay.hide();
-			_$popup.animate({ height: 0 }, 500);
-		}
+        function hide() {
+            _$overlay.hide();
+            _$popup.animate({ height: 0 }, 500);
+        }
 
-		/**
+        /**
    * Add an item.
    */
-		function _addItem(item, autoRender) {
-			autoRender = autoRender || true;
+        function _addItem(item, autoRender) {
+            autoRender = autoRender || true;
 
-			var text = item.text;
-			var $listItem = $('<div class="sth-select-item">' + text + '</div>');
+            var text = item.text;
+            var $listItem = $('<div class="sth-select-item">' + text + '</div>');
 
-			if (autoRender) _$content.append($listItem);
+            if (autoRender) _$content.append($listItem);
 
-			return $listItem;
-		}
+            return $listItem;
+        }
 
-		/**
+        /**
    * Renders all elements in the list of options.
    */
-		function _renderList() {
-			_clear();
+        function _renderList() {
+            _clear();
 
-			var rerenderOnEachItem = false;
-			var $listItems = $([]);
-			var textFilter = _$filter.val().toLowerCase();
+            var rerenderOnEachItem = false;
+            var $listItems = $([]);
+            var textFilter = _$filter.val().toLowerCase();
 
-			_items.map(function (item) {
-				if (item.lowerCasedText.indexOf(textFilter) != -1) {
-					var $listItem = _addItem(item, rerenderOnEachItem);
-					$listItem.click(function () {
-						_onSelectCallback(item);
-						hide();
-					});
+            _items.map(function (item) {
+                if (item.lowerCasedText.indexOf(textFilter) != -1) {
+                    var $listItem = _addItem(item, rerenderOnEachItem);
+                    $listItem.click(function () {
+                        _onSelectCallback(item);
+                        hide();
+                    });
 
-					$listItems = $listItems.add($listItem);
-				}
-			});
+                    $listItems = $listItems.add($listItem);
+                }
+            });
 
-			_$content.append($listItems);
+            _$content.append($listItems);
 
-			var popupHeight = _calculatePopupHeight();
-			var titleHeight = _$title.outerHeight();
-			var filterHeight = _$filter.outerHeight();
-			_$content.outerHeight(popupHeight - titleHeight - filterHeight);
-		}
+            var popupHeight = _calculatePopupHeight();
+            var titleHeight = _$title.outerHeight();
+            var filterHeight = _$filter.outerHeight();
+            _$content.outerHeight(popupHeight - titleHeight - filterHeight);
+        }
 
-		/**
+        /**
    * Clear (removes from DOM) all elements on the list.
    */
-		function _clear() {
-			_$content.empty();
-		}
+        function _clear() {
+            _$content.empty();
+        }
 
-		/**
+        /**
    * Event handler which calls a callback when an item 
    * is selected.
    */
-		function onSelect(callback) {
-			_onSelectCallback = callback;
-		}
+        function onSelect(callback) {
+            _onSelectCallback = callback;
+        }
 
-		/**
+        /**
    * Sets the filter field visibility based on 
    * hasFilter property.
    */
-		function _controlFilterVisibility() {
-			var visibility = _properties.hasFilter ? "block" : "none";
-			_$filter.css("display", visibility);
-			_$filter.attr("placeholder", _properties.filterPlaceholder);
-		}
+        function _controlFilterVisibility() {
+            var visibility = _properties.hasFilter ? "block" : "none";
+            _$filter.css("display", visibility);
+            _$filter.attr("placeholder", _properties.filterPlaceholder);
+        }
 
-		/**
+        /**
    * Public available methods.
    */
-		return {
-			show: show,
-			hide: hide,
-			onSelect: onSelect
-		};
-	}
+        return {
+            show: show,
+            hide: hide,
+            onSelect: onSelect
+        };
+    }
 
-	window.SthSelect = window.SthSelect || {};
-	window.SthSelect.SthSelectPopup = SthSelectPopup;
+    window.SthSelect = window.SthSelect || {};
+    window.SthSelect.SthSelectPopup = SthSelectPopup;
 })();
 "use strict";
 
@@ -290,103 +290,105 @@ var $ = window.jQuery;
  */
 (function () {
 
-	$.fn.SthSelect = function SthSelect(properties) {
+    $.fn.SthSelect = function SthSelect(properties) {
 
-		if(!properties)
-			return this;
+        if(!properties)
+            return this;
 
-		var _$self = $(this);
-		var _$originalSelect = null;
-		var _$popup = null;
-		var _$fakeSelect = null;
-		var _properties = {};
-		var _values = [];
+        var _$self = $(this);
+        var _$originalSelect = null;
+        var _$popup = null;
+        var _$fakeSelect = null;
+        var _properties = {};
+        var _values = [];
 
-		(function initialize($this) {
-			_$originalSelect = $this;
-			_properties = buildDefault(properties);
-			_values = extractValues($this);
-			_$fakeSelect = fudgeSelect($this, properties);
+        (function initialize($this) {
+            _$originalSelect = $this;
+            _properties = buildDefault(properties);
+            _values = extractValues($this);
+            _$fakeSelect = fudgeSelect($this, properties);
 
-			var popupProperties = {
-				items: _values,
-				title: _properties.title,
-				hasFilter: _properties.filter,
-				filterPlaceholder: _properties.filterPlaceholder
-			};
-			_$popup = new window.SthSelect.SthSelectPopup(popupProperties);
+            var popupProperties = {
+                items: _values,
+                title: _properties.title,
+                hasFilter: _properties.filter,
+                filterPlaceholder: _properties.filterPlaceholder
+            };
+            _$popup = new window.SthSelect.SthSelectPopup(popupProperties);
 
-			_$popup.onSelect(applySelectedValue);
-			_$fakeSelect.click(openPopup);
-		})($(this));
+            _$popup.onSelect(applySelectedValue);
+            _$fakeSelect.click(openPopup);
+        })($(this));
 
-		function buildDefault(properties) {
-			return $.extend({
-				title: "Select an option",
-				placeholder: "Choose an option",
-				autoSize: false,
-				filter: false,
-				filterPlaceholder: "Search"
-			}, properties);
-		}
+        function buildDefault(properties) {
+            return $.extend({
+                title: "Select an option",
+                placeholder: "Choose an option",
+                autoSize: false,
+                filter: false,
+                filterPlaceholder: "Search"
+            }, properties);
+        }
 
-		function extractValues($this) {
-			var values = [];
-			$this.find("option").each(function () {
-				var $option = $(this);
-				var content = { 
-					value: $option.val(), 
-					text: $option.text(), 
-					lowerCasedText: $option.text().toLowerCase() 
-				};
-				values.push(content);
-			});
+        function extractValues($this) {
+            var values = [];
+            $this.find("option").each(function () {
+                var $option = $(this);
+                var content = { 
+                    value: $option.val(), 
+                    text: $option.text(), 
+                    lowerCasedText: $option.text().toLowerCase() 
+                };
+                values.push(content);
+            });
 
-			return values;
-		}
+            return values;
+        }
 
-		function fudgeSelect($select, properties) {
-			$select.hide();
+        function fudgeSelect($select, properties) {
+            $select.hide();
 
-			var $fakeSelect = $('<div class="sth-select"></div>');
-			var $fakeSelectText = $('<span class="sth-select-text"></span>');
-			var $fakeSelectArrow = $('<span class="sth-select-arrow"></span>');
+            var $fakeSelect = $('<div class="sth-select"></div>');
+            var $fakeSelectText = $('<span class="sth-select-text"></span>');
+            var $fakeSelectArrow = $('<span class="sth-select-arrow"></span>');
 
-			$fakeSelectText.text(properties.placeholder);
-			$fakeSelect.append($fakeSelectText);
-			$fakeSelect.append($fakeSelectArrow);
+            $fakeSelectText.text(properties.placeholder);
+            $fakeSelect.append($fakeSelectText);
+            $fakeSelect.append($fakeSelectArrow);
 
-			if (!properties.autoSize) $fakeSelect.addClass("fixed-width");
+            if (!properties.autoSize) $fakeSelect.addClass("fixed-width");
 
-			$select.after($fakeSelect);
+            $select.after($fakeSelect);
 
-			return $fakeSelect;
-		}
+            return $fakeSelect;
+        }
 
-		function openPopup() {
-			_$popup.show(extractValues(_$self));
-		}
+        function openPopup() {
+            _$popup.show(extractValues(_$self));
+        }
 
-		function applySelectedValue(selectedValue) {
-			var value = selectedValue.value;
-			_$originalSelect.val(value);
+        function applySelectedValue(selectedValue) {
+            var value = selectedValue.value;
+            _$originalSelect.val(value);
 
-			var text = selectedValue.text;
-			_$fakeSelect.find(".sth-select-text").text(text);
-		}
+            var text = selectedValue.text;
+            _$fakeSelect.find(".sth-select-text").text(text);
+            
+            _$originalSelect.trigger('SthSelect:afterSelect');
+        }
 
-		function clearValue() {
-			_$originalSelect.val(null);
-			_$fakeSelect.find(".sth-select-text").text(_properties.placeholder);
-		}
+        function clearValue() {
+            _$originalSelect.val(null);
+            _$fakeSelect.find(".sth-select-text").text(_properties.placeholder);
+        }
 
-		return {
-			clearValue: clearValue
-		}
-	};
+        return {
+            clearValue: clearValue
+        }
+    };
 
-	window.SthSelect = window.SthSelect || {};
-	window.SthSelect.init = window.SthSelect.init || SthSelect;
+    window.SthSelect = window.SthSelect || {};
+    window.SthSelect.init = window.SthSelect.init || SthSelect;
 })();
 
 /*
@@ -394,26 +396,26 @@ var $ = window.jQuery;
  */
 $(document).ready(function loadFromHtmlAPI() {
 
-	var $elements = $("select[sth-select]");
+    var $elements = $("select[sth-select]");
 
-	$elements.each(function () {
-		var $element = $(this);
-		var title = $element.attr("sth-select-title");
-		var placeholder = $element.attr("sth-select-placeholder");
-		var autoSize = $element.attr("sth-select-autosize");
-		var filter = $element.attr("sth-select-filter");
-		var filterPlaceholder = $element.attr("sth-select-filter-placeholder");
+    $elements.each(function () {
+        var $element = $(this);
+        var title = $element.attr("sth-select-title");
+        var placeholder = $element.attr("sth-select-placeholder");
+        var autoSize = $element.attr("sth-select-autosize");
+        var filter = $element.attr("sth-select-filter");
+        var filterPlaceholder = $element.attr("sth-select-filter-placeholder");
 
-		$element.SthSelect({
-			title: title,
-			placeholder: placeholder,
-			autoSize: boolFromString(autoSize),
-			filter: boolFromString(filter),
-			filterPlaceholder: filterPlaceholder
-		});
-	});
+        $element.SthSelect({
+            title: title,
+            placeholder: placeholder,
+            autoSize: boolFromString(autoSize),
+            filter: boolFromString(filter),
+            filterPlaceholder: filterPlaceholder
+        });
+    });
 
-	function boolFromString(string) {
-		return string == "true";
-	}
+    function boolFromString(string) {
+        return string == "true";
+    }
 });
