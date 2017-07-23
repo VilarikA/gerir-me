@@ -93,6 +93,8 @@ object AccountPayableApi extends RestHelper with ReportRest with net.liftweb.com
 					// por isso usa duedate
 					ap.paymentDate (apofx.dueDate)
 					ap.account (apofx.account)
+					var compl = ap.complement
+					ap.complement (compl + " " + apofx.obs)
 					ap.makeAsConciliated
 					apofx.delete_!
 					JInt(1)
@@ -125,6 +127,8 @@ object AccountPayableApi extends RestHelper with ReportRest with net.liftweb.com
 					// por isso usa duedate
 					ap.paymentDate (apofx.dueDate)
 					ap.account (apofx.account)
+					var compl = ap.complement
+					ap.complement (compl + " " + apofx.obs)
 					ap.makeAsConsolidated
 					apofx.delete_!
 					JInt(1)

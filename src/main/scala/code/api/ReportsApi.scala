@@ -589,6 +589,7 @@ object Reports extends RestHelper with ReportRest with net.liftweb.common.Logger
 					select id, prof, telefone, email, unidade, sum (preco), sum (comissao), 
 					(select sum (case when typemovement = 1 then value * -1 when typemovement = 0 then value end)
 					from accountpayable where paid = true """ + sqldt + """
+					and toconciliation = false
 					and company = ?
 					and user_c = data1.id
 					) as vales,
@@ -735,6 +736,7 @@ object Reports extends RestHelper with ReportRest with net.liftweb.common.Logger
 				(
 				  select COALESCE(sum(value),0) as total    
 				  from accountpayable ap where 
+				  ap.toconciliation = false and
 				  ap.company=? and 
 				  ap.category in (
 				      select id from 
@@ -748,6 +750,7 @@ object Reports extends RestHelper with ReportRest with net.liftweb.common.Logger
 				(
 				  select COALESCE(sum(value),0) as total    
 				  from accountpayable ap where 
+				  ap.toconciliation = false and
 				  ap.company=? and 
 				  ap.category in (
 				      select id from 
@@ -925,6 +928,7 @@ object Reports extends RestHelper with ReportRest with net.liftweb.common.Logger
 				    ( (
 				      select COALESCE(sum(value),0) as total    
 				      from accountpayable ap where
+					  ap.toconciliation = false and
 				      ap.company=ac.company and 
 				      ap.category in (
 				          select id from 
@@ -938,6 +942,7 @@ object Reports extends RestHelper with ReportRest with net.liftweb.common.Logger
 				    (
 				      select COALESCE(sum(value),0) as total    
 				      from accountpayable ap where
+					  ap.toconciliation = false and
 				      ap.company=ac.company and
 				      ap.category in (
 				          select id from 
@@ -1757,7 +1762,9 @@ object Reports extends RestHelper with ReportRest with net.liftweb.common.Logger
 			  select * from (
 			    select name, 
 			    (select sum(c.value) from commision c where c.user_c=bp.id and payment_date between date(?) and date(?)) as commision,
-			    (select sum(a.value) from accountpayable a where a.user_c=bp.id and date(duedate) between date(?) and date(?) ) as payments
+			    (select sum(a.value) from accountpayable a where 
+				a.toconciliation = false and
+			    a.user_c=bp.id and date(duedate) between date(?) and date(?) ) as payments
 			    from business_pattern bp
 			    where 
 			    is_employee=true

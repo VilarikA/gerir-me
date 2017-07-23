@@ -181,7 +181,9 @@ object AccountCategory extends AccountCategory with LongKeyedMapperPerCompany[Ac
   val SQL_REPORT_GRAPHIC = """
   select ac.name,sum(ap.value) from accountpayable ap
 inner join accountcategory ac on(ac.id = ap.category)
-where ap.company  =?
+where 
+ap.toconciliation = false
+and ap.company  =?
 and ap.typemovement=1
 and ap.duedate between ? and ?
 group by ac.name;"""
