@@ -218,8 +218,7 @@
                 _filteredItems = _items;
 
             var item = _filteredItems[_selectedItemIndex];
-            var shouldTriggerEvent = false;
-            _onSelectCallback(item, shouldTriggerEvent);
+            _onSelectCallback(item);
         }
 
         /**
@@ -431,7 +430,9 @@ var $ = window.jQuery;
             var text = selectedValue.text;
             _$fakeSelect.find(".sth-select-text").text(text);
 
-            _$originalSelect.trigger("SthSelect:afterSelect");
+            setTimeout(function(){
+                _$originalSelect.trigger('SthSelect:afterSelect');
+            }, 650);
         }
 
         function clearValue() {
