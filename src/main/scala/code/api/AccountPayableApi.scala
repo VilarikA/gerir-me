@@ -69,6 +69,22 @@ object AccountPayableApi extends RestHelper with ReportRest with net.liftweb.com
 				}
 			}
 
+			case "accountpayable" :: "changeofx" :: idofx :: obs :: categ :: Nil JsonGet _ => {
+				try{
+					val ap = AccountPayable.findByKey(idofx.toLong).get
+					if (!ap.paid_?) {
+						ap.paid_? (true);
+					}
+					ap.obs(obs)
+					ap.category (categ.toLong)
+					ap.toConciliation_? (false);
+					ap.makeAsConciliated
+					JInt(1)
+				} catch {
+					case e:Exception => JString(e.getMessage)
+				}
+			}
+
 			case "accountpayable" :: "conciliate" :: id :: Nil JsonGet _ => {
 				try{
 					val ap = AccountPayable.findByKey(id.toLong).get
