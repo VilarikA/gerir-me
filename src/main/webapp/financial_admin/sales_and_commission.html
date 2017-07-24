@@ -12,7 +12,11 @@
     var total = 0;
     var commission = 0;
     var balance = 0;
+    var hasUnitModule = $('.has-unit-module').length > 0;
     fields[0] = "int";
+    if (!hasUnitModule) {
+      fields[4] = "none";
+    }
     fields[5] = {
       type : "format",
       decode : function(value){
@@ -32,6 +36,13 @@
            commission += floatValue;
            balance -= floatValue;
         }
+        return floatValue.formatMoney();
+      }
+    };
+    fields[7] = {
+      type : "format",
+      decode : function(value){
+        var floatValue = parseFloat(value);
         return floatValue.formatMoney();
       }
     };
@@ -107,6 +118,7 @@
                 </select>
               </div>
             </div>
+            <input type="hidden" class="has-unit-module lift:SecuritySnippet.hasUnitModule" value="1">
             <div class="clearfix lift:SecuritySnippet.hasUnitModule">
               <label for="unit">Unidade </label>
                 <div class="input">
@@ -210,7 +222,7 @@
         <th>Nome</th>
         <th>Telefone</th>
         <th>E-mail</th>
-        <th>Unidade</th>
+        <th class ="lift:SecuritySnippet.hasUnitModule">Unidade</th>
         <th>Faturamento</th>
         <th>Comissão</th>
         <th>Vales</th>
