@@ -7,6 +7,7 @@
   <script type="text/javascript">
   $(function(){
     $("#account").accountField(true);
+    $("#category_select").categoryAccountField(true);
     $("#start").val(getDateBr(new Date().getStartOfMonth()));
     var fields = [];
     fields[0] = "date";
@@ -18,6 +19,13 @@
       }
     }
     fields[3] = "realNull";
+    fields[4] = {
+      type : "format",
+      decode: function(name, row) {
+        return "<a href='#' data-idofx='" + row [4] + "' data-obs='" + row [1] + "' data-categ='" + row [11] + "' class='action_change'><img width='16px' title='validar ofx' src='/images/tick.png'></a>" +
+              "<a href='#' data-idofx='" + row [4] + "' class='action_remove'><img width='16px' title='excluir ofx' src='/images/delete.png'></a>"
+      }
+    };
     fields[6] = "realNull";
     //fields[7] = "intNull";
     fields[7] = {
@@ -45,6 +53,9 @@
         return ret
       }
     }
+
+    fields[11] = "none"; // categ do ofx
+
     var url = "/report/account_ofx_conciliation";
     var total_to_pay = 0.00;
     var request = function(){
@@ -76,11 +87,63 @@
         $(".action_conciliate").click(function() {
           return conciliateOne($(this).attr("data-id"), $(this).attr("data-idofx"));
         });
+        $(".action_remove").click(function() {
+          return deleteOne($(this).attr("data-idofx"));
+        });
+        $(".action_change").click(function() {
+          return changeOne($(this).attr("data-idofx"),
+            $(this).attr("data-obs"),
+            $(this).attr("data-categ"));
+        });
+        $(".change_ofx").click(function() {
+          return saveOne();
+        });
       });
     }
 
+    var saveOne = function() {
+        return $.get("/accountpayable/changeofx/" + $("#idofx").val() + "/" + $("#obs").val() + "/" + $("#category_select").val() , function(results) {
+          if(results === 1 || results == "1"){
+            alert("Lançamento ofx atualizado e conciliado com sucesso!");  
+          }else{
+            alert(eval(results));
+          }
+          $("#ofx_modal").modal({
+            "hide": true
+          });
+          request();
+        });
+    };
+
+    var changeOne = function(idofx, obs, categ) {
+      $("#idofx").val(idofx);
+      $("#obs").val(obs);
+      $("#category_select").val(categ);
+      $("#category_select").change();
+      return $("#ofx_modal").modal({
+        "show": true,
+        "keyboard": true,
+        "backdrop": true
+      });
+    };
+
+    var deleteOne = function(idofx) {
+      if (confirm("Tem certeza que deseja excluir o lançamento ofx?")) {
+        // o segundo param 0 seria a recorrencia 
+        // que nunca ocorre no ofx
+        return $.get("/accountpayable/remove/" + idofx +"/0" , function(results) {
+          if(results === 1 || results == "1"){
+            alert("Lançamento ofx excluído com sucesso!");  
+          }else{
+            alert(eval(results));
+          }
+          request();
+        });
+      }
+    };
+
     var conciliateOne = function(id, idofx) {
-      if (confirm("Tem certeza que deseja conciliar o lançamento?" + id + " ofx " + idofx)) {
+      if (confirm("Tem certeza que deseja conciliar o lançamento?")) {
         return $.get("/accountpayable/conciliateofx/" + id +"/" + idofx, function(results) {
           if(results === 1 || results == "1"){
             alert("Lançamento conciliado com sucesso!");  
@@ -93,7 +156,7 @@
     };
 
     var consolidateOne = function(id, idofx) {
-      if (confirm("Tem certeza que deseja consolidar o lançamento?"+ id + " ofx " + idofx)) {
+      if (confirm("Tem certeza que deseja consolidar o lançamento?")) {
         return $.get("/accountpayable/consolidateofx/" + id +"/" + idofx, function(results) {
           if(results === 1 || results == "1"){
             alert("Lançamento consoliado com sucesso!");  
@@ -195,18 +258,6 @@
                 <img src="/images/search.png" width="16">
                 Buscar
               </a>            
-              <a id="mark_as_conciliated" class="btn" title="Marcar todos os itens selecionados como conciliados">
-                <img src="/images/money.png" width="16">
-                Conciliar
-              </a>              
-              <a id="consolidate" class="btn" title="Marcar todos os itens selecionados como conciliados">
-                <img src="/images/money.png" width="16">
-                Consolidar
-              </a>              
-              <a id="consolidateTotal" class="btn danger" title="Consolidar e atualizar o saldo">
-                <img src="/images/money.png" width="16">
-                Consolidar
-              </a>              
           </div>
       </div>
     </form>
@@ -216,18 +267,61 @@
       <thead>
         <th>Data</th>
         <th>Obs ofx</th>
-        <th>Tipo</th>
+        <th>Tp</th>
         <th>Valor</th>
-        <th>Id ofx</th>
+        <th>Valida</th>
         <th>Obs</th>
         <th>Valor</th>
-        <th>Id</th>
+        <th>Consolida</th>
         <th>Obs</th>
         <th>Valor</th>
-        <th>Id</th>
-        <th></th>
+        <th>Concilia</th>
       </thead>
       <tbody>
       </tbody>
   </table>
+  <div id="ofx_modal" style="width: 60%; left: 20%; margin: auto auto auto auto; top:5%; height:70%; max-height:100%;" class="modal hide">
+    <div class="modal-header">
+      <a href="#" class="close">&times;</a>
+      <h3>Atualiza e concilia ofx</h3>
+    </div>
+    <span id="cash_form">
+      <form id='eventForm' action="/calendar/">
+        <div>
+            <div class="row">
+              <div class="span16">
+                <div class="well">
+                  <input class="btn success change_ofx" id="change_ofx" type="button" value="Salvar">
+                </div>
+              <div class="span8">
+                <div class="clearfix">
+                  <label for="name">Idofx </label>
+                   <div class="input">
+                      <input class="mini" id="idofx" name="idofx" size="30" type="text" disabled='true'/>
+                   </div>
+                </div>
+                <div class="clearfix">
+                  <label for="category_select">Categoria</label>
+                  <div class="input">
+                    <div class="inline-inputs">
+                      <select id='category_select' class="xlarge category_select url_parameter" name='category'></select>
+                    </div>
+                  </div>
+                </div>
+                <div class="clearfix">
+                  <label for="name">Observação </label>
+                   <div class="input">
+                      <input class="xlarge" id="obs" name="obs" size="30" type="textarea"/>
+                   </div>
+                </div>
+              </div>
+              <div class="well">
+                <input class="btn success change_ofx" id="change_ofx" type="button" value="Salvar">
+              </div>                
+             </div>
+            </div>
+        </div>
+      </form>
+    </span>
+  </div>
  </div>

@@ -62,17 +62,25 @@ object OfxUtil {
                 // getPayeeId() PAYEEID
                 // getTransactionType() TRNTYPE
                 //     XFER DEP CASH DEBIT (taxas) OTHER
+               var invoice = "";
+               invoice = transaction.getId();
+               if (invoice != transaction.getCheckNumber()) {
+                invoice = invoice + " * " + transaction.getCheckNumber()
+               }
+               //println ("vaiii ================ " + invoice.trim);
                val movement = AccountPayable.createInCompany
-               movement.invoice(transaction.getId())
+               movement.invoice(invoice.trim)
                        .dueDate(transaction.getDatePosted())
-                       .paymentDate(transaction.getDatePosted())
+                       //.paymentDate(transaction.getDatePosted())
+                       .paid_?(false) // nao preenche data e seta false 
+                       // para não alterar o saldo. a concialiação do ofx 
+                       // é que marca como pago
                        .toConciliation_?(true)
                        .value(value)
                        .typeMovement(typeMovement)
                        .obs(transaction.getMemo())
                        .category(category)
                        .account(account)
-                       .paid_?(true)
                        .save
           })
         });

@@ -436,10 +436,14 @@ object DailyReport{
 	// retirei o By(AccountPayable.paid_?,false), pq vários clientes querem marcar o cheque como recebe a vista
 	// mas querem ser lembrados do dia do depósito
 	def accountsFor (company:Company, date: Date) = AccountPayable.findAll(
-		By(AccountPayable.company,company),BySql("date(dueDate) = date(?)",
+		By(AccountPayable.company,company),
+		By(AccountPayable.toConciliation_?,false),
+		BySql("date(dueDate) = date(?)",
 		IHaveValidatedThisSQL("dateevent","01-01-2012 00:00:00"), date))
 	def hasAccountsFor (company:Company, date: Date) = AccountPayable.count(
-		By(AccountPayable.company,company),BySql("date(dueDate) = date(?)",
+		By(AccountPayable.company,company),
+		By(AccountPayable.toConciliation_?,false),
+		BySql("date(dueDate) = date(?)",
 		IHaveValidatedThisSQL("dateevent","01-01-2012 00:00:00"), date)) > 0
 
 	def sqlForToDay[T <: net.liftweb.mapper.Mapper[T]] = BySql[T](

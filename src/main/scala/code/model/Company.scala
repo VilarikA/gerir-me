@@ -449,7 +449,8 @@ class Company extends Audited[Company] with PerCompany with IdPK with CreatedUpd
     By(Cheque.movementType, AccountPayable.IN), OrderBy(Cheque.dueDate, Descending))
 
   def accountCategorys = AccountCategory.findAllInCompany(By(AccountCategory.company, this.id))
-  def accountPayables = AccountPayable.findAllInCompany(By(AccountPayable.company, this.id))
+  // acho que não usa
+  def accountPayablesxxxxx = AccountPayable.findAllInCompany(By(AccountPayable.company, this.id))
   def imagePath = "company"
   override def logo_web = Props.get("photo.urlbase").get + imagePath + "/" + image.is
   override def thumb_web = Props.get("photo.urlbase").get + imagePath + "/" + imagethumb

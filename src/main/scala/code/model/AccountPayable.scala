@@ -398,6 +398,7 @@ object AccountPayable extends AccountPayable with LongKeyedMapperPerCompany[Acco
     AccountPayable.findAllInCompany(
 //      By(AccountPayable.user, userId),
       By(AccountPayable.company, company),
+      By(AccountPayable.toConciliation_?,false),
       By(AccountPayable.paid_?, true),
       BySql(" user_c in (%s) ".format (userId), IHaveValidatedThisSQL("", "")),
       BySql(unitsql, IHaveValidatedThisSQL("", "")),
@@ -534,6 +535,7 @@ object AccountPayable extends AccountPayable with LongKeyedMapperPerCompany[Acco
     val filter: Seq[net.liftweb.mapper.QueryParam[code.model.AccountPayable]] = startEndFilter :: 
     startValueFilter :: endValueFilter :: onlyPaidFilter :: categoryFilter :: categoryFilter2 :: cashiersFilter :: 
     unitFilter :: userFilter :: startEndCreateFilter :: typesFilter :: accountFilter :: 
+    By(AccountPayable.toConciliation_?,false) ::
     OrderBy(AccountPayable.dueDate, Descending) :: OrderBy(AccountPayable.id, Descending) :: 
     permissionFilter :: obsFilter :: costcentersFilter :: paymenttypesFilter ::Nil
     AccountPayable.findAllInCompany(filter: _*)
@@ -567,6 +569,7 @@ object AccountPayable extends AccountPayable with LongKeyedMapperPerCompany[Acco
           from  accountpayable ap
           inner join accountcategory ac on(ac.id = ap.category)
           where 
+            ap.toConciliation = false and
             ap.company = ? and
             ap.unit = ? and
             duedate between ? and ? and
@@ -589,7 +592,9 @@ object AccountPayable extends AccountPayable with LongKeyedMapperPerCompany[Acco
         left join cheque ch on (ch.id = cheque)
         left join business_pattern bc on bc.id = ch.customer
         left join bank bk on bk.id = ch.bank
-      WHERE ap.company=? and ap.cashier=? and ap.autocreated = false
+      WHERE 
+      ap.toConciliation = false and
+      ap.company=? and ap.cashier=? and ap.autocreated = false
     """
 
   val SQL_DRE = """
@@ -599,6 +604,7 @@ object AccountPayable extends AccountPayable with LongKeyedMapperPerCompany[Acco
 (
   select COALESCE(sum(value),0) as total    
   from accountpayable ap where 
+  ap.toConciliation = false and
   ap.category in (
       select id from 
       accountcategory acc 
@@ -610,6 +616,7 @@ object AccountPayable extends AccountPayable with LongKeyedMapperPerCompany[Acco
 (
   select COALESCE(sum(value),0) as total    
   from accountpayable ap where 
+  ap.toConciliation = false and
   ap.category in (
       select id from 
       accountcategory acc 
@@ -632,6 +639,7 @@ select * from (
 (
   select COALESCE(sum(value),0) as total    
   from accountpayable ap where 
+  ap.toConciliation = false and
   ap.company=? and 
   ap.category in (
       select id from 
@@ -646,6 +654,7 @@ select * from (
 (
   select COALESCE(sum(value),0) as total    
   from accountpayable ap where 
+  ap.toConciliation = false and
   ap.company=? and 
   ap.category in (
       select id from 

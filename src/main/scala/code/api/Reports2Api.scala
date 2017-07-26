@@ -1700,7 +1700,8 @@ object Reports2 extends RestHelper with ReportRest with net.liftweb.common.Logge
 					from accounthistory ah 
 					inner join account ac on ac.id = ah.account
 					inner join business_pattern bu on bu.id = ah.createdby
-					left join accountpayable ap on ap.id = ah.accountpayable
+					left join accountpayable ap on ap.id = ah.accountpayable 
+						and ap.toconciliation = false
 					left join accountcategory aa on aa.id = ap.category
 					left join business_pattern bp on bp.id = ap.user_c
 					left join companyunit cu on cu.id = ap.unit %s 
@@ -1740,6 +1741,7 @@ object Reports2 extends RestHelper with ReportRest with net.liftweb.common.Logge
 					inner join accountcategory ct on ct.id = ap.category
 					left join business_pattern bp on bp.id = ap.user_c
 					where ap.company = ?
+					and ap.toconciliation = false
 					and ap.account = %s
 					and ap.paymentdate between ? and ?
 					union
@@ -1754,6 +1756,7 @@ object Reports2 extends RestHelper with ReportRest with net.liftweb.common.Logge
 					inner join accountcategory ct on ct.id = ap.category
 					left join business_pattern bp on bp.id = ap.user_c
 					where ap.company = ?
+					and ap.toconciliation = false
 					and ap.account = %s
 					and ap.paymentdate is null
 					and duedate between ? and ?
@@ -1780,19 +1783,21 @@ object Reports2 extends RestHelper with ReportRest with net.liftweb.common.Logge
 					case _ => new Date()
 				}
 				lazy val SQL_REPORT = """
-select ap.paymentdate, ap.obs, ap.typemovement , ap.value, ap.id, 
-ap1.obs, ap1.value, ap1.id,
-ap2.obs, ap2.value, ap2.id
-from accountpayable ap 
-left join accountpayable ap1 on (ap1.paymentdate = ap.paymentdate or ap1.duedate = ap.paymentdate 
-or ap1.paymentdate = ap.duedate or ap1.duedate = ap.duedate) and ap1.value = ap.value and ap1.category <> ap.category and ap.company = ap1.company
-left join accountpayable ap2 on ap2.duedate between date(?) and date (?) and ap2.value = ap.value 
-and ap2.category <> ap.category and ap.company = ap2.company %s
-where ap.company = ? 
-and ap.paymentdate between date(?) and date (?)
-and ap.category = 9440
-order by --ap1.obs, 
-ap.duedate, ap.id
+					select ap.duedate, ap.obs, ap.typemovement , ap.value, ap.id, 
+					ap1.obs, ap1.value, ap1.id,
+					ap2.obs, ap2.value, ap2.id,
+					ap.category
+					from accountpayable ap 
+					left join accountpayable ap1 on (ap1.paymentdate = ap.paymentdate or ap1.duedate = ap.paymentdate 
+					or ap1.paymentdate = ap.duedate or ap1.duedate = ap.duedate) and ap1.value = ap.value 
+					and ap1.toconciliation = false and ap.company = ap1.company
+					left join accountpayable ap2 on ap2.duedate between date(?) and date (?) and ap2.value = ap.value 
+					and ap2.toconciliation = false and ap.company = ap2.company %s
+					where ap.company = ? 
+					and ap.duedate between date(?) and date (?)
+					and ap.toconciliation = true
+					order by --ap1.obs, 
+					ap.duedate, ap.id
 					"""
 				toResponse(SQL_REPORT.format(account, account),
 					List(start, end, AuthUtil.company.id.is, start, end))

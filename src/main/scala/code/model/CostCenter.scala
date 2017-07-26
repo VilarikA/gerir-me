@@ -87,7 +87,9 @@ class CostCenter extends TreeObject with Audited[CostCenter] with PerCompany wit
     val SQL_REPORT_GRAPHIC = """
     select cc.name,sum(ap.value) from accountpayable ap
     inner join costcenter cc on(cc.id = ap.costcenter)
-    where ap.company  =?
+    where 
+    ap.toconciliation = false
+    and ap.company  =?
     and ap.duedate between ? and ?
     group by cc.name;"""
     val SQL_TREE = """

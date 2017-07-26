@@ -84,6 +84,7 @@ class Cashier extends LongKeyedMapper[Cashier]  with PerCompany with PerUnit wit
     // dinheiro
     def outputValue = {
         AccountPayable.findAll(By(AccountPayable.cashier,this),
+            By(AccountPayable.toConciliation_?,false),
             By(AccountPayable.auto_?,false),
             BySql(" cheque is null ",IHaveValidatedThisSQL("",""))
             ).map((a) =>
@@ -96,6 +97,7 @@ class Cashier extends LongKeyedMapper[Cashier]  with PerCompany with PerUnit wit
     // cheque
     def outputCheque = {
         AccountPayable.findAll(By(AccountPayable.cashier,this),
+            By(AccountPayable.toConciliation_?,false),
             By(AccountPayable.auto_?,false),
             BySql(" cheque is not null ",IHaveValidatedThisSQL("",""))
             ).map((a) =>
@@ -107,6 +109,7 @@ class Cashier extends LongKeyedMapper[Cashier]  with PerCompany with PerUnit wit
     }
     def inputValue = {
         AccountPayable.findAll(By(AccountPayable.cashier,this),
+            By(AccountPayable.toConciliation_?,false),
             By(AccountPayable.auto_?,false)).map((a) =>
             if(a.typeMovement.is == AccountPayable.IN)
                 a.value.is
