@@ -277,7 +277,52 @@ object  TreatmentService extends net.liftweb.common.Logger {
 
 		treatment.user(user)
 		treatment.start(start)
-		treatment.end(end)
+		// Rigel 26/07/2017
+		// este techo marreta um bug go jweekcalendar provocado pela 
+		// migração do bootstrap que alterava o fim para 1 minuto a menos
+		// qdo o evento era arrastado ou redimensionado
+		// assumimos que as divisões da agenda são em 0 ou 5 minutos
+		// e arredondamos a hora
+		// por enquanto na 1 e na 8 só para teste da agenda pq esta alteracao
+		// vai ro master em produção
+		if (AuthUtil.company.id == 1 || AuthUtil.company.id == 8 ) {
+			println ("vaiiii ============== " + Project.dateToHours(treatment.end) + " ==== " + Project.dateToHours(end)
+				+ " ==== " + Project.dateToHours(end).slice(4,5) + " <<<<< " + (10-Project.dateToHours(end).slice(4,5).toInt));
+			var minute = Project.dateToHours(end).slice(4,5);
+			var minutes = Project.dateToHours(end).slice(3,5).toInt;
+			var hours = Project.dateToHours(end).slice(0,2).toInt;
+			if (minute != "0" &&
+				minute != "5" &&
+				minutes != Project.dateToHours(treatment.end).slice(3,5).toInt) {
+				// deixa como está
+				var dif = if ((10-Project.dateToHours(end).slice(4,5).toInt) > 5) {
+					(10-Project.dateToHours(end).slice(4,5).toInt) - 5;
+				} else {
+					(10-Project.dateToHours(end).slice(4,5).toInt)
+				}
+				var newEnd = "";
+				println ("vaiiii dentro ============== " + Project.dateToStr (end) + " " + Project.dateToHours(end));
+				if (minutes + dif == 60) {
+					if ((hours + 1) < 10) {
+			    		println ("vaiiii era 60 dentro ============== " + Project.dateToStr (end) + " " + "0" + (hours + 1).toString + ":00");
+			    		newEnd = Project.dateToStr (end) + " " + "0" + (hours + 1).toString + ":00";
+					} else {
+			    		println ("vaiiii era 60 dentro ============== " + Project.dateToStr (end) + " " + (hours + 1).toString + ":00");
+			    		newEnd = Project.dateToStr (end) + " " + (hours + 1).toString + ":00";
+					}
+				} else {
+					println ("vaiiii dentro ============== " + Project.dateToStr (end) + " " + Project.dateToHours(end).slice(0,3)+	(minutes + dif).toString);
+					newEnd = Project.dateToStr (end) + " " + Project.dateToHours(end).slice(0,3)+	(minutes + dif).toString;
+				}
+	//			var end1 = Project.
+				treatment.end (Project.strToDate(newEnd));
+			} else {
+				treatment.end(end);
+			}		
+		} else {
+			// isso já era feito sempre
+			treatment.end(end)
+		}
 		if(status == Treatment.Arrived){
 			treatment.markAsArrived
 		}else if(status == Treatment.Missed){
