@@ -79,10 +79,12 @@ class QuizQuestion extends Audited[QuizQuestion] with PerCompany with IdPK with 
 
 object QuizQuestion extends QuizQuestion with LongKeyedMapperPerCompany[QuizQuestion]  
     with  OnlyActive[QuizQuestion] {
+/*
     object QuizQuestionType extends Enumeration {
         type QuizQuestionType = Value
         val text, paragraph, choosefromlist, multiplechoice, severaloptions = Value
     }
+*/
 /*
     val types = Seq(
                 QuizQuestionType.text.toString -> "Texto",
