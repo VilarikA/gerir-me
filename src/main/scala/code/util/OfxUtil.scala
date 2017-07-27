@@ -1,6 +1,8 @@
 package code
 package util
 
+import net.liftweb._
+import mapper._
 import net.liftweb.http._
 import net.liftweb.sitemap.Loc._
 import net.liftweb.util.Helpers._
@@ -25,7 +27,9 @@ import net.sf.ofx4j.io.OFXParseException
 
 object OfxUtil {
 
-  def execute(file:File, category:Long, account:Long){
+  def execute(file:File, category:Long, account:Long):String = {
+     var trnGood = 0;
+     var trnBad = 0;
     val a = new AggregateUnmarshaller(classOf[ResponseEnvelope]);
     val re = a.unmarshal(new FileInputStream(file));
 
@@ -68,22 +72,33 @@ object OfxUtil {
                 invoice = invoice + " * " + transaction.getCheckNumber()
                }
                //println ("vaiii ================ " + invoice.trim);
-               val movement = AccountPayable.createInCompany
-               movement.invoice(invoice.trim)
-                       .dueDate(transaction.getDatePosted())
-                       //.paymentDate(transaction.getDatePosted())
-                       .paid_?(false) // nao preenche data e seta false 
-                       // para não alterar o saldo. a concialiação do ofx 
-                       // é que marca como pago
-                       .toConciliation_?(true)
-                       .value(value)
-                       .typeMovement(typeMovement)
-                       .obs(transaction.getMemo())
-                       .category(category)
-                       .account(account)
-                       .save
+               val ctMov = AccountPayable.count (
+                By (AccountPayable.dueDate, transaction.getDatePosted()),
+                By (AccountPayable.invoice, invoice.trim),
+                By (AccountPayable.account, account));
+               if (ctMov <= 0) {
+                 val movement = AccountPayable.createInCompany
+                 movement.invoice(invoice.trim)
+                         .dueDate(transaction.getDatePosted())
+                         //.paymentDate(transaction.getDatePosted())
+                         .paid_?(false) // nao preenche data e seta false 
+                         // para não alterar o saldo. a concialiação do ofx 
+                         // é que marca como pago
+                         .toConciliation_?(true)
+                         .value(value)
+                         .typeMovement(typeMovement)
+                         .obs(transaction.getMemo())
+                         .category(category)
+                         .account(account)
+                         .save
+                 trnGood += 1; 
+               } else {
+                 trnBad += 1; 
+               }
           })
         });
       }
+      println ("vaiiii ============ Importadas " + trnGood + "\n\n Rejeitadas " + trnBad);
+      ("Importadas " + trnGood + "\n\nRejeitadas " + trnBad)
   }
 }
