@@ -1,0 +1,135 @@
+00-10 BackUp Gerir-me postgres
+10 */6 * * *
+pg_dump "geri-me" -U "gerir-me" -n public | gzip > "gerirme$(date | cut -b 1-3)$(date | cut -b 12-13).gz"
+rigel.ferreira@vilarika.com.br hrmaciel@vilarika.com.br
+
+01-00 Notificacao Clientes Diaria E-Belle
+0 1 * * *
+wget http://ebelle.vilarika.com.br/system/sendDailyTreatmentsReport
+rm sendDailyTreatmentsReport
+rigel.ferreira@vilarika.com.br hrmaciel@vilarika.com.br
+
+01-10 Contas a Pagar Diaria E-Belle
+10 1 * * *
+wget http://ebelle.vilarika.com.br/system/sendDailyAccount
+rm sendDailyAccount
+rigel.ferreira@vilarika.com.br hrmaciel@vilarika.com.br
+
+01-15 BoletosGeradosHoje
+15 1 * * *
+wget http://ebelle.vilarika.com.br/system/sendDailyMonthly
+rm sendDailyMonthly
+rigel.ferreira@vilarika.com.br hrmaciel@vilarika.com.br
+
+21-30 Notificacao Clientes Amanhã E-Belle
+35 21 * * *
+wget http://ebelle.vilarika.com.br/system/sendTomorrowTreatmentsReport
+rm sendTomorrowTreatmentsReport
+rigel.ferreira@vilarika.com.br hrmaciel@vilarika.com.br
+
+23-00 EmitirBoleto
+0 23 * * *
+wget http://ebelle.vilarika.com.br/system/createMonthlys
+rigel.ferreira@vilarika.com.br hrmaciel@vilarika.com.br
+
+23-05 Utilizacao Diaria E-Belle
+5 23 * * *
+#rm sendDailyUtilization
+wget http://ebelle.vilarika.com.br/system/sendDailyUtilization
+rigel.ferreira@vilarika.com.br hrmaciel@vilarika.com.br
+
+PRD - Start gerir-me
+Trigger de builds
+	Dispare builds remotamente (exemplo, a partir dos scripts)
+		Gerir-me-Deploy
+Ambiente de build
+	Check Disk Space
+
+echo Inicio: $(date +"%d-%m-%Y %H:%M:%S")
+echo Verificando se o activemq esta rodando
+PROCESS_COUNT=$(ps -ef | grep activemq | grep -v "grep" | wc -l)
+if [ $PROCESS_COUNT -lt 1 ]; then
+	echo Iniciando o activemq
+    /opt/activemq/bin/activemq start
+else
+    echo O activemq esta em execucao conforme:
+    /opt/activemq/bin/activemq status 
+fi
+echo Atualizando os fontes
+cd "/var/lib/jenkins/app/gerir-me"
+git reset --hard HEAD
+git pull
+echo Iniciando o sistema
+
+Build unsing sbt
+-Xms512m -Xmx1024m -XX:PermSize=512m -XX:MaxPermSize=1024m
+-Dsbt.log.noformat=true
+"~;container:start; container:reload /"
+
+echo Fim: $(date +"%d-%m-%Y %H:%M:%S")
+
+PRD - Kill pg virus process
+H/5 * * * *
+echo Matando processos virus
+echo Inicio: $(date +"%d-%m-%Y %H:%M:%S")
+rm --force /tmp/zeroteam.so  > /dev/null
+rm --force /tmp/cpubalence > /dev/null
+rm --force /tmp/mpool > /dev/null
+rm --force /tmp/zero.so > /dev/null
+rm --force /tmp/mpool.sh > /dev/null
+rm --force /tmp/killall.so  > /dev/null
+rm --force /tmp/gates.lod  > /dev/null
+rm --force /tmp/yam > /dev/null
+rm -rf /tmp/*.py > /dev/null
+rm --force /tmp/minerd64 > /dev/null
+rm --force /tmp/conns > /dev/null
+rm --force /tmp/conn > /dev/null
+rm --force /tmp/conn.sh > /dev/null
+rm --force /twd > /dev/null
+rm --force /etc/init.d/VsystemsshMdt > /dev/null
+
++ pkill cpubalence
++ exit 0
++ pkill mpool
++ exit 0
++ pkill ashsiojo2j40ijwqoe
++ exit 0
++ pkill conns
++ exit 0
++ exit 0
++ pkill twd
+
++ date +%d-%m-%Y %H:%M:%S
++ echo Fim: 31-07-2017 13:50:00
+
+
+
+PRD - Backup PostgreSQL
+
+echo Inicio: $(date +"%d-%m-%Y %H:%M:%S")
+echo Executando backup do postgres
+./"backup-gerir-me.sh"
+echo Fim:    $(date +"%d-%m-%Y %H:%M:%S")
+
+MYDATE=$(date "+%Y-%m-%d-%H-%M")
+echo Iniciando $MYDATE
+MYFILE="gerir-me-BD-"$MYDATE".gz"
+echo Criando backup no arquivo $MYFILE
+pg_dump "gerir-me" -U jenkins -n public | gzip > $MYFILE
+echo Fim       $(date "+%Y-%m-%d-%H-%M")
+
+
+
+ ps -ef | grep jenkins
+jenkins   3845     1  0 May28 ?        00:00:00 /lib/systemd/systemd --user
+jenkins   3862  3845  0 May28 ?        00:00:00 (sd-pam)
+jenkins   6848     1  5 Jul26 ?        06:44:00 java -Xms512m -Xmx1024m -XX:PermSize=512m -XX:MaxPermSize=1024m -Dsbt.log.noformat=true -jar /var/lib/jenkins/tools/org.jvnet.hudson.plugins.SbtPluginBuilder_SbtInstallation/sbt_lauch/bin/sbt-launch.jar ~;container:start; container:reload /
+root     18776  3922  0 16:33 pts/0    00:00:00 su jenkins
+jenkins  18777 18776  0 16:33 pts/0    00:00:00 bash
+root     19425 21720  0 17:45 pts/1    00:00:00 grep --color=auto jenkins
+jenkins  21413     1  0 Jul03 ?        00:00:00 ssh-agent
+jenkins  24372     1  0 Jul03 ?        00:00:00 ssh-agent -s
+jenkins  25594     1  0 Jul27 ?        00:00:00 /usr/bin/daemon --name=jenkins --inherit --env=JENKINS_HOME=/var/lib/jenkins --output=/var/log/jenkins/jenkins.log --pidfile=/var/run/jenkins/jenkins.pid -- /usr/bin/java -Xms512m -Xmx1024m -XX:PermSize=512m -XX:MaxPermSize=1024m -jar /usr/share/jenkins/jenkins.war --webroot=/var/cache/jenkins/war --httpPort=8080
+jenkins  25595 25594 13 Jul27 ?        15:44:14 /usr/bin/java -Xms512m -Xmx1024m -XX:PermSize=512m -XX:MaxPermSize=1024m -jar /usr/share/jenkins/jenkins.war --webroot=/var/cache/jenkins/war --httpPort=8080
+jenkins  28577 25595  2 Jul27 ?        02:30:33 java -Xms512m -Xmx1024m -XX:PermSize=512m -XX:MaxPermSize=1024m -Dsbt.log.noformat=true -jar /var/lib/jenkins/tools/org.jvnet.hudson.plugins.SbtPluginBuilder_SbtInstallation/sbt_lauch/bin/sbt-launch.jar ~;container:start; container:reload /
+jenkins  28633     1  3 Jul20 ?        08:42:51 /tmp/Jsiw

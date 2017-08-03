@@ -86,7 +86,8 @@ object LoginSnippet extends net.liftweb.common.Logger {
 */
     val straux = "https://www.facebook.com/VilaRikaSolucoes"::
     "https://pt-br.facebook.com/ebellegestao"::
-    "http://www.vilarika.com.br/"::
+//    "http://www.vilarika.com.br/":: tava caindo no boleto - para heider arrumar
+    "http://www.vilarika.com"::
     "https://www.facebook.com/ephysiogestao"::
     "http://www.gerirme.com.br"::
     Nil

@@ -87,7 +87,7 @@ class  AccountCategorySnippet  extends BootstrapPaginatorSnippet[AccountCategory
 			)
 	}
 
-	def getAccount:AccountCategory = {
+	def getCategory:AccountCategory = {
 		def id = S.param("id") openOr "0"
 		id match {
 			case "0" => AccountCategory.create
@@ -97,7 +97,7 @@ class  AccountCategorySnippet  extends BootstrapPaginatorSnippet[AccountCategory
 
 	def maintain = {
 		try{
-			var ac:AccountCategory = getAccount
+			var ac:AccountCategory = getCategory
 			def process(): JsCmd= {
 				try{
 					ac.company(AuthUtil.company)

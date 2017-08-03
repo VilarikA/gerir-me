@@ -17,10 +17,18 @@ import net.liftweb.common.{ Box, Full, Empty }
 import java.util.Date
 import java.util.Calendar
 
-class Account extends Audited[Account] with PerCompany with IdPK with CreatedUpdated with CreatedUpdatedBy with NameSearchble[Account] with ActiveInactivable[Account]{
+class Account extends Audited[Account] 
+  with PerCompany 
+  with IdPK 
+  with CreatedUpdated 
+  with CreatedUpdatedBy 
+  with NameSearchble[Account] 
+  with ActiveInactivable[Account] {
+
   def getSingleton = Account
   override def updateShortName = false
   object value extends MappedCurrency(this) with LifecycleCallbacks {
+    override def defaultValue = 0.0;
     override def beforeSave() {
       super.beforeSave;
       if(!balanceControl_?.is){
@@ -36,6 +44,7 @@ class Account extends Audited[Account] with PerCompany with IdPK with CreatedUpd
       this.set(this.defaultValue);
     }
   }
+
   object bank extends MappedLong(this)
 
   object allowCashierOut_? extends MappedBoolean(this) {
@@ -48,6 +57,55 @@ class Account extends Audited[Account] with PerCompany with IdPK with CreatedUpd
     override def dbColumnName = "balancecontrol"
   }
 
+  lazy val getAccountUnit : AccountCompanyUnit = {
+    if (AccountCompanyUnit.count (
+        By(AccountCompanyUnit.unit, AuthUtil.unit),
+        By(AccountCompanyUnit.account, this)) > 0) {
+      AccountCompanyUnit.findAll (
+        By(AccountCompanyUnit.unit, AuthUtil.unit),
+        By(AccountCompanyUnit.account, this))(0)
+    } else if (AccountCompanyUnit.count (
+        By(AccountCompanyUnit.account, this)) > 0) {
+        // se já existe esta conta para alguma unit (qq unit)
+        // o saldo da conta já foi pra uma delas
+        val aau = AccountCompanyUnit.createInCompany.
+        unit (AuthUtil.unit).
+        value (0.0). // cria com saldo zero
+        lastValue (0.0).
+        bank (this.bank).
+        account (this).obs ("criado auto")
+        aau
+    } else {
+        // se nao existe esta conta para nenhuma unit 
+        // cria com o saldo que tá na conta
+        // isso só tem sentido para clientes que tinham saldo antes
+        // de separa por unit
+        // 01/08/2017
+        val aau = AccountCompanyUnit.createInCompany.
+        unit (AuthUtil.unit).
+        value (this.value).
+        lastValue (this.lastValue).
+        bank (this.bank).
+        account (this).obs ("criado auto")
+        aau
+    }
+  }
+
+  lazy val balanceUnits = if (AuthUtil.user.isAdmin) {
+      AccountCompanyUnit.findAll(By(AccountCompanyUnit.account,this))
+  } else {
+      AccountCompanyUnit.findAll(By(AccountCompanyUnit.account,this),
+      BySql(" (unit = ? or (unit in (select uu.unit from usercompanyunit uu where uu.user_c = ? and uu.company = ?))) ",
+              IHaveValidatedThisSQL("",""), AuthUtil.unit.id, AuthUtil.user.id, AuthUtil.company.id))
+  }
+
+/*
+  def removeRegister(accountP: AccountPayable, obs: String = "") = {
+    Account.getAccountUnit._register(accountP, accountP.lastValue.is*(-1), obs, true)
+  }
+*/
+
+/*
   private def saveWithoutHistory() = {
     super.save
   }
@@ -55,14 +113,14 @@ class Account extends Audited[Account] with PerCompany with IdPK with CreatedUpd
   AccountHistory.create
         .company(this.company)
         .account(this)
-        .currentValue(this.value.is)
+        .currentValue(this.value_ac.is)
         .description(obs)
         .value(movementValue)        
   }
-  def valueChange:Boolean = this.value.is != this.lastValue.is
+  def valueChange:Boolean = this.value_ac.is != this.lastValue_ac.is
   override def save() = {
     if (valueChange) {
-      createDefaultHistory(this.value.is-this.lastValue.is, "Alt Saldo Conta").save
+      createDefaultHistory(this.value_ac.is-this.lastValue_ac.is, "Alt Saldo Conta").save
     }
     val result = super.save    
     result    
@@ -77,7 +135,7 @@ class Account extends Audited[Account] with PerCompany with IdPK with CreatedUpd
             } else {
               registerValue*(-1.00)
             }
-            this.value(this.value.is + realValue)
+            this.value_ac(this.value_ac.is + realValue)
             this.saveWithoutHistory
             accountP.debted_?(true)
             createDefaultHistory(realValue, obs).accountPayable(accountP).save
@@ -107,6 +165,7 @@ class Account extends Audited[Account] with PerCompany with IdPK with CreatedUpd
     }
 //    _register(accountP, accountP.value, "Lançamento")
   }
+*/
 
   override def delete_! = {
       if(AccountPayable.count(By(AccountPayable.account,this.id)) > 0){

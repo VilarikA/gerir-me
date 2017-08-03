@@ -66,7 +66,7 @@ class Boot {
         TreatEdoctus, TdEdoctus, TdEpet, DomainTable)
 
     Schemifier.schemify(true, Schemifier.infoF _, JobRequisition, Quiz, QuizSection, QuizQuestion, QuizDomain, QuizDomainItem,
-      QuizApplying, QuizAnswer, UserCompanyUnit, Breed, Species)
+      QuizApplying, QuizAnswer, UserCompanyUnit, AccountCompanyUnit, Breed, Species)
 
     Schemifier.schemify(true, Schemifier.infoF _, ProjectStage, ProjectType, ProjectClass, Project1, StakeHolderType, StakeHolder)
   

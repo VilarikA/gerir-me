@@ -18,7 +18,9 @@ import java.util.Date
 import java.util.Calendar
 
 
-class AccountHistory extends LongKeyedMapper[AccountHistory] with IdPK with CreatedUpdated with CreatedUpdatedBy with PerCompany {
+class AccountHistory extends LongKeyedMapper[AccountHistory] 
+  with IdPK with CreatedUpdated with CreatedUpdatedBy 
+  with PerCompany with PerUnit {
   def getSingleton = AccountHistory
   object description extends MappedPoliteString(this, 455)
   object account extends MappedLongForeignKey(this, Account) {

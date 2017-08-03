@@ -922,7 +922,7 @@ object Reports2 extends RestHelper with ReportRest with net.liftweb.common.Logge
 				select * from (
 				select * from (
 				select to_char (date('2001-01-01'),'MON/YY'), bc.name, 
-				sum (mo.value), date('2001-01-01') as date_c, true from 
+				coalesce (sum (mo.value),0), date('2001-01-01') as date_c, true from 
 				monthly mo
 				left join business_pattern bc on bc.id = mo.business_pattern
 				where mo.company = ? and mo.status = 1 --and mo.paid = true 
@@ -934,7 +934,7 @@ object Reports2 extends RestHelper with ReportRest with net.liftweb.common.Logge
 				union  
 				select * from (
 				select substr (short_name_year || mo.paid,1,7), bc.name, 
-				sum (mo.value), date_c, mo.paid from dates 
+				coalesce (sum (mo.value),0), date_c, mo.paid from dates 
 				left join monthly mo on mo.company = ? and mo.status = 1
 				and mo.dateexpiration between start_of_month and end_of_month 
 				left join business_pattern bc on bc.id = mo.business_pattern
@@ -944,7 +944,7 @@ object Reports2 extends RestHelper with ReportRest with net.liftweb.common.Logge
 				order by date_c, short_name_year, bc.name, mo.paid) as data1
 				union  
 				select * from (select substr (short_name_year || mo.paid,1,7), 'V ' || (select name from company where id = mo.company) , 
-				sum (mo.value), date_c, mo.paid from dates 
+				coalesce (sum (mo.value),0), date_c, mo.paid from dates 
 				left join monthly mo on mo.company = ? and mo.status = 1
 				and mo.dateexpiration between start_of_month and end_of_month 
 				where date_c between date (?) and date (?) and day = 1 and mo.value > 0.02
@@ -1785,7 +1785,7 @@ object Reports2 extends RestHelper with ReportRest with net.liftweb.common.Logge
 				lazy val SQL_REPORT = """
 					select ap.duedate, ap.obs, ap.typemovement , ap.value, ap.id, 
 					ap1.obs, ap1.value, ap1.id,
-					ap2.obs, ap2.value, ap2.id,
+					ap2.obs, ap2.value, ap2.duedate, ap2.id,
 					ap.category
 					from accountpayable ap 
 					left join accountpayable ap1 on (ap1.paymentdate = ap.paymentdate or ap1.duedate = ap.paymentdate 

@@ -148,7 +148,7 @@ class  InventorySnippet extends Logger with BootstrapPaginatorSnippet[Product] {
 						"minstock" -> Text(p.minStock.is.toString),
 						"status" -> stockStatus(p),
 						"totalcurrentstock" -> Text(p.totalCurrentStock.toString),
-						"currentstock" -> <table>{p.inventoryUnits.filter((ip) => { units.size ==0 || units.contains(ip.unit.is) }).map((ip) => <tr><td>{ip.unit.obj.get.name} </td> <td>{ip.currentStock.is.toString}</td></tr>)}</table>,
+						"currentstock" -> <table>{p.inventoryUnits.filter((ip) => { units.size ==0 || units.contains(ip.unit.is) }).map((ip) => <tr><td>{ip.unit.obj.get.short_name} </td> <td>{ip.currentStock.is.toString}</td></tr>)}</table>,
 						"ex_id" ->Text(p.external_id.is.toString),
 						"id" ->Text(p.id.is.toString)
 			)

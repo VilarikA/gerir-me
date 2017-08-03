@@ -94,7 +94,7 @@ with CanCloneThis[AccountPayable] {
     override def dbColumnName = "paid"
   }
   /**
-   * mostra se ja sail da conta que deveria sair o valor
+   * mostra se ja saiu da conta que deveria sair o valor
    */
   object debted_? extends MappedBoolean(this) {
     override def dbIndexed_? = false
@@ -159,7 +159,8 @@ with CanCloneThis[AccountPayable] {
     if(debted_?.is && changeAccount_?){
       this.lastAccount.obj match {
         case Full(a: Account) => {
-          a.removeRegister(this, "Alt Conta")
+          val au = a.getAccountUnit
+          au.removeRegister(this, "Alt Conta")
         }
         case _ => 
       }
@@ -182,7 +183,8 @@ with CanCloneThis[AccountPayable] {
     if(debted_?.is){
       accountBox match {
         case Full(a: Account) => {
-          a.removeRegister(this, "Excluindo lançamento")
+          val au = a.getAccountUnit
+          au.removeRegister(this, "Excluindo lançamento")
         }
         case _ => 
       }
@@ -195,10 +197,11 @@ with CanCloneThis[AccountPayable] {
     val registerDiference = debted_?.is
     accountBox match {
       case Full(a: Account) => {
+        val au = a.getAccountUnit
         if (registerDiference) {
-          a.registerDiference(this)
+          au.registerDiference(this)
         } else {
-          a.register(this)
+          au.register(this)
         }
       }
       case _ => this.debted_?(true)
@@ -208,7 +211,8 @@ with CanCloneThis[AccountPayable] {
   def rollbackAccountValue() = {
     accountBox match {
       case Full(a: Account) => {
-        a.removeRegister(this, "Alt Status Lanç")
+        val au = a.getAccountUnit
+        au.removeRegister(this, "Alt Status Lanç")
       }
       case _ => 
     }
@@ -233,7 +237,8 @@ with CanCloneThis[AccountPayable] {
       }
       super.save
       val a = Account.findByKey(this.account.is).get
-      a.register(this)
+      val au = a.getAccountUnit
+      au.register(this)
     }
 
   }
@@ -252,7 +257,7 @@ with CanCloneThis[AccountPayable] {
       throw new RuntimeException("Não é permitido alterar lançamento conciliado")
     }
     if ((account.isEmpty)) {
-      // info ("************************* falta categoria")
+      // info ("************************* falta conta")
       throw new RuntimeException("Não é permitido lançamento sem conta")
     }
     if ((category.isEmpty)) {
@@ -277,7 +282,8 @@ with CanCloneThis[AccountPayable] {
       if (this.paid_?.is) {
         super.save
         val a = Account.findByKey(this.account.is).get
-        a.register(this)
+        val au = a.getAccountUnit
+        au.register(this)
       } else {
         super.save
       }

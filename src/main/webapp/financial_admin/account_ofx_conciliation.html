@@ -22,7 +22,7 @@
     fields[4] = {
       type : "format",
       decode: function(name, row) {
-        return "<a href='#' data-idofx='" + row [4] + "' data-obs='" + row [1] + "' data-categ='" + row [11] + "' class='action_change'><img width='16px' title='validar ofx' src='/images/tick.png'></a>" +
+        return "<a href='#' data-idofx='" + row [4] + "' data-obs='" + row [1] + "' data-categ='" + row [12] + "' class='action_change'><img width='16px' title='validar ofx' src='/images/tick.png'></a>" +
               "<a href='#' data-idofx='" + row [4] + "' class='action_remove'><img width='16px' title='excluir ofx' src='/images/delete.png'></a>"
       }
     };
@@ -41,12 +41,13 @@
       }
     }
     fields[9] = "realNull";
-    fields[10] = {
+    fields[10] = "date";
+    fields[11] = {
       type : "format",
       decode: function(name, row) {
         var ret = "";
-        if (row[10] != "0") {
-          ret = "<a href='#' data-id='" + row [10] + "' data-idofx='" + row [4] + "' class='action_conciliate'><img width='16px' title='conciliar' src='/images/tick.png'></a>" 
+        if (row[11] != "0") {
+          ret = "<a href='#' data-id='" + row [11] + "' data-idofx='" + row [4] + "' class='action_conciliate'><img width='16px' title='conciliar' src='/images/tick.png'></a>" 
         } else {
           ret = ""
         }
@@ -54,7 +55,7 @@
       }
     }
 
-    fields[11] = "none"; // categ do ofx
+    fields[12] = "none"; // categ do ofx
 
     var url = "/report/account_ofx_conciliation";
     var total_to_pay = 0.00;
@@ -102,7 +103,7 @@
     }
 
     var saveOne = function() {
-        return $.get("/accountpayable/changeofx/" + $("#idofx").val() + "/" + $("#obs").val() + "/" + $("#category_select").val() , function(results) {
+        return $.get("/accountpayable/changeofx/" + $("#idofx").val() + "/" + encodeURIComponent($("#obs").val()) + "/" + $("#category_select").val() , function(results) {
           if(results === 1 || results == "1"){
             alert("Lançamento ofx atualizado e conciliado com sucesso!");  
           }else{

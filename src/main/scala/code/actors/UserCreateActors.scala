@@ -120,8 +120,8 @@ object UserCreateActors extends LiftActor {
   }
 
   def createAccount(company:Company) = {
-    Account.create.company(company).name("Padrão: Seu Banco").allowCashierOut_?(false).value(0).save
-    Account.create.company(company).name("Caixa").allowCashierOut_?(true).value(0).save    
+    Account.create.company(company).name("Padrão: Seu Banco").allowCashierOut_?(false).save//.value(0).save
+    Account.create.company(company).name("Caixa").allowCashierOut_?(true).save//.value(0).save    
   }
 
   def createActivities(company:Company){
