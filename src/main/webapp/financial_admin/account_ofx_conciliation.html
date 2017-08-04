@@ -56,6 +56,8 @@
     }
 
     fields[12] = "none"; // categ do ofx
+    fields[13] = "realNull";
+    fields[14] = "intNull";
 
     var url = "/report/account_ofx_conciliation";
     var total_to_pay = 0.00;
@@ -259,6 +261,7 @@
                 <img src="/images/search.png" width="16">
                 Buscar
               </a>            
+              <a class="btn primary" target="_ofx_maste" href="/financial/upload_bank_file" title="Importar extrato padrão ofx"><img width="15px" src="/images/extract.png"/> Importar OFX</a>
           </div>
       </div>
     </form>
@@ -266,7 +269,7 @@
 
   <table id="grid" class="bordered-table zebra-striped">
       <thead>
-        <th>Data</th>
+        <th>Data ofx</th>
         <th>Obs ofx</th>
         <th>Tp</th>
         <th>Valor</th>
@@ -276,7 +279,9 @@
         <th>Consolida</th>
         <th>Obs</th>
         <th>Valor</th>
+        <th>Data</th>
         <th>Concilia</th>
+        <th>V.Agregado</th>
       </thead>
       <tbody>
       </tbody>
