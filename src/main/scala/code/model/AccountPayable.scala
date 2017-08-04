@@ -132,8 +132,9 @@ with CanCloneThis[AccountPayable] {
   }
   object parcelNum extends MappedInt(this)
 
-  object aggregateId extends MappedLong(this) {
-  }
+  // rigel 03/08/2017 
+  object aggregateId extends MappedLong(this)
+  object aggregateValue extends MappedCurrency(this.asInstanceOf[MapperType])
 
   def makeAsPaid = this.paid_?(true).partialySecureSave
 

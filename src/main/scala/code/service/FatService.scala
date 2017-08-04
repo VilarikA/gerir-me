@@ -65,22 +65,52 @@ object FatService extends net.liftweb.common.Logger {
 			var pt = 0l;
 			var aggrgId = 0l;
 			var count = 0;
+			var sum = 0.0;
+			var iteration = 0;
 			aclist.foreach((ac)=>{
+				iteration += 1;
 				if (ac.paymentType != pt || 
 					Project.dateToStr(dtAnt) != Project.dateToStr(ac.dueDate)) {
 					if (count == 1 && aggrgId != 0l) {
 						// neste caso aggregou um só - então limpa
 						// o aggregateid
-						AccountPayable.findByKey (aggrgId).get.aggregateId(0).save
+						AccountPayable.findByKey (aggrgId).get.
+						aggregateId(0).aggregateValue(0.0).save
+					} else if (aggrgId != 0l) {
+						// neste caso aggregou mais de um
+						// salva o valoragregado no primeiro
+						AccountPayable.findByKey (aggrgId).get.
+						aggregateValue(sum).save
 					}
 					dtAnt = ac.dueDate;
 					pt = ac.paymentType
 					aggrgId = ac.id
 					count = 0;
+					sum = 0;
 				}
 				ac.aggregateId (aggrgId)
 				ac.save
 				count += 1;
+				if (ac.typeMovement == AccountPayable.OUT) {
+					sum -= ac.value
+				} else {
+					sum += ac.value
+				}
+				// se for a ultima iteracao
+				// salva o valor agregado
+				if (iteration == aclist.length && aggrgId != 0l) {
+					if (count == 1 && aggrgId != 0l) {
+						// neste caso aggregou um só - então limpa
+						// o aggregateid
+						AccountPayable.findByKey (aggrgId).get.
+						aggregateId(0).aggregateValue(0.0).save
+					} else {
+						// neste caso aggregou mais de um
+						// salva o valoragregado no primeiro
+						AccountPayable.findByKey (aggrgId).get.
+						aggregateValue(sum).save
+					}
+                }
 			});	
 		}
 	}
@@ -135,7 +165,6 @@ trait FatChain{
 			Empty
 		}
 	}
-//  def buildDefaltAccount(cashier:Cashier,paymentType:PaymentType,value:Double,obs:String = "Faturamento fechamento do caixa (%s) valores em (%s)") = {
 	def buildDefaltAccount(cashier:Cashier,paymentDetail:PaymentDetail,paymentType:PaymentType,value:Double,obs:String = "Cx %s f.pagto (%s)-fechamento") = {
 			val realValue = if(paymentType.defaltDicountCategory.obj.isEmpty){
 							value * ((100-paymentType.percentDiscountToReceive.is)/100)
@@ -305,7 +334,6 @@ object ReceiveCheque extends FatChain{
 		paymentDetail.foreach((pd)=>{
 			try{
 				val cheque = pd.cheque
-//				buildDefaltAccount(cashier, paymentType, cheque.value.toDouble,"Faturamento cheque do cliente (%s)".format(cheque.customer.obj.get.name.is)+" no caixa (%s)").foreach((am)=>{
 				buildDefaltAccount(cashier, pd, paymentType, cheque.value.toDouble,
 					"Cx %s %s" + " f.pagto (%s)".format(cheque.customer.obj.get.name.is)+"-cheque").foreach((am)=>{
 							am match {
@@ -335,7 +363,6 @@ object ReceiveParceled extends FatChain{
 	def process(cashier:Cashier, paymentType:PaymentType,value:Double, paymentDetail:List[PaymentDetail]=Nil):Unit = {
 		paymentDetail.foreach((pd)=>{
 			try{
-//				buildDefaltAccount(cashier, paymentType, pd.value.is.toDouble,"Faturamento parcelado cliente: (%s)".format(pd.payment.obj.get.customer.obj.get.name.is)+" no caixa (%s)").foreach((am)=>{
 				var aggrgId = 0l;
 				buildDefaltAccount(cashier, pd, paymentType, pd.value.is.toDouble,"Cx %s " + "(%s)".format(pd.payment.obj.get.customer.obj.get.name.is)+"-parcelado").foreach((am)=>{
 							am match {
