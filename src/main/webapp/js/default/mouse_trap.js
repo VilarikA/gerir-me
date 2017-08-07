@@ -24,6 +24,11 @@ $(function() {
 		//alert("Use K para acessar a conferência de comandas!");
 	});
 
+	Mousetrap.bind(['j', 'J'], function() {
+		if (!desableKeys())
+			window.location.href = "/customer/todo_list_report";
+	});
+
 	Mousetrap.bind(['k', 'K'], function() {
 		if (!desableKeys())
 			window.location.href = "/financial_cashier/comman_conference";

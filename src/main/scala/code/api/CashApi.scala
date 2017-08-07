@@ -329,6 +329,18 @@ object CashApi extends RestHelper with net.liftweb.common.Logger  {
 					)
 				}))
 		}
+		case "cash" :: "getCRMActivities" :: Nil JsonGet _ =>{
+			JsArray(Activity.findAllInCompany(
+				//By(Activity.status, 1),
+				By(Activity.crmService_?, true),
+				OrderBy(Activity.name, Ascending)).map((a) => {
+				JsObj(
+						("name",a.name.is),
+						("id",a.id.is)
+					)
+				}))
+		}
+		
 		case "cash" :: "getActivityTypes" :: Nil JsonGet _ =>{
 			JsArray(ProductType.findAllService.map((a) => {
 				JsObj(

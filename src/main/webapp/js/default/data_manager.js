@@ -87,6 +87,12 @@ var DataManagerClass = function() {
 		var url = "/cash/getActivityTypes";
 		return this.getSelectDataSource(url, callback);
 	};
+
+	this.getCRMActivities = function(callback) {
+		var url = "/cash/getCRMActivities";
+		return this.getSelectDataSource(url, callback);
+	};
+
 	this.getPackages = function(callback) {
 		var url = "/cash/getPackages";
 		return this.getSelectDataSource(url, callback);

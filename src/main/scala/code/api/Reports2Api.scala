@@ -515,11 +515,11 @@ object Reports2 extends RestHelper with ReportRest with net.liftweb.common.Logge
 					}
 				}
 
-				def start:Date = S.param("start") match {
+				def start:Date = S.param("start_date") match {
 					case Full(p) => Project.strToDateOrToday(p)
 					case _ => new Date()
 				}
-				def end:Date = S.param("end") match {
+				def end:Date = S.param("end_date") match {
 					case Full(p) => Project.strToDateOrToday(p)
 					case _ => new Date()
 				}
@@ -538,16 +538,22 @@ object Reports2 extends RestHelper with ReportRest with net.liftweb.common.Logge
 					select bc.id, tr.dateevent, 
 					fu_dt_humanize (tr.dateevent),
 					to_char (tr.start_c, 'hh24:mi'), tr.status, pr.name, bc.name as cliente, 
-					(select tr1.status || ' ' || tr1.detailtreatmentastext || ' ' || tr1.dateevent from treatment tr1 where tr1.customer = bc.id 
+					(select case 
+					  when tr1.status = 1 then 'faltou' 
+					  when tr1.status = 8 then 'desmarcou' 
+					  end || ' ' || tr1.detailtreatmentastext || ' ' || tr1.dateevent from treatment tr1 where tr1.customer = bc.id 
 					and tr1.id in 
-					(select max (tr2.id) from treatment tr2 where tr2.customer = tr.customer and tr2.status in (1,2) and tr2.dateevent < date(now()))),
+					(select max (tr2.id) from treatment tr2 where tr2.customer = tr.customer and tr2.status in (1,8) and tr2.dateevent < date(now()))),
 					trim (tr.obs || ' ' || td.obs), 
 					trim (bc.mobile_phone || ' ' || bc.phone || ' ' || bc.email_alternative || ' ' || bc.email) as telefone ,
 					cu.short_name,
 					bp.name as profissional, 
-					tr.id, /* action troca status atendido */ /* action edita obs */
+					tr.id, 
+					/* action troca status atendido */ 
+					/* action edita obs */
 					/* action desmarca e cria outro */
-					bp.id
+					bp.id,
+					td.id
 					from treatment tr 
 					inner join business_pattern bc on bc.id = tr.customer
 					inner join business_pattern bp on bp.id = tr.user_c
@@ -555,7 +561,8 @@ object Reports2 extends RestHelper with ReportRest with net.liftweb.common.Logge
 					inner join companyunit cu on cu.id = tr.unit
 					inner join product pr on pr.id = td.activity and pr.crmservice = true
 					--left join project po ligar ao treatment para orçamento etc
-					where tr.status in (0,3) and tr.company = ? and tr.dateevent between (?) and (?)
+					where tr.status in (0,3) and tr.company = ? 
+					and tr.dateevent between (?) and (?)
 					%s
 					%s
 					%s

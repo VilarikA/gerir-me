@@ -47,6 +47,7 @@ class  TreatmentSnippet extends PaginatorSnippet [Treatment] {
 
 	val status = Seq(
 	  				Treatment.Open.toString -> "Agendado" ,
+	  				Treatment.Ready.toString -> "Atendido" ,
 	  				Treatment.Budget.toString -> "Orçamento"
 	)
 //	def products = ("0", "Selecione um Serviço") :: Activity.findAllInCompany.map(t => (t.id.is.toString,t.name.is))
