@@ -541,7 +541,8 @@ object Reports2 extends RestHelper with ReportRest with net.liftweb.common.Logge
 					(select case 
 					  when tr1.status = 1 then 'faltou' 
 					  when tr1.status = 8 then 'desmarcou' 
-					  end || ' ' || tr1.detailtreatmentastext || ' ' || tr1.dateevent from treatment tr1 where tr1.customer = bc.id 
+					  end || ' ' || tr1.detailtreatmentastext || ' ' || 
+					  to_char (tr1.dateevent,'DD/MM/YYYY') from treatment tr1 where tr1.customer = bc.id 
 					and tr1.id in 
 					(select max (tr2.id) from treatment tr2 where tr2.customer = tr.customer and tr2.status in (1,8) and tr2.dateevent < date(now()))),
 					trim (tr.obs || ' ' || td.obs), 

@@ -12,8 +12,11 @@
     $("#send_message").notificationField(true);
     $("#user").userField();
     $("#offsale").offSaleField(true);
-    //$("#start_date").val(getDateBr(new Date().getAYearAgo())); 
-    $("#start_date").val(getDateBr(new Date(new Date().setDate(1))));
+    if (AuthUtil.company.id == 1) {
+      $("#start_date").val(getDateBr(new Date(new Date().setDate(1))) );
+    } else {
+      $("#start_date").val(getDateBr(new Date().getAYearAgo())); 
+    }
     var fields = [];
     var total = 0;
     var totalcount = 0;
