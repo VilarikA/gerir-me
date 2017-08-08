@@ -140,6 +140,7 @@ class PaymentTypesSnippet extends BootstrapPaginatorSnippet[PaymentType]{
 			"name=allowCustomeraddUserToDiscount" #> (SHtml.checkbox(ac.allowCustomeraddUserToDiscount_?, ac.allowCustomeraddUserToDiscount_?(_)))&
 			"name=bpmonthly" #> (SHtml.checkbox(ac.bpmonthly_?, ac.bpmonthly_?(_)))&
 			"name=offSale" #> (SHtml.checkbox(ac.offSale_?, ac.offSale_?(_)))&
+			"name=fidelity" #> (SHtml.checkbox(ac.fidelity_?, ac.fidelity_?(_)))&
 			"name=customerUseCredit" #> (SHtml.checkbox(ac.customerUseCredit_?, ac.customerUseCredit_?(_)))&
 			"name=comissionAtSight" #> (SHtml.checkbox(ac.comissionAtSight_?, ac.comissionAtSight_?(_)))&
 			"name=showAsOptions" #> (SHtml.checkbox(ac.showAsOptions_?, ac.showAsOptions_?(_)))&
