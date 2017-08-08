@@ -8,7 +8,11 @@
   $(function(){
     $("#account").accountField(true);
     $("#category_select").categoryAccountField(true);
-    $("#start").val(getDateBr(new Date().getStartOfMonth()));
+    if (AuthUtil.company.id == 13) {
+      $("#start").val('01/07/2017');
+    } else {
+      $("#start").val(getDateBr(new Date().getStartOfMonth()));
+    }
     var fields = [];
     fields[0] = "date";
     fields[2] = {
@@ -22,18 +26,22 @@
     fields[4] = {
       type : "format",
       decode: function(name, row) {
-        return "<a href='#' data-idofx='" + row [4] + "' data-obs='" + row [1] + "' data-categ='" + row [12] + "' class='action_change'><img width='16px' title='validar ofx' src='/images/tick.png'></a>" +
+        return "<a href='#' data-idofx='" + row [4] + "' data-obs='" + row [1] + "' data-categ='" + row [11] + "' class='action_change'><img width='16px' title='validar ofx' src='/images/tick.png'></a>" +
+            "<img width='16px' src='/images/transparent1.png'>" +
               "<a href='#' data-idofx='" + row [4] + "' class='action_remove'><img width='16px' title='excluir ofx' src='/images/delete.png'></a>"
       }
     };
     fields[6] = "realNull";
     //fields[7] = "intNull";
-    fields[7] = {
+    fields[7] = "date";
+    fields[8] = {
       type : "format",
       decode: function(name, row) {
         var ret = "";
-        if (row[7] != "0") {
-          ret = "<a href='#' data-id='" + row [7] + "' data-idofx='" + row [4] + "' class='action_consolidate'><img width='16px' title='consolidar' src='/images/consolidate.png'></a>" 
+        if (row[8] != "0") {
+          ret = "<a href='#' data-id='" + row [8] + "' data-idofx='" + row [4] + "' class='action_consolidate'><img width='16px' title='consolidar lançamento simples' src='/images/consolidate.png'></a>" +
+            "<img width='16px' src='/images/transparent1.png'>" +
+            "<a href='#' data-id='" + row [8] + "' data-idofx='" + row [4] + "' class='action_conciliate'><img width='16px' title='conciliar lançamento simples' src='/images/tick.png'></a>" 
         } else {
           ret = ""
         }
@@ -41,7 +49,23 @@
       }
     }
     fields[9] = "realNull";
-    fields[10] = "date";
+    fields[10] = {
+      type : "format",
+      decode: function(name, row) {
+        var ret = "";
+        if (row[8] != "0") {
+          ret = "<a href='#' data-id='" + row [8] + "' data-idofx='" + row [4] + "' class='action_consolidate_aggreg'><img width='16px' title='consolidar lançamentos agregados' src='/images/consolidate.png'></a>" +
+            "<img width='16px' src='/images/transparent1.png'>" +
+            "<a href='#' data-id='" + row [8] + "' data-idofx='" + row [4] + "' class='action_conciliate_aggreg'><img width='16px' title='conciliar lançamentos agregados' src='/images/tick.png'></a>" 
+        } else {
+          ret = ""
+        }
+        return ret
+      }
+    }
+    fields[11] = "intNull";
+/*
+    fields[9] = "realNull";
     fields[11] = {
       type : "format",
       decode: function(name, row) {
@@ -58,7 +82,7 @@
     fields[12] = "none"; // categ do ofx
     fields[13] = "realNull";
     fields[14] = "intNull";
-
+*/
     var url = "/report/account_ofx_conciliation";
     var total_to_pay = 0.00;
     var request = function(){
@@ -273,15 +297,13 @@
         <th>Obs ofx</th>
         <th>Tp</th>
         <th>Valor</th>
-        <th>Valida</th>
-        <th>Obs</th>
-        <th>Valor</th>
-        <th>Consolida</th>
+        <th>Valida_ofx</th>
         <th>Obs</th>
         <th>Valor</th>
         <th>Data</th>
         <th>Concilia</th>
         <th>V.Agregado</th>
+        <th>Concilia</th>
       </thead>
       <tbody>
       </tbody>

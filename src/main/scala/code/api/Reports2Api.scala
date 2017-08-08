@@ -552,7 +552,7 @@ object Reports2 extends RestHelper with ReportRest with net.liftweb.common.Logge
 					  end || ' ' || tr1.detailtreatmentastext || ' ' || 
 					  to_char (tr1.dateevent,'DD/MM/YYYY') from treatment tr1 where tr1.customer = bc.id 
 					and tr1.id in 
-					(select max (tr2.id) from treatment tr2 where tr2.customer = tr.customer and tr2.status in (1,8) and tr2.dateevent < date(now()))),
+					(select max (tr2.id) from treatment tr2 where tr2.customer = tr.customer and tr2.status in (1,8) and tr2.hasdetail = true and tr2.dateevent < date(now()))),
 					trim (tr.obs || ' ' || td.obs), 
 					trim (bc.mobile_phone || ' ' || bc.phone || ' ' || bc.email_alternative || ' ' || bc.email) as telefone ,
 					cu.short_name,
@@ -1800,23 +1800,24 @@ object Reports2 extends RestHelper with ReportRest with net.liftweb.common.Logge
 					case _ => new Date()
 				}
 				lazy val SQL_REPORT = """
-					select ap.duedate, ap.obs, ap.typemovement , ap.value, ap.id, 
-					ap1.obs, ap1.value, ap1.id,
-					ap2.obs, ap2.value, ap2.duedate, ap2.id,
-					ap.category,
-					ap2.aggregatevalue, ap2.aggregateid
+					select ap.duedate, ap.obs, ap.typemovement, 
+					ap.value, ap.id, 
+					ap1.obs, ap1.value, ap1.duedate, 
+					ap1.id,
+					ap1.aggregatevalue, ap1.aggregateid,
+					ap.category
 					from accountpayable ap 
-					left join accountpayable ap1 on (ap1.paymentdate = ap.paymentdate or ap1.duedate = ap.paymentdate 
-					  or ap1.paymentdate = ap.duedate or ap1.duedate = ap.duedate) and ap1.value = ap.value 
+					left join accountpayable ap1 on ((ap1.paymentdate = ap.paymentdate or ap1.duedate = ap.paymentdate 
+					  or ap1.paymentdate = ap.duedate or ap1.duedate = ap.duedate) 
+					  and (ap1.value = ap.value or (ap1.aggregatevalue > (ap.value - 0.1) and ap1.aggregatevalue < (ap.value + 0.1)))
+					  or (ap1.duedate between date(?) and date (?) and
+					     (ap1.value = ap.value or (ap1.aggregatevalue > (ap.value - 0.1) and ap1.aggregatevalue < (ap.value + 0.1)))))
 					  and ap1.toconciliation = false and ap.company = ap1.company
-					left join accountpayable ap2 on ap2.duedate between date(?) and date (?) 
-					  and (ap2.value = ap.value or (ap2.aggregatevalue > (ap.value - 0.1) and ap2.aggregatevalue < (ap.value + 0.1)))
-					  and ap2.toconciliation = false and ap.company = ap2.company %s
 					where ap.company = ? 
 					and ap.duedate between date(?) and date (?)
 					and ap.toconciliation = true
-					order by --ap1.obs, 
-					ap.duedate, ap.id
+					order by 
+					ap.duedate, ap.id, (ap1.value = ap.value)
 					"""
 				toResponse(SQL_REPORT.format(account, account),
 					List(start, end, AuthUtil.company.id.is, start, end))
