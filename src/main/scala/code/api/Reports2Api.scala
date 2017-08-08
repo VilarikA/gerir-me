@@ -507,6 +507,14 @@ object Reports2 extends RestHelper with ReportRest with net.liftweb.common.Logge
 					}
 				}
 
+				def status = S.param("status_todo") match {
+					case Full(p) if(p != "")=> " and tr.status in(%s)".format(p)
+					case _ => S.param("statys_todo[]") match {
+						case Full(p) => " and tr.status in(%s)".format(S.params("status_todo[]").filter(_ != "").foldLeft("0")(_+","+_))
+						case _ => " and 1=1 " 
+					}
+				}
+
 				def prod = 	 S.param("product") match {
 					case Full(p) if(p != "")=> " and pr.id in(%s)".format(p)
 					case _ => S.param("product[]") match {
@@ -568,13 +576,14 @@ object Reports2 extends RestHelper with ReportRest with net.liftweb.common.Logge
 					%s
 					%s
 					%s
+					%s
 					/* cliente */
 					/* status */
 					/* project */
 					/* project class */
 					order by tr.dateevent desc, bp.name asc
 				"""
-				toResponse(SQL.format(unit, offsale, user, prod),
+				toResponse(SQL.format(status, unit, offsale, user, prod),
 					List(AuthUtil.company.id.is, start, end))
 			}
 

@@ -160,9 +160,18 @@
               </div>
             </div>
             <div class="clearfix">
+                <label for="status_todo">Status</label>
+                <div class="input">
+                  <select class='local_storage' multiple="multiple" id="status_todo" name="status_todo">
+                      <option value="0">Agendado</option>
+                      <option value="3">Atendido</option>
+                  </select>
+              </div>
+            </div>
+            <div class="clearfix">
                 <label for="user"><span data-i18n='Profissionais'></span></label>
                 <div class="input">
-                <select multiple="multiple"  id='user' name="user">
+                <select class="local_storage" multiple="multiple"  id='user' name="user">
                 </select>
               </div>
             </div>
@@ -317,7 +326,7 @@
               <div class="clearfix">
                 <label for="name"><span data-i18n='Profissionais'></label>
                   <div class="input">
-                      <select class='local_storage' id='user_todo' name='user'></select>
+                      <select class='local_storage' id='user_todo' name='user_todo'></select>
                   </div>
               </div>
               <div class="clearfix">
@@ -339,6 +348,9 @@
                           <span class="add-on"><img width="16" src="/images/calendar_addon.png"></span>
                           <input type="text" size="19" name="start" id="start" class="input-small date"/>
                         </div>
+                        <input class="btn primary tomorrow_todo" id="tomorrow_todo" type="button" value="Amanhã">
+                        <input class="btn primary nextweek_todo" id="nextweek_todo" type="button" value="1 Semana">
+                        <input class="btn primary nextmonth_todo" id="nextmonth_todo" type="button" value="1 Mês">
                     </div>
                   </div>
               </div>
@@ -361,7 +373,7 @@
                 <label>Obs </label>
                 <div class="input">
                   <div class="inline-inputs">
-                    <textarea name="obs" id="obs"></textarea>
+                    <textarea style = "width: 350px" name="obs" id="obs"></textarea>
                   </div>
                 </div>
               </div>                     

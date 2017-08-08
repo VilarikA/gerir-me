@@ -13,6 +13,17 @@ $(function() {
       return saveTodo ();
     });
 
+    $(".tomorrow_todo").click(function() {
+      return tomorrowTodo ();
+    });
+
+    $(".nextweek_todo").click(function() {
+      return nextweekTodo ();
+    });
+    $(".nextmonth_todo").click(function() {
+      return nextmonthTodo ();
+    });
+
     $("#cutomer_id_treatment").change(function(){
       var hasPetSystem = $('.has-pet-system').length > 0;
       if (hasPetSystem) {
@@ -21,8 +32,8 @@ $(function() {
     });
 
     var today = new Date();
-    var tomorrow = new Date(today.getTime() + 24 * 60 * 60 * 1000);
-    var start = gup("start") || getDateBr(tomorrow);
+    //var tomorrow = new Date(today.getTime() + 24 * 60 * 60 * 1000);
+    var start = gup("start") || getDateBr(today);
     $("#start").val(start)
 
     getUsersCurrentUnitCommand ();
@@ -59,6 +70,27 @@ var getUsersCurrentUnitCommand = function() {
     return _results;
   });
 };
+
+var tomorrowTodo = function() {
+  var today = new Date();
+  var tomorrow = new Date(today.getTime() + 24 * 60 * 60 * 1000);
+  var start = getDateBr(tomorrow);
+  $("#start").val(start)
+}
+
+var nextweekTodo = function() {
+  var today = new Date();
+  var nextweek = new Date(today.getTime() + ((24 * 60 * 60 * 1000) * 7));
+  var start = getDateBr(nextweek);
+  $("#start").val(start)
+}
+
+var nextmonthTodo = function() {
+  var today = new Date();
+  var nextweek = new Date(today.getTime() + ((24 * 60 * 60 * 1000) * 30));
+  var start = getDateBr(nextweek);
+  $("#start").val(start)
+}
 
 var newTodo = function() {
   getActivities ();    
