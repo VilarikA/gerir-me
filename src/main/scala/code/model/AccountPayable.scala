@@ -136,6 +136,21 @@ with CanCloneThis[AccountPayable] {
   object aggregateId extends MappedLong(this)
   object aggregateValue extends MappedCurrency(this.asInstanceOf[MapperType])
 
+  def aggregate (aggregId : Long)= {
+    if (this.aggregateId != 0 && this.aggregateId != aggregId) {
+      throw new RuntimeException("Um lançamento não pode fazer parte de duas agregações!")
+    }
+    this.aggregateId(aggregId)
+    if (this.id == aggregId) {
+        this.aggregateValue (this.aggregateValue.is + this.value.is)
+    } else {
+       var vaux = AccountPayable.findByKey(aggregId).get.aggregateValue.is
+       AccountPayable.findByKey(aggregId).get.
+         aggregateValue(vaux + this.value).partialySecureSave;
+    }
+    this.partialySecureSave
+  }
+    
   def makeAsPaid = this.paid_?(true).partialySecureSave
 
   def makeAsConciliated = {

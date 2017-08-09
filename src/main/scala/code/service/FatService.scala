@@ -63,7 +63,7 @@ object FatService extends net.liftweb.common.Logger {
 		if (aclist.length > 0) {
 			var dtAnt = new Date();
 			var pt = 0l;
-			var aggrgId = 0l;
+			var aggregId = 0l;
 			var count = 0;
 			var sum = 0.0;
 			var iteration = 0;
@@ -71,24 +71,24 @@ object FatService extends net.liftweb.common.Logger {
 				iteration += 1;
 				if (ac.paymentType != pt || 
 					Project.dateToStr(dtAnt) != Project.dateToStr(ac.dueDate)) {
-					if (count == 1 && aggrgId != 0l) {
+					if (count == 1 && aggregId != 0l) {
 						// neste caso aggregou um só - então limpa
 						// o aggregateid
-						AccountPayable.findByKey (aggrgId).get.
+						AccountPayable.findByKey (aggregId).get.
 						aggregateId(0).aggregateValue(0.0).save
-					} else if (aggrgId != 0l) {
+					} else if (aggregId != 0l) {
 						// neste caso aggregou mais de um
 						// salva o valoragregado no primeiro
-						AccountPayable.findByKey (aggrgId).get.
+						AccountPayable.findByKey (aggregId).get.
 						aggregateValue(sum).save
 					}
 					dtAnt = ac.dueDate;
 					pt = ac.paymentType
-					aggrgId = ac.id
+					aggregId = ac.id
 					count = 0;
 					sum = 0;
 				}
-				ac.aggregateId (aggrgId)
+				ac.aggregateId (aggregId)
 				ac.save
 				count += 1;
 				if (ac.typeMovement == AccountPayable.OUT) {
@@ -98,16 +98,16 @@ object FatService extends net.liftweb.common.Logger {
 				}
 				// se for a ultima iteracao
 				// salva o valor agregado
-				if (iteration == aclist.length && aggrgId != 0l) {
-					if (count == 1 && aggrgId != 0l) {
+				if (iteration == aclist.length && aggregId != 0l) {
+					if (count == 1 && aggregId != 0l) {
 						// neste caso aggregou um só - então limpa
 						// o aggregateid
-						AccountPayable.findByKey (aggrgId).get.
+						AccountPayable.findByKey (aggregId).get.
 						aggregateId(0).aggregateValue(0.0).save
 					} else {
 						// neste caso aggregou mais de um
 						// salva o valoragregado no primeiro
-						AccountPayable.findByKey (aggrgId).get.
+						AccountPayable.findByKey (aggregId).get.
 						aggregateValue(sum).save
 					}
                 }
@@ -363,20 +363,26 @@ object ReceiveParceled extends FatChain{
 	def process(cashier:Cashier, paymentType:PaymentType,value:Double, paymentDetail:List[PaymentDetail]=Nil):Unit = {
 		paymentDetail.foreach((pd)=>{
 			try{
-				var aggrgId = 0l;
+				// a primeira tentativa de garegar foi com cada pagamento de
+				// cartão e seu desconto de taxa
+				// depois resolvi agregar tudo de qq forma de pagto numa mesma data
+				// isso talve pudesse ser um parm neste caso descomentar a atribuição 
+				// do aggregatedId e o if na sequencia
+				// rigel ago/2017
+				var aggregId = 0l;
 				buildDefaltAccount(cashier, pd, paymentType, pd.value.is.toDouble,"Cx %s " + "(%s)".format(pd.payment.obj.get.customer.obj.get.name.is)+"-parcelado").foreach((am)=>{
 							am match {
 								case Full(movement) => {
 									movement.dueDate(pd.dueDate.is)
 											.paid_?(false)
 											.user (pd.payment.obj.get.customer.obj.get.id.is)
-											.aggregateId (aggrgId)
+											//.aggregateId (aggregId)
 											.save
-									if (aggrgId == 0) {
-										aggrgId = movement.id
-										movement.aggregateId (movement.id)
-										movement.save;
-									}
+									//if (aggregId == 0) {
+									//	aggregId = movement.id
+									//	movement.aggregateId (movement.id)
+									//	movement.save;
+									//}
 								}
 								case _ => 
 							}

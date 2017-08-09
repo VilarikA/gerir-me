@@ -464,13 +464,18 @@
             total -= obj.value;
             debit += obj.value;
           }
-          ret += "<tr><td><input type='checkbox' class='account_payable' value='" + 
-            obj.id + "'/></td><td style='background-color:" + obj.color + "'>" + 
+          ret += "<tr>" + 
+            "<td><input type='checkbox' class='account_payable' value='" + 
+            obj.id + "'/></td>" +
+            "<td style='background-color:" + obj.color + "'>" + 
             obj.id + "</td>" + 
             "<td>" + (getDateBr(new Date(obj.dueDate))) + "</td>" +
             "<td>" + obj.category + "</td>" +
-            "<td>" + obj.obs_trunc + "</td><td>" + 
+            "<td>" + obj.obs_trunc + "</td>" +
+            "<td>" + 
             (obj.value.formatMoney()) + "</td>" + 
+            //"<td>" + 
+            //(obj.aggregateValue.formatMoney()) + "</td>" + 
             "<td><img src=\"/images/" + 
             (obj.type === 0 ? 'add' : 'remove') + ".png\"/></td><td><img src=\"/images/" + 
             (obj.paid ? 'good' : 'bad') + ".png\"/></td>" + 
@@ -506,7 +511,32 @@
   };
 
   $((function() {
-    $("#mark_as_paid").click(function() {
+    $(".b_aggregate").click(function() {
+      var checkeds, idsToMark;
+      checkeds = $('.account_payable:checked').toArray();
+      idsToMark = checkeds.map(function(item) {
+        return $(item).val();
+      });
+      if (idsToMark.length < 1) {
+         return alert("Não há nenhum lançamento marcado!");
+      } else if (idsToMark.length < 2) {
+         return alert("É preciso marcar pelo menos 2 (dois) lançamentos para agregá-los!");
+      }
+      if (confirm("Tem certeza que deseja agregar estes " + idsToMark.length + " laçamentos?")) {
+        return $.post("/accountpayable/aggregate", {
+          "ids": idsToMark.join(',')
+        }, function(t) {
+          if (t == 'true') {
+            alert("Lançamentos agregados com sucesso!");
+            return Account.getListFromServer();
+          } else {
+            return alert("Erro ao agregar lançamentos!\n\n" + eval (t));
+          }
+        });
+      }
+    });
+
+    $(".b_mark_as_paid").click(function() {
       var checkeds, idsToMark;
       checkeds = $('.account_payable:checked').toArray();
       idsToMark = checkeds.map(function(item) {
@@ -528,7 +558,7 @@
         });
       }
     });
-    $("#remove_checked").click(function() {
+    $(".b_remove_checked").click(function() {
       var checkeds, idsToMark;
       checkeds = $('.account_payable:checked').toArray();
       idsToMark = checkeds.map(function(item) {
@@ -669,15 +699,17 @@
     if ($("#end_date").val() == "") {
       $("#end_date").val(getDateBr(new Date()));
     }
-    $("#search").click(function() {
+    $(".b_search").click(function() {
       return Account.getListFromServer();
     });
+/*
     $("#search1").click(function() {
       return Account.getListFromServer();
     });
     $("#search2").click(function() {
       return Account.getListFromServer();
     });
+*/
     $(".b_add_account").click($.throttle(1000, function() {
       var e;
       try {
@@ -751,20 +783,7 @@
     $(".cashier_select_to_span").hide();
     $(".account_to").hide();
 
-    return $("#dre_send").click(function() {
-      $("#grid_dre").html("Aguarde um instante, o DRE está sendo gerado...");
-      $("#dre_modal").modal({
-        "show": true,
-        "keyboard": true,
-        "backdrop": true
-      });
-      return Account.getListFromServer(function() {
-        return requestDreData(0, 0, 0, Account.dttype(), Account.startDate(), Account.endDate(), Account.ids.join(" , "));
-      });
-    });
-    // dupliquei pq nao consegui transformar p conteudo em funcao e chamar dos 2 botoes
-    // também nao sei pq nao funcionou o searc e o dre com o mesmo id e o inserir funciona
-    return $("#dre_send1").click(function() {
+    return $(".b_dre_send").click(function() {
       $("#grid_dre").html("Aguarde um instante, o DRE está sendo gerado...");
       $("#dre_modal").modal({
         "show": true,

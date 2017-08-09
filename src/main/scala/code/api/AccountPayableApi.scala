@@ -33,6 +33,47 @@ object AccountPayableApi extends RestHelper with ReportRest with net.liftweb.com
 
 		serve {
 
+			case "accountpayable" :: "aggregate" :: Nil Post _ => {
+				try {
+					val ids = S.param("ids").get
+					var iteration = 0;
+					var aggregId = 0l;
+					//
+					// Loop Verifica se pode agregar
+					//
+					ids.split(",").map(_.toLong).map((l:Long) => {
+						if (aggregId == 0) {
+							if (AccountPayable.findByKey(l).get.aggregateId.is != 0) {
+								aggregId = AccountPayable.findByKey(l).get.aggregateId.is
+							}
+						}
+						var idAux = 0l;
+						idAux = AccountPayable.findByKey(l).get.aggregateId;
+						if (idAux != 0 && aggregId != 0 && idAux != aggregId) {
+					      throw new RuntimeException("Um lançamento não pode fazer parte de duas agregações!(api)")
+						}
+					})
+					//
+					// Loop agrega efetivamente
+					//
+					if (aggregId != 0) {
+						// já tinha agregado então zera
+						AccountPayable.findByKey(aggregId).get.aggregateValue(0.0).save
+					}
+					iteration = 0;
+					ids.split(",").map(_.toLong).map((l:Long) => {
+						if (iteration == 0 && aggregId == 0) {
+							aggregId = AccountPayable.findByKey(l).get.id.is
+						}
+						iteration += 1;
+						AccountPayable.findByKey(l).get.aggregate(aggregId);
+					})
+					JBool(true)
+				} catch {
+					case e:Exception => JString(e.getMessage)
+				}
+			}
+
 			case "accountpayable" :: "mark_as_paid" :: Nil Post _ => {
 				val ids = S.param("ids").get
 				ids.split(",").map(_.toLong).map((l:Long) => {
@@ -519,7 +560,6 @@ object AccountPayableApi extends RestHelper with ReportRest with net.liftweb.com
 						Nil
 					}
 
-
 					def cashierLong:List[Long] = if(cashiers != "0"){
 						cashiers.split(",").map(_.toLong).toList
 					}else{
@@ -554,6 +594,8 @@ object AccountPayableApi extends RestHelper with ReportRest with net.liftweb.com
 											("complement",c.complement.is),
 											("obs_trunc",c.obs.is.substring(0,math.min (40, c.obs.is.length))),
 											("value",c.value.is.toFloat),
+											("aggregateValue",c.aggregateValue.is.toFloat),
+											("aggregateId",c.aggregateId.is),
 											("unitvalue",c.unitvalue.is.toFloat),
 											("amount",c.amount.is.toFloat),
 											("parcelnum",c.parcelNum.is.toInt),
