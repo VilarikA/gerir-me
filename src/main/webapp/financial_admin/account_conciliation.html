@@ -7,7 +7,12 @@
   <script type="text/javascript">
   $(function(){
     $("#account").accountField(false);
-    $("#start").val(getDateBr(new Date().getStartOfMonth()));
+    //$("#start").val(getDateBr(new Date().getStartOfMonth()));
+    if (AuthUtil.company.id == 13) {
+      $("#start").val('01/07/2017');
+    } else {
+      $("#start").val(getDateBr(new Date().getStartOfMonth()));
+    }
     var fields = [];
     fields[0] = {
       type : "format",
@@ -18,6 +23,17 @@
     }
     fields[1] = "date";
     fields[2] = "date";
+/*
+//  experimentopara setar cor
+    fields[5] = {
+      type : "format",
+      decode: function(name, row) {
+        var color = "green"
+        return "<p style='background-color:" + color + "'>" + 
+            row[5] + "<p/>"
+      }
+    }
+*/
     fields[6] = {
       type : "format",
       decode: function(name, row) {
@@ -45,13 +61,21 @@
     fields[11] = {
       type : "format",
       decode: function(name, row) {
-        return "<a href='#' data-id='" + row [11] + "' class='action_conciliate'><img title='conciliar' src='/images/tick.png'></a>" 
+        if (row[10] == "0") {
+          return "<a href='#' data-id='" + row [11] + "' class='action_conciliate'><img title='conciliar' src='/images/tick.png'></a>" 
+        } else {
+          return "";
+        }
       }
     }
     fields[12] = {
       type : "format",
       decode: function(name, row) {
-        return "<a href='#' data-id='" + row [12] + "' class='action_consolidate'><img title='consolidar' width='16px' src='/images/consolidate.png'></a>"
+        if (row[10] != "2") {
+          return "<a href='#' data-id='" + row [12] + "' class='action_consolidate'><img title='consolidar' width='16px' src='/images/consolidate.png'></a>"
+        } else {
+          return "";
+        }
       }
     }
     var url = "/report/account_conciliation";

@@ -138,21 +138,29 @@ object AccountPayableApi extends RestHelper with ReportRest with net.liftweb.com
 					case e:Exception => JString(e.getMessage)
 				}
 			}
-			case "accountpayable" :: "conciliateofx" :: id :: idofx :: Nil JsonGet _ => {
+			case "accountpayable" :: "conciliateofx" :: id :: idofx :: aggreg :: Nil JsonGet _ => {
 				try{
 					val apofx = AccountPayable.findByKey(idofx.toLong).get
-					val ap = AccountPayable.findByKey(id.toLong).get
-					if (!ap.paid_?) {
-						ap.paid_? (true);
+					var aplist = if (aggreg == "false") {
+						AccountPayable.findAllInCompany(
+							By(AccountPayable.id, id.toLong))
+					} else {
+						AccountPayable.findAllInCompany(
+							By(AccountPayable.aggregateId, id.toLong))
 					}
-					// no ofx duedate sempre = data pagamento
-					// o arq é importado sem pagto para não alterar saldo 
-					// por isso usa duedate
-					ap.paymentDate (apofx.dueDate)
-					ap.account (apofx.account)
-					var compl = ap.complement
-					ap.complement (compl + " " + apofx.obs)
-					ap.makeAsConciliated
+					aplist.map((ap) => {
+						if (!ap.paid_?) {
+							ap.paid_? (true);
+						}
+						// no ofx duedate sempre = data pagamento
+						// o arq é importado sem pagto para não alterar saldo 
+						// por isso usa duedate
+						ap.paymentDate (apofx.dueDate)
+						ap.account (apofx.account)
+						var compl = ap.complement
+						ap.complement (compl + " " + apofx.obs)
+						ap.makeAsConciliated
+					});
 					apofx.delete_!
 					JInt(1)
 				} catch {
@@ -172,21 +180,30 @@ object AccountPayableApi extends RestHelper with ReportRest with net.liftweb.com
 					case e:Exception => JString(e.getMessage)
 				}
 			}
-			case "accountpayable" :: "consolidateofx" :: id :: idofx :: Nil JsonGet _ => {
+			case "accountpayable" :: "consolidateofx" :: id :: idofx :: aggreg :: Nil JsonGet _ => {
 				try{
 					val apofx = AccountPayable.findByKey(idofx.toLong).get
-					val ap = AccountPayable.findByKey(id.toLong).get
-					if (!ap.paid_?) {
-						ap.paid_? (true);
+					var aplist = if (aggreg == "false") {
+						AccountPayable.findAllInCompany(
+							By(AccountPayable.id, id.toLong))
+					} else {
+						AccountPayable.findAllInCompany(
+							By(AccountPayable.aggregateId, id.toLong))
 					}
-					// no ofx duedate sempre = data pagamento
-					// o arq é importado sem pagto para não alterar saldo 
-					// por isso usa duedate
-					ap.paymentDate (apofx.dueDate)
-					ap.account (apofx.account)
-					var compl = ap.complement
-					ap.complement (compl + " " + apofx.obs)
-					ap.makeAsConsolidated
+					aplist.map((ap) => {
+						if (!ap.paid_?) {
+							ap.paid_? (true);
+						}
+						// no ofx duedate sempre = data pagamento
+						// o arq é importado sem pagto para não alterar saldo 
+						// por isso usa duedate
+						ap.paymentDate (apofx.dueDate)
+						ap.account (apofx.account)
+						var compl = ap.complement
+						ap.complement (compl + " " + apofx.obs)
+						ap.makeAsConsolidated
+					})
+
 					apofx.delete_!
 					JInt(1)
 				} catch {

@@ -56,7 +56,10 @@
     }
     if (!AuthUtil.company.showSalesToUser_$qmark) {
       fields[7] = "none";
+    } else {
+      fields[7] = "real";
     }
+    fields[8] = "real";
     if (!hasAuxiliarModule) {
       fields[9] = "none";
     }
