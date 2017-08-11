@@ -64,7 +64,7 @@
         return ret
       }
     }
-    fields[11] = "intNull";
+    fields[11] = "none";
 /*
     fields[9] = "realNull";
     fields[11] = {
@@ -283,6 +283,18 @@
                   <div class="input-prepend" style="float:left; padding-right:10px">
                     <span class="add-on"><img width="16" src="/images/calendar_addon.png"></span>
                     <input type="text" class="input-small date to_day" id='end' name="end" placeholder="Fim"/>
+                  </div>
+                </div>
+              </div>
+          </div>
+          <div class="clearfix">
+            <label for="margin">Margem</label>
+              <div class="input">
+                <div class="inline-inputs">
+                  <div style="float:left; padding-right:10px" class="input-prepend">
+                    <span class="add-on">%</span>
+                    <input type="text" class="input-mini currency local_storage" id='margin' name="margin" placeholder="margem" value="1"/>
+                    <span class="help-block">Margem para valor de lançamentos agregados</span>
                   </div>
                 </div>
               </div>

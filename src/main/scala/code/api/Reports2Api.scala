@@ -1799,6 +1799,11 @@ object Reports2 extends RestHelper with ReportRest with net.liftweb.common.Logge
 					case Full(p) => Project.strToDateOrToday(p)
 					case _ => new Date()
 				}
+				def margin:Double = S.param("margin") match {
+					case Full(p) if(p != "") => p.toDouble
+					case _ => 0;
+				}
+
 				lazy val SQL_REPORT = """
 					select ap.duedate, ap.obs, ap.typemovement, 
 					ap.value, ap.id, 
@@ -1809,9 +1814,9 @@ object Reports2 extends RestHelper with ReportRest with net.liftweb.common.Logge
 					from accountpayable ap 
 					left join accountpayable ap1 on ((ap1.paymentdate = ap.paymentdate or ap1.duedate = ap.paymentdate 
 					  or ap1.paymentdate = ap.duedate or ap1.duedate = ap.duedate) 
-					  and (ap1.value = ap.value or (ap1.aggregatevalue > (ap.value - 0.1) and ap1.aggregatevalue < (ap.value + 0.1)))
+					  and (ap1.value = ap.value or (ap1.aggregatevalue > (ap.value * ((100-?)/100)) and ap1.aggregatevalue < (ap.value * ((100+?)/100))))
 					  or (ap1.duedate between date(?) and date (?) and
-					     (ap1.value = ap.value or (ap1.aggregatevalue > (ap.value - 0.1) and ap1.aggregatevalue < (ap.value + 0.1)))))
+					     (ap1.value = ap.value or (ap1.aggregatevalue > (ap.value * ((100-?)/100)) and ap1.aggregatevalue < (ap.value * ((100+?)/100))))))
 					  and ap1.toconciliation = false and ap.company = ap1.company
 					where ap.company = ? 
 					and ap.duedate between date(?) and date (?)
@@ -1820,7 +1825,7 @@ object Reports2 extends RestHelper with ReportRest with net.liftweb.common.Logge
 					ap.duedate, ap.id, (ap1.value = ap.value)
 					"""
 				toResponse(SQL_REPORT.format(account, account),
-					List(start, end, AuthUtil.company.id.is, start, end))
+					List(margin, margin, start, end, margin, margin, AuthUtil.company.id.is, start, end))
 			}
 			case "report" :: "offsaleproduct_cost" :: Nil Post _ =>{
 				val offsales_param_name = S.param("offsales[]") match {
