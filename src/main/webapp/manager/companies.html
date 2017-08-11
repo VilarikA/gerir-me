@@ -20,7 +20,6 @@
     var url = "/report/companies";
     var request = function(){
       renderReport(url,fields,$("#form_report").serializeObject(),"#grid",function(data){
-        //drawChart(jQuery.merge([["Nome","Quantidade","Valor"]],data));
       });
     }
     $("#send").click(request);
