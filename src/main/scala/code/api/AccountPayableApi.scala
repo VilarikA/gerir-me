@@ -237,6 +237,7 @@ object AccountPayableApi extends RestHelper with ReportRest with net.liftweb.com
 					value <- S.param("value") ?~ "value parameter missing" ~> 400
 					dueDateStr <- S.param("dueDate") ?~ "dueDate parameter missing" ~> 400
 					paymentDateStr <- S.param("paymentDate") ?~ "paymentDate parameter missing" ~> 400
+					exerciseDateStr <- S.param("exerciseDate") ?~ "exerciseDate parameter missing" ~> 400
 					paid = S.param("paid") openOr "False"
 					recurrence = S.param("recurrence") openOr "False"
 					movementType = S.param("type") ?~ "movementType parameter missing" ~> 400
@@ -272,6 +273,7 @@ object AccountPayableApi extends RestHelper with ReportRest with net.liftweb.com
 						def cashierObj = Cashier.findByKey(cashier.toLong)
 						def dueDate =  Project.strToDateOrToday(dueDateStr)
 						def paymentDate =  Project.strOnlyDateToDate(paymentDateStr)
+						def exerciseDate = Project.strToDateOrToday(exerciseDateStr)
 						def userId = if(user == "") {
 							0l
 						}else{
@@ -300,8 +302,8 @@ object AccountPayableApi extends RestHelper with ReportRest with net.liftweb.com
 								Empty
 							}
 						}
-						def register(valueReal:Double, date:Date) {
-
+						def register(valueReal:Double, dueDate:Date, exerciseDate:Date,
+							paymentDate:Date) {
 							val account =
 							AccountPayable
 							.createInCompany
@@ -311,7 +313,9 @@ object AccountPayableApi extends RestHelper with ReportRest with net.liftweb.com
 							.costCenter(costCenterId)
 							.obs(obs).complement(complement)
 							.value(valueReal.toDouble)
-							.dueDate(date)
+							.dueDate(dueDate)
+							.exerciseDate(exerciseDate)
+							.paymentDate(paymentDate)
 							.paid_?(paid.toBoolean)
 							.user(userId)
 							.account(accountStr.toLong)
@@ -344,7 +348,8 @@ object AccountPayableApi extends RestHelper with ReportRest with net.liftweb.com
 							}else{
 								BusinessRulesUtil.sunDate(dueDate,recurrence_type.toInt,recurrence_term.toInt)
 							}
-							register(value.toDouble,dueDate)
+							register(value.toDouble,dueDate, 
+								exerciseDate, paymentDate)
 							//JBool(
 							val rec =
 								Recurrence
@@ -379,10 +384,12 @@ object AccountPayableApi extends RestHelper with ReportRest with net.liftweb.com
 									def date = {
 									BusinessRulesUtil.sunDate(dueDate,Recurrence.MONTHLY,i)
 									}
-									register(value.toDouble/user_parcels.toDouble,date)
+									register(value.toDouble/user_parcels.toDouble,
+										date, date, null)
 								}
 							}else{
-								register(value.toDouble,dueDate)
+								register(value.toDouble,
+									dueDate, exerciseDate, paymentDate)
 							}
 							JBool(true)
 						}

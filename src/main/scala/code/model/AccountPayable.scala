@@ -15,6 +15,7 @@ import Day._
 import net.liftweb.common.{ Box, Full, Empty }
 
 import java.util.Date
+import java.util.Calendar
 
 class AccountPayable 
 extends Audited[AccountPayable] 
@@ -40,7 +41,16 @@ with CanCloneThis[AccountPayable] {
     override def defaultValue = fieldOwner.dueDate;
     override def beforeSave() {
         super.beforeSave;
-        if(this.get > dueDate.is){
+        var cal = Calendar.getInstance();
+        cal.setTime(dueDate.is);
+        cal.add(Calendar.DATE, 1);
+        val toDate = cal.getTime();  
+        // data de competencia normalmente é igual ou inferior ao vencimento      
+        // o sistema permite um dia maior para o caso de salão que paga 
+        // comissão no final do dia e arredonda, e lança com venc hj o 
+        // arredondado com competencia amanhã para descontar amanhã
+        //
+        if(this.get > toDate){
          this.set(dueDate.is)
         }
     } 
