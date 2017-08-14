@@ -1787,9 +1787,14 @@ object Reports2 extends RestHelper with ReportRest with net.liftweb.common.Logge
 			case "report" :: "account_ofx_conciliation" :: Nil Post _ => {
 
 				def account:String = S.param("account") match {
-					case Full(s) if(s != "") => "and ap2.account = %s".format (s)
+					case Full(s) if(s != "") => " and ap.account = %s ".format (s)
 					case _ => " and 1 = 1 " 
 				}
+
+				val show_conciliated:String = S.param("show_conciliated") match {
+					case Full(p) if(p != "")=> " and 1 = 1 "
+					case _ => " and ap1.conciliate = 0 "
+				}			
 
 				def start:Date = S.param("start") match {
 					case Full(p) => Project.strToDateOrToday(p)
@@ -1810,6 +1815,7 @@ object Reports2 extends RestHelper with ReportRest with net.liftweb.common.Logge
 					ap1.obs, ap1.value, ap1.duedate, 
 					ap1.id,
 					ap1.aggregatevalue, ap1.aggregateid,
+					ap1.conciliate,
 					ap.category
 					from accountpayable ap 
 					left join accountpayable ap1 on ((ap1.paymentdate = ap.paymentdate or ap1.duedate = ap.paymentdate 
@@ -1818,13 +1824,15 @@ object Reports2 extends RestHelper with ReportRest with net.liftweb.common.Logge
 					  or (ap1.duedate between date(?) and date (?) and
 					     (ap1.value = ap.value or (ap1.aggregatevalue > (ap.value * ((100-?)/100)) and ap1.aggregatevalue < (ap.value * ((100+?)/100))))))
 					  and ap1.toconciliation = false and ap.company = ap1.company
+					  %s
 					where ap.company = ? 
 					and ap.duedate between date(?) and date (?)
 					and ap.toconciliation = true
+					%s
 					order by 
 					ap.duedate, ap.id, (ap1.value = ap.value)
 					"""
-				toResponse(SQL_REPORT.format(account, account),
+				toResponse(SQL_REPORT.format(show_conciliated, account),
 					List(margin, margin, start, end, margin, margin, AuthUtil.company.id.is, start, end))
 			}
 			case "report" :: "offsaleproduct_cost" :: Nil Post _ =>{

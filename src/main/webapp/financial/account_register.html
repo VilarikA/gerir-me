@@ -177,65 +177,65 @@
             </div>
           </div>
           </div>
-        </form>
-      </span>
-      <div class="hide_on_print">
-        <div class="well">
-          <div class="clearfix">
-            <label for="send"></label>
-            <div class="input">
-              <a class="btn primary new_account" id="new_account" alt="Novo lançamento de conta a pagar/receber">
-                <img width="15px" src="/images/new.png"/>
-                Inserir novo
-              </a>
-              <a  id="b_search" class="btn success b_search">
-                <img src="/images/search.png" width="16">
-                Buscar
-              </a>            
-              <a id="b_dre_send" class="btn success b_dre_send">
-                <img src="/images/category.png" width="16">
-                Ver DRE
-              </a>
-              <a id="b_remove_checked" class="btn danger b_remove_checked" alt="Excluir as contas marcadas">
-                <img src="/images/delete.png" width="16">
-                Excluir
-              </a>
-              <a id="b_mark_as_paid" class="btn b_mark_as_paid" alt="Marcar todos os itens selecionados como pagos">
-                <img src="/images/money.png" width="16">
-                Pagar
-              </a>              
-              <a  id="b_aggregate" class="btn b_aggregate lift:SecuritySnippet.isSuperAdmin">
-                <img src="/images/aggregate.png" width="16">
-                Agregar
-              </a>            
-            </div>
+      </form>
+    </span>
+    <div class="hide_on_print">
+      <div class="well">
+        <div class="clearfix">
+          <label for="send"></label>
+          <div class="input">
+            <a class="btn primary new_account" id="new_account" alt="Novo lançamento de conta a pagar/receber">
+              <img width="15px" src="/images/new.png"/>
+              Inserir novo
+            </a>
+            <a  id="b_search" class="btn success b_search">
+              <img src="/images/search.png" width="16">
+              Buscar
+            </a>            
+            <a id="b_dre_send" class="btn success b_dre_send">
+              <img src="/images/category.png" width="16">
+              Ver DRE
+            </a>
+            <a id="b_remove_checked" class="btn danger b_remove_checked" alt="Excluir as contas marcadas">
+              <img src="/images/delete.png" width="16">
+              Excluir
+            </a>
+            <a id="b_mark_as_paid" class="btn b_mark_as_paid" alt="Marcar todos os itens selecionados como pagos">
+              <img src="/images/money.png" width="16">
+              Pagar
+            </a>              
+            <a  id="b_aggregate" class="btn b_aggregate lift:SecuritySnippet.isSuperAdmin">
+              <img src="/images/aggregate.png" width="16">
+              Agregar
+            </a>            
           </div>
         </div>
       </div>
-      <form action="">
-        <div class="clearfix lift:SecuritySnippet.isFinancialUser">
-          <label for="total">Totais </label>
-          <div class="input">
-            <div class="inline-inputs">
-              <div class="input-prepend" style="float:left; padding-right:10px">
-                <span class="add-on"><img src="/images/add.png" width="16"></span>
-                <input class="small" id="credit" name="credit" size="19" placeholder="0.00" type="text">
-                <span class="help-block">Receitas</span>
-              </div>
-              <div class="input-prepend" style="float:left; padding-right:10px">
-                <span class="add-on"><img src="/images/remove.png" width="16"></span>
-                <input class="small" id="debit" name="debit" size="19" placeholder="0.00" type="text">
-                <span class="help-block">Despesas</span>
-              </div>
-              <div class="input-prepend" style="float:left; padding-right:10px">
-                <span class="add-on"><img src="/images/money.png" width="16"></span>
-                <input class="small" id="total" name="total" size="19" placeholder="0.00" type="text">
-                <span class="help-block">Saldo</span>
-              </div>
+    </div>
+    <form action="">
+      <div class="clearfix lift:SecuritySnippet.isFinancialUser">
+        <label for="total">Totais </label>
+        <div class="input">
+          <div class="inline-inputs">
+            <div class="input-prepend" style="float:left; padding-right:10px">
+              <span class="add-on"><img src="/images/add.png" width="16"></span>
+              <input class="small" id="credit" name="credit" size="19" placeholder="0.00" type="text">
+              <span class="help-block">Receitas</span>
+            </div>
+            <div class="input-prepend" style="float:left; padding-right:10px">
+              <span class="add-on"><img src="/images/remove.png" width="16"></span>
+              <input class="small" id="debit" name="debit" size="19" placeholder="0.00" type="text">
+              <span class="help-block">Despesas</span>
+            </div>
+            <div class="input-prepend" style="float:left; padding-right:10px">
+              <span class="add-on"><img src="/images/money.png" width="16"></span>
+              <input class="small" id="total" name="total" size="19" placeholder="0.00" type="text">
+              <span class="help-block">Saldo</span>
             </div>
           </div>
-        </div>                      
-      </form>
+        </div>
+      </div>                      
+    </form>
   </div>
   <a onclick="return ExcellentExport.excel(this, 'grid', 'data');"
     href="#" download="data.xls" class="btn excel_buttton"
