@@ -1753,7 +1753,7 @@ object Reports2 extends RestHelper with ReportRest with net.liftweb.common.Logge
 					ap.typemovement,
 					case when (ap.typemovement = 0) then ap.value else null end as entrada , 
 					case when (ap.typemovement = 1) then ap.value else null end as saida , 
-					ap.paid, conciliate, ap.id, ap.id
+					ap.paid, conciliate, ap.id, ap.id, ap.category
 					from accountpayable ap 
 					inner join accountcategory ct on ct.id = ap.category
 					left join business_pattern bp on bp.id = ap.user_c
@@ -1768,7 +1768,7 @@ object Reports2 extends RestHelper with ReportRest with net.liftweb.common.Logge
 					ap.typemovement,
 					case when (ap.typemovement = 0) then ap.value else null end as entrada , 
 					case when (ap.typemovement = 1) then ap.value else null end as saida , 
-					ap.paid, conciliate, ap.id, ap.id
+					ap.paid, conciliate, ap.id, ap.id, ap.category
 					from accountpayable ap 
 					inner join accountcategory ct on ct.id = ap.category
 					left join business_pattern bp on bp.id = ap.user_c
@@ -1816,7 +1816,7 @@ object Reports2 extends RestHelper with ReportRest with net.liftweb.common.Logge
 					ap1.id,
 					ap1.aggregatevalue, ap1.aggregateid,
 					ap1.conciliate,
-					ap.category
+					ap.category, ap1.category
 					from accountpayable ap 
 					left join accountpayable ap1 on ((ap1.paymentdate = ap.paymentdate or ap1.duedate = ap.paymentdate 
 					  or ap1.paymentdate = ap.duedate or ap1.duedate = ap.duedate) 

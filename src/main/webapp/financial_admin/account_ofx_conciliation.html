@@ -39,8 +39,8 @@
       type : "format",
       decode: function(name, row) {
         var ret = "";
-        if (row[8] != "0") {
-          if (row[12] != 0) {
+        if (row[8] != "0") { // api.id
+          if (row[11] != "0") { // ap1.conciliate
             ret = ""
           } else {
             ret = "<a href='#' data-id='" + row [8] + "' data-idofx='" + row [4] + "' class='action_consolidate'><img width='16px' title='consolidar lançamento simples' src='/images/consolidate.png'></a>" +
@@ -58,8 +58,8 @@
       type : "format",
       decode: function(name, row) {
         var ret = "";
-        if (row[10] != "0") {
-          if (row[12] != 0) {
+        if (row[10] != "0") { //ap1.agregateid
+          if (row[11] != "0") { // ap1.conciliate
             ret = ""
           } else {
             ret = "<a href='#' data-id='" + row [10] + "' data-idofx='" + row [4] + "' class='action_consolidate_aggreg'><img width='16px' title='consolidar lançamentos agregados' src='/images/consolidate.png'></a>" +
@@ -72,7 +72,24 @@
         return ret
       }
     }
-    fields[12] = "none";
+    fields[11] = {
+      type : "format",
+      decode: function(name, row) {
+        var ret = "";
+        if (row[8] != "0") { // api.id
+          var dataaux = "";
+          dataaux = getDateBr(FactoryDate.byTime(row[0]))
+          return "<a target='_drilldown' href='/financial/account_register?account_categories_filter1="+row[13]+"&start_date="+dataaux+"&end_date="+dataaux+"'>"+"<img width='16px' src=\"/images/" + 
+              (row[11] == "0" ? 'audit' : (row[11] == "1" ? 'tick' : 'consolidate')) + ".png\" title=\"" + 
+              (row[11] == "0" ? 'em aberto' : (row[11] == "1" ? 'conciliado' : 'consolidado')) + "\"/></td>" +
+              "</a>"
+        } else {
+          return ""
+        }
+      }
+    }
+    fields[12] = "none"; // ap.category
+    fields[13] = "none"; // ap1.category
 /*
     fields[9] = "realNull";
     fields[11] = {
@@ -354,6 +371,7 @@
         <th>Concilia</th>
         <th>V.Agregado</th>
         <th>Concilia</th>
+        <th>Status</th>
       </thead>
       <tbody>
       </tbody>

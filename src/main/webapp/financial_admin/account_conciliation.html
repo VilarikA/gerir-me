@@ -53,9 +53,16 @@
     fields[10] = {
       type : "format",
       decode: function(name, row) {
-        return "<img width='16px' src=\"/images/" + 
+        var dataaux = "";
+        if (row[2] == 'null') {
+            dataaux = getDateBr(FactoryDate.byTime(row[3]))
+        } else {
+            dataaux = getDateBr(FactoryDate.byTime(row[2]))
+        }
+        return "<a target='_drilldown' href='/financial/account_register?account_categories_filter1="+row[13]+"&start_date="+dataaux+"&end_date="+dataaux+"'>"+"<img width='16px' src=\"/images/" + 
             (row[10] == "0" ? 'audit' : (row[10] == "1" ? 'tick' : 'consolidate')) + ".png\" title=\"" + 
-            (row[10] == "0" ? 'em aberto' : (row[10] == "1" ? 'conciliado' : 'consolidado')) + "\"/></td>"
+            (row[10] == "0" ? 'em aberto' : (row[10] == "1" ? 'conciliado' : 'consolidado')) + "\"/></td>" +
+            "</a>"
       }
     }
     fields[11] = {

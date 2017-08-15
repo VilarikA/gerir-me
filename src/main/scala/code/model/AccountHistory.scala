@@ -29,6 +29,7 @@ class AccountHistory extends LongKeyedMapper[AccountHistory]
   object accountPayable extends MappedLongForeignKey(this, AccountPayable) {
     override def dbIndexed_? = true
   }
+  object paymentDate extends EbMappedDate(this)
   object currentValue extends MappedCurrency(this)
   object value extends MappedCurrency(this)
 }

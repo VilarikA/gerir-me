@@ -8,7 +8,8 @@ import SHtml._
 import util._ 
 import code.util._
 import code.service._
-import java.util.Calendar
+import java.util.Date
+//import java.util.Calendar
 import net.liftweb.common.{Box,Full}
 
 class AccountCompanyUnit extends Audited[AccountCompanyUnit] with PerCompany with IdPK 
@@ -45,28 +46,37 @@ class AccountCompanyUnit extends Audited[AccountCompanyUnit] with PerCompany wit
   private def saveWithoutHistory() = {
     super.save
   }
-  private def createDefaultHistory(movementValue:Double, obs:String) = {
-  AccountHistory.create
+
+  private def createDefaultHistory(movementValue:Double, 
+    obs:String, paymentDate:Date) = {
+    AccountHistory.create
         .company(this.company)
         .account(this.account)
         .currentValue(this.value.is)
+        .paymentDate(paymentDate)
         .description(obs)
         .value(movementValue)        
   }
+
   def valueChange:Boolean = this.value.is != this.lastValue.is
+
   override def save() = {
     if (valueChange) {
-      createDefaultHistory(this.value.is-this.lastValue.is, "Alt Saldo Conta").save
+      createDefaultHistory(this.value.is-this.lastValue.is, 
+        "Alt Saldo Conta", new Date()).save
     }
     val result = super.save    
     result    
   }
 
-  private def _register(accountP: AccountPayable, registerValue: Double, obs: String = "", isRealValue:Boolean = false) = {
+  private def _register(accountP: AccountPayable, 
+    registerValue: Double, obs: String = "", 
+    isRealValue:Boolean = false) = {
     DB.use(DefaultConnectionIdentifier) {
       conn =>
         try {
-            val realValue  = if (accountP.typeMovement.is == AccountPayable.IN || isRealValue ) {
+            val realValue  = if (accountP.typeMovement.is == AccountPayable.IN 
+              || isRealValue ) {
               registerValue
             } else {
               registerValue*(-1.00)
@@ -74,7 +84,8 @@ class AccountCompanyUnit extends Audited[AccountCompanyUnit] with PerCompany wit
             this.value(this.value.is + realValue)
             this.saveWithoutHistory
             accountP.debted_?(true)
-            createDefaultHistory(realValue, obs).accountPayable(accountP).save
+            createDefaultHistory(realValue, 
+              obs, accountP.paymentDate).accountPayable(accountP).save
         } catch {
           case e: Exception => {
             conn.rollback
