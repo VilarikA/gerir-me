@@ -944,7 +944,7 @@ object Reports2 extends RestHelper with ReportRest with net.liftweb.common.Logge
 				left join business_pattern bc on bc.id = mo.business_pattern
 				where mo.company = ? and mo.status = 1 --and mo.paid = true 
 				and mo.value > 0.01
-				and mo.dateexpiration between date (?) and date (?)
+				and date (mo.dateexpiration) between date (?) and date (?)
 				%s
 				group by bc.name
 				order by bc.name) as data1
@@ -953,7 +953,7 @@ object Reports2 extends RestHelper with ReportRest with net.liftweb.common.Logge
 				select substr (short_name_year || mo.paid,1,7), bc.name, 
 				coalesce (sum (mo.value),0), date_c, mo.paid from dates 
 				left join monthly mo on mo.company = ? and mo.status = 1
-				and mo.dateexpiration between start_of_month and end_of_month 
+				and date(mo.dateexpiration) between start_of_month and end_of_month 
 				left join business_pattern bc on bc.id = mo.business_pattern
 				where date_c between date (?) and date (?) and day = 1 and mo.value > 0.02
 				%s
@@ -963,7 +963,7 @@ object Reports2 extends RestHelper with ReportRest with net.liftweb.common.Logge
 				select * from (select substr (short_name_year || mo.paid,1,7), 'V ' || (select name from company where id = mo.company) , 
 				coalesce (sum (mo.value),0), date_c, mo.paid from dates 
 				left join monthly mo on mo.company = ? and mo.status = 1
-				and mo.dateexpiration between start_of_month and end_of_month 
+				and date(mo.dateexpiration) between start_of_month and end_of_month 
 				where date_c between date (?) and date (?) and day = 1 and mo.value > 0.02
 				%s
 				group by date_c, short_name_year, mo.paid, mo.company
@@ -972,7 +972,7 @@ object Reports2 extends RestHelper with ReportRest with net.liftweb.common.Logge
 				select * from (select substr (short_name_year || mo.paid,1,7), 'Q ' || (select name from company where id = mo.company) , 
 				count (distinct mo.business_pattern), date_c, mo.paid from dates 
 				left join monthly mo on mo.company = ? and mo.status = 1
-				and mo.dateexpiration between start_of_month and end_of_month 
+				and date(mo.dateexpiration) between start_of_month and end_of_month 
 				where date_c between date (?) and date (?) and day = 1 and mo.value > 0.02
 				%s
 				group by date_c, short_name_year, mo.paid, mo.company
