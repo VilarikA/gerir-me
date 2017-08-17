@@ -60,7 +60,7 @@ class  MonthlySnippet extends BootstrapPaginatorSnippet[Monthly] {
 		    val today = Project.date_format_db.parse(Project.date_format_db.format(new Date()));
 			def thumbSN(field:Boolean, expDate: Date) = if (field) {
 				<img style= "width:16px" src="/images/good.png"/>
-			} else if (expDate.after (today) || expDate.equals (today)) {
+			} else if (expDate.after (today) || Project.date_format_db.parse(Project.date_format_db.format(expDate)).equals (today)) {
 				<img style= "width:16px" src="/images/account_customer.png"/>
 			} else {
 				<img style= "width:16px" src="/images/bad.png"/>
