@@ -1790,7 +1790,7 @@
           //var start = new Date($weekDay.data('startDate').getTime() + startOffsetMillis + Math.round(top / options.timeslotHeight) * options.millisPerTimeslot);
           var towHours = (2*60*60*1000);//@mateusfreira horario de verão
           var start = new Date(($weekDay.data('startDate').getTime() + startOffsetMillis + Math.round(top / options.timeslotHeight) * options.millisPerTimeslot) - towHours);
-          var end = new Date(start.getTime() + ($calEvent.height() / options.timeslotHeight) * options.millisPerTimeslot);
+          var end = new Date(start.getTime() + ($calEvent.outerHeight() / options.timeslotHeight) * options.millisPerTimeslot);
           return {start: this._getDSTdayShift(start, -1), end: this._getDSTdayShift(end, -1)};
       },
 
