@@ -284,8 +284,15 @@ var TreatmentManger = {
 				"</tr>";
 				if (detail.treatment == calEvent.id) {
 					$("#hour_treatment_end").val(getHourBr(FactoryDate.byTime(detail.end)));
+					// rigel 09/08/2017 se trocasse status ou mesmo clicasse no
+					// status agendado antes de fechar o agendamento setava o 
+					// default da divisão de agenda, mesmo o serviço tendo 
+					// duração maior
+					calEvent.end = FactoryDate.byTime(detail.end);
 				}
 			}
+			// rigel 09/08/2017 
+			global_calEvent = calEvent;
 			$("#table_detail_table tbody").html(table);
 			translateStatus();
 			$("#treatment_detail_div").show();

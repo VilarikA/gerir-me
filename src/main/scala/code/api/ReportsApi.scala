@@ -505,7 +505,8 @@ object Reports extends RestHelper with ReportRest with net.liftweb.common.Logger
 					        ca.idforcompany as cashier, 
 					        pa.command, 
 					        pa.datepayment,
-					        pa.datepayment,
+					        --pa.datepayment,
+					        co.payment_date,
 					        cu.short_name,
 					        customer.short_name as customer,
 					        p.short_name product,
@@ -529,10 +530,11 @@ object Reports extends RestHelper with ReportRest with net.liftweb.common.Logger
 	                        inner join companyunit cu on cu.id = tr.unit
 					        inner join product p on(p.id = td.product or p.id = td.activity)
 	                        left  join business_pattern ba on ba.id = td.auxiliar
-					        where co.company = ? and co.user_c in (%s) and date(co.payment_date) between date(?) and date(?)
+					        where co.company = ? and co.user_c in (%s) 
+					        and date(co.payment_date) between date(?) and date(?)
 					        and p.productclass in(%s) %s
-					        group by  td.treatment, ca.idforcompany, pa.command, pa.datepayment, /*pd.typepayment,*/cu.short_name,customer.short_name, td.price,ba.short_name,p.short_name
-					        order by datepayment desc, pa.command, cu.short_name, customer.short_name, p.short_name;  
+					        group by  td.treatment, ca.idforcompany, pa.command, pa.datepayment, /*pd.typepayment,*/cu.short_name,customer.short_name, td.price,ba.short_name,p.short_name, co.payment_date
+					        order by datepayment desc, pa.command, cu.short_name, customer.short_name, p.short_name, co.payment_date;  
 					"""
 				if(rel_mini == 0){
 					//info (user + " = = = = = = = = = = = = = = = =  = = == = = = = = = = = =")

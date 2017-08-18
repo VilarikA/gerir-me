@@ -285,9 +285,11 @@ object  TreatmentService extends net.liftweb.common.Logger {
 		// e arredondamos a hora
 		// por enquanto na 1 e na 8 só para teste da agenda pq esta alteracao
 		// vai ro master em produção
-		if (AuthUtil.company.id == 1 || AuthUtil.company.id == 8 ) {
-			println ("vaiiii ============== " + Project.dateToHours(treatment.end) + " ==== " + Project.dateToHours(end)
-				+ " ==== " + Project.dateToHours(end).slice(4,5) + " <<<<< " + (10-Project.dateToHours(end).slice(4,5).toInt));
+		// 07/08/2017 cometado - rigel
+		// if (AuthUtil.company.id == 1 || AuthUtil.company.id == 8 ) {
+		if (true) {
+			//println ("vaiiii ============== " + Project.dateToHours(treatment.end) + " ==== " + Project.dateToHours(end)
+			//	+ " ==== " + Project.dateToHours(end).slice(4,5) + " <<<<< " + (10-Project.dateToHours(end).slice(4,5).toInt));
 			var minute = Project.dateToHours(end).slice(4,5);
 			var minutes = Project.dateToHours(end).slice(3,5).toInt;
 			var hours = Project.dateToHours(end).slice(0,2).toInt;

@@ -8,6 +8,7 @@ import actor._
 import model.{Company, CompanyUnit, Customer, ProductType, Account, User, Product, Activity, PermissionModule}
 import code.util._
 import java.util.Random
+import java.util.Date
 
 object UserCreateActors extends LiftActor {
 
@@ -23,7 +24,7 @@ object UserCreateActors extends LiftActor {
     createAccountCategoriesForStart(company)
     createCustomerAtCompanyAdmin(company)
     createActivities(company)
-    createProduts(company)
+    createProducts(company)
     NotficationMessageSqlMigrate.createNotificationMessage(company);
     updateAccessMasterCompany(company)
 //    updateInventoryInfos(company)
@@ -88,7 +89,14 @@ object UserCreateActors extends LiftActor {
   }
 
   def _createCustomer(company:Company) = {
-    Customer.create.name(BusinessRulesUtil.clearString(company.name)).phone(company.phone).email(company.email).is_person_?(false)
+    var name = "";
+    if (Customer.testIfDuplicatedName (-1, 
+      BusinessRulesUtil.clearString(company.name))) {
+      name = BusinessRulesUtil.clearString(company.name)
+    } else {
+      name = BusinessRulesUtil.clearString(company.name) + " " + new Date()
+    }
+    Customer.create.name(name).phone(company.phone).email(company.email).is_person_?(false)
   }  
 
   def createCustomerAtCompanyAdmin(company:Company){
@@ -111,7 +119,7 @@ object UserCreateActors extends LiftActor {
     unit.save
     unit.id.is
   }
-  def createProduts(company:Company){
+  def createProducts(company:Company){
     val exampletype = ProductType.create.name("Tipo produto exemplo").company(company).createdBy(1).updatedBy(1)
     exampletype.save();
     Product.create.typeProduct(exampletype).name("Produto exemplo").purchasePrice(139.20).salePrice(141.50).minStock(0).commission(10.0).company(company).createdBy(1).updatedBy(1).save()
@@ -120,8 +128,8 @@ object UserCreateActors extends LiftActor {
   }
 
   def createAccount(company:Company) = {
-    Account.create.company(company).name("Padrão: Seu Banco").allowCashierOut_?(false).value(0).save
-    Account.create.company(company).name("Caixa").allowCashierOut_?(true).value(0).save    
+    Account.create.company(company).name("Padrão: Seu Banco").allowCashierOut_?(false).save//.value(0).save
+    Account.create.company(company).name("Caixa").allowCashierOut_?(true).save//.value(0).save    
   }
 
   def createActivities(company:Company){

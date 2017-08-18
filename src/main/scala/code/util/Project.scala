@@ -330,11 +330,22 @@ object BusinessRulesUtil{
     var len = toCamelCase(value.trim()).length
 		toCamelCase(value.trim()).substring(0,scala.math.min(len, 20))
 	}
+
 	def md5(value:String) = Project.md5(value)
-	def toCamelCase(value:String) = {
+
+	def toCamelCase(value:String):String = {
 		if (value != null && value.trim() != EMPTY){
 			val val_camel = value split(" ") filter( _!="" ) map(_.toLowerCase) map( (current:String) => {  if( !notCamelize.contains(current)) { current.capitalize }else{ current } } ) reduceLeft(_+" "+_)
-      val_camel.substring(0,1).toUpperCase + val_camel.substring(1,val_camel.length)
+      var aux = "";
+      // primeira letra sempre maiuscula antes "a Favorita"
+      // agora "A Favorita"
+      aux = val_camel.substring(0,1).toUpperCase + val_camel.substring(1,val_camel.length)
+      // ultima letra se precedida de branco sempre maiúscula
+      // antes "Studio a" agora "Studio A" 
+      if (aux.slice (aux.length-2, aux.length-1) == " "){
+        aux = aux.slice(0,aux.length-1) + aux.slice(aux.length-1,aux.length).toUpperCase
+      }
+      aux.trim;
 		} else {
 			EMPTY
 		}

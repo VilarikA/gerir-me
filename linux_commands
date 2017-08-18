@@ -351,12 +351,12 @@ o ci.transitobh já funciona, mas tem que subir o active mq antes do deploy
 
 /etc/activemq start
 
-no brower 
+no browser 
 mq.transitobh.com.br
 usuario admin
 a senha amanda1108
 
-vai no ci e depoly ebelle
+vai no ci e deploy ebelle
 se por acaso do gitbub nao estar no ar (como aconteceu comigo e o mateus)
 vai no run ebelle green e comenta o git push com #
 
@@ -376,64 +376,6 @@ construir o PDF-server
 Dr Wagner José Martorina
 Rua dr. Domingos Vieira 586 sala 1205 sta efigenia
 Tel 32417085
-
-via gomide
-comissão alem do percentual do serviço tem um percentual do horario de agenda aberto, 
-tem um rel com o fixo e o "amortizado"
-
-horario por unidade - cor diferente para exibir unidade diferente
-
-opção de lancar só produtos de lanchonete
-
-
-update treatment set detailtreatmentastext = obs where company = 232 and createdby = 1
-update business_pattern set obs = (select min(obs) from belezasoft.cliente where nome = name and fone = phone) where company = 232  and (obs is null or obs = '')
-
-
-select pt.name, sum (pd.value), pa.datepayment, count (pt.name) from paymentdetail pd 
-inner join paymenttype pt on pt.id = pd.typepayment
-inner join payment pa on pa.id = pd.payment
-inner join treatment tr on tr.payment = pa.id
-where pd.company = 229
-group by pa.datepayment, pt.name
-order by pa.datepayment, pt.name
-
-
-
-envio de media - conflito com envio de email
-
-lembrar paloma - email nome apelido
-
-
-select company, name, receive, receiveatsight, defaltaccount, defaltcategory from paymenttype 
-where (receive = true or receiveatsight = true) and (defaltaccount is null or  defaltcategory is null)
---and company = 35
-order by company desc, name asc
-		
-
-select times, 0, * from logmailsend where read = false limit 50
-update logmailsend set times = 0 where read = false and times is null;
-select times, 1, * from logmailsend where read = true limit 50
-update logmailsend set times = 1 where read = true and times is null;
-
-	
-select bp.id, idforcompany as codigoexterno, bp.name as nome, bp.short_name as nomereduzido,
-bp.sex as sexo, bp.birthday as nascimento, bp.document as cpf,
-bp.phone as fone1, bp.mobile_phone as fone2, 
-bp.email_alternative as fone3, bp.email, bp.createdat as criadoem, cs.name as estadocivil, ug.name as grupo,
-cu.name as unidade,
-bp.street as rua, bp.number_c as numero, bp.complement as complemento, bp.district as bairro, bp.postal_code as cep,
-ci.name as cidade, st.short_name as uf,
-bp.obs, is_employee colaborador, valueinaccount as saldo, bp_indicatedby as indicadopor
-from business_pattern bp
-left join civilstatus cs on cs.id = civilstatus
-left join usergroup ug on ug.id = group_c
-left join companyunit cu on cu.id = bp.unit
-left join city ci on ci.id = cityref
-left join state st on st.id = stateref
-where bp.company = 35 order by bp.name, is_employee, bp.createdat
-limit 50000
-
 
 asset
 id company status
@@ -491,20 +433,6 @@ or imagethumb = ''
 
 
 "thumb_F973675429076YBBTOR.jpg.png"
-
-
-select ap.duedate, ac.short_name as category, substr(ap.obs,1,40), ap.value, ap.typemovement, bp.short_name, cs.idForcompany, acc.short_name as account
-                                      from     
-                                      accountpayable ap
-                                      left join accountcategory ac on(ac.id=ap.category)
-                                      left join business_pattern as bp on(bp.id=ap.user_c)
-                                      left join cashier cs on(cs.id=ap.cashier)
-                                      left join account acc on(acc.id = ap.account)
-                                      left join cheque ch on (ch.id = cheque)
-                                      left join business_pattern bc on bc.id = ch.customer
-                                      left join bank bk on bk.id = ch.banc
-                                    WHERE ap.company=8 and ap.cashier=25816 and ap.autocreated = false
-
 
                                     
 

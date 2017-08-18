@@ -15,6 +15,7 @@ import Day._
 import net.liftweb.common.{ Box, Full, Empty }
 
 import java.util.Date
+import java.util.Calendar
 
 class AccountPayable 
 extends Audited[AccountPayable] 
@@ -40,7 +41,16 @@ with CanCloneThis[AccountPayable] {
     override def defaultValue = fieldOwner.dueDate;
     override def beforeSave() {
         super.beforeSave;
-        if(this.get > dueDate.is){
+        var cal = Calendar.getInstance();
+        cal.setTime(dueDate.is);
+        cal.add(Calendar.DATE, 1);
+        val toDate = cal.getTime();  
+        // data de competencia normalmente é igual ou inferior ao vencimento      
+        // o sistema permite um dia maior para o caso de salão que paga 
+        // comissão no final do dia e arredonda, e lança com venc hj o 
+        // arredondado com competencia amanhã para descontar amanhã
+        //
+        if(this.get > toDate){
          this.set(dueDate.is)
         }
     } 
@@ -94,7 +104,7 @@ with CanCloneThis[AccountPayable] {
     override def dbColumnName = "paid"
   }
   /**
-   * mostra se ja sail da conta que deveria sair o valor
+   * mostra se ja saiu da conta que deveria sair o valor
    */
   object debted_? extends MappedBoolean(this) {
     override def dbIndexed_? = false
@@ -132,6 +142,25 @@ with CanCloneThis[AccountPayable] {
   }
   object parcelNum extends MappedInt(this)
 
+  // rigel 03/08/2017 
+  object aggregateId extends MappedLong(this)
+  object aggregateValue extends MappedCurrency(this.asInstanceOf[MapperType])
+
+  def aggregate (aggregId : Long)= {
+    if (this.aggregateId != 0 && this.aggregateId != aggregId) {
+      throw new RuntimeException("Um lançamento não pode fazer parte de duas agregações!")
+    }
+    this.aggregateId(aggregId)
+    if (this.id == aggregId) {
+        this.aggregateValue (this.aggregateValue.is + this.value.is)
+    } else {
+       var vaux = AccountPayable.findByKey(aggregId).get.aggregateValue.is
+       AccountPayable.findByKey(aggregId).get.
+         aggregateValue(vaux + this.value).partialySecureSave;
+    }
+    this.partialySecureSave
+  }
+    
   def makeAsPaid = this.paid_?(true).partialySecureSave
 
   def makeAsConciliated = {
@@ -159,7 +188,8 @@ with CanCloneThis[AccountPayable] {
     if(debted_?.is && changeAccount_?){
       this.lastAccount.obj match {
         case Full(a: Account) => {
-          a.removeRegister(this, "Alt Conta")
+          val au = a.getAccountUnit
+          au.removeRegister(this, "Alt Conta")
         }
         case _ => 
       }
@@ -182,7 +212,8 @@ with CanCloneThis[AccountPayable] {
     if(debted_?.is){
       accountBox match {
         case Full(a: Account) => {
-          a.removeRegister(this, "Excluindo lançamento")
+          val au = a.getAccountUnit
+          au.removeRegister(this, "Excluindo lançamento")
         }
         case _ => 
       }
@@ -195,10 +226,11 @@ with CanCloneThis[AccountPayable] {
     val registerDiference = debted_?.is
     accountBox match {
       case Full(a: Account) => {
+        val au = a.getAccountUnit
         if (registerDiference) {
-          a.registerDiference(this)
+          au.registerDiference(this)
         } else {
-          a.register(this)
+          au.register(this)
         }
       }
       case _ => this.debted_?(true)
@@ -208,7 +240,8 @@ with CanCloneThis[AccountPayable] {
   def rollbackAccountValue() = {
     accountBox match {
       case Full(a: Account) => {
-        a.removeRegister(this, "Alt Status Lanç")
+        val au = a.getAccountUnit
+        au.removeRegister(this, "Alt Status Lanç")
       }
       case _ => 
     }
@@ -233,7 +266,8 @@ with CanCloneThis[AccountPayable] {
       }
       super.save
       val a = Account.findByKey(this.account.is).get
-      a.register(this)
+      val au = a.getAccountUnit
+      au.register(this)
     }
 
   }
@@ -252,7 +286,7 @@ with CanCloneThis[AccountPayable] {
       throw new RuntimeException("Não é permitido alterar lançamento conciliado")
     }
     if ((account.isEmpty)) {
-      // info ("************************* falta categoria")
+      // info ("************************* falta conta")
       throw new RuntimeException("Não é permitido lançamento sem conta")
     }
     if ((category.isEmpty)) {
@@ -277,7 +311,8 @@ with CanCloneThis[AccountPayable] {
       if (this.paid_?.is) {
         super.save
         val a = Account.findByKey(this.account.is).get
-        a.register(this)
+        val au = a.getAccountUnit
+        au.register(this)
       } else {
         super.save
       }

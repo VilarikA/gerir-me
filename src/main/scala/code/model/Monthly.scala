@@ -34,7 +34,7 @@ class Monthly extends Audited[Monthly] with LongKeyedMapper[Monthly]
     }
   object efetiveDate extends EbMappedDate(this)
   object originalDate extends EbMappedDate(this)
-  object dateExpiration extends EbMappedDateTime(this)
+  object dateExpiration extends EbMappedDate(this)
   object paid extends MappedBoolean(this)  with LifecycleCallbacks { 
       override def beforeSave() {
           super.beforeSave;

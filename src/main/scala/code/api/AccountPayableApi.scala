@@ -33,6 +33,47 @@ object AccountPayableApi extends RestHelper with ReportRest with net.liftweb.com
 
 		serve {
 
+			case "accountpayable" :: "aggregate" :: Nil Post _ => {
+				try {
+					val ids = S.param("ids").get
+					var iteration = 0;
+					var aggregId = 0l;
+					//
+					// Loop Verifica se pode agregar
+					//
+					ids.split(",").map(_.toLong).map((l:Long) => {
+						if (aggregId == 0) {
+							if (AccountPayable.findByKey(l).get.aggregateId.is != 0) {
+								aggregId = AccountPayable.findByKey(l).get.aggregateId.is
+							}
+						}
+						var idAux = 0l;
+						idAux = AccountPayable.findByKey(l).get.aggregateId;
+						if (idAux != 0 && aggregId != 0 && idAux != aggregId) {
+					      throw new RuntimeException("Um lançamento não pode fazer parte de duas agregações!(api)")
+						}
+					})
+					//
+					// Loop agrega efetivamente
+					//
+					if (aggregId != 0) {
+						// já tinha agregado então zera
+						AccountPayable.findByKey(aggregId).get.aggregateValue(0.0).save
+					}
+					iteration = 0;
+					ids.split(",").map(_.toLong).map((l:Long) => {
+						if (iteration == 0 && aggregId == 0) {
+							aggregId = AccountPayable.findByKey(l).get.id.is
+						}
+						iteration += 1;
+						AccountPayable.findByKey(l).get.aggregate(aggregId);
+					})
+					JBool(true)
+				} catch {
+					case e:Exception => JString(e.getMessage)
+				}
+			}
+
 			case "accountpayable" :: "mark_as_paid" :: Nil Post _ => {
 				val ids = S.param("ids").get
 				ids.split(",").map(_.toLong).map((l:Long) => {
@@ -97,21 +138,29 @@ object AccountPayableApi extends RestHelper with ReportRest with net.liftweb.com
 					case e:Exception => JString(e.getMessage)
 				}
 			}
-			case "accountpayable" :: "conciliateofx" :: id :: idofx :: Nil JsonGet _ => {
+			case "accountpayable" :: "conciliateofx" :: id :: idofx :: aggreg :: Nil JsonGet _ => {
 				try{
 					val apofx = AccountPayable.findByKey(idofx.toLong).get
-					val ap = AccountPayable.findByKey(id.toLong).get
-					if (!ap.paid_?) {
-						ap.paid_? (true);
+					var aplist = if (aggreg == "false") {
+						AccountPayable.findAllInCompany(
+							By(AccountPayable.id, id.toLong))
+					} else {
+						AccountPayable.findAllInCompany(
+							By(AccountPayable.aggregateId, id.toLong))
 					}
-					// no ofx duedate sempre = data pagamento
-					// o arq é importado sem pagto para não alterar saldo 
-					// por isso usa duedate
-					ap.paymentDate (apofx.dueDate)
-					ap.account (apofx.account)
-					var compl = ap.complement
-					ap.complement (compl + " " + apofx.obs)
-					ap.makeAsConciliated
+					aplist.map((ap) => {
+						if (!ap.paid_?) {
+							ap.paid_? (true);
+						}
+						// no ofx duedate sempre = data pagamento
+						// o arq é importado sem pagto para não alterar saldo 
+						// por isso usa duedate
+						ap.paymentDate (apofx.dueDate)
+						ap.account (apofx.account)
+						var compl = ap.complement
+						ap.complement (compl + " " + apofx.obs)
+						ap.makeAsConciliated
+					});
 					apofx.delete_!
 					JInt(1)
 				} catch {
@@ -131,21 +180,30 @@ object AccountPayableApi extends RestHelper with ReportRest with net.liftweb.com
 					case e:Exception => JString(e.getMessage)
 				}
 			}
-			case "accountpayable" :: "consolidateofx" :: id :: idofx :: Nil JsonGet _ => {
+			case "accountpayable" :: "consolidateofx" :: id :: idofx :: aggreg :: Nil JsonGet _ => {
 				try{
 					val apofx = AccountPayable.findByKey(idofx.toLong).get
-					val ap = AccountPayable.findByKey(id.toLong).get
-					if (!ap.paid_?) {
-						ap.paid_? (true);
+					var aplist = if (aggreg == "false") {
+						AccountPayable.findAllInCompany(
+							By(AccountPayable.id, id.toLong))
+					} else {
+						AccountPayable.findAllInCompany(
+							By(AccountPayable.aggregateId, id.toLong))
 					}
-					// no ofx duedate sempre = data pagamento
-					// o arq é importado sem pagto para não alterar saldo 
-					// por isso usa duedate
-					ap.paymentDate (apofx.dueDate)
-					ap.account (apofx.account)
-					var compl = ap.complement
-					ap.complement (compl + " " + apofx.obs)
-					ap.makeAsConsolidated
+					aplist.map((ap) => {
+						if (!ap.paid_?) {
+							ap.paid_? (true);
+						}
+						// no ofx duedate sempre = data pagamento
+						// o arq é importado sem pagto para não alterar saldo 
+						// por isso usa duedate
+						ap.paymentDate (apofx.dueDate)
+						ap.account (apofx.account)
+						var compl = ap.complement
+						ap.complement (compl + " " + apofx.obs)
+						ap.makeAsConsolidated
+					})
+
 					apofx.delete_!
 					JInt(1)
 				} catch {
@@ -179,6 +237,7 @@ object AccountPayableApi extends RestHelper with ReportRest with net.liftweb.com
 					value <- S.param("value") ?~ "value parameter missing" ~> 400
 					dueDateStr <- S.param("dueDate") ?~ "dueDate parameter missing" ~> 400
 					paymentDateStr <- S.param("paymentDate") ?~ "paymentDate parameter missing" ~> 400
+					exerciseDateStr <- S.param("exerciseDate") ?~ "exerciseDate parameter missing" ~> 400
 					paid = S.param("paid") openOr "False"
 					recurrence = S.param("recurrence") openOr "False"
 					movementType = S.param("type") ?~ "movementType parameter missing" ~> 400
@@ -214,6 +273,7 @@ object AccountPayableApi extends RestHelper with ReportRest with net.liftweb.com
 						def cashierObj = Cashier.findByKey(cashier.toLong)
 						def dueDate =  Project.strToDateOrToday(dueDateStr)
 						def paymentDate =  Project.strOnlyDateToDate(paymentDateStr)
+						def exerciseDate = Project.strToDateOrToday(exerciseDateStr)
 						def userId = if(user == "") {
 							0l
 						}else{
@@ -242,8 +302,8 @@ object AccountPayableApi extends RestHelper with ReportRest with net.liftweb.com
 								Empty
 							}
 						}
-						def register(valueReal:Double, date:Date) {
-
+						def register(valueReal:Double, dueDate:Date, exerciseDate:Date,
+							paymentDate:Date) {
 							val account =
 							AccountPayable
 							.createInCompany
@@ -253,7 +313,9 @@ object AccountPayableApi extends RestHelper with ReportRest with net.liftweb.com
 							.costCenter(costCenterId)
 							.obs(obs).complement(complement)
 							.value(valueReal.toDouble)
-							.dueDate(date)
+							.dueDate(dueDate)
+							.exerciseDate(exerciseDate)
+							.paymentDate(paymentDate)
 							.paid_?(paid.toBoolean)
 							.user(userId)
 							.account(accountStr.toLong)
@@ -286,7 +348,8 @@ object AccountPayableApi extends RestHelper with ReportRest with net.liftweb.com
 							}else{
 								BusinessRulesUtil.sunDate(dueDate,recurrence_type.toInt,recurrence_term.toInt)
 							}
-							register(value.toDouble,dueDate)
+							register(value.toDouble,dueDate, 
+								exerciseDate, paymentDate)
 							//JBool(
 							val rec =
 								Recurrence
@@ -321,10 +384,12 @@ object AccountPayableApi extends RestHelper with ReportRest with net.liftweb.com
 									def date = {
 									BusinessRulesUtil.sunDate(dueDate,Recurrence.MONTHLY,i)
 									}
-									register(value.toDouble/user_parcels.toDouble,date)
+									register(value.toDouble/user_parcels.toDouble,
+										date, date, null)
 								}
 							}else{
-								register(value.toDouble,dueDate)
+								register(value.toDouble,
+									dueDate, exerciseDate, paymentDate)
 							}
 							JBool(true)
 						}
@@ -519,7 +584,6 @@ object AccountPayableApi extends RestHelper with ReportRest with net.liftweb.com
 						Nil
 					}
 
-
 					def cashierLong:List[Long] = if(cashiers != "0"){
 						cashiers.split(",").map(_.toLong).toList
 					}else{
@@ -554,6 +618,8 @@ object AccountPayableApi extends RestHelper with ReportRest with net.liftweb.com
 											("complement",c.complement.is),
 											("obs_trunc",c.obs.is.substring(0,math.min (40, c.obs.is.length))),
 											("value",c.value.is.toFloat),
+											("aggregateValue",c.aggregateValue.is.toFloat),
+											("aggregateId",c.aggregateId.is),
 											("unitvalue",c.unitvalue.is.toFloat),
 											("amount",c.amount.is.toFloat),
 											("parcelnum",c.parcelNum.is.toInt),

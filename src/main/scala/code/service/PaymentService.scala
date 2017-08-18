@@ -217,6 +217,24 @@ object  PaymentService extends  net.liftweb.common.Logger  {
 		if(paymentType.deliveryContol_?.is){
 			validateDeliveryRules(paymentDetail)
 		}
+		// rigel 07/08/2017
+		// aqui na verdade tem "converter" reais em pontos
+		// talvez não deixar misturar ou fazer um proporcional
+		// mas neste caso todos os itens deveriam term preço em 
+		// pontos
+		// total total $           = xpontos total
+		//       val $ pt fidelity = y pontos
+		//
+		// mostrar os pontos que o cliente tem e o valor da compra 
+		// em pontos alertar se tem itens sem preço em pontos
+		// parametrizar se comprando com fidelidade gera pontos 
+		// fidelidade
+		// talvez salvar o valor em pontos no paymentdetail
+		//
+		if(paymentType.fidelity_?.is){
+			val customer = payment.customer.obj.get
+			customer.unRegisterPoints(p.value, payment, paymentDetail, "Adicionando valor a pontos fidelidade")
+		}
 	}
 
 	def removePaymentDetails(detail:PaymentDetail) = {
@@ -226,10 +244,18 @@ object  PaymentService extends  net.liftweb.common.Logger  {
 		}
 		if(paymentType.customerRegisterDebit_?.is){
 			val customer = detail.payment.obj.get.customer.obj.get
-			customer.registerDebit(detail.value.is.toDouble, detail.payment.obj.get,detail, "Removendo atendimento de conta cliente")//incremente customer account
+			customer.registerDebit(detail.value.is.toDouble, 
+			detail.payment.obj.get,detail, 
+			"Removendo atendimento de conta cliente")//incremente customer account
 		}
 		if(paymentType.deliveryContol_?.is){
 			validateDeliveryRulesToRemove(detail)
+		}
+		if(paymentType.fidelity_?.is){
+			val customer = detail.payment.obj.get.customer.obj.get
+			customer.registerPointsPt(detail.value.is.toDouble, 
+			detail.payment.obj.get,detail, 
+			"Removendo atendimento de conta cliente")//incremente customer accountRegisterPoints(p.value*(-1), payment, paymentDetail, "Adicionando valor a pontos fidelidade")
 		}
 	}
 	private def validateDeliveryRulesToRemove(paymentDetail:PaymentDetail) = {

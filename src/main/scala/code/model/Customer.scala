@@ -112,6 +112,17 @@ class Customer extends BusinessPattern[Customer]{
     def registerPoints(value:Double, payment:Payment, treatmentDetail:TreatmentDetail, obs:String) = {
         this.valueInPoints(this.valueInPoints.is+value).save
     }
+
+    // rigel 07/082017 - criar history 
+    def registerPointsPt(value:Double, payment:Payment, paymentDetail:PaymentDetail, obs:String) = {
+        this.valueInPoints(this.valueInPoints.is+value).save
+    }
+
+    // rigel 07/082017 - criar history 
+    def unRegisterPoints(value:Double, payment:Payment, paymentDetail:PaymentDetail, obs:String) = {
+        this.valueInPoints(this.valueInPoints.is-value).save
+    }
+
     def registerDebit(value:Double, payment:Payment, paymentDetail:PaymentDetail, obs:String) = {
         _registerDebit(value)
         CustomerAccountHistory.create

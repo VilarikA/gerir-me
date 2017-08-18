@@ -39,12 +39,21 @@
     })
       data = google.visualization.arrayToDataTable(data);
       var options = {title:" Relatório de Caixa por Forma de Pagamento"}
-      var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
-      chart.draw(data, options);
+      var typeg = $("#graphtype").val()
+      if (typeg == "1") {
+        var chartP = new google.visualization.PieChart(document.getElementById('chart_div'));
+          chartP.draw(data, options);
+      } else {
+        var chartB = new google.visualization.BarChart(document.getElementById('chart_div'));
+          chartB.draw(data, options);
+      }
     }
   </script>     
   <form id="form_report" class="well form-search" method='get'>   
-    <h1><span class="lift:CompanySnippet.thumb"> </span>Relatório de Caixa por Forma de Pagamento</h1>
+    <h1>
+      <span class="lift:CompanySnippet.thumb"> </span>
+      <input class="report_title local_storage" id="title_cashier_payment_types" name="title_cashier_payment_types" size="30" type="text" value="Relatório de Caixa por Forma de Pagamento"/>
+    </h1>
     <div class="row">
       <span class='span8'> 
         <div class="clearfix">
@@ -60,10 +69,25 @@
             </div>
           </div>
         </div>
+        <div class="clearfix">
+        </div>
+        <div class="clearfix">
+          <label for="graphtype">Tipo de Gráfico</label>
+           <div class="input">
+              <div class='inline-inputs'>
+                <div class="input-prepend" style='float:left; padding-right:10px'>
+                  <select class="medium local_storage" id="graphtype" name="graphtype">
+                      <option value="1">Pizza</option>
+                      <option value="2">Barra</option>
+                  </select>
+                </div>
+              </div>
+           </div>
+        </div>
       </div>
     </span>
     <span class='span8'>
-      <div class="clearfix">
+      <div class="clearfix lift:SecuritySnippet.hasUnitModule">
         <label for="units">Unidades </label>
         <div class="input">
           <select name='units' class="units" id="units"></select>

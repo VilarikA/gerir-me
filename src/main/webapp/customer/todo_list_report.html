@@ -3,20 +3,39 @@
   <script src="/select2/select2.js"></script><script src="/select2/select2_locale_pt-BR.js"></script>
   <script src="/js/reports.js"></script>
   <script src="/js/jquery.tablesorter.pager.js"></script>
-  <script type="text/javascript" src="/js/product_line.js"></script>
-  <script type="text/javascript" src="/js/product_control_panel.js"></script>
+  <script type="text/javascript" src="/js/todo_list.js"></script>
+  <script type="text/javascript" src='/js/default/animal.js'>
+  </script>
   <script type="text/javascript">
   var customers = [];
   $(function(){
     $("#send_message").notificationField(true);
     $("#user").userField();
     $("#offsale").offSaleField(true);
-    $("#start").val(getDateBr(new Date().getAYearAgo())); 
+    if (AuthUtil.company.id == 1) {
+      $("#start_date").val(getDateBr(new Date(new Date().setDate(1))) );
+    } else {
+      $("#start_date").val(getDateBr(new Date().getAYearAgo())); 
+    }
     var fields = [];
     var total = 0;
     var totalcount = 0;
     fields[0] = "none"; // id customer
-    fields[1] = "date";
+//    fields[1] = "date";
+    fields[1] = {
+      type : "format",
+      decode: function(name, row){
+        var today = new Date();
+        var line = new Date (row[1])
+        if (line.getDateBr() == today.getDateBr()) {
+          return "<img src='/images/account_customer.png' width='16'/>"
+        } else if (line > today) {
+          return "<img src='/images/good.png' width='16'/>"
+        } else {
+          return "<img src='/images/bad.png' width='16'/>"
+        }
+      }
+    };
     fields[4] = {
       type : "format",
       decode: function(name, row){
@@ -63,6 +82,19 @@
         return "<a href='/user/edit?id=" + row[13] + "' target='_user_maste'>" + name + "</a>";
       }
     };
+    fields[12] = {
+      type : "format",
+      decode: function(name, row) {
+        return "<a class='btn' href='/treatment/treatment?id="+row[12]+"' title='Editar a atividade' target='_treatment_maste'>Editar</a>" + "<a class='btn primary' onclick='new_detail(" + row[0] +',"' +row[3]+ '"' + ")'" + " title='Inserir novo serviço para este cliente/paciente' target=''>Inserir_novo</a> " 
+      }
+    };
+    fields[13] = {
+      type : "format",
+      decode: function(name, row) {
+        return "<a class='btn danger' onclick='del_detail(" + row[14] +")'  target=''>Excluir</a>"
+      }
+    };
+    fields[14] = "none"; // id treatmentdetail
 
     $("#unit").unitField(true,false);
     DataManager.getActivities(function(userObj){
@@ -118,19 +150,28 @@
                 <div class="inline-inputs">
                   <div class="input-prepend" style="float:left; padding-right:10px">
                     <span class="add-on"><img width="16" src="/images/calendar_addon.png"></span>
-                    <input type="text" class="input-small date" id='start' name="start" placeholder="Início"/>
+                    <input type="text" class="input-small date" id='start_date' name="start_date" placeholder="Início"/>
                   </div>
                   <div class="input-prepend" style="float:left; padding-right:10px">
                     <span class="add-on"><img width="16" src="/images/calendar_addon.png"></span>
-                    <input type="text" class="input-small date end_of_month" id='end' name="end" placeholder="Fim"/>
+                    <input type="text" class="input-small date end_of_month" id='end_date' name="end_date" placeholder="Fim"/>
                   </div>
                 </div>
               </div>
             </div>
             <div class="clearfix">
+                <label for="status_todo">Status</label>
+                <div class="input">
+                  <select class='local_storage' multiple="multiple" id="status_todo" name="status_todo">
+                      <option value="0">Agendado</option>
+                      <option value="3">Atendido</option>
+                  </select>
+              </div>
+            </div>
+            <div class="clearfix">
                 <label for="user"><span data-i18n='Profissionais'></span></label>
                 <div class="input">
-                <select multiple="multiple"  id='user' name="user">
+                <select class="local_storage" multiple="multiple"  id='user' name="user">
                 </select>
               </div>
             </div>
@@ -158,6 +199,9 @@
             <div class="clearfix">
               <label for=""></label>
                <div class="input">
+                  <div style="float:left; padding-right:10px" class="input-prepend">
+                    <a class="btn primary" id="new_todo">Inserir novo</a>
+                  </div> 
                   <button type="button" id="send" class="btn success">Buscar</button>
                </div>
             </div>                        
@@ -232,4 +276,114 @@
       <tbody>
       </tbody>
   </table>
+  <div id="todo_modal" style="width: 60%; left: 20%; margin: auto auto auto auto; top:5%; height:100%; max-height:100%;" class="modal hide">
+    <div class="modal-header" style="border-bottom:none">
+      <a href="#" class="close">&times;</a>
+      <h3 class='hide_mobile' style="position: relative;margin: auto;margin-left: 10px;margin-right: 10px;text-align: center;">
+        Adicionar Atividade <span class="lift:CompanySnippet.thumb"> </span>
+      </h3>
+    </div>
+    <div class="modal-body ">
+      <div class="row">       
+        <form>
+          <div id="treatment_div_span">
+            <div class="well">
+              <input class="btn success b_add_todo" id="b_add_todo" type="button" value="Salvar">
+            </div>
+            <div class="span12">
+              <div class="clearfix">
+                <label for='customer'>
+                  <img class="customer_search_button" width='24' src="/images/search.png"/>
+                </label>
+                <div class="input">
+                  <div class='inline-inputs'>
+                    <span>
+                      <input class='mini id_customer_search'  id="cutomer_id_treatment" name='customer' /> 
+                      <input class="disabled name_customer_search" name="name_customer" id="cutomer_name_treatment" size="30" type="text" placeholder="Nome" disabled=""/>
+                    </span>
+                    <span class="help-block"><span data-i18n='Cliente'></span> que será atendido
+                      <img id="customer_add_button" width='24' src="/images/add.png" alt="Cadastro rápido"/>
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <div class="clearfix lift:SecuritySnippet.hasOffSaleModule">
+                <label for="offsale">Convênio</label>
+                 <div class="input">
+                    <select name="offsale" id='offsale'></select>
+                 </div>
+              </div>                  
+              <input type="hidden" class="has-pet-system lift:SecuritySnippet.isEbellepetSystem" value="1">
+              <div class="clearfix lift:SecuritySnippet.isEbellepetSystem">
+                <label for="animal">Pet</label>
+                  <div class="input">
+                      <select name="animal" id="animal"></select>
+                  <a href="#" title="Ir para animal"> <img src="/images/pets.png" width="32" onclick="openAnimalSelected()"></a>
+                  <a href="#" title="Prontuário"> <img src="/images/records.png" width="32" onclick='openAnimalRecordSelected()'></a>
+                  <a href="#" title="Cadastro rápido"> <img src="/images/add.png" width="32" onclick='openAnimalRapidAdd()'></a>
+                </div>
+              </div>                  
+              <div class="clearfix">
+                <label for="name"><span data-i18n='Profissionais'></label>
+                  <div class="input">
+                      <select class='local_storage' id='user_todo' name='user_todo'></select>
+                  </div>
+              </div>
+              <div class="clearfix">
+                <label for="activity"><span data-i18n='Serviço'></span> </label>
+                <div class="input">
+                  <div class="inline-inputs">
+                      <div style="float:left; padding-right:10px" class="input-prepend">
+                        <span class="add-on"><img width="16" src="/images/cut.png"></span> 
+                        <select name="activity" id='activity' class="local_storage"></select>
+                      </div>
+                  </div>
+                </div>
+              </div>              
+              <div class="clearfix">
+                <label for="start">Data</label>
+                  <div class="input">
+                    <div class="inline-inputs">
+                        <div style="float:left; padding-right:10px" class="input-prepend">
+                          <span class="add-on"><img width="16" src="/images/calendar_addon.png"></span>
+                          <input type="text" size="19" name="start" id="start" class="input-small date"/>
+                        </div>
+                        <input class="btn primary tomorrow_todo" id="tomorrow_todo" type="button" value="Amanhã">
+                        <input class="btn primary nextweek_todo" id="nextweek_todo" type="button" value="1 Semana">
+                        <input class="btn primary nextmonth_todo" id="nextmonth_todo" type="button" value="1 Mês">
+                    </div>
+                  </div>
+              </div>
+              <div class="clearfix">
+                <label for="hour_start">Hora Início/Fim</label>
+                  <div class="input">
+                    <div class="inline-inputs">
+                        <div style="float:left; padding-right:10px" class="input-prepend">
+                          <span class="add-on"><img width="16" src="/images/clock.png"></span>
+                          <input type="text" size="19" name="hour_start" id="hour_start" class="mini time"/>
+                        </div>
+                        <div style="float:left; padding-right:10px" class="input-prepend">
+                          <span class="add-on"><img width="16" src="/images/clock.png"></span>
+                          <input type="text" size="19" name="hour_end" id="hour_end" class="mini time"/>
+                        </div>
+                    </div>
+                  </div>
+              </div>
+              <div class="clearfix">
+                <label>Obs </label>
+                <div class="input">
+                  <div class="inline-inputs">
+                    <textarea style = "width: 350px" name="obs" id="obs"></textarea>
+                  </div>
+                </div>
+              </div>                     
+            </div>
+            <div class="well">
+              <input class="btn success b_add_todo" id="b_add_todo" type="button" value="Salvar">
+            </div>
+          </div>                    
+        </form>
+      </div>
+  </div>  
+
  </div>

@@ -507,6 +507,14 @@ object Reports2 extends RestHelper with ReportRest with net.liftweb.common.Logge
 					}
 				}
 
+				def status = S.param("status_todo") match {
+					case Full(p) if(p != "")=> " and tr.status in(%s)".format(p)
+					case _ => S.param("statys_todo[]") match {
+						case Full(p) => " and tr.status in(%s)".format(S.params("status_todo[]").filter(_ != "").foldLeft("0")(_+","+_))
+						case _ => " and 1=1 " 
+					}
+				}
+
 				def prod = 	 S.param("product") match {
 					case Full(p) if(p != "")=> " and pr.id in(%s)".format(p)
 					case _ => S.param("product[]") match {
@@ -515,11 +523,11 @@ object Reports2 extends RestHelper with ReportRest with net.liftweb.common.Logge
 					}
 				}
 
-				def start:Date = S.param("start") match {
+				def start:Date = S.param("start_date") match {
 					case Full(p) => Project.strToDateOrToday(p)
 					case _ => new Date()
 				}
-				def end:Date = S.param("end") match {
+				def end:Date = S.param("end_date") match {
 					case Full(p) => Project.strToDateOrToday(p)
 					case _ => new Date()
 				}
@@ -538,16 +546,23 @@ object Reports2 extends RestHelper with ReportRest with net.liftweb.common.Logge
 					select bc.id, tr.dateevent, 
 					fu_dt_humanize (tr.dateevent),
 					to_char (tr.start_c, 'hh24:mi'), tr.status, pr.name, bc.name as cliente, 
-					(select tr1.status || ' ' || tr1.detailtreatmentastext || ' ' || tr1.dateevent from treatment tr1 where tr1.customer = bc.id 
+					(select case 
+					  when tr1.status = 1 then 'faltou' 
+					  when tr1.status = 8 then 'desmarcou' 
+					  end || ' ' || tr1.detailtreatmentastext || ' ' || 
+					  to_char (tr1.dateevent,'DD/MM/YYYY') from treatment tr1 where tr1.customer = bc.id 
 					and tr1.id in 
-					(select max (tr2.id) from treatment tr2 where tr2.customer = tr.customer and tr2.status in (1,2) and tr2.dateevent < date(now()))),
+					(select max (tr2.id) from treatment tr2 where tr2.customer = tr.customer and tr2.status in (1,8) and tr2.hasdetail = true and tr2.dateevent < date(now()))),
 					trim (tr.obs || ' ' || td.obs), 
 					trim (bc.mobile_phone || ' ' || bc.phone || ' ' || bc.email_alternative || ' ' || bc.email) as telefone ,
 					cu.short_name,
 					bp.name as profissional, 
-					tr.id, /* action troca status atendido */ /* action edita obs */
+					tr.id, 
+					/* action troca status atendido */ 
+					/* action edita obs */
 					/* action desmarca e cria outro */
-					bp.id
+					bp.id,
+					td.id
 					from treatment tr 
 					inner join business_pattern bc on bc.id = tr.customer
 					inner join business_pattern bp on bp.id = tr.user_c
@@ -555,7 +570,9 @@ object Reports2 extends RestHelper with ReportRest with net.liftweb.common.Logge
 					inner join companyunit cu on cu.id = tr.unit
 					inner join product pr on pr.id = td.activity and pr.crmservice = true
 					--left join project po ligar ao treatment para orçamento etc
-					where tr.status in (0,3) and tr.company = ? and tr.dateevent between (?) and (?)
+					where tr.status in (0,3) and tr.company = ? 
+					and tr.dateevent between (?) and (?)
+					%s
 					%s
 					%s
 					%s
@@ -566,7 +583,7 @@ object Reports2 extends RestHelper with ReportRest with net.liftweb.common.Logge
 					/* project class */
 					order by tr.dateevent desc, bp.name asc
 				"""
-				toResponse(SQL.format(unit, offsale, user, prod),
+				toResponse(SQL.format(status, unit, offsale, user, prod),
 					List(AuthUtil.company.id.is, start, end))
 			}
 
@@ -922,21 +939,21 @@ object Reports2 extends RestHelper with ReportRest with net.liftweb.common.Logge
 				select * from (
 				select * from (
 				select to_char (date('2001-01-01'),'MON/YY'), bc.name, 
-				sum (mo.value), date('2001-01-01') as date_c, true from 
+				coalesce (sum (mo.value),0), date('2001-01-01') as date_c, true from 
 				monthly mo
 				left join business_pattern bc on bc.id = mo.business_pattern
 				where mo.company = ? and mo.status = 1 --and mo.paid = true 
 				and mo.value > 0.01
-				and mo.dateexpiration between date (?) and date (?)
+				and date (mo.dateexpiration) between date (?) and date (?)
 				%s
 				group by bc.name
 				order by bc.name) as data1
 				union  
 				select * from (
 				select substr (short_name_year || mo.paid,1,7), bc.name, 
-				sum (mo.value), date_c, mo.paid from dates 
+				coalesce (sum (mo.value),0), date_c, mo.paid from dates 
 				left join monthly mo on mo.company = ? and mo.status = 1
-				and mo.dateexpiration between start_of_month and end_of_month 
+				and date(mo.dateexpiration) between start_of_month and end_of_month 
 				left join business_pattern bc on bc.id = mo.business_pattern
 				where date_c between date (?) and date (?) and day = 1 and mo.value > 0.02
 				%s
@@ -944,9 +961,9 @@ object Reports2 extends RestHelper with ReportRest with net.liftweb.common.Logge
 				order by date_c, short_name_year, bc.name, mo.paid) as data1
 				union  
 				select * from (select substr (short_name_year || mo.paid,1,7), 'V ' || (select name from company where id = mo.company) , 
-				sum (mo.value), date_c, mo.paid from dates 
+				coalesce (sum (mo.value),0), date_c, mo.paid from dates 
 				left join monthly mo on mo.company = ? and mo.status = 1
-				and mo.dateexpiration between start_of_month and end_of_month 
+				and date(mo.dateexpiration) between start_of_month and end_of_month 
 				where date_c between date (?) and date (?) and day = 1 and mo.value > 0.02
 				%s
 				group by date_c, short_name_year, mo.paid, mo.company
@@ -955,7 +972,7 @@ object Reports2 extends RestHelper with ReportRest with net.liftweb.common.Logge
 				select * from (select substr (short_name_year || mo.paid,1,7), 'Q ' || (select name from company where id = mo.company) , 
 				count (distinct mo.business_pattern), date_c, mo.paid from dates 
 				left join monthly mo on mo.company = ? and mo.status = 1
-				and mo.dateexpiration between start_of_month and end_of_month 
+				and date(mo.dateexpiration) between start_of_month and end_of_month 
 				where date_c between date (?) and date (?) and day = 1 and mo.value > 0.02
 				%s
 				group by date_c, short_name_year, mo.paid, mo.company
@@ -1736,7 +1753,7 @@ object Reports2 extends RestHelper with ReportRest with net.liftweb.common.Logge
 					ap.typemovement,
 					case when (ap.typemovement = 0) then ap.value else null end as entrada , 
 					case when (ap.typemovement = 1) then ap.value else null end as saida , 
-					ap.paid, conciliate, ap.id, ap.id
+					ap.paid, conciliate, ap.id, ap.id, ap.category
 					from accountpayable ap 
 					inner join accountcategory ct on ct.id = ap.category
 					left join business_pattern bp on bp.id = ap.user_c
@@ -1751,7 +1768,7 @@ object Reports2 extends RestHelper with ReportRest with net.liftweb.common.Logge
 					ap.typemovement,
 					case when (ap.typemovement = 0) then ap.value else null end as entrada , 
 					case when (ap.typemovement = 1) then ap.value else null end as saida , 
-					ap.paid, conciliate, ap.id, ap.id
+					ap.paid, conciliate, ap.id, ap.id, ap.category
 					from accountpayable ap 
 					inner join accountcategory ct on ct.id = ap.category
 					left join business_pattern bp on bp.id = ap.user_c
@@ -1770,9 +1787,14 @@ object Reports2 extends RestHelper with ReportRest with net.liftweb.common.Logge
 			case "report" :: "account_ofx_conciliation" :: Nil Post _ => {
 
 				def account:String = S.param("account") match {
-					case Full(s) if(s != "") => "and ap2.account = %s".format (s)
+					case Full(s) if(s != "") => " and ap.account = %s ".format (s)
 					case _ => " and 1 = 1 " 
 				}
+
+				val show_conciliated:String = S.param("show_conciliated") match {
+					case Full(p) if(p != "")=> " and 1 = 1 "
+					case _ => " and ap1.conciliate = 0 "
+				}			
 
 				def start:Date = S.param("start") match {
 					case Full(p) => Project.strToDateOrToday(p)
@@ -1782,25 +1804,36 @@ object Reports2 extends RestHelper with ReportRest with net.liftweb.common.Logge
 					case Full(p) => Project.strToDateOrToday(p)
 					case _ => new Date()
 				}
+				def margin:Double = S.param("margin") match {
+					case Full(p) if(p != "") => p.toDouble
+					case _ => 0;
+				}
+
 				lazy val SQL_REPORT = """
-					select ap.duedate, ap.obs, ap.typemovement , ap.value, ap.id, 
-					ap1.obs, ap1.value, ap1.id,
-					ap2.obs, ap2.value, ap2.id,
-					ap.category
+					select ap.duedate, ap.obs, ap.typemovement, 
+					ap.value, ap.id, 
+					ap1.obs, ap1.value, ap1.duedate, 
+					ap1.id,
+					ap1.aggregatevalue, ap1.aggregateid,
+					ap1.conciliate,
+					ap.category, ap1.category
 					from accountpayable ap 
-					left join accountpayable ap1 on (ap1.paymentdate = ap.paymentdate or ap1.duedate = ap.paymentdate 
-					or ap1.paymentdate = ap.duedate or ap1.duedate = ap.duedate) and ap1.value = ap.value 
-					and ap1.toconciliation = false and ap.company = ap1.company
-					left join accountpayable ap2 on ap2.duedate between date(?) and date (?) and ap2.value = ap.value 
-					and ap2.toconciliation = false and ap.company = ap2.company %s
+					left join accountpayable ap1 on ((ap1.paymentdate = ap.paymentdate or ap1.duedate = ap.paymentdate 
+					  or ap1.paymentdate = ap.duedate or ap1.duedate = ap.duedate) 
+					  and (ap1.value = ap.value or (ap1.aggregatevalue > (ap.value * ((100-?)/100)) and ap1.aggregatevalue < (ap.value * ((100+?)/100))))
+					  or (ap1.duedate between date(?) and date (?) and
+					     (ap1.value = ap.value or (ap1.aggregatevalue > (ap.value * ((100-?)/100)) and ap1.aggregatevalue < (ap.value * ((100+?)/100))))))
+					  and ap1.toconciliation = false and ap.company = ap1.company
+					  %s
 					where ap.company = ? 
 					and ap.duedate between date(?) and date (?)
 					and ap.toconciliation = true
-					order by --ap1.obs, 
-					ap.duedate, ap.id
+					%s
+					order by 
+					ap.duedate, ap.id, (ap1.value = ap.value)
 					"""
-				toResponse(SQL_REPORT.format(account, account),
-					List(start, end, AuthUtil.company.id.is, start, end))
+				toResponse(SQL_REPORT.format(show_conciliated, account),
+					List(margin, margin, start, end, margin, margin, AuthUtil.company.id.is, start, end))
 			}
 			case "report" :: "offsaleproduct_cost" :: Nil Post _ =>{
 				val offsales_param_name = S.param("offsales[]") match {

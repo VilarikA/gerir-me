@@ -23,6 +23,15 @@ class  AccountSnippet  extends BootstrapPaginatorSnippet[Account] {
 	*/
 	def pageObj = Account
 
+	def units:List[Long] = S.param("units") match {
+		case Full(s) if(s != "") => {
+			S.params("units").map(_.toLong)
+		}
+		case _ => {
+			Nil
+		}
+	}
+
 	def findForListParamsWithoutOrder: List[QueryParam[Account]] = List(Like(Account.search_name,"%"+BusinessRulesUtil.clearString(name)+"%"))
 
 	def findForListParams: List[QueryParam[Account]] = List(Like(Account.search_name,"%"+BusinessRulesUtil.clearString(name)+"%"),OrderBy(Account.name, Ascending), StartAt(curPage*itemsPerPage), MaxRows(itemsPerPage))
@@ -47,6 +56,7 @@ class  AccountSnippet  extends BootstrapPaginatorSnippet[Account] {
 			bind("f", xhtml,"name" -> Text(ac.name.is),
 							"allowcashierout" -> Text(if(ac.allowCashierOut_?.is){ "Sim" }else{ "Não" }),
 							"value" -> Text(ac.value.is.toString),
+							"balanceunits" -> <table>{ac.balanceUnits.filter((au) => { units.size ==0 || units.contains(au.unit.is) }).map((au) => <tr><td>{au.unit.obj.get.short_name} </td> <td>{au.value.is.toString}</td></tr>)}</table>,
 							"actions" -> <a class="btn" href={"/financial_admin/account?id="+ac.id.is}>Editar</a>,
 							"delete" -> SHtml.submit("Excluir",delete,"class" -> "btn danger","data-confirm-message"->{" excluir a conta "+ac.name.is}),
 							"_id" -> SHtml.text(ac.id.is.toString, id = _),

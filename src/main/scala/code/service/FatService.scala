@@ -32,17 +32,86 @@ object FatService extends net.liftweb.common.Logger {
 				//(paymentType,total)
 				if (paymentType.receiveAtSight_?.is || paymentType.receiveAtSight_?.is) {
 					if (paymentType.defaltAccount.obj.isEmpty) {
-				      throw new RuntimeException("Forma de pagamento " + paymentType.name.is + " precisa ter uma conta associada")
+				      throw new RuntimeException("Forma de pagamento " + 
+				      	paymentType.name.is + 
+				      	" precisa ter uma conta associada")
 					} else {
 						if (paymentType.defaltCategory.obj.isEmpty) {
-							println ("Forma de pagamento " + paymentType.name.is + " tem conta, mas não tem categoria associada")
-							throw new RuntimeException("Forma de pagamento " + paymentType.name.is + " tem conta, mas não tem categoria associada.\n\nQuando a forma de pagamento é faturada, é necessário que ela esteja parametrizada corretamente com uma conta e categoria para geração do financeiro.")
+						   throw new RuntimeException("Forma de pagamento " + 
+						   	paymentType.name.is + 
+						   	" tem conta, mas não tem categoria associada.\n\nQuando a forma de pagamento é faturada, é necessário que ela esteja parametrizada corretamente com uma conta e categoria para geração do financeiro.")
 						}
 					}	
 				}
 				factoryFatStrategy(paymentType).process(cashier, paymentType,
 					total.toDouble, paymentsByType(paymentTypeId))
 			})			
+		}
+		// rigel 03/08/2017
+		aggregatePtDt (cashier);
+	}
+
+	def aggregatePtDt (cashier:Cashier) = {
+		// rigel 03/08/2017
+		// faz agregação dos lancameentos gerados pelo fechamento do caixa
+		// por forma de pagamento e data (duedate)
+		val aclist = AccountPayable.findAllInCompany(
+				By(AccountPayable.cashier, cashier.id.is),
+				By(AccountPayable.auto_?,true),
+				OrderBy (AccountPayable.paymentType, Ascending),
+				OrderBy (AccountPayable.dueDate, Ascending));
+		if (aclist.length > 0) {
+			var dtAnt = new Date();
+			var pt = 0l;
+			var aggregId = 0l;
+			var count = 0;
+			var sum = 0.0;
+			var iteration = 0;
+			aclist.foreach((ac)=>{
+				iteration += 1;
+				if (ac.paymentType != pt || 
+					Project.dateToStr(dtAnt) != Project.dateToStr(ac.dueDate)) {
+					if (count == 1 && aggregId != 0l) {
+						// neste caso aggregou um só - então limpa
+						// o aggregateid
+						AccountPayable.findByKey (aggregId).get.
+						aggregateId(0).aggregateValue(0.0).save
+					} else if (aggregId != 0l) {
+						// neste caso aggregou mais de um
+						// salva o valoragregado no primeiro
+						AccountPayable.findByKey (aggregId).get.
+						aggregateValue(sum).save
+					}
+					dtAnt = ac.dueDate;
+					pt = ac.paymentType
+					aggregId = ac.id
+					count = 0;
+					sum = 0;
+				}
+				ac.aggregateId (aggregId)
+				ac.save
+				count += 1;
+				if (ac.typeMovement == AccountPayable.OUT) {
+					sum -= ac.value
+				} else {
+					sum += ac.value
+				}
+				// se for a ultima iteracao
+				// salva o valor agregado
+				if (iteration == aclist.length && aggregId != 0l) {
+					if (count == 1 && aggregId != 0l) {
+						// neste caso aggregou um só - então limpa
+						// o aggregateid
+						AccountPayable.findByKey (aggregId).get.
+						aggregateId(0).aggregateValue(0.0).save
+					} else {
+						// neste caso aggregou mais de um
+						// salva o valoragregado no primeiro
+						AccountPayable.findByKey (aggregId).get.
+						aggregateValue(sum).save
+					}
+                }
+			});	
 		}
 	}
 	def factoryFatStrategy(paymentType:PaymentType)={
@@ -96,7 +165,6 @@ trait FatChain{
 			Empty
 		}
 	}
-//  def buildDefaltAccount(cashier:Cashier,paymentType:PaymentType,value:Double,obs:String = "Faturamento fechamento do caixa (%s) valores em (%s)") = {
 	def buildDefaltAccount(cashier:Cashier,paymentDetail:PaymentDetail,paymentType:PaymentType,value:Double,obs:String = "Cx %s f.pagto (%s)-fechamento") = {
 			val realValue = if(paymentType.defaltDicountCategory.obj.isEmpty){
 							value * ((100-paymentType.percentDiscountToReceive.is)/100)
@@ -266,7 +334,6 @@ object ReceiveCheque extends FatChain{
 		paymentDetail.foreach((pd)=>{
 			try{
 				val cheque = pd.cheque
-//				buildDefaltAccount(cashier, paymentType, cheque.value.toDouble,"Faturamento cheque do cliente (%s)".format(cheque.customer.obj.get.name.is)+" no caixa (%s)").foreach((am)=>{
 				buildDefaltAccount(cashier, pd, paymentType, cheque.value.toDouble,
 					"Cx %s %s" + " f.pagto (%s)".format(cheque.customer.obj.get.name.is)+"-cheque").foreach((am)=>{
 							am match {
@@ -296,14 +363,26 @@ object ReceiveParceled extends FatChain{
 	def process(cashier:Cashier, paymentType:PaymentType,value:Double, paymentDetail:List[PaymentDetail]=Nil):Unit = {
 		paymentDetail.foreach((pd)=>{
 			try{
-//				buildDefaltAccount(cashier, paymentType, pd.value.is.toDouble,"Faturamento parcelado cliente: (%s)".format(pd.payment.obj.get.customer.obj.get.name.is)+" no caixa (%s)").foreach((am)=>{
+				// a primeira tentativa de garegar foi com cada pagamento de
+				// cartão e seu desconto de taxa
+				// depois resolvi agregar tudo de qq forma de pagto numa mesma data
+				// isso talve pudesse ser um parm neste caso descomentar a atribuição 
+				// do aggregatedId e o if na sequencia
+				// rigel ago/2017
+				var aggregId = 0l;
 				buildDefaltAccount(cashier, pd, paymentType, pd.value.is.toDouble,"Cx %s " + "(%s)".format(pd.payment.obj.get.customer.obj.get.name.is)+"-parcelado").foreach((am)=>{
 							am match {
 								case Full(movement) => {
 									movement.dueDate(pd.dueDate.is)
 											.paid_?(false)
 											.user (pd.payment.obj.get.customer.obj.get.id.is)
+											//.aggregateId (aggregId)
 											.save
+									//if (aggregId == 0) {
+									//	aggregId = movement.id
+									//	movement.aggregateId (movement.id)
+									//	movement.save;
+									//}
 								}
 								case _ => 
 							}
