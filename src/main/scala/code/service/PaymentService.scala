@@ -81,6 +81,9 @@ object  PaymentService extends  net.liftweb.common.Logger  {
 						Treatment.Paid, request.status2,
 						true, Full(payment), false)
 					payment.customer(processedTreatments.head.customer)
+					val ac = Customer.findByKey (processedTreatments.head.customer).get
+					ac.lastSaleDate(request.dataTreatmentsAsDate).
+					is_customer_?(true).save;
 					processedTreatments.foreach((t) => payment.treatments += t)
 					request.payments filter(!_.removed) foreach((p:PaymentDTO) => {
 						createPaymentDetail(p,payment)
