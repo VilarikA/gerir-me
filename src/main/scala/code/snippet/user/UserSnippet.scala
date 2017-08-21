@@ -64,7 +64,13 @@ class  UserSnippet extends BootstrapPaginatorSnippet[User] {
 	def degrees = ("0" -> "Selecione um grau de instrução")::InstructionDegree.findAll(OrderBy(InstructionDegree.name, Ascending)).map(t => (t.id.is.toString,t.name.is))
 
 	def units = ("0", "Selecione uma Unidade") :: CompanyUnit.findAllInCompany(OrderBy(CompanyUnit.name, Ascending)).map(t => (t.id.is.toString, t.name.is))
-	def groups = ("0", "Selecione um Grupo") :: UserGroup.findAllInCompany(OrderBy(UserGroup.name, Ascending)).map(t => (t.id.is.toString, t.name.is))
+    val group_label = if (AuthUtil.company.appType.isEdoctus || AuthUtil.company.appType.isEphysio
+      || AuthUtil.company.appType.isEsmile || AuthUtil.company.appType.isEbellepet) {
+    	"uma Especialidade"
+    } else {
+    	"um Grupo"
+    }
+	def groups = ("0", "Selecione " + group_label) :: UserGroup.findAllInCompany(OrderBy(UserGroup.name, Ascending)).map(t => (t.id.is.toString, t.name.is))
 
 	def civilstatuses = ("0" -> "Não Informado")::CivilStatus.findAll(OrderBy(CivilStatus.name, Ascending)).map(t => (t.id.is.toString,t.name.is))
 

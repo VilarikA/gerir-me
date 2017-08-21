@@ -326,8 +326,9 @@ class Boot {
       if(AuthUtil.? && AuthUtil.company.appType.isEgrex){
           "Grupo de Líderes"
         }else{
-          if(AuthUtil.? && AuthUtil.company.appType.isEsmile){
-              "Grupo de Profissionais"
+          if(AuthUtil.? && (AuthUtil.company.appType.isEdoctus
+            || AuthUtil.company.appType.isEsmile || AuthUtil.company.appType.isEphysio)){
+              "Especialidade de Profissionais"
             }else{
               "Grupo de Profissionais"
             }

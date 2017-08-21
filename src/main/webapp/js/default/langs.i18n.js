@@ -5,6 +5,8 @@ var Languages = {
 		"Profissionais" : "Profissionais",
 		"Profissional" : "Profissional",
 		"Assistente" : "Assistente",
+		"Grupo" : "Grupo",
+		"Grupos" : "Grupos",
 		"Responsável" : "Responsável",
 		"Serviços" : "Serviços",
 		"Serviço" : "Serviço",
@@ -32,6 +34,8 @@ var Languages = {
 	esmile : {
 		"Clientes" : "Pacientes",
 		"Cliente" : "Paciente",
+		"Grupo" : "Especialidade",
+		"Grupos" : "Especialidades",
 		"Serviços" : "Procedimentos",
 		"Serviço" : "Procedimento",
 		"Questionários" : "Prontuários",
@@ -40,6 +44,8 @@ var Languages = {
 	edoctus : {
 		"Clientes" : "Pacientes",
 		"Cliente" : "Paciente",
+		"Grupo" : "Especialidade",
+		"Grupos" : "Especialidades",
 		"Serviços" : "Procedimentos",
 		"Serviço" : "Procedimento",
 		"Questionários" : "Prontuários",
