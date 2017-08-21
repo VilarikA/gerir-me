@@ -105,7 +105,9 @@
         return
       }
       renderReport(url,fields,$("#form_report").serializeObject(),"#grid", function(data){
+        var count = 0;
         data.forEach(function(row){
+          count += 1;
           //alert ("vaiiii " + parseFloat(row[6]) + "   " + parseFloat(row[7]))
           if (row[10] != 0) {
             if (row[6] == 0) {
@@ -115,6 +117,7 @@
             }
           }
         });
+        alert ("Count " + count);
         $("#conciliated").val((conciliated).formatMoney());
         total_gap = ($('#end_value').val()-conciliated);
         $("#total_gap").val((total_gap).formatMoney());
