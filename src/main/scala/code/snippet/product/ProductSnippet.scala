@@ -48,7 +48,7 @@ class  ProductSnippet  extends BootstrapPaginatorSnippet[Product] with SnippetUp
 	}
 
 	def types = AuthUtil.company.productTypes.map(t => (t.id.is.toString,t.name.is))
-	def brands = Brand.findAllInCompany(OrderBy(Brand.name, Ascending)).map(t => (t.id.is.toString,t.name.is))
+	def brands = ("0", "Selecione um Fabricante") :: Brand.findAllInCompany(OrderBy(Brand.name, Ascending)).map(t => (t.id.is.toString,t.name.is))
 	def igroups = InvoiceGroup.findAllInCompanyOrDefaultCompany(OrderBy(InvoiceGroup.name, Ascending)).map(t => (t.id.is.toString,t.name.is))
 	def uoms = ("0" -> "Selecione uma unidade de medida")::UnitofMeasure.findAll(OrderBy(UnitofMeasure.name, Ascending)).map(t => (t.id.is.toString,t.name.is))
 

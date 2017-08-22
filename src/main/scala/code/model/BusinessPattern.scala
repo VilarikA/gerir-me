@@ -300,6 +300,13 @@ with PerCity{
     }    
     object is_prospect_? extends MappedBoolean(this){
         override def dbColumnName = "is_prospect"
+        override def defaultValue = {
+          if (AuthUtil.company.appType.isEsmile) {
+            true
+          } else {
+            false
+          }
+        }
     }
 	
 	  object is_suplier_? extends MappedBoolean(this){
@@ -385,8 +392,16 @@ with PerCity{
     }
     def defaultValueIsCustomer = true
     object is_customer_? extends MappedBoolean(this){
-        override def defaultValue = defaultValueIsCustomer
+        //override def defaultValue = defaultValueIsCustomer
         override def dbColumnName = "is_customer"
+        override def defaultValue = {
+          // agora a primeira venda transforma em cliente
+          if (AuthUtil.company.appType.isEsmile) {
+            false
+          } else {
+            defaultValueIsCustomer; //true
+          }
+        }
     }
     object is_brand_? extends MappedBoolean(this){
         override def defaultValue = false

@@ -1,396 +1,395 @@
 <div id="main" class="lift:surround?with=calendar-true-redesign;at=content">
 
 
-	<!-- ==========================
-		 CALENDAR JS FILES
-	=============================== -->
-	<script type="text/javascript" src="/js/event_busy_controller.js?_v25042015_"></script>
-	<script type="text/javascript" src="/js/calendar/CalendarManager.js?_v25042015_"></script>
-	<script type="text/javascript" src="/js/calendar/TreatmentStatusManager.js?_v25042015_"></script>
-	<script type="text/javascript" src="/js/calendar/TreatmentManger.js?_v25042015_"></script>
-	<script type="text/javascript" src="/js/calendar/CalendarScreen.js?_v25042015_"></script>
-	<script type="text/javascript" src="/js/calendar/calendarUtil.js?_v25042015_"></script>
-	<script type="text/javascript" src='/js/default/animal.js'></script>
-	<script type="text/javascript" src="/js/calendar/calendar.js?_v10052017_"></script>
+    <!-- ==========================
+         CALENDAR JS FILES
+    =============================== -->
+    <script type="text/javascript" src="/js/event_busy_controller.js?_v25042015_"></script>
+    <script type="text/javascript" src="/js/calendar/CalendarManager.js?_v25042015_"></script>
+    <script type="text/javascript" src="/js/calendar/TreatmentStatusManager.js?_v25042015_"></script>
+    <script type="text/javascript" src="/js/calendar/TreatmentManger.js?_v25042015_"></script>
+    <script type="text/javascript" src="/js/calendar/CalendarScreen.js?_v25042015_"></script>
+    <script type="text/javascript" src="/js/calendar/calendarUtil.js?_v25042015_"></script>
+    <script type="text/javascript" src='/js/default/animal.js'></script>
+    <script type="text/javascript" src="/js/calendar/calendar.js?_v10052017_"></script>
+
+    <!-- ==========================
+         FILTER ROW
+    =============================== -->
+    <div class="row filter">
+        <form class="vr-form">
+            <div class="col-xs-12 col-sm-6 col-md-4">
+                <label for="units">Unidade</label>
+                <select class="notselect21" style="width: 100%" name="units" id="units"></select>
+            </div>
+
+            <div class="col-xs-12 col-sm-6 col-md-4">
+                <label for="groups"><span data-i18n="Grupos"></span></label>
+                <select class="notselect21" style="width: 100%" name="groups" id='groups'></select>
+            </div>
+
+            <div class="col-xs-12 col-sm-6 col-md-4">
+                <label for="user"><span data-i18n="Profissional"></span></label>
+                <select class="notselect21" style="width: 100%" multiple="true" name="user" id="user"></select>
+            </div>
+        </form>
+
+        <!-- This button really needs to be hidden. -->
+        <button id="toggle_interval" name="toggle_interval" style="display: none"></button>
+    </div>
 
 
-	<!-- ==========================
-		 FILTER ROW
-	=============================== -->
-	<div class="row filter">
-		<form class="vr-form">
-			<div class="col-xs-12 col-sm-6 col-md-4">
-				<label for="units">Unidade</label>
-				<select class="notselect21" style="width: 100%" name="units" id="units"></select>
-			</div>
-
-			<div class="col-xs-12 col-sm-6 col-md-4">
-				<label for="groups">Grupo</label>
-				<select class="notselect21" style="width: 100%" name="groups" id='groups'></select>
-			</div>
-
-			<div class="col-xs-12 col-sm-6 col-md-4">
-				<label for="user"><span data-i18n="Profissional"></span></label>
-				<select class="notselect21" style="width: 100%" multiple="true" name="user" id="user"></select>
-			</div>
-		</form>
-
-		<!-- This button really needs to be hidden. -->
-		<button id="toggle_interval" name="toggle_interval" style="display: none"></button>
-	</div>
+    <!-- ==========================
+         CALENDAR WIDGET
+    =============================== -->
+    <div id="calendar" style="top: 0"></div>
 
 
-	<!-- ==========================
-		 CALENDAR WIDGET
-	=============================== -->
-	<div id="calendar" style="top: 0"></div>
+    <!-- ==========================
+         ...
+    =============================== -->
+    <span class='lift:UserSnippet.usersJsonFromCalendar'></span>
 
 
-	<!-- ==========================
-		 ...
-	=============================== -->
-	<span class='lift:UserSnippet.usersJsonFromCalendar'></span>
+    <!-- ==========================
+         ...
+    =============================== -->
+    <span class="lift:comet?type=TrasTratmentServerListener"></span>
 
 
-	<!-- ==========================
-		 ...
-	=============================== -->
-	<span class="lift:comet?type=TrasTratmentServerListener"></span>
+    <!-- ==========================
+         CUSTOMERS LIST MODAL
+    =============================== -->
+    <div id="treatment_class" class="modal fade" style="">
+        <div class="modal-header" style="border-bottom:none">
+            <a href="#" class="close">&times;</a>
+            <h3 style="position: relative;top: 28px;margin: auto;margin-left: auto;margin-right: auto;text-align: center;">
+                Lista de <span data-i18n='Clientes'></span>
+            </h3>
+        </div>
+        <div class="modal-body">
+            <div class="row">
+                <span class='span16'>
+                    <table id="table_treatment_class" class="bordered-table zebra-striped">
+                        <thead>
+                            <th><span data-i18n='Cliente'></span></th>
+                            <th>Status</th>
+                            <th>Ação</th>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </span>    
+            </div>
+        </div>
+    </div>
 
 
-	<!-- ==========================
-		 CUSTOMERS LIST MODAL
-	=============================== -->
-	<div id="treatment_class" class="modal fade" style="">
-		<div class="modal-header" style="border-bottom:none">
-			<a href="#" class="close">&times;</a>
-			<h3 style="position: relative;top: 28px;margin: auto;margin-left: auto;margin-right: auto;text-align: center;">
-				Lista de <span data-i18n='Clientes'></span>
-			</h3>
-		</div>
-		<div class="modal-body">
-			<div class="row">
-				<span class='span16'>
-					<table id="table_treatment_class" class="bordered-table zebra-striped">
-						<thead>
-							<th><span data-i18n='Cliente'></span></th>
-							<th>Status</th>
-							<th>Ação</th>
-						</thead>
-						<tbody>
-						</tbody>
-					</table>
-				</span>	
-			</div>
-		</div>
-	</div>
+    <!-- ==========================
+         ADD TREATMENT MODAL
+    =============================== -->
+    <div id="treatment_add" class="modal fade vr-modal" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
 
+                <!-- Header -->
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
 
-	<!-- ==========================
-		 ADD TREATMENT MODAL
-	=============================== -->
-	<div id="treatment_add" class="modal fade vr-modal" role="dialog">
-		<div class="modal-dialog">
-			<div class="modal-content">
+                    <div class="title">
+                        <span class="lift:CompanySnippet.thumb"></span>
+                        <h3>Adicionar atendimento</h3>
+                    </div>
+                </div>
 
-				<!-- Header -->
-				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal">&times;</button>
+                <!-- Body -->
+                <div class="modal-body">
 
-					<div class="title">
-						<span class="lift:CompanySnippet.thumb"></span>
-						<h3>Adicionar atendimento</h3>
-					</div>
-				</div>
+                    <!-- Tabs -->
+                    <ul class="nav nav-tabs">
 
-				<!-- Body -->
-				<div class="modal-body">
+                        <li class="dropdown" data-dropdown="dropdown">
+                            <a class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+                                Status <span class="caret"></span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li class='hide_on_paid'>
+                                    <a id="customer_preopen" type="button">
+                                        <img src="/images/treatment_preopen1.png" style="width: 16px;">
+                                        Pré Agendado
+                                    </a>
+                                </li>
 
-					<!-- Tabs -->
-					<ul class="nav nav-tabs">
+                                <li class='hide_on_paid'>
+                                    <a id="customer_open" type="button" >
+                                        <img src="/images/treatment_open1.png" style="width: 16px;">
+                                        Agendado
+                                    </a>    
+                                </li>
 
-						<li class="dropdown" data-dropdown="dropdown">
-							<a class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
-								Status <span class="caret"></span>
-							</a>
-							<ul class="dropdown-menu">
-								<li class='hide_on_paid'>
-									<a id="customer_preopen" type="button">
-										<img src="/images/treatment_preopen1.png" style="width: 16px;">
-										Pré Agendado
-									</a>
-								</li>
+                                <li class="hide_on_paid">
+                                    <a class="" id="customer_confirmed" type="button">
+                                        <img src="/images/treatment_confirmed1.png" style="width: 16px;">
+                                        Confirmado    
+                                    </a>
+                                </li>
 
-								<li class='hide_on_paid'>
-									<a id="customer_open" type="button" >
-										<img src="/images/treatment_open1.png" style="width: 16px;">
-										Agendado
-									</a>	
-								</li>
+                                <li class="hide_on_paid">
+                                    <a class="" id="customer_arrived" type="button">
+                                        <img src="/images/treatment_arrived1.png" style="width: 16px;">
+                                        Chegou
+                                    </a>
+                                </li>
 
-								<li class="hide_on_paid">
-									<a class="" id="customer_confirmed" type="button">
-										<img src="/images/treatment_confirmed1.png" style="width: 16px;">
-										Confirmado	
-									</a>
-								</li>
+                                <li class="divider"></li>
 
-								<li class="hide_on_paid">
-									<a class="" id="customer_arrived" type="button">
-										<img src="/images/treatment_arrived1.png" style="width: 16px;">
-										Chegou
-									</a>
-								</li>
+                                <li class='hide_on_paid'>
+                                    <a class="" id="customer_ready" type="button">
+                                        <img src="/images/treatment_ready1.png" style="width: 16px;">
+                                        Atendido
+                                    </a>                            
+                                </li>
 
-								<li class="divider"></li>
+                                <li class='hide_on_paid'>
+                                    <a class="" id="customer_missed" href="#" type="button">
+                                        <img src="/images/treatment_missed1.png" style="width: 16px;">
+                                        Faltou
+                                    </a>                            
+                                    <a class="" id="customer_reschedule" href="#" type="button">
+                                        <img src="/images/treatment_reschedule1.png" style="width: 16px;">
+                                        Desmarcou
+                                    </a>                            
+                                </li>
+                            </ul>
+                        </li>
 
-								<li class='hide_on_paid'>
-									<a class="" id="customer_ready" type="button">
-										<img src="/images/treatment_ready1.png" style="width: 16px;">
-										Atendido
-									</a>							
-								</li>
+                        <li>
+                            <a class="btn btn-primary" href="#" id="treatment_fit_show">Ver encaixe</a>
+                            <a class="btn btn-primary" href="#" id="treatment_fit">Encaixar</a>
+                        </li>
 
-								<li class='hide_on_paid'>
-									<a class="" id="customer_missed" href="#" type="button">
-										<img src="/images/treatment_missed1.png" style="width: 16px;">
-										Faltou
-									</a>							
-									<a class="" id="customer_reschedule" href="#" type="button">
-										<img src="/images/treatment_reschedule1.png" style="width: 16px;">
-										Desmarcou
-									</a>							
-								</li>
-							</ul>
-						</li>
+                        <li class="hide_mobile">
+                            <a class="btn btn-primary" id="keep_with_customer" href="#">
+                                <span id="keep_with_customer_text">Último <span data-i18n='Cliente'></span></span>
+                            </a>
+                        </li>
 
-						<li>
-							<a class="btn btn-primary" href="#" id="treatment_fit_show">Ver encaixe</a>
-							<a class="btn btn-primary" href="#" id="treatment_fit">Encaixar</a>
-						</li>
+                        <li>
+                            <a class="btn btn-danger" id="start_block" href="#">
+                                Bloqueio                        
+                            </a>
+                        </li>
+                    </ul>
 
-						<li class="hide_mobile">
-							<a class="btn btn-primary" id="keep_with_customer" href="#">
-								<span id="keep_with_customer_text">Último <span data-i18n='Cliente'></span></span>
-							</a>
-						</li>
+                    <div class="vr-tab-content">
+                        
+                        <!-- Add treatment form -->
+                        <form id="treatment_div_span" class="vr-form">
+                            <div class="row">
+                                <div class="col-xs-12 col-lg-4">
+                                    <label><span data-i18n="Profissional"></span>:</label>
+                                    <select name="users" class="notselect2" id="user_treatment" disabled></select>
+                                </div>
 
-						<li>
-							<a class="btn btn-danger" id="start_block" href="#">
-								Bloqueio						
-							</a>
-						</li>
-					</ul>
+                                <div class="col-xs-12 col-lg-2">
+                                    <label>Data:</label>
+                                    <input name="date" id="date_treatment" class="date small start_treatment form-control"/>
+                                </div>
 
-					<div class="vr-tab-content">
-						
-						<!-- Add treatment form -->
-						<form id="treatment_div_span" class="vr-form">
-							<div class="row">
-								<div class="col-xs-12 col-lg-4">
-									<label><span data-i18n="Profissional"></span>:</label>
-									<select name="users" class="notselect2" id="user_treatment" disabled></select>
-								</div>
+                                <div class="col-xs-12 col-lg-2">
+                                    <label>Início:</label>
+                                    <input  name="hour_start" id="hour_treatment" class="time mini form-control"/>
+                                </div>
 
-								<div class="col-xs-12 col-lg-2">
-									<label>Data:</label>
-									<input name="date" id="date_treatment" class="date small start_treatment form-control"/>
-								</div>
+                                <div class="col-xs-12 col-lg-2">
+                                    <label>Fim:</label>
+                                    <input  name="hour_end" id="hour_treatment_end" class="time mini form-control"/>
+                                </div>
 
-								<div class="col-xs-12 col-lg-2">
-									<label>Início:</label>
-									<input  name="hour_start" id="hour_treatment" class="time mini form-control"/>
-								</div>
+                                <input type="hidden" name="id" id="treatment_add_form_id"/>
 
-								<div class="col-xs-12 col-lg-2">
-									<label>Fim:</label>
-									<input  name="hour_end" id="hour_treatment_end" class="time mini form-control"/>
-								</div>
+                                <div class="col-xs-12 col-lg-2">
+                                    <label>&nbsp;</label><!-- Empty space due Bootstrap bug -->
+                                    <a type="button" onclick="CalendarScreen.registerPayment()" class="btn btn-success">
+                                        Pagar
+                                    </a>
+                                </div>
+                            </div>
 
-								<input type="hidden" name="id" id="treatment_add_form_id"/>
+                            <div class="row">
+                                <div class="col-xs-12 col-md-2">
+                                    <label for="command"><span data-i18n="Comanda"></span>: </label>
+                                    <input class="form-control command" id="command_treatment" name='command' />
+                                </div>
 
-								<div class="col-xs-12 col-lg-2">
-									<label>&nbsp;</label><!-- Empty space due Bootstrap bug -->
-									<a type="button" onclick="CalendarScreen.registerPayment()" class="btn btn-success">
-										Pagar
-									</a>
-								</div>
-							</div>
+                                <div class="col-xs-12 col-md-10">
+                                    <label>Cliente: </label>
+                                    <div>
+                                        <!-- <span> really needed, otherwise, the buttons order becomes wrong -->
+                                        <span class="vr-customer-select with-icons three-icons">
+                                            <input class="form-control id_customer_search" id="cutomer_id_treatment" name='customer' />
+                                            <input class="lift:SecuritySnippet.isMedicalSystem disabled name_customer_search use-fa with-icons three-icons" name="name_customer" id="cutomer_name_treatment" placeholder="Nome" disabled=""/>
+                                             <input class="lift:SecuritySnippet.isNotMedicalSystem disabled name_customer_search use-fa with-icons two-icons" name="name_customer" id="cutomer_name_treatment" placeholder="Nome" disabled=""/>
+                                          </span>
 
-							<div class="row">
-								<div class="col-xs-12 col-md-2">
-									<label for="command"><span data-i18n="Comanda"></span>: </label>
-									<input class="form-control command" id="command_treatment" name='command' />
-								</div>
+                                        <div x-search-customer-button class="vr-circle-icon">
+                                            <i class="fa fa-search" aria-hidden="true" title="Procurar cliente"></i>
+                                        </div>
 
-								<div class="col-xs-12 col-md-10">
-									<label>Cliente: </label>
-									<div>
-										<!-- <span> really needed, otherwise, the buttons order becomes wrong -->
-										<span class="vr-customer-select with-icons three-icons">
-											<input class="form-control id_customer_search" id="cutomer_id_treatment" name='customer' />
-											<input class="lift:SecuritySnippet.isMedicalSystem disabled name_customer_search use-fa with-icons three-icons" name="name_customer" id="cutomer_name_treatment" placeholder="Nome" disabled=""/>
- 											<input class="lift:SecuritySnippet.isNotMedicalSystem disabled name_customer_search use-fa with-icons two-icons" name="name_customer" id="cutomer_name_treatment" placeholder="Nome" disabled=""/>
-  										</span>
+                                        <div class="vr-circle-icon" id="customer_add_button">
+                                            <i class="fa fa-plus" aria-hidden="true" title="Cadastro rápido"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
 
-										<div x-search-customer-button class="vr-circle-icon">
-											<i class="fa fa-search" aria-hidden="true" title="Procurar cliente"></i>
-										</div>
+                            <div class="row lift:SecuritySnippet.hasOffSaleModule">
+                                <div class="col-xs-12">
+                                    <label for="offsale">Convênio:</label>
+                                    <select style="width: 100%" name="offsale" id="offsale"></select>
+                                </div>
+                            </div>
 
-										<div class="vr-circle-icon" id="customer_add_button">
-											<i class="fa fa-plus" aria-hidden="true" title="Cadastro rápido"></i>
-										</div>
-									</div>
-								</div>
-							</div>
+                            <div class="row lift:SecuritySnippet.isEbellepetSystem">
+                                <div class="col-xs-12">
+                                    <label for="animal">Pet:</label>
+                                    <select class="with-icons three-icons" name="animal" id="animal"></select>
+                                    <div class="vr-circle-icon"><i class="fa fa-paw" aria-hidden="true" title="Ir para animal" onclick="openAnimalSelected()"></i></div>
+                                    <div class="vr-circle-icon"><i class="fa fa-file-text" aria-hidden="true" title="Prontuário" onclick="openAnimalRecordSelected()"></i></div>
+                                    <div class="vr-circle-icon"><i class="fa fa-plus" aria-hidden="true" title="Cadastro rápido" onclick="openAnimalRapidAdd()"></i></div>
+                                </div>
+                            </div>
 
-							<div class="row lift:SecuritySnippet.hasOffSaleModule">
-								<div class="col-xs-12">
-									<label for="offsale">Convênio:</label>
-									<select style="width: 100%" name="offsale" id="offsale"></select>
-								</div>
-							</div>
+                            
 
-							<div class="row lift:SecuritySnippet.isEbellepetSystem">
-								<div class="col-xs-12">
-									<label for="animal">Pet:</label>
-									<select class="with-icons three-icons" name="animal" id="animal"></select>
-									<div class="vr-circle-icon"><i class="fa fa-paw" aria-hidden="true" title="Ir para animal" onclick="openAnimalSelected()"></i></div>
-									<div class="vr-circle-icon"><i class="fa fa-file-text" aria-hidden="true" title="Prontuário" onclick="openAnimalRecordSelected()"></i></div>
-									<div class="vr-circle-icon"><i class="fa fa-plus" aria-hidden="true" title="Cadastro rápido" onclick="openAnimalRapidAdd()"></i></div>
-								</div>
-							</div>
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <label for="obs_treatment">Observação:</label>
+                                    <textarea class="form-control" name="obs" id="obs_treatment"></textarea>
+                                </div>
+                            </div>
+                        </form>
 
-							
+                    </div>
 
-							<div class="row">
-								<div class="col-xs-12">
-									<label for="obs_treatment">Observação:</label>
-									<textarea class="form-control" name="obs" id="obs_treatment"></textarea>
-								</div>
-							</div>
-						</form>
+                    
 
-					</div>
+                    <!-- Treatment detail form -->
+                    <div id="treatment_detail_div">
+                        <form class="vr-form vr-tab-content">
+                            <input type="hidden" class="has-edoctus-system lift:SecuritySnippet.isEdoctusSystem" value="1">
+                            <input type="hidden" class="has-ephysio-system lift:SecuritySnippet.isEphysioSystem" value="1">
+                            <input type="hidden" class="has-esmile-system lift:SecuritySnippet.isEsmileSystem" value="1">
+                            <input type="hidden" class="has-pet-system lift:SecuritySnippet.isEbellepetSystem" value="1">
+                            <input type="hidden" class="has-auxiliar-module lift:SecuritySnippet.hasAuxiliarModule" value="1">
+                            <input type="hidden" class="has-unit-module lift:SecuritySnippet.hasUnitModule" value="1">
 
-					
+                            <div class="row lift:SecuritySnippet.hasAuxiliarModule">
+                                <div class="col-xs-12">
+                                    <div class="col-xs-12 col-md-5">
+                                        <label for="activitys" data-i18n="Serviço"></label>
+                                        <select
+                                            name="activitys"
+                                            id="activitys"
+                                            sth-select
+                                            sth-select-title="Selecione um serviço"
+                                            sth-select-placeholder="Selecione um serviço"
+                                            sth-select-filter="true"
+                                            sth-select-filter-placeholder="Pesquisar"></select>
+                                        <!-- <select style="width: 100%" class="notselect2"  name="activitys" id="activitys"></select> -->
+                                    </div>
 
-					<!-- Treatment detail form -->
-					<div id="treatment_detail_div">
-						<form class="vr-form vr-tab-content">
-							<input type="hidden" class="has-edoctus-system lift:SecuritySnippet.isEdoctusSystem" value="1">
-							<input type="hidden" class="has-ephysio-system lift:SecuritySnippet.isEphysioSystem" value="1">
-							<input type="hidden" class="has-esmile-system lift:SecuritySnippet.isEsmileSystem" value="1">
-							<input type="hidden" class="has-pet-system lift:SecuritySnippet.isEbellepetSystem" value="1">
-							<input type="hidden" class="has-auxiliar-module lift:SecuritySnippet.hasAuxiliarModule" value="1">
-							<input type="hidden" class="has-unit-module lift:SecuritySnippet.hasUnitModule" value="1">
+                                    <div class="col-xs-12 col-md-5">
+                                        <label for="auxiliar" data-i18n="Assistente"></label>
+                                        <select style="width: 100%"  name="auxiliar" id="auxiliar"></select>
+                                    </div>
 
-							<div class="row lift:SecuritySnippet.hasAuxiliarModule">
-								<div class="col-xs-12">
-									<div class="col-xs-12 col-md-5">
-										<label for="activitys" data-i18n="Serviço"></label>
-										<select
-											name="activitys"
-											id="activitys"
-											sth-select
-											sth-select-title="Selecione um serviço"
-											sth-select-placeholder="Selecione um serviço"
-											sth-select-filter="true"
-											sth-select-filter-placeholder="Pesquisar"></select>
-										<!-- <select style="width: 100%" class="notselect2"  name="activitys" id="activitys"></select> -->
-									</div>
+                                    <div class="col-xs-12 col-md-2">
+                                        <label>&nbsp; <!-- Empty space due Bootstrap bug --></label>
+                                        <button type="button" id="add_detail_button" class="btn btn-primary">
+                                            Adicionar
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
 
-									<div class="col-xs-12 col-md-5">
-										<label for="auxiliar" data-i18n="Assistente"></label>
-										<select style="width: 100%"  name="auxiliar" id="auxiliar"></select>
-									</div>
+                            <div class="row lift:SecuritySnippet.hasNotAuxiliarModule">
+                                <div class="col-xs-12">
+                                    <div class="col-xs-12 col-md-7">
+                                        <label for="activitys"><span data-i18n="Serviço"></span>:</label>
+                                        <select
+                                            name="activitys"
+                                            id="activitys"
+                                            sth-select
+                                            sth-select-title="Selecione um serviço"
+                                            sth-select-placeholder="Selecione um serviço"
+                                            sth-select-filter="true"
+                                            sth-select-filter-placeholder="Pesquisar"></select>
+                                        <!-- antigo select2 select style="width: 100%" class="notselect2"  name="activitys" id="activitys"></select-->
+                                    </div>
+                                    <div class="col-xs-12 col-md-5">
+                                        <label>&nbsp; <!-- Empty space due Bootstrap bug --></label>
+                                        <button type="button" id="add_detail_button" class="btn btn-primary">
+                                            Adicionar
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
 
-									<div class="col-xs-12 col-md-2">
-										<label>&nbsp; <!-- Empty space due Bootstrap bug --></label>
-										<button type="button" id="add_detail_button" class="btn btn-primary">
-											Adicionar
-										</button>
-									</div>
-								</div>
-							</div>
+                            <span style="display:none">
+                                <input type="text" name="treatment_id" id="treatment_id" />
+                                <input type="text" name="treatment_parent_id" id="treatment_parent_id" />
+                            </span>
+                        </form>
 
-							<div class="row lift:SecuritySnippet.hasNotAuxiliarModule">
-								<div class="col-xs-12">
-									<div class="col-xs-12 col-md-7">
-										<label for="activitys"><span data-i18n="Serviço"></span>:</label>
-										<select
-											name="activitys"
-											id="activitys"
-											sth-select
-											sth-select-title="Selecione um serviço"
-											sth-select-placeholder="Selecione um serviço"
-											sth-select-filter="true"
-											sth-select-filter-placeholder="Pesquisar"></select>
-										<!-- antigo select2 select style="width: 100%" class="notselect2"  name="activitys" id="activitys"></select-->
-									</div>
-									<div class="col-xs-12 col-md-5">
-										<label>&nbsp; <!-- Empty space due Bootstrap bug --></label>
-										<button type="button" id="add_detail_button" class="btn btn-primary">
-											Adicionar
-										</button>
-									</div>
-								</div>
-							</div>
+                        <div class="row">
+                            <table id="table_detail_table" class="table table-bordered table-striped" style="width:95%">
+                                <thead>
+                                    <th><span data-i18n='Profissional'></span></th>
+                                    <th class="lift:SecuritySnippet.hasUnitModule">Unidade</th>
+                                    <th class="lift:SecuritySnippet.hasAuxiliarModule"><span data-i18n='Assistente'></span></th>
+                                    <th class="lift:SecuritySnippet.isEbellepetSystem">Pet</th>
+                                    <th><span data-i18n='Serviço'></span></th>
+                                    <th>Início</th>
+                                    <th>Fim</th>
+                                    <th>Status</th>
+                                    <th>Ações</th>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
 
-							<span style="display:none">
-								<input type="text" name="treatment_id" id="treatment_id" />
-								<input type="text" name="treatment_parent_id" id="treatment_parent_id" />
-							</span>
-						</form>
+                        <div class="row">
+                            <form class="vr-form vertical-gutter">
+                                <div class="col-xs-6 col-lg-3">
+                                    <a type="button" class="hide_mobile btn btn-primary send_email_customer">
+                                        Notificar <span data-i18n='Cliente'></span>
+                                    </a>
+                                </div>
 
-						<div class="row">
-							<table id="table_detail_table" class="table table-bordered table-striped" style="width:95%">
-								<thead>
-									<th><span data-i18n='Profissional'></span></th>
-									<th class="lift:SecuritySnippet.hasUnitModule">Unidade</th>
-									<th class="lift:SecuritySnippet.hasAuxiliarModule"><span data-i18n='Assistente'></span></th>
-									<th class="lift:SecuritySnippet.isEbellepetSystem">Pet</th>
-									<th><span data-i18n='Serviço'></span></th>
-									<th>Início</th>
-									<th>Fim</th>
-									<th>Status</th>
-									<th>Ações</th>
-								</thead>
-								<tbody>
-								</tbody>
-							</table>
-						</div>
+                                <div class="col-xs-6 col-lg-3">
+                                    <a type="button" class="hide_mobile lift:SecuritySnippet.isCustomer btn btn-primary send_email_user">
+                                        Notif. <span data-i18n='Profissional'></span>
+                                    </a>
+                                </div>
 
-						<div class="row">
-							<form class="vr-form vertical-gutter">
-								<div class="col-xs-6 col-lg-3">
-									<a type="button" class="hide_mobile btn btn-primary send_email_customer">
-										Notificar <span data-i18n='Cliente'></span>
-									</a>
-								</div>
+                                <div class="col-xs-6 col-lg-3">
+                                    <a type="button" id="removetreatment_button" class="btn btn-danger" onclick="CalendarScreen.removeTreatmentShowModal();">
+                                        Excluir
+                                    </a>
+                                </div>
 
-								<div class="col-xs-6 col-lg-3">
-									<a type="button" class="hide_mobile lift:SecuritySnippet.isCustomer btn btn-primary send_email_user">
-										Notif. <span data-i18n='Profissional'></span>
-									</a>
-								</div>
-
-								<div class="col-xs-6 col-lg-3">
-									<a type="button" id="removetreatment_button" class="btn btn-danger" onclick="CalendarScreen.removeTreatmentShowModal();">
-										Excluir
-									</a>
-								</div>
-
-								<div class="col-xs-6 col-lg-3">
-									<a type="button" onclick="CalendarScreen.registerPayment()" class="btn btn-success">
-										Pagar
-									</a>
-								</div>
-							</form>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>	
+                                <div class="col-xs-6 col-lg-3">
+                                    <a type="button" onclick="CalendarScreen.registerPayment()" class="btn btn-success">
+                                        Pagar
+                                    </a>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>    
 </div>

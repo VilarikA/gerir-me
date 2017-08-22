@@ -375,7 +375,14 @@ jQuery.fn.userGroupField = function(allow_null) {
 		DataManager.getUserGroups(function(groups) {
 			var html = "";
 			if (allow_null) {
-				html += "<option selected='true' value=''>Selecione um grupo</option>"
+			    var hasEdoctusSystem = $('.has-edoctus-system').length > 0;
+			    var hasEsmileSystem = $('.has-esmile-system').length > 0;
+			    var hasEphysioSystem = $('.has-ephysio-system').length > 0;
+			    if (hasEdoctusSystem || hasEphysioSystem || hasEsmileSystem) {
+					html += "<option selected='true' value=''>Selecione uma especialidade</option>"
+				} else {
+					html += "<option selected='true' value=''>Selecione um grupo</option>"
+				}
 			}
 			for (i in groups) {
 				html += "<option value='" + groups[i].id + "'>" + groups[i].name + "</option>";

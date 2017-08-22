@@ -1746,9 +1746,10 @@ object Reports2 extends RestHelper with ReportRest with net.liftweb.common.Logge
 					case _ => new Date()
 				}
 				lazy val SQL_REPORT = """
-					select * from (select ap.id,
+					select ap.id,
 					case when (ap.duedate <> ap.paymentdate) then ap.duedate else null end as vencimento, 
-					ap.paymentdate as pagamento, ct.short_name, 
+					case when (ap.paymentdate is not null) then ap.paymentdate else ap.duedate end as pagamento, 
+					ct.short_name, 
 					bp.short_name, ap.obs, 
 					ap.typemovement,
 					case when (ap.typemovement = 0) then ap.value else null end as entrada , 
@@ -1760,7 +1761,12 @@ object Reports2 extends RestHelper with ReportRest with net.liftweb.common.Logge
 					where ap.company = ?
 					and ap.toconciliation = false
 					and ap.account = %s
-					and ap.paymentdate between ? and ?
+					and (ap.paymentdate between ? and ? or
+					(ap.paymentdate is null
+					and duedate between ? and ?))
+					order by 3, 1
+					"""
+/*
 					union
 					select ap.id, ap.duedate as vencimento, 
 					ap.duedate as pagamento, ct.short_name, 
@@ -1780,9 +1786,10 @@ object Reports2 extends RestHelper with ReportRest with net.liftweb.common.Logge
 					 ) as data1 
 					order by 3, 1
 					"""
-				toResponse(SQL_REPORT.format(account, account),
+*/
+				toResponse(SQL_REPORT.format(account),
 					List(AuthUtil.company.id.is, start, end, 
-						AuthUtil.company.id.is, start, end))
+						start, end))
 			}
 			case "report" :: "account_ofx_conciliation" :: Nil Post _ => {
 

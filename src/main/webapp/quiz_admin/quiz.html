@@ -4,7 +4,7 @@
         <label for="btn"></label>
         <a class="btn primary" href="/quiz/list">Lista</a>
         <input class="btn success" type="submit" value="Salvar">
-        <a class="btn primary" href="/quiz/quiz">Inserir novo</a>
+        <a class="btn primary" href="/quiz_admin/quiz">Inserir novo</a>
       </div>
       <div class="lift:QuizSnippet.maintain">
         <span id="quiz_form">
@@ -26,17 +26,17 @@
              </div>
           </div>
           <div class="clearfix">
-            <label for="userGroup">Grupo</label>
+            <label for="userGroup"><span data-i18n='Grupo'></span></label>
             <div class="input">
               <select id='userGroup' class="large" name='userGroup'></select>
-              <span class="help-block">Grupo de usuário</span>
+              <span class="help-block"><span data-i18n='Grupo'></span> de <span data-i18n='Profissional'></span></span>
             </div>
           </div>
           <div class="clearfix">
             <label for="share">Compartilhar</label>
             <div class="input">
             <select name="share"></select>
-                <a href="" class="_popover_basic" rel="popover" data-content="Quando marcado permite que este questionário seja compartilhado pelos vários grupos de usuário, quando desmarcado, faz com que apenas usuários do grupo do questionário tenham acesso ao mesmo" data-original-title="Informação">
+                <a href="" class="_popover_basic" rel="popover" data-content="Quando marcado permite que este questionário seja compartilhado pelos vários grupos/especialidades, quando desmarcado, faz com que apenas profissionais do grupo/especialidade do questionário tenham acesso ao mesmo" data-original-title="Informação">
                   <img width='20' src="/images/info.gif"/>
                 </a>
             </div>
