@@ -57,19 +57,19 @@ class Account extends Audited[Account]
     override def dbColumnName = "balancecontrol"
   }
 
-  lazy val getAccountUnit : AccountCompanyUnit = {
+  def  getAccountUnit (unit : CompanyUnit): AccountCompanyUnit = {
     if (AccountCompanyUnit.count (
-        By(AccountCompanyUnit.unit, AuthUtil.unit),
+        By(AccountCompanyUnit.unit, unit),
         By(AccountCompanyUnit.account, this)) > 0) {
       AccountCompanyUnit.findAll (
-        By(AccountCompanyUnit.unit, AuthUtil.unit),
+        By(AccountCompanyUnit.unit, unit),
         By(AccountCompanyUnit.account, this))(0)
     } else if (AccountCompanyUnit.count (
         By(AccountCompanyUnit.account, this)) > 0) {
         // se já existe esta conta para alguma unit (qq unit)
         // o saldo da conta já foi pra uma delas
         val aau = AccountCompanyUnit.createInCompany.
-        unit (AuthUtil.unit).
+        unit (unit).
         value (0.0). // cria com saldo zero
         lastValue (0.0).
         bank (this.bank).
@@ -82,7 +82,7 @@ class Account extends Audited[Account]
         // de separa por unit
         // 01/08/2017
         val aau = AccountCompanyUnit.createInCompany.
-        unit (AuthUtil.unit).
+        unit (unit).
         value (this.value).
         lastValue (this.lastValue).
         bank (this.bank).

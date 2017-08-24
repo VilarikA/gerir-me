@@ -199,12 +199,14 @@ class  ActivitySnippet extends BootstrapPaginatorSnippet[Activity] with SnippetU
 		    "name=short_name" #> (SHtml.text(ac.short_name.is, ac.short_name(_)))&
 		    "name=showInCommand" #> (SHtml.checkbox(ac.showInCommand_?.is, ac.showInCommand_?(_)))&
 		    "name=showInCalendarPub" #> (SHtml.checkbox(ac.showInCalendarPub_?.is, ac.showInCalendarPub_?(_)))&
-		    "name=orderInCommand" #> (SHtml.text(ac.orderInCommand.is.toString, (s:String) => ac.orderInCommand(s.toInt))) &
+		    "name=orderInCommand" #> (SHtml.text(ac.orderInCommand.is.toString, 
+		    	(s:String) => ac.orderInCommand(BusinessRulesUtil.snippetToInt(s)))) &
 		    "name=allowSimultaneos" #> (SHtml.checkbox(ac.allowSimultaneos_?.is, ac.allowSimultaneos_?(_)))&
 		    "name=customernotification" #> (SHtml.checkbox(ac.customernotification_?.is, ac.customernotification_?(_)))&
 		    "name=usernotification" #> (SHtml.checkbox(ac.usernotification_?.is, ac.usernotification_?(_)))&
 		    "name=bpmonthly" #> (SHtml.checkbox(ac.bpmonthly_?.is, ac.bpmonthly_?(_)))&
-		    "name=bpmCount" #> (SHtml.text(ac.bpmCount.is.toString, (s:String) => ac.bpmCount(s.toInt))) &
+		    "name=bpmCount" #> (SHtml.text(ac.bpmCount.is.toString, 
+		    	(s:String) => ac.bpmCount(BusinessRulesUtil.snippetToInt(s)))) &
 		    "name=outsideService" #> (SHtml.checkbox(ac.outsideService_?.is, ac.outsideService_?(_)))&
 		    "name=crmService" #> (SHtml.checkbox(ac.crmService_?.is, ac.crmService_?(_)))&
 		    "name=showInRecords" #> (SHtml.checkbox(ac.showInRecords_?.is, ac.showInRecords_?(_)))&
@@ -215,94 +217,33 @@ class  ActivitySnippet extends BootstrapPaginatorSnippet[Activity] with SnippetU
 		    "name=accountCategory" #> (SHtml.select(accountcategories,Full(ac.accountCategory.is.toString),(s:String) => ac.accountCategory( s.toLong)))&
 		    "name=discountAccountCategory" #> (SHtml.select(accountcategories,Full(ac.discountAccountCategory.is.toString),(s:String) => ac.discountAccountCategory( s.toLong)))&
 		    "name=gender" #> (SHtml.select(genders,Full(ac.gender.is.toString),(v:String) => ac.gender(v)))&
-//			"name=price" #> (SHtml.text(ac.salePrice.is.toString, (v:String) => { if(v !="")ac.salePrice(v.toDouble)} ))&
-			"name=price" #> (SHtml.text(ac.salePrice.is.toString, (f:String) => { 
-					if(f != "")
-						ac.salePrice(f.toDouble)
-					else
-						ac.salePrice(0.0)
-
-			}))&
-//			"name=pointsonbuy" #> (SHtml.text(ac.pointsOnBuy.is.toString, (v:String) => { if(v !="")ac.pointsOnBuy(v.toDouble)} ))&
-			"name=pointsonbuy" #> (SHtml.text(ac.pointsOnBuy.is.toString, (f:String) => { 
-					if(f != "")
-						ac.pointsOnBuy(f.toDouble)
-					else
-						ac.pointsOnBuy(0.0)
-
-			}))&
-//			"name=pointsprice" #> (SHtml.text(ac.pointsPrice.is.toString, (v:String) => { if(v !="")ac.pointsPrice(v.toDouble)} ))&
-			"name=pointsprice" #> (SHtml.text(ac.pointsPrice.is.toString, (f:String) => { 
-					if(f != "")
-						ac.pointsPrice(f.toDouble)
-					else
-						ac.pointsPrice(0.0)
-
-			}))&
-		    "name=conflictsallowed" #> (SHtml.text(ac.conflictsallowed.is.toString, (s:String) => ac.conflictsallowed(s.toInt))) &
+			"name=price" #> (SHtml.text(ac.salePrice.is.toString, 
+				(f:String) => ac.salePrice(BusinessRulesUtil.snippetToDouble(f))))&
+			"name=pointsonbuy" #> (SHtml.text(ac.pointsOnBuy.is.toString, 
+				(f:String) => ac.pointsOnBuy(BusinessRulesUtil.snippetToDouble(f))))&
+			"name=pointsprice" #> (SHtml.text(ac.pointsPrice.is.toString, 
+				(f:String) => ac.pointsPrice(BusinessRulesUtil.snippetToDouble(f))))&
+		    "name=conflictsallowed" #> (SHtml.text(ac.conflictsallowed.is.toString, 
+		    	(s:String) => ac.conflictsallowed(BusinessRulesUtil.snippetToInt(s)))) &
 			"name=discount_text" #> (SHtml.text(ac.discounts_text, (v:String) => {}))&
-			"name=status" #> (SHtml.select(status,Full(ac.status.is.toString),(v:String) => ac.status(v.toInt)))&
-//			"name=commission" #> (SHtml.text(ac.commission.is.toString, (v:String) =>{ if(v !=""){ac.commission(v.toDouble)};}))&
-			"name=commission" #> (SHtml.text(ac.commission.is.toString, (f:String) => { 
-					if(f != "")
-						ac.commission(f.toDouble)
-					else
-						ac.commission(0.0)
-
-			}))&
-//			"name=commissionAbs" #> (SHtml.text(ac.commissionAbs.is.toString, (v:String) =>{ if(v !=""){ac.commissionAbs(v.toDouble)};}))&
-			"name=commissionAbs" #> (SHtml.text(ac.commissionAbs.is.toString, (f:String) => { 
-					if(f != "")
-						ac.commissionAbs(f.toDouble)
-					else
-						ac.commissionAbs(0.0)
-
-			}))&
-//			"name=auxPrice" #> (SHtml.text(ac.auxPrice.is.toString, (v:String) => { if(v !="")ac.auxPrice(v.toDouble)} ))&
-			"name=auxPrice" #> (SHtml.text(ac.auxPrice.is.toString, (f:String) => { 
-					if(f != "")
-						ac.auxPrice(f.toDouble)
-					else
-						ac.auxPrice(0.0)
-
-			}))&
-//			"name=auxPercent" #> (SHtml.text(ac.auxPercent.is.toString, (v:String) =>{ if(v !=""){ac.auxPercent(v.toDouble)};}))&
-			"name=auxPercent" #> (SHtml.text(ac.auxPercent.is.toString, (f:String) => { 
-					if(f != "")
-						ac.auxPercent(f.toDouble)
-					else
-						ac.auxPercent(0.0)
-
-			}))&
-			"name=auxHousePrice" #> (SHtml.text(ac.auxHousePrice.is.toString, (f:String) => { 
-					if(f != "")
-						ac.auxHousePrice(f.toDouble)
-					else
-						ac.auxHousePrice(0.0)
-
-			}))&
-//			"name=auxPercent" #> (SHtml.text(ac.auxPercent.is.toString, (v:String) =>{ if(v !=""){ac.auxPercent(v.toDouble)};}))&
-			"name=auxHousePercent" #> (SHtml.text(ac.auxHousePercent.is.toString, (f:String) => { 
-					if(f != "")
-						ac.auxHousePercent(f.toDouble)
-					else
-						ac.auxHousePercent(0.0)
-
-			}))&
-			"name=discountPrice" #> (SHtml.text(ac.discountPrice.is.toString, (f:String) => { 
-					if(f != "")
-						ac.discountPrice(f.toDouble)
-					else
-						ac.discountPrice(0.0)
-
-			}))&
-			"name=discountPercent" #> (SHtml.text(ac.discountPercent.is.toString, (f:String) => { 
-					if(f != "")
-						ac.discountPercent(f.toDouble)
-					else
-						ac.discountPercent(0.0)
-
-			}))&
+			"name=status" #> (SHtml.select(status,Full(ac.status.is.toString),
+				(v:String) => ac.status(v.toInt)))&
+			"name=commission" #> (SHtml.text(ac.commission.is.toString, 
+				(f:String) => ac.commission(BusinessRulesUtil.snippetToDouble(f))))&
+			"name=commissionAbs" #> (SHtml.text(ac.commissionAbs.is.toString, 
+				(f:String) => ac.commissionAbs(BusinessRulesUtil.snippetToDouble(f))))&
+			"name=auxPrice" #> (SHtml.text(ac.auxPrice.is.toString, 
+				(f:String) => ac.auxPrice(BusinessRulesUtil.snippetToDouble(f))))&
+			"name=auxPercent" #> (SHtml.text(ac.auxPercent.is.toString, 
+				(f:String) => ac.auxPercent(BusinessRulesUtil.snippetToDouble(f))))&
+			"name=auxHousePrice" #> (SHtml.text(ac.auxHousePrice.is.toString, 
+				(f:String) => ac.auxHousePrice(BusinessRulesUtil.snippetToDouble(f))))&
+			"name=auxHousePercent" #> (SHtml.text(ac.auxHousePercent.is.toString, 
+				(f:String) => ac.auxHousePercent(BusinessRulesUtil.snippetToDouble(f))))&
+			"name=discountPrice" #> (SHtml.text(ac.discountPrice.is.toString, 
+				(f:String) => ac.discountPrice(BusinessRulesUtil.snippetToDouble(f))))&
+			"name=discountPercent" #> (SHtml.text(ac.discountPercent.is.toString, 
+				(f:String) => ac.discountPercent(BusinessRulesUtil.snippetToDouble(f))))&
 			"name=obs" #> (SHtml.textarea(ac.obs.is, ac.obs(_))++SHtml.hidden(process))
 
 		}catch {

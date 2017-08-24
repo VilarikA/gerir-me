@@ -51,6 +51,12 @@ class Product extends ProductMapper[Product]{
         override def defaultValue = true
         override def dbColumnName = "is_for_sale"
     }    
+    // gera taxa de serviço sobre este produto tipo 10% do garçom
+    object serviceCharge_? extends MappedBoolean(this){
+        override def defaultValue = false
+        override def dbColumnName = "serviceCharge"
+    }    
+
     object unitofMeasure extends MappedLongForeignKey(this, UnitofMeasure){
         var uom = if (AuthUtil.company.appType.isGerirme) {
             2 // kilo para capitao lopes

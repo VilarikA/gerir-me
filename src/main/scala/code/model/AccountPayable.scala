@@ -161,6 +161,10 @@ with CanCloneThis[AccountPayable] {
     this.partialySecureSave
   }
     
+  def thisUnit : CompanyUnit = {
+    CompanyUnit.findByKey (this.unit.obj.get.id.toLong).get;
+  }
+
   def makeAsPaid = this.paid_?(true).partialySecureSave
 
   def makeAsConciliated = {
@@ -188,7 +192,7 @@ with CanCloneThis[AccountPayable] {
     if(debted_?.is && changeAccount_?){
       this.lastAccount.obj match {
         case Full(a: Account) => {
-          val au = a.getAccountUnit
+          val au = a.getAccountUnit (thisUnit)
           au.removeRegister(this, "Alt Conta")
         }
         case _ => 
@@ -212,7 +216,7 @@ with CanCloneThis[AccountPayable] {
     if(debted_?.is){
       accountBox match {
         case Full(a: Account) => {
-          val au = a.getAccountUnit
+          val au = a.getAccountUnit (thisUnit)
           au.removeRegister(this, "Excluindo lançamento")
         }
         case _ => 
@@ -226,7 +230,7 @@ with CanCloneThis[AccountPayable] {
     val registerDiference = debted_?.is
     accountBox match {
       case Full(a: Account) => {
-        val au = a.getAccountUnit
+        val au = a.getAccountUnit (thisUnit)
         if (registerDiference) {
           au.registerDiference(this)
         } else {
@@ -240,7 +244,7 @@ with CanCloneThis[AccountPayable] {
   def rollbackAccountValue() = {
     accountBox match {
       case Full(a: Account) => {
-        val au = a.getAccountUnit
+        val au = a.getAccountUnit (thisUnit)
         au.removeRegister(this, "Alt Status Lanç")
       }
       case _ => 
@@ -266,7 +270,7 @@ with CanCloneThis[AccountPayable] {
       }
       super.save
       val a = Account.findByKey(this.account.is).get
-      val au = a.getAccountUnit
+      val au = a.getAccountUnit (thisUnit)
       au.register(this)
     }
 
@@ -311,7 +315,7 @@ with CanCloneThis[AccountPayable] {
       if (this.paid_?.is) {
         super.save
         val a = Account.findByKey(this.account.is).get
-        val au = a.getAccountUnit
+        val au = a.getAccountUnit (thisUnit)
         au.register(this)
       } else {
         super.save
@@ -581,6 +585,24 @@ object AccountPayable extends AccountPayable with LongKeyedMapperPerCompany[Acco
                           By(AccountPayable.recurrence, recurrence.id.is), 
                           By(AccountPayable.dueDate, date)
                       )
+  }
+
+  def findAllToChangeToPaid(start: Date, company: Company) = {
+    var aplist = AccountPayable.findAll(
+      By(AccountPayable.company, company),
+      By(AccountPayable.dueDate, start), 
+      By(AccountPayable.paid_?, false), 
+      BySql("""paymenttype in (select pt.id from paymenttype pt where
+        pt.receive = true and pt.receiveatsight = false and pt.autoChangeToPaid = true
+        and pt.company = ?)""", IHaveValidatedThisSQL("dueDate", "01-01-2012 00:00:00"),
+        company.id.is.toLong)
+      )
+    aplist.map((ap) => {
+      if (!ap.paid_?) {
+        //ap.paid_? (true).save;
+        ap.makeAsPaid;
+      }
+    });
   }
 
   //acho que nao usa  

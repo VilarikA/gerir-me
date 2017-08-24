@@ -196,19 +196,44 @@ class Company extends Audited[Company] with PerCompany with IdPK with CreatedUpd
     override def dbColumnName = "calendarShowDifUnit"
   }
 
+/*
   object senNotifications_? extends MappedBoolean(this) {
     override def defaultValue = false
     override def dbColumnName = "senNotifications"
   }
+*/
   object financialNotification extends MappedInt(this) {
     override def defaultValue = 0
   }
+  object financialNotification2 extends MappedInt(this) {
+    override def defaultValue = 0
+  }
+  // uma vez só mesmo
   object userNotification extends MappedInt(this){
       override def defaultValue = 0
   }    
   object customerNotification extends MappedInt(this){
       override def defaultValue = 0
   }    
+  object customerNotification2 extends MappedInt(this){
+      override def defaultValue = 0
+  }    
+  object customerBirthdayNotification extends MappedInt(this){
+      override def defaultValue = 0
+  }
+  // id do email enviado auto    
+  object customerBirthdayNotificationId extends MappedLong(this)
+
+  object animalBirthdayNotification extends MappedInt(this){
+      override def defaultValue = 0
+  }    
+  // id do email enviado auto    
+  object animalBirthdayNotificationId extends MappedLong(this)
+
+  object calendarPub extends MappedInt(this){
+      override def defaultValue = 0
+  }    
+  object calendarUrl extends MappedPoliteString(this, 100)
 
 // tá lá em baixo
 //  val BEFORE1DAY8PM = 1
@@ -341,6 +366,8 @@ class Company extends Audited[Company] with PerCompany with IdPK with CreatedUpd
   }
 
   object toCancelAnAppointment extends MappedPoliteString(this,255)
+  object expenseReceiptObs extends MappedPoliteString(this,2000)
+  object recordsCustInfo extends MappedPoliteString(this,2000)
 
   def users = User.findAllInCompanyOrdened
 
@@ -373,7 +400,10 @@ class Company extends Audited[Company] with PerCompany with IdPK with CreatedUpd
   object inventoryCauseTrasfer extends MappedLong(this) {
     override def defaultValue = 6;
   }
-  object productPreviusDebt extends MappedLong(this)
+  // produto pra geracao de taxa de serviço tipo 10% do garçom
+  object serviceChargeProduct extends MappedLong(this)
+  // nao usa dropar coluna
+  //object productPreviusDebt extends MappedLong(this)
   object inventoryCauseUse extends MappedLongForeignKey(this, InventoryCause) {
     override def defaultValue = 7;
   }
@@ -525,8 +555,6 @@ object Company extends Company with LongKeyedMapperPerCompany[Company] with Site
             ) as treatments_this_month
             from company c where c.id=?
     """
-//  def findAllActiveToSendNotification = findAll(By(Company.senNotifications_?, true), By(Company.status, Company.STATUS_OK))
-
   val notifyNever = 0
   val notifyForTomorrow = 1
   val notifyForToday1Am = 2
@@ -538,4 +566,10 @@ object Company extends Company with LongKeyedMapperPerCompany[Company] with Site
     BySql ("(financialNotification = ? or customernotification = ? or usernotification = ?)",IHaveValidatedThisSQL("",""), notify, notify, notify), 
     By(Company.status, Company.STATUS_OK),
     OrderBy (id,Ascending))
+
+  def findAllActiveToChangeFinancialToPaid = findAll(
+    BySql ("id in (select pt.company from paymenttype pt where pt.autoChangeToPaid = true and pt.company = company.id)",IHaveValidatedThisSQL("","")), 
+    By(Company.status, Company.STATUS_OK),
+    OrderBy (id,Ascending))
+
 }
