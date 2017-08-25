@@ -61,9 +61,18 @@ class UploadOfx extends Logger {
         .replaceAll ("</CHECKNUM>","") 
         .replaceAll ("</REFNUM>","") 
         .replaceAll ("</MEMO>","") 
+        .replaceAll ("</CURRATE>","") 
+        .replaceAll ("</CURSYM>","") 
 
         .replaceAll ("</BALAMT>","") 
         .replaceAll ("</DTASOF>","") 
+        // rigel 25/08/2017
+        // cartão de credito a ofx4j não trata
+        // no BB tive que substituir estas tags a seguir
+        .replaceAll ("CREDITCARDMSGSRSV1","BANKMSGSRSV1") 
+        .replaceAll ("CCSTMTTRNRS","STMTTRNRS") 
+        .replaceAll ("CCSTMTRS","STMTRS") 
+        .replaceAll ("CCACCTFROM","BANKACCTFROM") 
 
         ) 
       }finally{ 

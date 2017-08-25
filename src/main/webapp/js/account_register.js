@@ -699,17 +699,11 @@
     if ($("#end_date").val() == "") {
       $("#end_date").val(getDateBr(new Date()));
     }
+
     $(".b_search").click(function() {
       return Account.getListFromServer();
     });
-/*
-    $("#search1").click(function() {
-      return Account.getListFromServer();
-    });
-    $("#search2").click(function() {
-      return Account.getListFromServer();
-    });
-*/
+
     $(".b_add_account").click($.throttle(1000, function() {
       var e;
       try {
@@ -782,6 +776,13 @@
 
     $(".cashier_select_to_span").hide();
     $(".account_to").hide();
+
+    // rigel 23/08/2017 
+    // tentativa de entrar buscando qdo vier com dados na url
+    // tipo do crostab e da conciliação não rolou
+    // falta ainda testar o campo, mas mesmo ante não rolou
+    // alert ("aqui")
+    // Account.getListFromServer();
 
     return $(".b_dre_send").click(function() {
       $("#grid_dre").html("Aguarde um instante, o DRE está sendo gerado...");

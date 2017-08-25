@@ -11,6 +11,7 @@
     //$("#start").val(getDateBr(new Date().getStartOfMonth()));
     if (AuthUtil.company.id == 13) {
       $("#start").val('01/07/2017');
+      $("#end").val('31/07/2017');
     } else {
       $("#start").val(getDateBr(new Date().getStartOfMonth()));
     }
@@ -81,7 +82,7 @@
           dataaux = getDateBr(FactoryDate.byTime(row[0]))
           return "<a target='_drilldown' href='/financial/account_register?account_categories_filter1="+row[13]+"&start_date="+dataaux+"&end_date="+dataaux+"'>"+"<img width='16px' src=\"/images/" + 
               (row[11] == "0" ? 'audit' : (row[11] == "1" ? 'tick' : 'consolidate')) + ".png\" title=\"" + 
-              (row[11] == "0" ? 'em aberto' : (row[11] == "1" ? 'conciliado' : 'consolidado')) + "\"/></td>" +
+              (row[11] == "0" ? 'em aberto' : (row[11] == "1" ? 'conciliado' : 'consolidado')) + "\"/>" +
               "</a>"
         } else {
           return ""

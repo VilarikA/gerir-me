@@ -98,7 +98,7 @@ object OfxUtil {
           })
         });
       }
-      println ("vaiiii ============ Importadas " + trnGood + "\n\n Rejeitadas " + trnBad);
+      //println ("vaiiii ============ Importadas " + trnGood + "\n\n Rejeitadas " + trnBad);
       ("Importadas " + trnGood + "\n\nRejeitadas " + trnBad)
   }
 }
