@@ -392,6 +392,11 @@ object  TreatmentService extends net.liftweb.common.Logger {
 					}
 
 					//treatment.details += detail
+					if (detail.alertObs != "") {
+						if (treatment.obs.indexOf (detail.alertObs.trim) == -1) {
+							treatment.obs ((treatment.obs + " " + detail.alertObs).trim)
+						}
+					}
 					treatment.resetEndDate
 					if(validate)
 						treatment.save

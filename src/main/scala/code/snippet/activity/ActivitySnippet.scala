@@ -157,6 +157,7 @@ class  ActivitySnippet extends BootstrapPaginatorSnippet[Activity] with SnippetU
 		    "name=name" #> (SHtml.text(ac.name.is, ac.name(_)))&
 		    "name=short_name" #> (SHtml.text(ac.short_name.is, ac.short_name(_)))&
 		    "name=invoiceGroup" #> (SHtml.select(igroups,Full(ac.invoiceGroup.is.toString),(s:String) => ac.invoiceGroup( s.toLong)))&
+		    "name=showObs" #> (SHtml.checkbox(ac.showObs_?.is, ac.showObs_?(_)))&
 			"name=obs" #> (SHtml.textarea(ac.obs.is, ac.obs(_))++SHtml.hidden(process))
 
 		}catch {
@@ -197,6 +198,7 @@ class  ActivitySnippet extends BootstrapPaginatorSnippet[Activity] with SnippetU
 		    "name=external_id" #> (SHtml.text(ac.external_id.is, ac.external_id(_)))&
 		    "name=name" #> (SHtml.text(ac.name.is, ac.name(_)))&
 		    "name=short_name" #> (SHtml.text(ac.short_name.is, ac.short_name(_)))&
+		    "name=showObs" #> (SHtml.checkbox(ac.showObs_?.is, ac.showObs_?(_)))&
 		    "name=showInCommand" #> (SHtml.checkbox(ac.showInCommand_?.is, ac.showInCommand_?(_)))&
 		    "name=showInCalendarPub" #> (SHtml.checkbox(ac.showInCalendarPub_?.is, ac.showInCalendarPub_?(_)))&
 		    "name=orderInCommand" #> (SHtml.text(ac.orderInCommand.is.toString, 

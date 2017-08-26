@@ -478,12 +478,12 @@
                                 <span class="help-block">UF / Cidade</span>
                             </div>
                         </div>
-                        <div class="clearfix lift:SecuritySnippet.isSuperAdmin">
-                            <label for="city">Cidade</label>
+                        <div class="clearfix">
+                            <label for="city"></label>
                             <div class="input">
                                 <div class='inline-inputs'>
-                                    <input class="xlarge disabled" disabled='true' id="city" name="city" size="30" type="text"/>
-                                    <input class="mini disabled" disabled='true' id="state" name="state" size="5 " type="text"/>           
+                                    <input class="xlarge" id="city" name="city" size="30" type="text"/>
+                                    <input class="mini" id="state" name="state" size="5 " type="text"/>           
                                 </div>
                                 <span class="help-block">Cidade/UF</span>
                             </div>
@@ -1019,11 +1019,12 @@
 
             $.getJSON("https://viacep.com.br/ws/" + $('#postal_code').val()+"/json", function(result) {
                 if (("erro" in result)) {
-                    alert ("CEP não encontrado");
+                    alert ("CEP não encontrado " + $('#postal_code').val());
                 } else {
                     $('#street').val(result.logradouro);  
                     $('#district').val(result.bairro);  
                     $('#city').val(result.ibge + " " + result.localidade);  
+                    document.getElementById("city").focus(); 
                     $('#state').val((result.uf).toUpperCase());  
                 }
             });

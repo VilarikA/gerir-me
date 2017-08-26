@@ -391,6 +391,10 @@ object BusinessRulesUtil{
       value.trim.padTo(length, " ").mkString
     }
   }
+
+
+  def isNumeric(str:String): Boolean = str.matches("[-+]?\\d+(\\.\\d+)?")
+
   // fill at left with zeros to complete the length or limit the length
   def zerosLimit (value:String, len:Int) = {
     if (value.trim.length > len) {

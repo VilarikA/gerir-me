@@ -15,6 +15,11 @@ class ProductType extends Audited[ProductType] with PerCompany with IdPK with Cr
     def getSingleton = ProductType
     override def updateShortName = false
     object obs extends MappedPoliteString(this,255)
+    // expande obs no treatment - como alerta
+    object showObs_? extends MappedBoolean(this) {
+        override def defaultValue = false
+        override def dbColumnName = "showobs"
+    }
     object external_id extends MappedPoliteString(this,200)    
     object typeClass extends MappedEnum(this,ProductType.Types){
         override def defaultValue = ProductType.Types.Product;
@@ -27,7 +32,6 @@ class ProductType extends Audited[ProductType] with PerCompany with IdPK with Cr
     }
 
     object invoiceGroup extends MappedLongForeignKey(this, InvoiceGroup)
-
 
     def invoiceGroupName = invoiceGroup.obj match {
         case Full(t) => t.name.is
