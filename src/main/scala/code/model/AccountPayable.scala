@@ -379,6 +379,17 @@ with CanCloneThis[AccountPayable] {
             this.obs.is
         ).getBytes("UTF-8")  
 
+/*
+  def prevBalance (account: Account, paymentDate : Date) = {
+    val categoryBC = AccountCategory.balanceControlCategory;
+    AccountPayable.findAllInCompany (By (AccountPayable.account, account)
+      BySql (""" and paymentdate in
+        (select max(ah1.paymentdate) from accounthistory ah1 where ah1.company = ah.company and ah1.account = ah.account
+        and ah1.paymentdate < ? and accountcategory = ?)
+        """, IHaveValidatedThisSQL("", ""), account, paymentDate));
+  }
+*/
+
   def consolidate(accountId:Long, value:Double, dueDate: Date) = {
     val categoryBC = AccountCategory.balanceControlCategory;
     val val1 = if (value < 0.0) {

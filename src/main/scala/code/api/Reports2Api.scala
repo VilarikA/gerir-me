@@ -1730,6 +1730,37 @@ object Reports2 extends RestHelper with ReportRest with net.liftweb.common.Logge
 					"""
 				toResponse(SQL_REPORT.format(units, account, users),List(AuthUtil.company.id.is, start, end))
 			}
+
+
+			case "report" :: "account_bc_conciliation" :: Nil Post _ => {
+
+				def account:Long = S.param("account") match {
+					case Full(s) if(s != "") => s.toLong	
+					case _ => 0l // tem que ter account
+				}
+
+				def start:Date = S.param("start") match {
+					case Full(p) => Project.strToDateOrToday(p)
+					case _ => new Date()
+				}
+
+				def category = AccountCategory.balanceControlCategory.id.is;
+
+				lazy val SQL_REPORT = """
+					select ah.currentvalue, ah.paymentdate, ah.paymentdate + 1, ah.id from accounthistory ah
+					inner join accountpayable ap on ap.company = ah.company
+						and ap.account = ah.account and ap.id = ah.accountpayable 
+						and ap.category = ?
+					where ah.company = ? and ah.account = ?
+					and ah.paymentdate < ?
+					and ah.unit = ?
+					order by ah.paymentdate desc, ah.id desc
+					"""
+				toResponse(SQL_REPORT,
+					List(category, AuthUtil.company.id.is, 
+						account, start, AuthUtil.unit.id.is));
+			}
+
 			case "report" :: "account_conciliation" :: Nil Post _ => {
 
 				def account:String = S.param("account") match {
@@ -1754,7 +1785,7 @@ object Reports2 extends RestHelper with ReportRest with net.liftweb.common.Logge
 					ap.typemovement,
 					case when (ap.typemovement = 0) then ap.value else null end as entrada , 
 					case when (ap.typemovement = 1) then ap.value else null end as saida , 
-					ap.paid, conciliate, ap.id, ap.id, ap.category
+					ap.paid, conciliate, ap.id, ap.id, ap.category, null, null
 					from accountpayable ap 
 					inner join accountcategory ct on ct.id = ap.category
 					left join business_pattern bp on bp.id = ap.user_c
