@@ -110,13 +110,14 @@ object AccountPayableApi extends RestHelper with ReportRest with net.liftweb.com
 				}
 			}
 
-			case "accountpayable" :: "changeofx" :: idofx :: obs :: categ :: Nil JsonGet _ => {
+			case "accountpayable" :: "changeofx" :: idofx :: customer :: obs :: categ :: Nil JsonGet _ => {
 				try{
 					val ap = AccountPayable.findByKey(idofx.toLong).get
 					if (!ap.paid_?) {
 						ap.paid_? (true);
 					}
 					ap.obs(obs)
+					ap.user (customer.toLong)
 					ap.category (categ.toLong)
 					ap.toConciliation_? (false);
 					ap.makeAsConciliated
