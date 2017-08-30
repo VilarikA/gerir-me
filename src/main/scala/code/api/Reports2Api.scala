@@ -494,6 +494,10 @@ object Reports2 extends RestHelper with ReportRest with net.liftweb.common.Logge
 			}
 
 			case "report" :: "todo_list" :: Nil Post _=> {
+				def customer:String = S.param("customer") match {
+					case Full(p) if(p != "") => " and bc.id =%S".format(p) 
+					case _ => ""
+				}			
 				val user_param_name = S.param("user[]") match {
 					case Full(p) => "user[]"
 					case _ => 
@@ -580,13 +584,13 @@ object Reports2 extends RestHelper with ReportRest with net.liftweb.common.Logge
 					%s
 					%s
 					%s
-					/* cliente */
+					%s
 					/* status */
 					/* project */
 					/* project class */
 					order by tr.dateevent desc, bp.name asc
 				"""
-				toResponse(SQL.format(status, unit, offsale, user, prod),
+				toResponse(SQL.format(customer, status, unit, offsale, user, prod),
 					List(AuthUtil.company.id.is, start, end))
 			}
 
