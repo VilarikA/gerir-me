@@ -139,9 +139,11 @@
         }
       });
       setTimeout(function(){    
-        if (parseFloat($("#start_value").val()) != start_value) {
-           alert ("Saldo inicial alterado para " + (start_value).formatMoney()) 
-           $("#start_value").val(start_value);
+        if (start_value != 0.0) {
+          if (parseFloat($("#start_value").val()) != start_value) {
+             alert ("Saldo inicial alterado para " + (start_value).formatMoney()) 
+             $("#start_value").val(start_value);
+          }
         }
         if (start != null) {
           if ($("#start").val() != start) {
