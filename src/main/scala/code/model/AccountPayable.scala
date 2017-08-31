@@ -186,6 +186,15 @@ with CanCloneThis[AccountPayable] {
       }
   }
 
+  lazy val categoryBox = this.category.obj
+
+  lazy val categoryShortName:String = {
+      categoryBox match {
+          case Full(c)=> c.short_name.is
+          case _ => ""
+      }
+  }
+
   //override
   def changeAccount_? = lastAccount.is != account.is
   def changeAccountProcess {
@@ -193,7 +202,7 @@ with CanCloneThis[AccountPayable] {
       this.lastAccount.obj match {
         case Full(a: Account) => {
           val au = a.getAccountUnit (thisUnit)
-          au.removeRegister(this, "Alt Conta")
+          au.removeRegister(this, "Alt Conta  " + accountShortName + " cat " + categoryShortName)
         }
         case _ => 
       }
@@ -217,7 +226,7 @@ with CanCloneThis[AccountPayable] {
       accountBox match {
         case Full(a: Account) => {
           val au = a.getAccountUnit (thisUnit)
-          au.removeRegister(this, "Excluindo lançamento")
+          au.removeRegister(this, "Excluindo lançamento conta " + accountShortName + " cat " + categoryShortName)
         }
         case _ => 
       }
@@ -245,7 +254,7 @@ with CanCloneThis[AccountPayable] {
     accountBox match {
       case Full(a: Account) => {
         val au = a.getAccountUnit (thisUnit)
-        au.removeRegister(this, "Alt Status Lanç")
+        au.removeRegister(this, "Alt Status Lanç conta " + accountShortName + " cat " + categoryShortName)
       }
       case _ => 
     }
