@@ -74,7 +74,7 @@
         }
         return "<a target='_drilldown' href='/financial/account_register?account_categories_filter1="+row[13]+"&start_date="+dataaux+"&end_date="+dataaux+"'>"+"<img width='16px' src=\"/images/" + 
             (row[10] == "0" ? 'audit' : (row[10] == "1" ? 'tick' : 'consolidate')) + ".png\" title=\"" + 
-            (row[10] == "0" ? 'em 1aberto' : (row[10] == "1" ? 'conciliado' : 'consolidado')) + "\"/>" +
+            (row[10] == "0" ? 'em aberto (editar)' : (row[10] == "1" ? 'conciliado (editar)' : 'consolidado (editar)')) + "\"/>" +
             "</a>" + 
             straux
       }
@@ -147,14 +147,14 @@
         }
         if (start != null) {
           if ($("#start").val() != start) {
-             alert ("Data de incício alterada para " + start) 
+             alert ("Data de início alterada para " + start) 
              $("#start").val(start);
           }
         }
-        conciliated = parseFloat($('#start_value').val());
-        total_general = parseFloat($('#start_value').val());
-        conciliatedLin = parseFloat($('#start_value').val());
-        total_generalLin = parseFloat($('#start_value').val());
+        conciliated = parseFloat($('#start_value').val()) || 0;
+        total_general = parseFloat($('#start_value').val()) || 0;
+        conciliatedLin = parseFloat($('#start_value').val()) || 0;
+        total_generalLin = parseFloat($('#start_value').val()) || 0;
 
         var account = $('#account').val()
 
@@ -169,6 +169,7 @@
         }
         renderReport(url,fields,$("#form_report").serializeObject(),"#grid", function(data){
           count = 0;
+          count_open = 0;
           data.forEach(function(row){
             count += 1;
             if (row[10] != 0) {
@@ -311,7 +312,7 @@
       }
       if (confirm("Tem certeza que deseja consolidar a conta?")) {
         var url = "/accountpayable/consolidateTotal/"
-        url = url + encodeURIComponent($("#end").val()) + "/" + $("#account").val()+"/"+$("#total_gap").val()
+        url = url + encodeURIComponent($("#start").val()) + "/" + encodeURIComponent($("#end").val()) + "/" + $("#account").val()+"/"+$("#total_gap").val()
         return $.get(url, function(t) {
           if (t=="1" || t==1) {
             alert("Conta consolidada com sucesso!");

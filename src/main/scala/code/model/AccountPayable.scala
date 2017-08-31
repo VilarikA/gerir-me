@@ -390,8 +390,23 @@ with CanCloneThis[AccountPayable] {
   }
 */
 
-  def consolidate(accountId:Long, value:Double, dueDate: Date) = {
+  def consolidate(accountId:Long, value:Double, paymentStart: Date,
+    paymentEnd: Date) = {
+    val account = Account.findByKey (accountId).get
     val categoryBC = AccountCategory.balanceControlCategory;
+    val apList = AccountPayable.findAllInCompany (
+      By(AccountPayable.account, account),
+      By(AccountPayable.toConciliation_?,false),
+      By(AccountPayable.paid_?, true),
+      By(AccountPayable.unit, AuthUtil.unit),
+      BySql(" date(paymentDate) between date(?) and date(?) ", 
+        IHaveValidatedThisSQL("", ""), paymentStart, paymentEnd)
+      )
+    apList.foreach((ap) => {  
+      ap.makeAsConsolidated
+      ap.partialySecureSave
+    });
+
     val val1 = if (value < 0.0) {
         value * -1
       } else {
@@ -408,9 +423,9 @@ with CanCloneThis[AccountPayable] {
       .unit(AuthUtil.unit.id)
       .typeMovement(accountType)
       .category(categoryBC.id)
-      .exerciseDate(dueDate)
-      .dueDate(dueDate)
-      .paymentDate(dueDate)
+      .exerciseDate(paymentEnd)
+      .dueDate(paymentEnd)
+      .paymentDate(paymentEnd)
       .obs("Gerado pelo processo de consolidação")
       .account(accountId)
       .auto_?(true)

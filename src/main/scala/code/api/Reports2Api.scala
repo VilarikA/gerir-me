@@ -1861,14 +1861,16 @@ object Reports2 extends RestHelper with ReportRest with net.liftweb.common.Logge
 					ap1.id,
 					ap1.aggregatevalue, ap1.aggregateid,
 					ap1.conciliate,
-					ap.category, ap1.category
+					ap.category, ap1.category, ap1.typemovement
 					from accountpayable ap 
-					left join accountpayable ap1 on ((ap1.paymentdate = ap.paymentdate or ap1.duedate = ap.paymentdate 
+					left join accountpayable ap1 on 
+					  ((ap1.paymentdate = ap.paymentdate or ap1.duedate = ap.paymentdate 
 					  or ap1.paymentdate = ap.duedate or ap1.duedate = ap.duedate) 
 					  and (ap1.value = ap.value or (ap1.aggregatevalue > (ap.value * ((100-?)/100)) and ap1.aggregatevalue < (ap.value * ((100+?)/100))))
 					  or (ap1.duedate between date(?) and date (?) and
 					     (ap1.value = ap.value or (ap1.aggregatevalue > (ap.value * ((100-?)/100)) and ap1.aggregatevalue < (ap.value * ((100+?)/100))))))
 					  and ap1.toconciliation = false and ap.company = ap1.company
+					  and ap1.typemovement = ap.typemovement
 					  %s
 					where ap.company = ? 
 					and ap.duedate between date(?) and date (?)

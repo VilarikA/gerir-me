@@ -212,10 +212,12 @@ object AccountPayableApi extends RestHelper with ReportRest with net.liftweb.com
 				}
 			}
 
-			case "accountpayable" :: "consolidateTotal" :: duedate :: accountId :: value :: Nil JsonGet _ => {
+			case "accountpayable" :: "consolidateTotal" :: paymentStart :: paymentEnd :: accountId :: value :: Nil JsonGet _ => {
 				//try{
-					val ap = AccountPayable.consolidate(accountId.toLong, value.replaceAll (",",".").toDouble, 
-						Project.strOnlyDateToDate(duedate));
+					val ap = AccountPayable.consolidate(
+						accountId.toLong, value.replaceAll (",",".").toDouble, 
+						Project.strOnlyDateToDate(paymentStart),
+						Project.strOnlyDateToDate(paymentEnd));
 					println ("vaiii  ===================== foi api  " + value)
 					JInt(1)
 				//} catch {
