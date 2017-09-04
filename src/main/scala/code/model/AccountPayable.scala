@@ -332,7 +332,7 @@ with CanCloneThis[AccountPayable] {
     }
   }
 
-  def transferTo(toAccount:Long, toout_of_cacashier:String, cashierTo:String, cashier_numberTo:String){
+  def transferTo(toAccount:Long, toout_of_cashier:String, cashierTo:String, cashier_numberTo:String){
     def cashierToObj = Cashier.findByKey(cashierTo.toLong)
     def cashierToBox:Box[Cashier] = cashierToObj match {
       case Full(c:Cashier) => Full(c)
@@ -349,7 +349,7 @@ with CanCloneThis[AccountPayable] {
     }else{
       accountPayable.typeMovement(AccountPayable.IN)
     }
-    if(toout_of_cacashier.toBoolean) {
+    if(toout_of_cashier.toBoolean) {
       accountPayable.cashier(cashierToBox)
     } else {
       // para colocar Empty - garantir 
@@ -399,6 +399,68 @@ with CanCloneThis[AccountPayable] {
   }
 */
 
+  def conCilSol (id : String, idofx : String, 
+    aggreg : Boolean, conciliation : Int) = {
+    val apofx = AccountPayable.findByKey(idofx.toLong).get
+    var aplist = if (aggreg) {
+      AccountPayable.findAllInCompany(
+        By(AccountPayable.id, id.toLong))
+    } else {
+      AccountPayable.findAllInCompany(
+        By(AccountPayable.aggregateId, id.toLong))
+    }
+    aplist.map((ap) => {
+      if (!ap.paid_?) {
+        ap.paid_? (true);
+      }
+      // no ofx duedate sempre = data pagamento
+      // o arq é importado sem pagto para não alterar saldo 
+      // por isso usa duedate
+      ap.paymentDate (apofx.dueDate)
+      ap.account (apofx.account)
+      var compl = ap.complement
+      ap.complement (compl + " " + apofx.obs)
+      if (conciliate == 1) {
+        ap.makeAsConciliated
+      } else {
+        ap.makeAsConsolidated
+      }
+    });
+    val ap = AccountPayable.findByKey(id.toLong).get
+    var dif = apofx.value - ap.aggregateValue
+    val auxTm = if (apofx.value > ap.aggregateValue) {
+        apofx.typeMovement
+      } else if (apofx.typeMovement == AccountPayable.IN) {
+        AccountPayable.OUT
+      } else {
+        AccountPayable.IN
+      }
+
+    if (aggreg && dif != 0.0) {
+      println ("vaiii ============= complementando agregado " + dif)
+      if (dif < 0.0) {
+        dif = dif * -1
+      }
+      val ap1 = AccountPayable.createInCompany
+      .account (apofx.account) // ofx mesmo
+      .paymentDate (apofx.dueDate)
+      .typeMovement(apofx.typeMovement) // ofx mesmo
+      .category (ap.category)
+      .dueDate (ap.dueDate)
+      .value (dif)
+      .paid_? (true)
+      .complement ((ap.complement + " " + apofx.obs).trim)
+      .obs ("====complemento agregado " + ap.obs)
+      ap1.save
+      if (conciliate == 1) {
+        ap1.makeAsConciliated
+      } else {
+        ap1.makeAsConsolidated
+      }
+    }
+    apofx.delete_!
+  }
+
   def consolidate(accountId:Long, value:Double, paymentStart: Date,
     paymentEnd: Date) = {
     val account = Account.findByKey (accountId).get
@@ -437,18 +499,14 @@ with CanCloneThis[AccountPayable] {
       .paymentDate(paymentEnd)
       .obs("Gerado pelo processo de consolidação")
       .account(accountId)
+      .paid_?(true)
       .auto_?(true)
       //.cashier(cashier.id.is)
       //.paymentType(paymentType.id.is)
       .costCenter(AuthUtil.unit.costCenter.is)
       .value(val1)
-//try{
-    account1.save
-    account1.makeAsConsolidated
-    println ("vaiii  ===================== acabou consol mesmo " + account1.id.is)
-        //} catch {
-        //case e:Exception => "" //JString(e.getMessage)
-        //}
+      account1.save
+      account1.makeAsConsolidated
    ""
   }
 

@@ -6,7 +6,8 @@
   <script src="/js/jquery.tablesorter.pager.js"></script>
   <script type="text/javascript">
   $(function(){
-    $("#account").accountField(true);
+    $("#account_ofx").accountField(true);
+    $("#account_fin").accountField(true);
     $("#category_select").categoryAccountField(true);
     //$("#start").val(getDateBr(new Date().getStartOfMonth()));
     if (AuthUtil.company.id == 13) {
@@ -63,9 +64,17 @@
           if (row[11] != "0") { // ap1.conciliate
             ret = ""
           } else {
-            ret = "<a href='#' data-id='" + row [10] + "' data-idofx='" + row [4] + "' class='action_consolidate_aggreg'><img width='16px' title='consolidar lançamentos agregados' src='/images/consolidate.png'></a>" +
+            ret = "<a href='#' " +
+              "data-id='" + row [10] + "' " + 
+              "data-idofx='" + row [4] + "' " +
+              "data-vaggreg='" + row [9] + "' " +
+              "class='action_consolidate_aggreg'><img width='16px' title='consolidar lançamentos agregados' src='/images/consolidate.png'></a>" +
               "<img width='16px' src='/images/transparent1.png'>" +
-              "<a href='#' data-id='" + row [10] + "' data-idofx='" + row [4] + "' class='action_conciliate_aggreg'><img width='16px' title='conciliar lançamentos agregados' src='/images/tick.png'></a>" 
+              "<a href='#' " + 
+              "data-id='" + row [10] + "' " +
+              "data-idofx='" + row [4] + "' " +
+              "data-vaggreg='" + row [9] + "' " +
+              "class='action_conciliate_aggreg'><img width='16px' title='conciliar lançamentos agregados' src='/images/tick.png'></a>" 
           }
         } else {
           ret = ""
@@ -136,16 +145,16 @@
         //total_gap = ($('#end_value').val()-conciliated);
         //$("#total_gap").val((total_gap).formatMoney());
         $(".action_consolidate").click(function() {
-          return consolidateOne($(this).attr("data-id"), $(this).attr("data-idofx"), false);
+          return consolidateOne($(this).attr("data-id"), $(this).attr("data-idofx"), false, 0);
         });
         $(".action_conciliate").click(function() {
-          return conciliateOne($(this).attr("data-id"), $(this).attr("data-idofx"), false);
+          return conciliateOne($(this).attr("data-id"), $(this).attr("data-idofx"), false, 0);
         });
         $(".action_consolidate_aggreg").click(function() {
-          return consolidateOne($(this).attr("data-id"), $(this).attr("data-idofx"), true);
+          return consolidateOne($(this).attr("data-id"), $(this).attr("data-idofx"), true, $(this).attr("data-vaggreg"));
         });
         $(".action_conciliate_aggreg").click(function() {
-          return conciliateOne($(this).attr("data-id"), $(this).attr("data-idofx"), true);
+          return conciliateOne($(this).attr("data-id"), $(this).attr("data-idofx"), true, $(this).attr("data-vaggreg"));
         });
         $(".action_remove").click(function() {
           return deleteOne($(this).attr("data-idofx"));
@@ -337,9 +346,15 @@
         </div>
         <div class="span8">
           <div class="clearfix">
-              <label for="account">Conta</label>
+              <label for="account_ofx">Conta ofx</label>
               <div class="input">
-                  <select class="local_storage" name='account' id="account"></select>
+                  <select class="local_storage" name='account_ofx' id="account_ofx"></select>
+              </div>
+          </div>            
+          <div class="clearfix">
+              <label for="account_fin">Conta Fin</label>
+              <div class="input">
+                  <select class="local_storage" name='account_fin' id="account_fin"></select>
               </div>
           </div>            
           <div class="clearfix">

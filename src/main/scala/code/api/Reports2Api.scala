@@ -1792,7 +1792,7 @@ object Reports2 extends RestHelper with ReportRest with net.liftweb.common.Logge
 					ap.typemovement,
 					case when (ap.typemovement = 0) then ap.value else null end as entrada , 
 					case when (ap.typemovement = 1) then ap.value else null end as saida , 
-					ap.paid, conciliate, ap.id, ap.id, ap.category, null, null
+					ap.paid, conciliate, ap.id, ap.id, ap.category, null, null, ap.account, ap.unit
 					from accountpayable ap 
 					inner join accountcategory ct on ct.id = ap.category
 					left join business_pattern bp on bp.id = ap.user_c
@@ -1802,37 +1802,22 @@ object Reports2 extends RestHelper with ReportRest with net.liftweb.common.Logge
 					and (ap.paymentdate between ? and ? or
 					(ap.paymentdate is null
 					and duedate between ? and ?))
+					and ap.unit = ?
 					order by 3, 1
 					"""
-/*
-					union
-					select ap.id, ap.duedate as vencimento, 
-					ap.duedate as pagamento, ct.short_name, 
-					bp.short_name, ap.obs, 
-					ap.typemovement,
-					case when (ap.typemovement = 0) then ap.value else null end as entrada , 
-					case when (ap.typemovement = 1) then ap.value else null end as saida , 
-					ap.paid, conciliate, ap.id, ap.id, ap.category
-					from accountpayable ap 
-					inner join accountcategory ct on ct.id = ap.category
-					left join business_pattern bp on bp.id = ap.user_c
-					where ap.company = ?
-					and ap.toconciliation = false
-					and ap.account = %s
-					and ap.paymentdate is null
-					and duedate between ? and ?
-					 ) as data1 
-					order by 3, 1
-					"""
-*/
 				toResponse(SQL_REPORT.format(account),
 					List(AuthUtil.company.id.is, start, end, 
-						start, end))
+						start, end, AuthUtil.unit.id.is))
 			}
 			case "report" :: "account_ofx_conciliation" :: Nil Post _ => {
 
-				def account:String = S.param("account") match {
+				def account_ofx:String = S.param("account_ofx") match {
 					case Full(s) if(s != "") => " and ap.account = %s ".format (s)
+					case _ => " and 1 = 1 " 
+				}
+
+				def account_fin:String = S.param("account_fin") match {
+					case Full(s) if(s != "") => " and ap1.account = %s ".format (s)
 					case _ => " and 1 = 1 " 
 				}
 
@@ -1861,7 +1846,7 @@ object Reports2 extends RestHelper with ReportRest with net.liftweb.common.Logge
 					ap1.id,
 					ap1.aggregatevalue, ap1.aggregateid,
 					ap1.conciliate,
-					ap.category, ap1.category, ap1.typemovement
+					ap.category, ap1.category
 					from accountpayable ap 
 					left join accountpayable ap1 on 
 					  ((ap1.paymentdate = ap.paymentdate or ap1.duedate = ap.paymentdate 
@@ -1872,6 +1857,7 @@ object Reports2 extends RestHelper with ReportRest with net.liftweb.common.Logge
 					  and ap1.toconciliation = false and ap.company = ap1.company
 					  and ap1.typemovement = ap.typemovement
 					  %s
+					  %s
 					where ap.company = ? 
 					and ap.duedate between date(?) and date (?)
 					and ap.toconciliation = true
@@ -1879,7 +1865,7 @@ object Reports2 extends RestHelper with ReportRest with net.liftweb.common.Logge
 					order by 
 					ap.duedate, ap.id, (ap1.value = ap.value)
 					"""
-				toResponse(SQL_REPORT.format(show_conciliated, account),
+				toResponse(SQL_REPORT.format(account_fin, show_conciliated, account_ofx),
 					List(margin, margin, start, end, margin, margin, AuthUtil.company.id.is, start, end))
 			}
 			case "report" :: "offsaleproduct_cost" :: Nil Post _ =>{

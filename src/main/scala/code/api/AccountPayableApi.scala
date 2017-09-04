@@ -141,7 +141,8 @@ object AccountPayableApi extends RestHelper with ReportRest with net.liftweb.com
 			}
 			case "accountpayable" :: "conciliateofx" :: id :: idofx :: aggreg :: Nil JsonGet _ => {
 				try{
-					val apofx = AccountPayable.findByKey(idofx.toLong).get
+					AccountPayable.conCilSol (id,idofx,(aggreg == "true"), 1)
+/*					val apofx = AccountPayable.findByKey(idofx.toLong).get
 					var aplist = if (aggreg == "false") {
 						AccountPayable.findAllInCompany(
 							By(AccountPayable.id, id.toLong))
@@ -162,7 +163,36 @@ object AccountPayableApi extends RestHelper with ReportRest with net.liftweb.com
 						ap.complement (compl + " " + apofx.obs)
 						ap.makeAsConciliated
 					});
+					val ap = AccountPayable.findByKey(id.toLong).get
+					var dif = apofx.value - ap.aggregateValue
+					val auxTm = if (apofx.value > ap.aggregateValue) {
+							apofx.typeMovement
+						} else if (apofx.typeMovement == AccountPayable.IN) {
+							AccountPayable.OUT
+						} else {
+							AccountPayable.IN
+						}
+
+					if (dif != 0.0) {
+						println ("vaiii ============= complementando agregado " + dif)
+						if (dif < 0.0) {
+							dif = dif * -1
+						}
+						val ap1 = AccountPayable.createInCompany
+						.account (apofx.account) // ofx mesmo
+						.paymentDate (apofx.dueDate)
+						.typeMovement(apofx.typeMovement) // ofx mesmo
+						.category (ap.category)
+						.dueDate (ap.dueDate)
+						.value (dif)
+						.paid_? (true)
+						.complement ((ap.complement + " " + apofx.obs).trim)
+						.obs ("====complemento agregado " + ap.obs)
+						ap1.save
+						ap1.makeAsConciliated
+					}
 					apofx.delete_!
+*/
 					JInt(1)
 				} catch {
 					case e:Exception => JString(e.getMessage)
@@ -183,6 +213,8 @@ object AccountPayableApi extends RestHelper with ReportRest with net.liftweb.com
 			}
 			case "accountpayable" :: "consolidateofx" :: id :: idofx :: aggreg :: Nil JsonGet _ => {
 				try{
+					AccountPayable.conCilSol (id,idofx,(aggreg == "true"), 2);
+/*
 					val apofx = AccountPayable.findByKey(idofx.toLong).get
 					var aplist = if (aggreg == "false") {
 						AccountPayable.findAllInCompany(
@@ -206,6 +238,7 @@ object AccountPayableApi extends RestHelper with ReportRest with net.liftweb.com
 					})
 
 					apofx.delete_!
+*/
 					JInt(1)
 				} catch {
 					case e:Exception => JString(e.getMessage)
