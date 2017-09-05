@@ -180,12 +180,25 @@
                 _qntityOfItems = values.length;
             }
 
+            // Apply title to the popup
             _$titleText.text(_properties.title);
+
+            // Defines if filter is available or not
             _controlFilterVisibility();
+
+            // Renders all elements in the list
             _renderList();
 
             var height = _calculatePopupHeight();
             _$popup.animate({ height: height }, 500);
+        }
+
+        function _setFirstItemAsSelected(){
+            if(_qntityOfItems > 0){
+                _selectedItemIndex = 0; 
+                var items = $('.sth-select-item').toArray();
+                $(items[_selectedItemIndex]).addClass("selected");
+            }
         }
 
         function _selectElementAbove(){
@@ -282,6 +295,8 @@
                     return true;
                 }
             });
+
+            _setFirstItemAsSelected();
 
             _$content.append($listItems);
 
