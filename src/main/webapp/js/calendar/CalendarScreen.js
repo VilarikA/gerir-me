@@ -146,7 +146,12 @@ var CalendarScreen = {
         } else {
             $("#cutomer_id_treatment").val('');
             setTimeout("$('#cutomer_name_treatment').select2('open');$('.name_customer_search span').html('');", 500)
-        }    },
+        }    
+    
+        $("#cutomer_name_treatment").change(function(){
+            $("#activitys").next().click();
+        });
+    },
     showCustomers : function(calEvent){
         CalendarScreen.creatModalTreatmentClass(calEvent);
     },

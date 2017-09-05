@@ -297,10 +297,11 @@ var TreatmentManger = {
             translateStatus();
             $("#treatment_detail_div").show();
 
+            console.log('Treatment added');
+
             /*
             $("#activitys").select2('open');
             */
-
         });
         global_calEvent = calEvent;
     },
