@@ -123,6 +123,10 @@ class User extends  BusinessPattern[User] with UserIdAsString{
         override def dbColumnName = "discountToCommission"
         override def defaultValue = true
     }
+    object deletePayment_? extends MappedBoolean(this){
+        override def dbColumnName = "deletePayment"
+        override def defaultValue = true;
+    }
 
     def login (userName:String, passWord:String, company:Company):LoginStatus = {
         if(userName != "" && passWord != ""){
