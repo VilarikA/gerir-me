@@ -59,7 +59,10 @@ object FatService extends net.liftweb.common.Logger {
 				By(AccountPayable.cashier, cashier.id.is),
 				By(AccountPayable.auto_?,true),
 				OrderBy (AccountPayable.paymentType, Ascending),
-				OrderBy (AccountPayable.dueDate, Ascending));
+				OrderBy (AccountPayable.dueDate, Ascending),
+				OrderBy (AccountPayable.id, Ascending) // para agregar sempre na 
+				//receita e conciliar o typemovement do ofx
+				);
 		if (aclist.length > 0) {
 			var dtAnt = new Date();
 			var pt = 0l;
@@ -133,6 +136,15 @@ object FatService extends net.liftweb.common.Logger {
 			ReceiveFixDays
 			
 		}
+	}
+	def canDesFat(cashier:Cashier)={
+		// se tiver algun conciliado ou consolidado não pode 
+		// reabrir caixa
+		(AccountPayable.count(
+				By(AccountPayable.cashier, cashier.id.is),
+				By(AccountPayable.auto_?,true),
+				NotBy(AccountPayable.conciliate,0)
+			) == 0)
 	}
 	def desFat(cashier:Cashier)={
 		AccountPayable.findAllInCompany(
