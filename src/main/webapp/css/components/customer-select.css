@@ -18,6 +18,10 @@
     .vr-customer-select .name_customer_search.select2-container.with-icons.three-icons {
         width: calc(100% - 75px) !important;
     }
+    
+    .vr-customer-select .name_customer_search.select2-container.with-icons.two-icons {
+        width: calc(100% - 40px) !important;
+    }
 }
 
 .vr-customer-select.with-icons.two-icons { width: calc(100% - 37px); }
