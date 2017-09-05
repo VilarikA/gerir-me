@@ -237,6 +237,12 @@ object SecuritySnippet {
         else
           NodeSeq.Empty
       }      
+      def hasFinancialadModule(in:NodeSeq):NodeSeq ={
+        if (PermissionModule.financialad_?)
+          in
+        else
+          NodeSeq.Empty
+      }      
       def hasInventoryModule(in:NodeSeq):NodeSeq ={
         if (PermissionModule.inventory_?)
           in
