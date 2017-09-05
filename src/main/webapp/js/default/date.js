@@ -174,6 +174,14 @@ var getDateBrAsUri = function(d) {
 	return encodeURIComponent(getDateBr(d));
 }
 
+// Rigel 28/08/2017 recebe data no formato STR brasileiro dd/mm/yyyy e 
+// retorna o data mesmo interna americano yyyy-mm-dd
+var brToUsDate = function (brStrdate) {
+	var arrDate = brStrdate.split('/');
+    var newDate = new Date(arrDate[2], arrDate[1] -1, arrDate[0]);
+	return newDate;
+}
+
 var date = new Date();
 $(function() {
 	if (Date.toDay().isItChristmas()) {

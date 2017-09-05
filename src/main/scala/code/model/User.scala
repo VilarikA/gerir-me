@@ -115,6 +115,18 @@ class User extends  BusinessPattern[User] with UserIdAsString{
         override def defaultValue = true
     }
 
+    object calendarPrice_? extends MappedBoolean(this){
+        override def dbColumnName = "calendarPrice"
+        override def defaultValue = false
+    }
+    object discountToCommission_? extends MappedBoolean(this){
+        override def dbColumnName = "discountToCommission"
+        override def defaultValue = true
+    }
+    object deletePayment_? extends MappedBoolean(this){
+        override def dbColumnName = "deletePayment"
+        override def defaultValue = true;
+    }
 
     def login (userName:String, passWord:String, company:Company):LoginStatus = {
         if(userName != "" && passWord != ""){
@@ -595,10 +607,17 @@ class User extends  BusinessPattern[User] with UserIdAsString{
 
 object User extends User with BusinessPatternMeta[User] with OnlyCurrentUnit[User]{
     def findByFacebook(facebookId:String, facebookAccessToken:String) = {
-        findAll(
+        val uList = findAll(
             By(User.facebookId,facebookId)
             //, By(User.facebookAccessToken,facebookAccessToken)
             )
+        if (uList.length > 0) {
+            val user = uList(0)
+            LogActor ! "Login faceb user company " + user.company.is.toString + "       id " + user.id.is.toString +
+             "      user " + user.name.is + "       date " +new Date().toString
+            user.lastLogin(new Date()).insecureSave
+        }
+        uList
     }
     
     // like para emails separados por ,

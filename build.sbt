@@ -1,4 +1,4 @@
-name := "E-Belle ligth"
+name := "gerir-me"
 
 version := "0.1.22"
 

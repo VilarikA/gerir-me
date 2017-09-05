@@ -166,6 +166,20 @@ class TreatmentDetail extends Audited[TreatmentDetail] with IdPK with CreatedUpd
             case _ => new Date
     }
 
+    def alertObs : String = {
+         activity.obj match {
+            case Full(a) => if (a.showObs_?) {
+                    a.obs
+                } else {
+                    ""
+                }
+            case _ => product.obj match {
+                case Full(p) => ""
+                case _ => ""
+            }
+        }        
+    }
+
     def discountsTotal:Double  = {
          activity.obj match {
             case Full(a) => a.discountsTotal

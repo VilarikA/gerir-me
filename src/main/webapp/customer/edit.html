@@ -418,6 +418,16 @@
                 <div class="active tab_content row" id="address">
                     <div class='span8'>
                         <div class="clearfix">
+                            <label for="postal_code">CEP</label>
+                            <div class="input">
+                                <div class='inline-inputs'>
+                                    <input class="small cep" id="postal_code" name="postal_code" size="15" type="text"/>  
+                                    <button type="button" id="generate-cep" title ="Busca o endereço do cep informado, caso cidade e estado sejam diferentes do padrão os dados serão atualizados depois que o registro for salvo" class="btn success ">Buscar Endereço</button>
+                                </div>
+                                <span class="help-block">buscar endereço por viacep.com.br</span>
+                            </div>
+                        </div>
+                        <div class="clearfix">
                             <label for="name">Rua</label>
                             <div class="input">
                                 <div class='inline-inputs'>
@@ -468,23 +478,14 @@
                                 <span class="help-block">UF / Cidade</span>
                             </div>
                         </div>
-                        <div class="clearfix lift:SecuritySnippet.isSuperAdmin">
-                            <label for="city">Cidade</label>
+                        <div class="clearfix">
+                            <label for="city"></label>
                             <div class="input">
                                 <div class='inline-inputs'>
-                                    <input class="xlarge disabled" disabled='true' id="city" name="city" size="30" type="text"/>
-                                    <input class="mini disabled" disabled='true' id="state" name="state" size="5 " type="text"/>           
+                                    <input class="xlarge" id="city" name="city" size="30" type="text"/>
+                                    <input class="mini" id="state" name="state" size="5 " type="text"/>           
                                 </div>
                                 <span class="help-block">Cidade/UF</span>
-                            </div>
-                        </div>
-                        <div class="clearfix">
-                            <label for="postal_code">CEP</label>
-                            <div class="input">
-                                <div class='inline-inputs'>
-                                    <input class="small cep" id="postal_code" name="postal_code" size="15" type="text"/>           
-                                </div>
-                                <span class="help-block">CEP</span>
                             </div>
                         </div>
                         <div class="clearfix lift:SecuritySnippet.isGerirmeSystem">
@@ -1004,6 +1005,28 @@
             $.get('/customer/next_id', function(r) {
                 eval("obj=" + r);
                 $('#idForCompany').val(obj.id);
+            });
+         });
+         $("#generate-cep").on('click', function() {
+            if (!$('#postal_code').val()) {
+                alert ("Um CEP válido precisa ser informado");
+            }
+            if ($('#street').val()) {
+                if (!confirm("Já existe um endereço preenchido, confirma busca?")) {
+                    return;
+                }
+            }  
+
+            $.getJSON("https://viacep.com.br/ws/" + $('#postal_code').val()+"/json", function(result) {
+                if (("erro" in result)) {
+                    alert ("CEP não encontrado " + $('#postal_code').val());
+                } else {
+                    $('#street').val(result.logradouro);  
+                    $('#district').val(result.bairro);  
+                    $('#city').val(result.ibge + " " + result.localidade);  
+                    document.getElementById("city").focus(); 
+                    $('#state').val((result.uf).toUpperCase());  
+                }
             });
          });
         });        

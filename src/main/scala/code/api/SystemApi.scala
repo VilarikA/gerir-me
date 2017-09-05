@@ -95,6 +95,13 @@ object SystemApi extends RestHelper {
 			JInt(1)
 		}
 
+		case "system" :: "autoChangeToPaid"  :: Nil JsonGet _ => {
+	        Company.findAllActiveToChangeFinancialToPaid.foreach( company => {
+	        	AccountPayable.findAllToChangeToPaid(new Date(), company)
+	        });
+			JInt(1)
+		}
+
 		case "system" :: "sendDiskSpaceAlert"  :: Nil JsonGet _ => {
 			EmailUtil.sendDiskSpaceAlert
 			JInt(1)

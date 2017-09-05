@@ -10,10 +10,15 @@
     //$("#start").val(getDateBr(new Date().getStartOfMonth()));
     if (AuthUtil.company.id == 13) {
       $("#start").val('01/07/2017');
+      $("#end").val('31/07/2017');
     } else {
       $("#start").val(getDateBr(new Date().getStartOfMonth()));
     }
+    var count = 0;
+    var count_open = 0;
     var fields = [];
+    var total_generalLin = 0.00;
+    var conciliatedLin = 0.0;
     fields[0] = {
       type : "format",
       decode: function(name, row) {
@@ -47,7 +52,7 @@
       type : "format",
       decode: function(name, row) {
         return "<img src=\"/images/" + 
-            (row[9] == "true" ? 'good' : 'bad') + ".png\"/></td>"
+            (row[9] == "true" ? 'good' : 'bad') + ".png\"/>"
       }
     }
     fields[10] = {
@@ -59,10 +64,19 @@
         } else {
             dataaux = getDateBr(FactoryDate.byTime(row[2]))
         }
+        var straux = "";
+        if (row[10] == "0") {
+            straux = "<img width='16px' src='/images/transparent1.png'>" +
+              "<a href='#' data-id='" + row [11] + "' class='action_remove'><img width='16px' title='excluir lançamento' src='/images/delete.png'></a>"
+
+        } else {
+          straux = "";
+        }
         return "<a target='_drilldown' href='/financial/account_register?account_categories_filter1="+row[13]+"&start_date="+dataaux+"&end_date="+dataaux+"'>"+"<img width='16px' src=\"/images/" + 
             (row[10] == "0" ? 'audit' : (row[10] == "1" ? 'tick' : 'consolidate')) + ".png\" title=\"" + 
-            (row[10] == "0" ? 'em aberto' : (row[10] == "1" ? 'conciliado' : 'consolidado')) + "\"/></td>" +
-            "</a>"
+            (row[10] == "0" ? 'em aberto (editar)' : (row[10] == "1" ? 'conciliado (editar)' : 'consolidado (editar)')) + "\"/>" +
+            "</a>" + 
+            straux
       }
     }
     fields[11] = {
@@ -85,58 +99,137 @@
         }
       }
     }
-    var url = "/report/account_conciliation";
-    var total_to_pay = 0.00;
-    var conciliated = 0.0
-    var request = function(){
-      conciliated = parseFloat($('#start_value').val());//0.00;
-      var account = $('#account').val()
-
-      var d = new Date();
-      var from = $("#end").val().split("/");
-      var f = new Date(from[2], from[1] - 1, from[0]);      
-      if (f > d) {
-        alert ("A data fim não pode ser superior a Hoje!")
-        return 
-      }
-
-      if (!account) {
-        alert("Conta inválida!")
-        return
-      }
-      renderReport(url,fields,$("#form_report").serializeObject(),"#grid", function(data){
-        var count = 0;
-        data.forEach(function(row){
-          count += 1;
-          //alert ("vaiiii " + parseFloat(row[6]) + "   " + parseFloat(row[7]))
-          if (row[10] != 0) {
-            if (row[6] == 0) {
-              conciliated += parseFloat(row[7]);
+    fields[13] = 'none';
+    fields[14] = {
+      type : "format",
+      decode: function(name, row) {
+          if (row[10] != "0") {
+            if (row[6] == "0") {
+              conciliatedLin += parseFloat(row[7]);
             } else {
-              conciliated -= parseFloat(row[8]);
+              conciliatedLin -= parseFloat(row[8]);
             }
           }
-        });
-        alert ("Count " + count);
-        $("#conciliated").val((conciliated).formatMoney());
-        total_gap = ($('#end_value').val()-conciliated);
-        $("#total_gap").val((total_gap).formatMoney());
-        $(".action_conciliate").click(function() {
-          return conciliateOne($(this).attr("data-id"));
-        });
-        $(".action_consolidate").click(function() {
-    //      alert ("vaiii =======================")
-          return consolidateOne($(this).attr("data-id"));
-        });
-
-      });
+          return eval (conciliatedLin).formatMoney()
+      }
     }
+    fields[15] = {
+      type : "format",
+      decode: function(name, row) {
+          if (row[6] == "0") {
+            total_generalLin += parseFloat(row[7]);
+          } else {
+            total_generalLin -= parseFloat(row[8]);
+          }
+          return eval (total_generalLin).formatMoney()
+      }
+    }
+    var url = "/report/account_conciliation";
+    var total_general = 0.00;
+    var conciliated = 0.0;
+    var total_gap = 0.0;
+    var total_ggap = 0.0;
+    var request = function(){
+      var start_value = 0.0
+      var start = null;
+      $.post("/report/account_bc_conciliation", $("#form_report").serializeObject(), function(r){
+        if (r) {
+          start_value = parseFloat(eval(r)[0][0]);
+          start = getDateBr(FactoryDate.byTime(eval(r)[0][2]));
+        }
+      });
+      setTimeout(function(){    
+        if (start_value != 0.0) {
+          if (parseFloat($("#start_value").val()) != start_value) {
+             alert ("Saldo inicial alterado para " + (start_value).formatMoney()) 
+             $("#start_value").val(start_value);
+          }
+        }
+        if (start != null) {
+          if ($("#start").val() != start) {
+             alert ("Data de início alterada para " + start) 
+             $("#start").val(start);
+          }
+        }
+        conciliated = parseFloat($('#start_value').val()) || 0;
+        total_general = parseFloat($('#start_value').val()) || 0;
+        conciliatedLin = parseFloat($('#start_value').val()) || 0;
+        total_generalLin = parseFloat($('#start_value').val()) || 0;
+
+        var account = $('#account').val()
+
+        if (new Date() < brToUsDate($("#end").val())) {
+          alert ("A data fim não pode ser superior a Hoje!")
+          return 
+        }
+
+        if (!account) {
+          alert("Conta inválida!")
+          return
+        }
+        renderReport(url,fields,$("#form_report").serializeObject(),"#grid", function(data){
+          count = 0;
+          count_open = 0;
+          data.forEach(function(row){
+            count += 1;
+            if (row[10] != 0) {
+              if (row[6] == 0) {
+                conciliated += parseFloat(row[7]);
+              } else {
+                conciliated -= parseFloat(row[8]);
+              }
+            } else {
+              count_open += 1;
+            }
+            if (row[6] == 0) {
+              total_general += parseFloat(row[7]);
+            } else {
+              total_general -= parseFloat(row[8]);
+            }
+
+          });
+
+          $("#conciliated").val((conciliated).formatMoney());
+          total_gap = ($('#end_value').val()-conciliated);
+          $("#total_gap").val((total_gap).formatMoney());
+
+          $("#total_general").val((total_general).formatMoney());
+          total_ggap = ($('#end_value').val()-total_general);
+          $("#total_ggap").val((total_ggap).formatMoney());
+
+          $(".action_conciliate").click(function() {
+            return conciliateOne($(this).attr("data-id"));
+          });
+          $(".action_consolidate").click(function() {
+            return consolidateOne($(this).attr("data-id"));
+          });
+          $(".action_remove").click(function() {
+            return deleteOne($(this).attr("data-id"));
+          });
+
+        });
+      },1000);
+    }
+
+    var deleteOne = function(id) {
+      if (confirm("Tem certeza que deseja excluir o lançamento?")) {
+        // o segundo param 0 seria a recorrencia 
+        return $.get("/accountpayable/remove/" + id +"/0" , function(results) {
+          if(results === 1 || results == "1"){
+            alert("Lançamento excluído com sucesso!");  
+          }else{
+            alert(eval(results));
+          }
+          request();
+        });
+      }
+    };
 
     var conciliateOne = function(id) {
       if (confirm("Tem certeza que deseja conciliar o lançamento?")) {
         return $.get("/accountpayable/conciliate/" + id, function(results) {
           if(results === 1 || results == "1"){
-            alert("Lançamento conciliado com sucesso!");  
+            //alert("Lançamento conciliado com sucesso!");  
           }else{
             alert(eval(results));
           }
@@ -149,7 +242,7 @@
       if (confirm("Tem certeza que deseja consolidar o lançamento?")) {
         return $.get("/accountpayable/consolidate/" + id, function(results) {
           if(results === 1 || results == "1"){
-            alert("Lançamento consoliado com sucesso!");  
+            //alert("Lançamento consolidado com sucesso!");  
           }else{
             alert(eval(results));
           }
@@ -172,7 +265,7 @@
           "ids": idsToMark.join(',')
         }, function(t) {
           if (t=="1" || t==1) {
-            alert("Lançamento(s) marcado(s) com sucesso!");
+            //alert("Lançamento(s) marcado(s) com sucesso!");
             request();
           } else {
             eval("var obj = " + t)
@@ -195,7 +288,7 @@
           "ids": idsToMark.join(',')
         }, function(t) {
           if (t=="1" || t==1) {
-            alert("Lançamento(s) marcado(s) com sucesso!");
+            //alert("Lançamento(s) marcado(s) com sucesso!");
             request();
           } else {
             eval("var obj = " + t)
@@ -205,9 +298,21 @@
       }
     });
     $("#consolidateTotal").click(function() {
+      if (new Date() < brToUsDate($("#end").val())) {
+        return alert ("Não é possivel fazer a consolidação total, pois a data do fim do período não pode ser maior que a data corrente!");
+      }
+      if (count < 1) {
+        return alert ("Não há lançamentos no período para fazer a consolidação total!");
+      }
+      if (count_open > 0) {
+        return alert ("Não é possível fazer a consolidação total, pois ainda existe(m) " + count_open + " lançamento(s) em aberto no período!");
+      }
+      if ($("#total_gap").val() != $("#total_ggap").val()) {
+        return alert ("Só é possivel fazer a consolidação total e geração de um saldo definitivo para o período quando todos os lançamentos no período estiverem pelo menos conciliados!");
+      }
       if (confirm("Tem certeza que deseja consolidar a conta?")) {
         var url = "/accountpayable/consolidateTotal/"
-        url = url + encodeURIComponent($("#end").val()) + "/" + $("#account").val()+"/"+$("#total_gap").val()
+        url = url + encodeURIComponent($("#start").val()) + "/" + encodeURIComponent($("#end").val()) + "/" + $("#account").val()+"/"+$("#total_gap").val()
         return $.get(url, function(t) {
           if (t=="1" || t==1) {
             alert("Conta consolidada com sucesso!");
@@ -255,12 +360,18 @@
               </div>
           </div>
           <div class="clearfix">
-            <label for="start">Saldo Inicial/Final</label>
+              <label for="account">Conta</label>
+              <div class="input">
+                  <select class="local_storage" name='account' id="account"></select>
+              </div>
+          </div>            
+          <div class="clearfix">
+            <label for="start">Saldo Inicial / Final</label>
               <div class="input">
                 <div class="inline-inputs">
                   <div style="float:left; padding-right:10px" class="input-prepend">
                     <span class="add-on"><img width="16" src="/images/money.png"></span>
-                    <input type="text" class="input-small currency local_storage" id='start_value' name="start_value" placeholder="Inicial"/>
+                    <input type="text" class="input-small currency " id='start_value' name="start_value" placeholder="Inicial"/>
                   </div>
                   <div style="float:left; padding-right:10px" class="input-prepend">
                     <span class="add-on"><img width="16" src="/images/money.png"></span>
@@ -272,13 +383,7 @@
         </div>
         <div class="span8">
           <div class="clearfix">
-              <label for="account">Conta</label>
-              <div class="input">
-                  <select class="local_storage" name='account' id="account"></select>
-              </div>
-          </div>            
-          <div class="clearfix">
-            <label for="conciliated">Conciliado/Diferença </label>
+            <label for="conciliated">Conciliado / Diferença</label>
             <div class="input">
               <div class="inline-inputs">
                 <div class="lift:SecuritySnippet.isShowSalesToUser input-prepend" style="float:left; padding-right:10px">
@@ -289,6 +394,23 @@
                 <div class="input-prepend" style="float:left; padding-right:10px">
                   <span class="add-on"><img src="/images/user.png" width="16"></span>
                   <input class="small" id="total_gap" name="total_gap" size="19" placeholder="0.00" type="text" disabled>
+                  <span class="help-block">Diferença</span>
+                </div>
+              </div>
+            </div>
+          </div>                      
+          <div class="clearfix">
+            <label for="conciliated">Geral / Diferença </label>
+            <div class="input">
+              <div class="inline-inputs">
+                <div class="lift:SecuritySnippet.isShowSalesToUser input-prepend" style="float:left; padding-right:10px">
+                  <span class="add-on"><img src="/images/money.png" width="16"></span>
+                  <input class="small" id="total_general" name="total_general" size="19" placeholder="0.00" type="text" disabled>
+                  <span class="help-block">Geral</span>
+                </div>
+                <div class="input-prepend" style="float:left; padding-right:10px">
+                  <span class="add-on"><img src="/images/user.png" width="16"></span>
+                  <input class="small" id="total_ggap" name="total_ggap" size="19" placeholder="0.00" type="text" disabled>
                   <span class="help-block">Diferença</span>
                 </div>
               </div>
@@ -332,8 +454,11 @@
         <th>Entrada</th>
         <th>Saída</th>
         <th>Pago</th>
-        <th>Status</th>
-        <th></th>
+        <th>Editar Excluir_</th>
+        <th>Conciliar</th>
+        <th>Consolidar</th>
+        <th title='Evolução do saldo conciliado/consolidado'>Saldo C</th>
+        <th title='Evolução do saldo geral'>Saldo G</th>
       </thead>
       <tbody>
       </tbody>

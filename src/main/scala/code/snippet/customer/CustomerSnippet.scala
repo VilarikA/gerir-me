@@ -281,8 +281,8 @@ class  CustomerSnippet extends BootstrapPaginatorSnippet[Customer] with net.lift
 			"name=sex" #> (SHtml.select(sexs,Full(ac.sex.is), ac.sex(_)))&
 			"name=sexAnimal" #> (SHtml.select(sexanimals,Full(ac.sexAnimal.is), ac.sexAnimal(_)))&
 		    "name=civilstatus" #> (SHtml.select(civilstatuses,Full(ac.civilstatus.is.toString),(v:String) => ac.civilstatus(v.toInt)))&
-		    "name=weight" #> (SHtml.text(ac.weight.is.toString, (s:String) => ac.weight( s.toDouble)))&
-		    "name=height" #> (SHtml.text(ac.height.is.toString, (s:String) => ac.height( s.toDouble)))&
+		    "name=weight" #> (SHtml.text(ac.weight.is.toString, (s:String) => ac.weight(BusinessRulesUtil.snippetToDouble(s))))&
+		    "name=height" #> (SHtml.text(ac.height.is.toString, (s:String) => ac.height(BusinessRulesUtil.snippetToDouble(s))))&
 			"name=bmi" #> (SHtml.text(ac.BMI, (a:String) => {}))&
 			"name=ageBirth" #> (SHtml.text(ac.ageBirth, (a:String) => {}))&
 			"name=birthday" #> (SHtml.text(getDateAsString(ac.birthday),
@@ -308,7 +308,7 @@ class  CustomerSnippet extends BootstrapPaginatorSnippet[Customer] with net.lift
 		    "name=status" #> (SHtml.select(status,Full(ac.status.is.toString),(v:String) => ac.status(v.toInt)))&
 		    "name=street" #> (SHtml.text(ac.street.is, ac.street(_))) &
 		    "name=pointofreference" #> (SHtml.textarea(ac.pointofreference.is, ac.pointofreference(_))) &
-		    "name=valueinpoints" #> (SHtml.text(ac.valueInPoints.is.toString, (s:String) => ac.valueInPoints( s.toDouble)))&
+		    "name=valueinpoints" #> (SHtml.text(ac.valueInPoints.is.toString, (s:String) => ac.valueInPoints(BusinessRulesUtil.snippetToDouble(s))))&
 		    "name=district" #> (SHtml.text(ac.district.is, ac.district(_)))&
 		    "name=postal_code" #> (SHtml.text(ac.postal_code.is, ac.postal_code(_)))&
 			"name=lng" #> (SHtml.text(ac.lng.is, ac.lng(_)))&

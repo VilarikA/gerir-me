@@ -438,11 +438,19 @@ object DailyReport{
 	def accountsFor (company:Company, date: Date) = AccountPayable.findAll(
 		By(AccountPayable.company,company),
 		By(AccountPayable.toConciliation_?,false),
+		BySql("""paymenttype is null or paymenttype in (select pt.id from paymenttype pt where
+		pt.usernotification = true
+		and pt.company = ?)""", IHaveValidatedThisSQL("dueDate", "01-01-2012 00:00:00"),
+		company.id.is.toLong),
 		BySql("date(dueDate) = date(?)",
 		IHaveValidatedThisSQL("dateevent","01-01-2012 00:00:00"), date))
 	def hasAccountsFor (company:Company, date: Date) = AccountPayable.count(
 		By(AccountPayable.company,company),
 		By(AccountPayable.toConciliation_?,false),
+		BySql("""paymenttype is null or paymenttype in (select pt.id from paymenttype pt where
+		pt.usernotification = true
+		and pt.company = ?)""", IHaveValidatedThisSQL("dueDate", "01-01-2012 00:00:00"),
+		company.id.is.toLong),
 		BySql("date(dueDate) = date(?)",
 		IHaveValidatedThisSQL("dateevent","01-01-2012 00:00:00"), date)) > 0
 

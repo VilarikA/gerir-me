@@ -80,13 +80,18 @@ rm --force /tmp/mpool.sh > /dev/null
 rm --force /tmp/killall.so  > /dev/null
 rm --force /tmp/gates.lod  > /dev/null
 rm --force /tmp/yam > /dev/null
+rm --force /tmp/ssy > /dev/null
+rm --force /tmp/yumcc > /dev/null
 rm -rf /tmp/*.py > /dev/null
 rm --force /tmp/minerd64 > /dev/null
 rm --force /tmp/conns > /dev/null
 rm --force /tmp/conn > /dev/null
 rm --force /tmp/conn.sh > /dev/null
+rm --force /tmp/Jsiw > /dev/null
 rm --force /twd > /dev/null
 rm --force /etc/init.d/VsystemsshMdt > /dev/null
+rm --force /tmp/Jsiw > /dev/null
+rm --force /tmp/conf.n > /dev/null
 
 + pkill cpubalence
 + exit 0

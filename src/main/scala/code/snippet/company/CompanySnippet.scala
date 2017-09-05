@@ -147,7 +147,7 @@ object CompanySnippet{
 		    "name=commandControl" #> (SHtml.select(cmdControl,Full(ac.commandControl.is.toString),(v:String) => ac.commandControl(v.toInt)))&
 			"name=autoOpenCalendar" #> (SHtml.checkbox(ac.autoOpenCalendar_?, ac.autoOpenCalendar_?(_)))&
 			"name=allowrepeatcommand" #> (SHtml.checkbox(ac.allowRepeatCommand_?, ac.allowRepeatCommand_?(_)))&
-			"name=notify" #> (SHtml.checkbox(ac.senNotifications_?, ac.senNotifications_?(_)))&
+//			"name=notify" #> (SHtml.checkbox(ac.senNotifications_?, ac.senNotifications_?(_)))&
 		    "name=financialNotification" #>(SHtml.text(ac.financialNotification.is.toString,(s:String) => ac.financialNotification(s.toInt)))&
 		    "name=customerNotification" #>(SHtml.text(ac.customerNotification.is.toString,(s:String) => ac.customerNotification(s.toInt)))&
 		    "name=userNotification" #>(SHtml.text(ac.userNotification.is.toString,(s:String) => ac.userNotification(s.toInt)))&

@@ -349,6 +349,26 @@ with PerCity{
 	        }
 */
     	}
+
+      if (this.city.length > 7) {
+        // rigel 26/08/2017
+        // enquanto não melhoramos a pesquisa de cep o codigo ibge
+        // da cidade está sendo salvo no antigo campo city
+        // aqui cityRef e stateRef são atualizados e o codigo
+        // ibge retirado do campo city para que isso não seja feito
+        // na proxima vez que o registro for salvo
+        val ibge = this.city.is.slice (0,7)
+        if (BusinessRulesUtil.isNumeric (ibge)) {
+          val acList = City.findAll (By(City.official_code, ibge));
+          if (acList.length > 0) {
+            val ac = acList(0)
+            this.cityRef(ac.id.is)
+            this.stateRef(ac.state.is)
+            val cityAux = this.city.is.slice (8,this.city.length);
+            this.city (cityAux.trim);
+          }
+        }
+      }
       if (this.species != 0) {
         this.is_animal_?.set(true)
         this.is_person_?.set(false)
@@ -356,7 +376,7 @@ with PerCity{
       }
       if (document != "") {
         if (!BusinessRulesUtil.dv_cpf (document)) {
-          throw new RuntimeException("CPF Inválido!")
+          throw new RuntimeException("CPF Inválido! " + document)
         }
       }
 

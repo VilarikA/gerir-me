@@ -149,29 +149,26 @@ class PaymentTypesSnippet extends BootstrapPaginatorSnippet[PaymentType]{
 			"name=receiveAtSight" #> (SHtml.checkbox(ac.receiveAtSight_?, ac.receiveAtSight_?(_)))&
 			"name=receive" #> (SHtml.checkbox(ac.receive_?, ac.receive_?(_)))&
 			"name=individualReceive" #> (SHtml.checkbox(ac.individualReceive_?, ac.individualReceive_?(_)))&
-			"name=percentDiscountToReceive" #> (SHtml.text(ac.percentDiscountToReceive.is.toString, (f:String) => { 
-					if(f != "")
-						ac.percentDiscountToReceive(f.toDouble)
-					else
-						ac.percentDiscountToReceive(0.0)
-
-			}))&
-			"name=order" #> (SHtml.text(ac.order.is.toString, (f:String) => {ac.order(f.toInt)}))&
+			"name=usernotification" #> (SHtml.checkbox(ac.usernotification_?, ac.usernotification_?(_)))&
+			"name=autochangetopaid" #> (SHtml.checkbox(ac.autoChangeToPaid_?, ac.autoChangeToPaid_?(_)))&
+			"name=percentDiscountToReceive" #> (SHtml.text(ac.percentDiscountToReceive.is.toString, 
+				(f:String) => ac.percentDiscountToReceive(BusinessRulesUtil.snippetToDouble(f))))&
+			"name=order" #> (SHtml.text(ac.order.is.toString, 
+				(f:String) => ac.order(BusinessRulesUtil.snippetToInt(f))))&
 			"name=defaltAccount" #> (SHtml.select(accountsForSelect,Full(ac.defaltAccount.is.toString),(s:String) => ac.defaltAccount(s.toLong)))&
 			"name=defaltCategory" #> (SHtml.select(categoriesForSelect,Full(ac.defaltCategory.is.toString), (s:String) => ac.defaltCategory(s.toLong )))&
 			"name=defaltDicountCategory" #> (SHtml.select(categoriesForSelect,Full(ac.defaltDicountCategory.is.toString), (s:String) => ac.defaltDicountCategory(s.toLong )))&
-			"name=numDays" #> (SHtml.text(ac.numDays.is.toString, (f:String) => {ac.numDays(f.toInt)}))&
-			"name=day" #> (SHtml.text(ac.day.is.toString, (f:String) => {ac.limitDay(f.toInt)}))&			
-			"name=limitDay" #> (SHtml.text(ac.limitDay.is.toString, (f:String) => {ac.day(f.toInt)}))&			
+			"name=numDays" #> (SHtml.text(ac.numDays.is.toString, 
+				(f:String) => ac.numDays(BusinessRulesUtil.snippetToInt(f))))&
+			"name=day" #> (SHtml.text(ac.day.is.toString, 
+				(f:String) => ac.limitDay(BusinessRulesUtil.snippetToInt(f))))&			
+			"name=limitDay" #> (SHtml.text(ac.limitDay.is.toString, 
+				(f:String) => ac.day(BusinessRulesUtil.snippetToInt(f))))&			
 			"name=nextMonth" #> (SHtml.checkbox(ac.nextMonth_?, ac.nextMonth_?(_)))&
-			"name=percentDiscountToCommision" #> (SHtml.text(ac.percentDiscountToCommision.is.toString, (f:String) => { 
-					if(f != "")
-						ac.percentDiscountToCommision(f.toDouble)
-					else
-						ac.percentDiscountToCommision(0.0)
-
-			}))&
-			"name=numDaysForReceive" #> (SHtml.text(ac.numDaysForReceive.is.toString, (f:String) => {ac.numDaysForReceive(f.toInt)}))&
+			"name=percentDiscountToCommision" #> (SHtml.text(ac.percentDiscountToCommision.is.toString, 
+				(f:String) => ac.percentDiscountToCommision(BusinessRulesUtil.snippetToDouble(f))))&
+			"name=numDaysForReceive" #> (SHtml.text(ac.numDaysForReceive.is.toString, 
+				(f:String) => ac.numDaysForReceive(BusinessRulesUtil.snippetToInt(f))))&
 			"name=status" #> (SHtml.select(status,Full(ac.status.is.toString),(v:String) => ac.status(v.toInt))++SHtml.hidden(process))			//notification
 		}catch {
 		    case e: NoSuchElementException => S.error("Forma de pagamento não existe!")

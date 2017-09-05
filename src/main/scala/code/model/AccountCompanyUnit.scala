@@ -101,16 +101,15 @@ class AccountCompanyUnit extends Audited[AccountCompanyUnit] with PerCompany wit
 
   def registerDiference(accountP: AccountPayable) = {
     if (accountP.realValue != accountP.lastValue.is ) {
-      _register(accountP, accountP.realValue - accountP.lastValue, "Alt Valor Lanç", true)
+      _register(accountP, accountP.realValue - accountP.lastValue, "Alt Valor Lanç conta " + accountP.accountShortName + " cat " + accountP.categoryShortName, true)
     }
   }
   def register(accountP: AccountPayable) = {
     if (accountP.typeMovement.is == AccountPayable.IN) {
-        _register(accountP, accountP.value, "Crédito")
+        _register(accountP, accountP.value, "Crédito conta " + accountP.accountShortName + " cat " + accountP.categoryShortName)
     } else {
-        _register(accountP, accountP.value, "Débito")
+        _register(accountP, accountP.value, "Débito conta  " + accountP.accountShortName + " cat " + accountP.categoryShortName)
     }
-//    _register(accountP, accountP.value, "Lançamento")
   }
 
 }

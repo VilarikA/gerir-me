@@ -67,6 +67,11 @@ class Activity extends ProductMapper[Activity] with Ordered[Activity] {
         override def defaultValue = false
         override def dbColumnName = "showinrecords"
     }
+    // expande obs no treatment - como alerta
+    object showObs_? extends MappedBoolean(this) {
+        override def defaultValue = false
+        override def dbColumnName = "showobs"
+    }
 /*
     object auxPrice extends MappedCurrency(this) // valor pago ao assistente
     object auxHousePrice extends MappedCurrency(this) // valor pago ao assistente pela casa

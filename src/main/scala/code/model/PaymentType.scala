@@ -41,6 +41,10 @@ with CreatedUpdatedBy with NameSearchble[PaymentType] with ActiveInactivable[Pay
     override def defaultValue = true
     override def dbColumnName = "generateCommision"
   }
+  object comissionAtSight_? extends MappedBoolean(this){//Avista
+    override def defaultValue = true
+    override def dbColumnName = "comissionAtSight"
+  }
   
   object creditCard_? extends MappedBoolean(this){
     override def dbColumnName = "creditCard"
@@ -94,11 +98,6 @@ with CreatedUpdatedBy with NameSearchble[PaymentType] with ActiveInactivable[Pay
       override def dbColumnName = "offsale"
   }    
 
-  object comissionAtSight_? extends MappedBoolean(this){//Avista
-    override def defaultValue = true
-    override def dbColumnName = "comissionAtSight"
-  }
-  
   object showAsOptions_? extends MappedBoolean(this){
     override def defaultValue = true
     override def dbColumnName = "showAsOptions"
@@ -130,6 +129,14 @@ with CreatedUpdatedBy with NameSearchble[PaymentType] with ActiveInactivable[Pay
     override def defaultValue = false
     override def dbColumnName = "individualreceive"
   }
+  object autoChangeToPaid_? extends MappedBoolean(this){
+      override def defaultValue = false
+      override def dbColumnName = "autochangetopaid"
+  }    
+  object usernotification_? extends MappedBoolean(this){
+      override def defaultValue = true
+      override def dbColumnName = "usernotification"
+  }    
   object nextMonth_? extends MappedBoolean(this){//Fatura no proximo mes
     override def defaultValue = false
     override def dbColumnName = "nextmonth"

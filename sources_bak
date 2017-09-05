@@ -167,3 +167,35 @@ GRANT EXECUTE ON FUNCTION fu_mgr_value(text) TO "gerir-me";
 ALTER TABLE product ADD COLUMN markup numeric(16,4);
 ALTER TABLE product ADD COLUMN size_c character varying(20);
 
+
+
+
+
+
+
+
+
+update company set financialnotification2 = 0;
+update company set customernotification2 = 0;
+update company set customerbirthdaynotification = 0;
+update company set customerbirthdaynotificationid = 0;
+update company set animalbirthdaynotification = 0;
+update company set animalbirthdaynotificationid = null;
+update company set calendarpub = 0;
+update company set calendarurl = "";
+update company set expensereceiptobs = "";
+update company set recordscustinfo = "";
+update company set servicechargeproduct = null;
+update producttype set showobs = false;
+update product set servicecharge = false;
+update paymenttype set autochangetopaid = false;
+update paymenttype set usernotification = true;
+update business_pattern set calendarprice = false;
+update business_pattern set discounttocommission = true;
+update business_pattern set deletePayment = true;
+update product set showobs = false;
+
+
+
+
+

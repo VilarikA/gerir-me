@@ -161,6 +161,10 @@ with CanCloneThis[AccountPayable] {
     this.partialySecureSave
   }
     
+  def thisUnit : CompanyUnit = {
+    CompanyUnit.findByKey (this.unit.obj.get.id.toLong).get;
+  }
+
   def makeAsPaid = this.paid_?(true).partialySecureSave
 
   def makeAsConciliated = {
@@ -182,14 +186,23 @@ with CanCloneThis[AccountPayable] {
       }
   }
 
+  lazy val categoryBox = this.category.obj
+
+  lazy val categoryShortName:String = {
+      categoryBox match {
+          case Full(c)=> c.short_name.is
+          case _ => ""
+      }
+  }
+
   //override
   def changeAccount_? = lastAccount.is != account.is
   def changeAccountProcess {
     if(debted_?.is && changeAccount_?){
       this.lastAccount.obj match {
         case Full(a: Account) => {
-          val au = a.getAccountUnit
-          au.removeRegister(this, "Alt Conta")
+          val au = a.getAccountUnit (thisUnit)
+          au.removeRegister(this, "Alt Conta  " + accountShortName + " cat " + categoryShortName)
         }
         case _ => 
       }
@@ -212,8 +225,8 @@ with CanCloneThis[AccountPayable] {
     if(debted_?.is){
       accountBox match {
         case Full(a: Account) => {
-          val au = a.getAccountUnit
-          au.removeRegister(this, "Excluindo lançamento")
+          val au = a.getAccountUnit (thisUnit)
+          au.removeRegister(this, "Excluindo lançamento conta " + accountShortName + " cat " + categoryShortName)
         }
         case _ => 
       }
@@ -226,7 +239,7 @@ with CanCloneThis[AccountPayable] {
     val registerDiference = debted_?.is
     accountBox match {
       case Full(a: Account) => {
-        val au = a.getAccountUnit
+        val au = a.getAccountUnit (thisUnit)
         if (registerDiference) {
           au.registerDiference(this)
         } else {
@@ -240,8 +253,8 @@ with CanCloneThis[AccountPayable] {
   def rollbackAccountValue() = {
     accountBox match {
       case Full(a: Account) => {
-        val au = a.getAccountUnit
-        au.removeRegister(this, "Alt Status Lanç")
+        val au = a.getAccountUnit (thisUnit)
+        au.removeRegister(this, "Alt Status Lanç conta " + accountShortName + " cat " + categoryShortName)
       }
       case _ => 
     }
@@ -266,7 +279,7 @@ with CanCloneThis[AccountPayable] {
       }
       super.save
       val a = Account.findByKey(this.account.is).get
-      val au = a.getAccountUnit
+      val au = a.getAccountUnit (thisUnit)
       au.register(this)
     }
 
@@ -311,7 +324,7 @@ with CanCloneThis[AccountPayable] {
       if (this.paid_?.is) {
         super.save
         val a = Account.findByKey(this.account.is).get
-        val au = a.getAccountUnit
+        val au = a.getAccountUnit (thisUnit)
         au.register(this)
       } else {
         super.save
@@ -319,7 +332,7 @@ with CanCloneThis[AccountPayable] {
     }
   }
 
-  def transferTo(toAccount:Long, toout_of_cacashier:String, cashierTo:String, cashier_numberTo:String){
+  def transferTo(toAccount:Long, toout_of_cashier:String, cashierTo:String, cashier_numberTo:String){
     def cashierToObj = Cashier.findByKey(cashierTo.toLong)
     def cashierToBox:Box[Cashier] = cashierToObj match {
       case Full(c:Cashier) => Full(c)
@@ -336,7 +349,7 @@ with CanCloneThis[AccountPayable] {
     }else{
       accountPayable.typeMovement(AccountPayable.IN)
     }
-    if(toout_of_cacashier.toBoolean) {
+    if(toout_of_cashier.toBoolean) {
       accountPayable.cashier(cashierToBox)
     } else {
       // para colocar Empty - garantir 
@@ -375,8 +388,96 @@ with CanCloneThis[AccountPayable] {
             this.obs.is
         ).getBytes("UTF-8")  
 
-  def consolidate(accountId:Long, value:Double, dueDate: Date) = {
+/*
+  def prevBalance (account: Account, paymentDate : Date) = {
     val categoryBC = AccountCategory.balanceControlCategory;
+    AccountPayable.findAllInCompany (By (AccountPayable.account, account)
+      BySql (""" and paymentdate in
+        (select max(ah1.paymentdate) from accounthistory ah1 where ah1.company = ah.company and ah1.account = ah.account
+        and ah1.paymentdate < ? and accountcategory = ?)
+        """, IHaveValidatedThisSQL("", ""), account, paymentDate));
+  }
+*/
+
+  def conCilSol (id : String, idofx : String, 
+    aggreg : Boolean, conciliation : Int) = {
+    val apofx = AccountPayable.findByKey(idofx.toLong).get
+    var aplist = if (aggreg) {
+      AccountPayable.findAllInCompany(
+        By(AccountPayable.id, id.toLong))
+    } else {
+      AccountPayable.findAllInCompany(
+        By(AccountPayable.aggregateId, id.toLong))
+    }
+    aplist.map((ap) => {
+      if (!ap.paid_?) {
+        ap.paid_? (true);
+      }
+      // no ofx duedate sempre = data pagamento
+      // o arq é importado sem pagto para não alterar saldo 
+      // por isso usa duedate
+      ap.paymentDate (apofx.dueDate)
+      ap.account (apofx.account)
+      var compl = ap.complement
+      ap.complement (compl + " " + apofx.obs)
+      if (conciliate == 1) {
+        ap.makeAsConciliated
+      } else {
+        ap.makeAsConsolidated
+      }
+    });
+    val ap = AccountPayable.findByKey(id.toLong).get
+    var dif = apofx.value - ap.aggregateValue
+    val auxTm = if (apofx.value > ap.aggregateValue) {
+        apofx.typeMovement
+      } else if (apofx.typeMovement == AccountPayable.IN) {
+        AccountPayable.OUT
+      } else {
+        AccountPayable.IN
+      }
+
+    if (aggreg && dif != 0.0) {
+      println ("vaiii ============= complementando agregado " + dif)
+      if (dif < 0.0) {
+        dif = dif * -1
+      }
+      val ap1 = AccountPayable.createInCompany
+      .account (apofx.account) // ofx mesmo
+      .paymentDate (apofx.dueDate)
+      .typeMovement(apofx.typeMovement) // ofx mesmo
+      .category (ap.category)
+      .dueDate (ap.dueDate)
+      .value (dif)
+      .paid_? (true)
+      .complement ((ap.complement + " " + apofx.obs).trim)
+      .obs ("====complemento agregado " + ap.obs)
+      ap1.save
+      if (conciliate == 1) {
+        ap1.makeAsConciliated
+      } else {
+        ap1.makeAsConsolidated
+      }
+    }
+    apofx.delete_!
+  }
+
+  def consolidate(accountId:Long, value:Double, paymentStart: Date,
+    paymentEnd: Date) = {
+    val account = Account.findByKey (accountId).get
+    val categoryBC = AccountCategory.balanceControlCategory;
+    val apList = AccountPayable.findAllInCompany (
+      By(AccountPayable.account, account),
+      By(AccountPayable.toConciliation_?,false),
+      By(AccountPayable.paid_?, true),
+      By(AccountPayable.unit, AuthUtil.unit),
+      BySql(" date(paymentDate) between date(?) and date(?) ", 
+        IHaveValidatedThisSQL("", ""), paymentStart, paymentEnd)
+      )
+    apList.foreach((ap) => {  
+      ap.makeAsConsolidated
+      ap.partialySecureSave
+    });
+
     val val1 = if (value < 0.0) {
         value * -1
       } else {
@@ -393,23 +494,19 @@ with CanCloneThis[AccountPayable] {
       .unit(AuthUtil.unit.id)
       .typeMovement(accountType)
       .category(categoryBC.id)
-      .exerciseDate(dueDate)
-      .dueDate(dueDate)
-      .paymentDate(dueDate)
+      .exerciseDate(paymentEnd)
+      .dueDate(paymentEnd)
+      .paymentDate(paymentEnd)
       .obs("Gerado pelo processo de consolidação")
       .account(accountId)
+      .paid_?(true)
       .auto_?(true)
       //.cashier(cashier.id.is)
       //.paymentType(paymentType.id.is)
       .costCenter(AuthUtil.unit.costCenter.is)
       .value(val1)
-//try{
-    account1.save
-    account1.makeAsConsolidated
-    println ("vaiii  ===================== acabou consol mesmo " + account1.id.is)
-        //} catch {
-        //case e:Exception => "" //JString(e.getMessage)
-        //}
+      account1.save
+      account1.makeAsConsolidated
    ""
   }
 
@@ -581,6 +678,24 @@ object AccountPayable extends AccountPayable with LongKeyedMapperPerCompany[Acco
                           By(AccountPayable.recurrence, recurrence.id.is), 
                           By(AccountPayable.dueDate, date)
                       )
+  }
+
+  def findAllToChangeToPaid(start: Date, company: Company) = {
+    var aplist = AccountPayable.findAll(
+      By(AccountPayable.company, company),
+      By(AccountPayable.dueDate, start), 
+      By(AccountPayable.paid_?, false), 
+      BySql("""paymenttype in (select pt.id from paymenttype pt where
+        pt.receive = true and pt.receiveatsight = false and pt.autoChangeToPaid = true
+        and pt.company = ?)""", IHaveValidatedThisSQL("dueDate", "01-01-2012 00:00:00"),
+        company.id.is.toLong)
+      )
+    aplist.map((ap) => {
+      if (!ap.paid_?) {
+        //ap.paid_? (true).save;
+        ap.makeAsPaid;
+      }
+    });
   }
 
   //acho que nao usa  

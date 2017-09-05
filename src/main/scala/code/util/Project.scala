@@ -333,6 +333,36 @@ object BusinessRulesUtil{
 
 	def md5(value:String) = Project.md5(value)
 
+  // rigel 22/08/2017
+  // usado nos snippets para receber info do html e converetr para
+  // double - resolve erros qdo usuario usa virgula e não ponto
+  // quando tenta salvar o campo vazio, e pode tratar o que mais 
+  // aparecer
+  def snippetToDouble (value:String) : Double = {
+    if(value.trim != "") {
+      var aux = "";
+      aux = value.trim
+      aux = aux.replaceAll(" ", "");
+      aux = aux.replaceAll(",", ".");
+      aux.toDouble
+    } else {
+      0.0
+    }
+  }
+  def snippetToInt (value:String) : Int = {
+    if(value.trim != "") {
+      var aux = "";
+      aux = value.trim
+      aux = aux.replaceAll(" ", "");
+      aux = aux.replaceAll(",", "");
+      // nao sei pq isso nao funciona
+      // testar println antes e depois
+      //aux = aux.replaceAll(".", "");
+      aux.toInt
+    } else {
+      0
+    }
+  }
 	def toCamelCase(value:String):String = {
 		if (value != null && value.trim() != EMPTY){
 			val val_camel = value split(" ") filter( _!="" ) map(_.toLowerCase) map( (current:String) => {  if( !notCamelize.contains(current)) { current.capitalize }else{ current } } ) reduceLeft(_+" "+_)
@@ -361,6 +391,10 @@ object BusinessRulesUtil{
       value.trim.padTo(length, " ").mkString
     }
   }
+
+
+  def isNumeric(str:String): Boolean = str.matches("[-+]?\\d+(\\.\\d+)?")
+
   // fill at left with zeros to complete the length or limit the length
   def zerosLimit (value:String, len:Int) = {
     if (value.trim.length > len) {

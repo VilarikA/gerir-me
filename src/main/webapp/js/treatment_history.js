@@ -19,7 +19,11 @@ var convert = function (name, actualValue) {
         if (actualValue == null) {
           return actualValue
         }
-        if (nameAux.indexOf("date") != -1 || isDate (nameAux)) {
+        if (nameAux.indexOf("date") != -1 || 
+            // rigel 22/08/2017 para treatment
+            nameAux == "end" || 
+            nameAux == "start" || 
+            isDate (nameAux)) {
           if (actualValue != '') {
             var strAux = "";
             strAux = actualValue.toString();
