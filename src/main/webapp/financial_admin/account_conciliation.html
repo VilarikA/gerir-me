@@ -229,7 +229,7 @@
       if (confirm("Tem certeza que deseja conciliar o lançamento?")) {
         return $.get("/accountpayable/conciliate/" + id, function(results) {
           if(results === 1 || results == "1"){
-            alert("Lançamento conciliado com sucesso!");  
+            //alert("Lançamento conciliado com sucesso!");  
           }else{
             alert(eval(results));
           }
@@ -242,7 +242,7 @@
       if (confirm("Tem certeza que deseja consolidar o lançamento?")) {
         return $.get("/accountpayable/consolidate/" + id, function(results) {
           if(results === 1 || results == "1"){
-            alert("Lançamento consoliado com sucesso!");  
+            //alert("Lançamento consolidado com sucesso!");  
           }else{
             alert(eval(results));
           }
@@ -265,7 +265,7 @@
           "ids": idsToMark.join(',')
         }, function(t) {
           if (t=="1" || t==1) {
-            alert("Lançamento(s) marcado(s) com sucesso!");
+            //alert("Lançamento(s) marcado(s) com sucesso!");
             request();
           } else {
             eval("var obj = " + t)
@@ -288,7 +288,7 @@
           "ids": idsToMark.join(',')
         }, function(t) {
           if (t=="1" || t==1) {
-            alert("Lançamento(s) marcado(s) com sucesso!");
+            //alert("Lançamento(s) marcado(s) com sucesso!");
             request();
           } else {
             eval("var obj = " + t)
@@ -302,7 +302,7 @@
         return alert ("Não é possivel fazer a consolidação total, pois a data do fim do período não pode ser maior que a data corrente!");
       }
       if (count < 1) {
-        return alert ("Não lancamentos no período para fazer a consolidação total!");
+        return alert ("Não há lançamentos no período para fazer a consolidação total!");
       }
       if (count_open > 0) {
         return alert ("Não é possível fazer a consolidação total, pois ainda existe(m) " + count_open + " lançamento(s) em aberto no período!");

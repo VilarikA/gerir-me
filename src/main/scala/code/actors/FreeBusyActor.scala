@@ -147,11 +147,9 @@ object FreeBusyActor extends LiftActor with net.liftweb.common.Logger  {
                   wasChanged = true
                   //info("Something change Here folga")
                   var iu = 0;
-                  println ("vaiii ================== " + u.name.is)
                   def units = CompanyUnit.findAllOfUser(
                     company.id.is,u.id.is)
                     units.foreach((cu)=>{
-                      println ("vaiiii ========= unidade " + cu.name.is)
                       val ct = BusyEvent.countBE (
                       company,
                       new Date(assertedTime(freeBusy.start,"0"+realStartCompany+":00",0)), 
