@@ -189,8 +189,7 @@
             // Renders all elements in the list
             _renderList();
 
-            var height = _calculatePopupHeight();
-            _$popup.animate({ height: height }, 500);
+            _$popup.animate({ height: _getLimitPopupHeight() }, 500);
         }
 
         function _setFirstItemAsSelected(){
@@ -245,9 +244,28 @@
             var allItemsHeight = singleItemHeight * qntityOfItems;
             var titleHeight = _$title.outerHeight();
             var filterHeight = _$filter.outerHeight();
-
             var contentHeight = allItemsHeight + titleHeight + filterHeight;
             return contentHeight < MAX_HEIGHT ? contentHeight : MAX_HEIGHT;
+        }
+
+        $(window).resize(function(){
+            console.log('window resizing');
+            if(_isOpen)
+                _$popup.outerHeight(_getLimitPopupHeight());
+        });
+
+        // Ensure the popup is smaller than Window
+        function _getLimitPopupHeight(){
+            console.log('is open, resizing popup');
+            console.log($(window).outerHeight());
+
+            var popupHeight = _calculatePopupHeight();
+            var windowHeight = $(window).outerHeight();
+            if(popupHeight > windowHeight)
+                popupHeight = windowHeight;
+
+            console.log(popupHeight);
+            return popupHeight;
         }
 
         /**
