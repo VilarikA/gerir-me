@@ -128,8 +128,12 @@ class Cashier extends LongKeyedMapper[Cashier]  with PerCompany with PerUnit wit
             } else {
                 startValue
             }
-        if(this.status.is  == Cashier.CashierStatus.Open)
+        if(this.status.is  == Cashier.CashierStatus.Open) {
             throw new RuntimeException("Caixa já está aberto!")
+        }
+        if (!FatService.canDesFat(this)) {
+            throw new RuntimeException("Caixa com lançamentos conciliados/consolidados não pode ser reaberto!")
+        }
         this.status(Cashier.CashierStatus.Open)
         .closerDate(null)
         .valueToConference(0)

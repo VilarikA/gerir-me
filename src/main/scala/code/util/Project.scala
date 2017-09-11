@@ -478,6 +478,39 @@ object BusinessRulesUtil{
     	Scalendar(date.getTime)+division(qtd,divisionType)
     }
 
+    def mgrDate (dateStr : String) : Date = {
+      var dt_out = dateStr;
+      var dt_ret = new Date();
+      if (dt_out.trim == "") {
+        dt_ret = null;
+        return dt_ret
+      }
+      // testa data com 5 posições - só mês e ano
+      if (dt_out.length == 5) {
+         dt_out = dt_out + "/1904";
+      }
+      
+      // testa dia com uma posição só acrescenta 0 zero
+      if (dt_out.substring (1,1)== "/") {
+         dt_out = "0" + dt_out;
+      }
+      // testa mes com uma posição só acrescenta 0 zero
+      if (dt_out.substring (4,5) == "/") {
+         dt_out = dt_out.substring (0,3) + "0" + 
+          dt_out.substring(3,9);
+      }
+      if (dt_out.trim == "") {
+          dt_out = "";
+      }
+      // coloca no formato americano para postgres converter
+      if (dt_out.substring (2,3) == "/" && dt_out.substring(5,6) == "/") {
+//        dt_out = dt_out.substring (6,10) + "-" + dt_out.substring (3,5) + "-" + dt_out.substring (0,2);
+      } else {
+        dt_out = ""
+      }
+      Project.strToDateOrToday (dt_out)
+    }
+
   	def division(qtd:Int,divisionType:Int) = {
 	    if (divisionType == Recurrence.MONTHLY) {
 	      qtd.month

@@ -83,7 +83,7 @@ object  PaymentService extends  net.liftweb.common.Logger  {
 					payment.customer(processedTreatments.head.customer)
 					val ac = Customer.findByKey (processedTreatments.head.customer).get
 					ac.lastSaleDate(request.dataTreatmentsAsDate).
-					is_customer_?(true).save;
+					is_customer_?(true).insecureSave;
 					processedTreatments.foreach((t) => payment.treatments += t)
 					request.payments filter(!_.removed) foreach((p:PaymentDTO) => {
 						createPaymentDetail(p,payment)

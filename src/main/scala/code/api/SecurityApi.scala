@@ -48,6 +48,10 @@ object SecurityApi extends RestHelper with net.liftweb.common.Logger {
       AuthUtil.user.password(S.param("password").get).save
       JInt(1)
     }
+    case "security" :: "unRegisterFacebook" :: Nil Post _ => {
+      AuthUtil.user.facebookId("").facebookUsername("").facebookAccessToken("").save
+      JInt(1)
+    }
 
     case "security" :: "remember_key" :: Nil JsonGet _ => {
       User.findByKey((S.param("_keepCalm") openOr "0").toLong) match {
