@@ -189,7 +189,12 @@
             // Renders all elements in the list
             _renderList();
 
-            _$popup.animate({ height: _calcMaxHeight() }, 500);
+            var popupHeight = _calcMaxHeight();
+            _$popup.animate({ height: popupHeight }, 500, function(){
+                var titleHeight = _$title.outerHeight();
+                var filterHeight = _$filter.outerHeight();
+                _$content.outerHeight(popupHeight - titleHeight - filterHeight);
+            });
         }
 
         function _setFirstItemAsSelected(){
@@ -266,11 +271,17 @@
             if(!_isOpen) return;
 
             // Timeout because the popup shows in an animation
-            setTimeout(function(){
-                var popupHeight = _calcMaxHeight();
-                _$popup.outerHeight(popupHeight);
-            }, 500);
+            setTimeout(resizeBasedOnAvailableHeight, 500);
         });
+
+        function resizeBasedOnAvailableHeight(){
+            var popupHeight = _calcMaxHeight();
+            _$popup.outerHeight(popupHeight);
+
+            var titleHeight = _$title.outerHeight();
+            var filterHeight = _$filter.outerHeight();
+            _$content.outerHeight(popupHeight - titleHeight - filterHeight);
+        }
 
         /*
          * Hides the popup on the screen.
@@ -322,7 +333,7 @@
 
             _$content.append($listItems);
 
-            var popupHeight = _calculatePopupHeight();
+            var popupHeight = _calcMaxHeight();
             var titleHeight = _$title.outerHeight();
             var filterHeight = _$filter.outerHeight();
             _$content.outerHeight(popupHeight - titleHeight - filterHeight);
