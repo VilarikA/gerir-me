@@ -21,6 +21,11 @@ import scala.io.{Source, Codec}
 
 class UploadContacts extends Logger {
 
+  def origin = S.param("origin") match {
+    case Full(s) => s
+    case _ => ""
+  } 
+
   object imageFile extends RequestVar[Box[FileParamHolder]](Empty)
   object fileName extends RequestVar[Box[String]](Full(Helpers.nextFuncName))
   private def prepareFile(file:File){
@@ -54,7 +59,7 @@ class UploadContacts extends Logger {
         output.close()
         prepareFile(oFile)
         info("File uploaded!")
-        ContactsUtil.execute(oFile);
+        ContactsUtil.execute(oFile, origin);
         S.notice("Arquivo importado com sucesso!")
       }
     }
@@ -63,6 +68,10 @@ class UploadContacts extends Logger {
   def render ={
     // process the form
     def process() {
+      if (origin == "") {
+        S.error("Informe a origem dos contatos")
+        return
+      }
 
       (imageFile.is) match {
         case (Empty) => S.error("Selecione um arquivo")

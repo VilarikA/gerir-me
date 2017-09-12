@@ -4,17 +4,29 @@
   </h3>
   <form class="lift:UploadContacts?form=post;multipart=true">
     <div class="clearfix">
-      <label for="name">Arquivo</label>
+      <label for="file">Arquivo</label>
       <div class="input">
         <div class="input-prepend">
         	<input type="text" name='file' id='file'/>
         </div>
       </div>
     </div> 
-      <div class="clearfix">
+    <div class="clearfix">
+      <label for="origin">Origem</label>        
+      <div class="input">
+        <div class='inline-inputs'>
+          <div class="input-prepend" style='float:left; padding-right:10px'>
+            <input class="large local_storage" id="origin" name="origin" size="30" type="text"/>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="clearfix">
       <label for="name"></label>
+      <div class="input">
       <div class="input-prepend">
       	<input class="btn success" type="submit" "Enviar"/>
+      </div>
       </div>
     </div> 
   </form>

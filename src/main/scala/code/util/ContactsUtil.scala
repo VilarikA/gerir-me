@@ -23,7 +23,7 @@ import java.util.Date
 
 object ContactsUtil extends net.liftweb.common.Logger {
 
-  def execute(file:File){
+  def execute(file:File, origin:String){
     val lines = fromFile(file).getLines.toList
     val separator:String = if (lines(1).count(_ == '.') >
       lines(1).count(_ == ';')) {
@@ -36,7 +36,7 @@ object ContactsUtil extends net.liftweb.common.Logger {
       }
     val details = for(i <- 1 to (lines.size)-1 ) yield {
       //println ("vaiii ====== " + lines(i) + " === " + i + " serapardor " + separator)
-      factory(i, lines, separator)
+      factory(i, lines, separator, origin)
     }
     details.map((d) => {
 /*
@@ -52,7 +52,7 @@ object ContactsUtil extends net.liftweb.common.Logger {
     // UtilSqlOffSaleProdutcs.updateOffSaleProdutcs(AuthUtil.company);
   }
 
-  def saveContacts (listCol:Array[String]) = {
+  def saveContacts (listCol:Array[String], origin:String) = {
     val length = 5
     var temp = Array.ofDim[String](length)
     var maxLen = if (5 < listCol.length) {
@@ -72,6 +72,7 @@ object ContactsUtil extends net.liftweb.common.Logger {
     .name (BusinessRulesUtil.toCamelCase (temp(0)))
     .email ((temp(1)).toLowerCase)
     .phone (temp(2))
+    .origin (origin)
     .date1 (BusinessRulesUtil.mgrDate (temp(3)))
     try {
       ac.save
@@ -99,14 +100,14 @@ object ContactsUtil extends net.liftweb.common.Logger {
   }
 */
 
-  def factory(i:Int, lines:List[String], separator:String):DetailContacts ={
+  def factory(i:Int, lines:List[String], separator:String, origin:String):DetailContacts ={
     val listCol = lines(i).split(separator)
     listCol.foreach((column) => {
 //      println ("vaiii ====== " + column);
     });
 
     //println ("vaiii ======== " + listCol(0) + " ----- " +listCol (1));
-    saveContacts (listCol);
+    saveContacts (listCol, origin);
 
     DetailContacts("","","","")
 /*
