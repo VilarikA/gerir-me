@@ -42,6 +42,17 @@
           </h1>
           <form action="">
             <div class="clearfix">
+              <label for="start">Data</label>
+              <div class="input">
+                <div class="inline-inputs">
+                  <div class="input-prepend" style="float:left; padding-right:10px">
+                    <span class="add-on"><img width="16" src="/images/calendar_addon.png"></span>
+                    <input type="text" class="input-small date to_day" id='day' name="day" placeholder="Dia"/>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="clearfix">
               <label for="name"><span data-i18n='Profissionais'></label>
                 <div class="input">
                     <select class='local_storage' id='user' name='user'></select>
@@ -54,25 +65,25 @@
                 <span class="help-block">Senha para acesso</span>
               </div>
             </div>
+            <div class="clearfix">
+              <label for="btn"></label>
+              <div class="input">
+                <div class="inline-inputs">
+                  <div style="float:left; padding-right:10px" class="input-prepend">
+                    <a class="btn primary" id="new">Inserir novo</a>
+                  </div> 
+                  <div style="float:left; padding-right:10px" class="input-prepend">
+                    <input id="send" value="Buscar" class="btn success" type="button">
+                  </div>
+                  <div class="input">
+                    <input id="forget" value="Esquecer" class="btn danger" type="button" title="Clique aqui para limpar suas informações e sua senha">
+                  </div>
+                </div>
+              </div>
+            </div>                  
           </form>
       </span>
     </div>
-    <div class="clearfix">
-      <label for="btn"></label>
-      <div class="input">
-        <div class="inline-inputs">
-          <div style="float:left; padding-right:10px" class="input-prepend">
-            <a class="btn primary" id="new">Inserir novo</a>
-          </div> 
-          <div style="float:left; padding-right:10px" class="input-prepend">
-            <input id="send" value="Buscar" class="btn success" type="button">
-          </div>
-          <div class="input">
-            <input id="forget" value="Esquecer" class="btn danger" type="button" title="Clique aqui para limpar suas informações e sua senha">
-          </div>
-        </div>
-      </div>
-    </div>                  
   </div>
 
   <h1>Seus <span data-i18n='Serviços'></span></h1>
@@ -120,7 +131,7 @@
   <div id="command_modal" style="width: 90%; left: 5%; margin: auto auto auto auto; top:5%; height:100%; max-height:100%;" class="modal hide">
     <div class="modal-header">
       <a href="#" class="close">&times;</a>
-      <h3>Comanda do <span data-i18n='Profissional'></span></h3>
+      <h3>Agenda do <span data-i18n='Profissional'></span></h3>
     </div>
     <span id="cash_form">
       <form id='eventForm' action="/calendar/">
