@@ -189,7 +189,7 @@
             // Renders all elements in the list
             _renderList();
 
-            _$popup.animate({ height: _getLimitPopupHeight() }, 500);
+            _$popup.animate({ height: _calcMaxHeight() }, 500);
         }
 
         function _setFirstItemAsSelected(){
@@ -237,49 +237,53 @@
    * Calculates pop-up's height based on 
    * number of added items.
    */
-        function _calculatePopupHeight() {
+        /**
+         * Calculates the max allowed popup height, based on available
+         * screen space.
+         * This is useful mainly when mobile's keyboard is open.
+         */
+        function _calcMaxHeight() {
+            // Get the height of the popup
             var singleItemHeight = _$content.find(".sth-select-item").first().outerHeight();
-
-            var qntityOfItems = _qntityOfItems;
-            var allItemsHeight = singleItemHeight * qntityOfItems;
+            var allItemsHeight = singleItemHeight * _qntityOfItems;
             var titleHeight = _$title.outerHeight();
             var filterHeight = _$filter.outerHeight();
-            var contentHeight = allItemsHeight + titleHeight + filterHeight;
-            return contentHeight < MAX_HEIGHT ? contentHeight : MAX_HEIGHT;
+            var finalPopupHeight = (allItemsHeight + titleHeight + filterHeight);
+
+            // If is bigger than height available on document,
+            // make it equals to available space
+            var availableHeight = $(window).outerHeight();
+            if(availableHeight < finalPopupHeight){
+                finalPopupHeight = availableHeight;
+            } else if(finalPopupHeight > MAX_HEIGHT){
+                finalPopupHeight = MAX_HEIGHT;
+            }
+
+            return finalPopupHeight;
         }
 
         $(window).resize(function(){
-            console.log('window resizing');
-            if(_isOpen)
-                _$popup.outerHeight(_getLimitPopupHeight());
+            if(!_isOpen) return;
+
+            // Timeout because the popup shows in an animation
+            setTimeout(function(){
+                var popupHeight = _calcMaxHeight();
+                _$popup.outerHeight(popupHeight);
+            }, 500);
         });
 
-        // Ensure the popup is smaller than Window
-        function _getLimitPopupHeight(){
-            console.log('is open, resizing popup');
-            console.log($(window).outerHeight());
-
-            var popupHeight = _calculatePopupHeight();
-            var windowHeight = $(window).outerHeight();
-            if(popupHeight > windowHeight)
-                popupHeight = windowHeight;
-
-            console.log(popupHeight);
-            return popupHeight;
-        }
-
-        /**
-   * Hides the popup on the screen.
-   */
+        /*
+         * Hides the popup on the screen.
+         */
         function hide() {
             _isOpen = false;
             _$overlay.hide();
             _$popup.animate({ height: 0 }, 500);
         }
 
-        /**
-   * Add an item.
-   */
+        /*
+         * Add an item.
+         */
         function _addItem(item, autoRender) {
             autoRender = autoRender || true;
 
