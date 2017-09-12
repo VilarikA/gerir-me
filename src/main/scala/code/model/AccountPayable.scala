@@ -675,6 +675,8 @@ object AccountPayable extends AccountPayable with LongKeyedMapperPerCompany[Acco
 
   def countApByRecurrence (recurrence:Recurrence, date:Date) = {
       AccountPayable.count(
+                          // rigel 12/09/2018 - coloquei a company aqui
+                          By(AccountPayable.company, AuthUtil.company.id.is),
                           By(AccountPayable.recurrence, recurrence.id.is), 
                           By(AccountPayable.dueDate, date)
                       )
