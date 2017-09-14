@@ -1,6 +1,7 @@
 package code
 package model 
 
+import code.util._
 import net.liftweb._ 
 import mapper._ 
 import http._ 
@@ -41,6 +42,14 @@ class Cheque extends Audited[Cheque] with PerCompany with IdPK with CreatedUpdat
             case Full(u) => u.short_name.is
             case _ => ""
         }        
+    }
+
+    def chequeDesc : String = {
+        this.customerName + " " +
+        number.is + " " +
+        this.bankName + " " +
+        value.toString + " " +
+        Project.dateToStrOrEmpty(dueDate)
     }
 
 	def makeAsReceived  = this.received(true).save

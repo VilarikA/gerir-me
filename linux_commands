@@ -146,6 +146,10 @@ renomear o arquivo para tirar o espaço
 
 cd ~/Downloads
 
+sftp gerir-me@45.33.99.152:/home/gerir-me/backup_bd/
+ls -ltr 
+get <nome_arquivo>
+
 chmod 777 ebelle(n)
 
 sudo su postgres
