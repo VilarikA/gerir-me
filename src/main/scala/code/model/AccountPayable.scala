@@ -91,9 +91,22 @@ with CanCloneThis[AccountPayable] {
       this.set(this.defaultValue);
       cheque.obj match {
         case Full(c:Cheque) => {
-          def efetivePaymentDate:Box[Date]  = if (fieldOwner.paid_?.is) Full(fieldOwner.dueDate) else Empty
-          c.received(fieldOwner.paid_?.is).efetivePaymentDate.setFromAny(efetivePaymentDate)
-          c.save
+          if (isNew && !paid_?) {
+            // rigel 13/09/2017 - novo e não pago e é cheque
+            // é o caixa gerando cheque no financeiro, se o cheque foi 
+            // pago e o caixa reaberto ao fechar novamente gera o 
+            // financeiro com o status do cheque
+            // ou é um lancamento passando um cheque para alguém
+            // se o lançamento tava não pago que é pouco provavel,
+            // seta com o status do cheque
+            paid_?.set(c.received)
+          } else {
+            // se não é novo ou se é pago o status do lançamento 
+            // determina o status do cheque sempre
+            def efetivePaymentDate:Box[Date]  = if (fieldOwner.paid_?.is) Full(fieldOwner.dueDate) else Empty
+            c.received(fieldOwner.paid_?.is).efetivePaymentDate.setFromAny(efetivePaymentDate)
+            c.save
+          }
         }
         case _ => 
       }
@@ -305,6 +318,15 @@ with CanCloneThis[AccountPayable] {
     if ((category.isEmpty)) {
       // info ("************************* falta categoria")
       throw new RuntimeException("Não é permitido lançamento sem categoria")
+    }
+
+    if (value == 0.0) {
+      cheque.obj match {
+        case Full(c:Cheque) => {
+          value.set (c.value.is.toDouble)
+        }
+        case _ => 
+      }
     }
 
     if (!isNew) {

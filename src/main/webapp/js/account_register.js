@@ -153,8 +153,14 @@
         }
       }  
       if ((!account.value) || (parseFloat(account.value) == 0)) {
-        if (!confirm("Tem certeza que deseja cadastrar um lançamento como valor zero?")) {
-          throw "Operação cancelada!";
+        if (!account.cheque) {
+          if (!confirm("Tem certeza que deseja cadastrar um lançamento como valor zero?")) {
+            throw "Operação cancelada!";
+          }
+        } else {
+          // rigel 13/09/2017
+          // o valor do cheque vai ser assumido como sendo 
+          // o valor do lançamento
         }
       }
       if (!account.dueDate) {
