@@ -224,6 +224,7 @@
         $("#paymentDate").val(obj.paymentDate !== "" ? getDateBr(new Date(parseInt(obj.paymentDate))) : "");
         $("#paid").attr("checked", obj.paid);
         $("#obs_account").val(obj.obs);
+        $("#cheque_account").val(obj.cheque_desc);
         $("#complement_account").val(obj.complement);
         $("#type_select").val(obj.type);
         $("#category_select").val(obj.category_id).change();
@@ -270,6 +271,7 @@
     $("#paid").attr("checked", true);
     $("#recurrence").attr("checked", false);
     $("#obs_account").val("");
+    $("#cheque_account").val("");
     $("#complement_account").val("");
     $("#recurrence_id").val("");
     $("#cashier_number").val("");

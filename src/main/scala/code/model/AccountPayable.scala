@@ -103,7 +103,13 @@ with CanCloneThis[AccountPayable] {
           } else {
             // se não é novo ou se é pago o status do lançamento 
             // determina o status do cheque sempre
-            def efetivePaymentDate:Box[Date]  = if (fieldOwner.paid_?.is) Full(fieldOwner.dueDate) else Empty
+            def efetivePaymentDate:Box[Date]  = {
+              if (fieldOwner.paid_?.is) {
+                Full(fieldOwner.dueDate) 
+              } else {
+                Empty
+              }
+            }
             c.received(fieldOwner.paid_?.is).efetivePaymentDate.setFromAny(efetivePaymentDate)
             c.save
           }
@@ -199,6 +205,15 @@ with CanCloneThis[AccountPayable] {
       }
   }
 
+  lazy val chequeDesc:String = {
+      cheque.obj match {
+        case Full(c:Cheque) => {
+          c.chequeDesc
+        }
+        case _ => ""
+      }
+  }
+
   lazy val categoryBox = this.category.obj
 
   lazy val categoryShortName:String = {
@@ -240,6 +255,18 @@ with CanCloneThis[AccountPayable] {
         case Full(a: Account) => {
           val au = a.getAccountUnit (thisUnit)
           au.removeRegister(this, "Excluindo lançamento conta " + accountShortName + " cat " + categoryShortName)
+        }
+        case _ => 
+      }
+    }
+    // reseta recebimento de cheque se o lançamento for excluido
+    // desde que o lancto não seja auto - gerado pelo caixa
+    if (!auto_?) {
+      cheque.obj match {
+        case Full(c:Cheque) => {
+          c.received (false)
+          c.efetivePaymentDate (null)
+          c.save
         }
         case _ => 
       }

@@ -679,6 +679,7 @@ object AccountPayableApi extends RestHelper with ReportRest with net.liftweb.com
 											}),
 											("paymenttype_id",c.paymentType.is),
 											("cheque_id",c.cheque.is),
+											("cheque_desc",c.chequeDesc),
 											("paymenttype_name",c.paymentType.obj match {
 												case Full(u) => u.short_name.is
 												case _ => ""

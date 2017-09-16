@@ -45,6 +45,10 @@ class Cheque extends Audited[Cheque] with PerCompany with IdPK with CreatedUpdat
     }
 
     def chequeDesc : String = {
+        val chequePre : String = 
+        if (dueDate.after(Project.today)) "*** " else "";
+
+        chequePre + 
         this.customerName + " " +
         number.is + " " +
         this.bankName + " " +

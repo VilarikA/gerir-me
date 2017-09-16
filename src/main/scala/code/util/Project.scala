@@ -36,6 +36,8 @@ object Project{
     	new java.math.BigInteger(1, m.digest()).toString(16)
 	}
 
+  def today = Project.date_format_db.parse(Project.date_format_db.format(new Date()));
+  
   def tomorrow = {
     val cal = Calendar.getInstance()
     cal.setTime(new Date()); 
@@ -194,7 +196,6 @@ object Project{
 
 	def dateToAge(date:Date) = {
 		// rigel calcular idade com data de hoje
-    val today = Project.date_format_db.parse(Project.date_format_db.format(new Date()));
 		if(date != null)
 			diffYYMM (today, date, "ALL")
 		else
@@ -205,6 +206,23 @@ object Project{
     val aux_format = new java.text.SimpleDateFormat (format)
     aux_format.format(date)
   }
+
+  def extToMonth (ext:String):String = {
+    val month = Array("xxxxxx",
+      "janeiro",  "fevereio",   "março",   "abril",
+      "maio",     "junho",      "julho",   "agosto",
+      "setembro", "outubro",    "novembro","dezembro");
+    var i = 0;
+    month.foreach ((m) => {
+      if (m.indexOf (ext.toLowerCase) != -1) {
+         return ("%02d".format(i))
+      } else {
+        i += 1;
+      }
+    })
+    return ("%02d".format(0))
+  }
+
 
   def monthToExt (date:Date) : String = {
     val date1 = new java.util.GregorianCalendar();
@@ -254,7 +272,6 @@ object Project{
 
 	def dateToYears(date:Date) = {
 		// rigel calcular só anos
-    val today = Project.date_format_db.parse(Project.date_format_db.format(new Date()));
 		if(date != null) {
       diffYYMM (today, date, "YEARS")
     } else {
@@ -295,6 +312,12 @@ object Project{
 				case (s:String) if(s != "") => Project.strOnlyDateToDate(s)
 				case _ => new Date();
 	}
+
+  def strToDateOrNull(date:String) = date match {
+        case (s:String) if(s != "") => Project.strOnlyDateToDate(s)
+        case _ => null;
+  }
+
 	def strToDateOrLongTimeAgo(date:String) = date match {
 				case (s:String) if(s != "") => Project.strOnlyDateToDate(s)
 				case _ => new Date(1l);
@@ -485,13 +508,17 @@ object BusinessRulesUtil{
         dt_ret = null;
         return dt_ret
       }
-      // testa data com 5 posições - só mês e ano
+      // testa data com 6 posições - só dia mês por extenso
+      if (dt_out.length == 6) {
+         dt_out = dt_out.substring (0,3) + Project.extToMonth (dt_out.substring (3,6)) + "/1904";
+      }
+      // testa data com 5 posições - só dia e mês
       if (dt_out.length == 5) {
          dt_out = dt_out + "/1904";
       }
       
       // testa dia com uma posição só acrescenta 0 zero
-      if (dt_out.substring (1,1)== "/") {
+      if (dt_out.substring (1,2)== "/") {
          dt_out = "0" + dt_out;
       }
       // testa mes com uma posição só acrescenta 0 zero
@@ -508,7 +535,7 @@ object BusinessRulesUtil{
       } else {
         dt_out = ""
       }
-      Project.strToDateOrToday (dt_out)
+      Project.strToDateOrNull (dt_out)
     }
 
   	def division(qtd:Int,divisionType:Int) = {
