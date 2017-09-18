@@ -62,6 +62,7 @@ object SiteApi extends RestHelper with net.liftweb.common.Logger  {
 					("full_address",companyUnit.getPartner.full_address),
 					("title",companyUnit.siteTitle.is),
 					("siteName",companyUnit.name.is),
+					("company",companyUnit.company.is),
 					("description",companyUnit.siteDescription.is),
 					("users",
 						JsArray(

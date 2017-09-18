@@ -68,6 +68,13 @@ Build unsing sbt
 
 echo Fim: $(date +"%d-%m-%Y %H:%M:%S")
 
+PRD - Start portal_salao
+
+cd /var/www/html/portal_salao
+git reset --hard HEAD
+git pull
+
+
 PRD - Kill pg virus process
 H/5 * * * *
 echo Matando processos virus
