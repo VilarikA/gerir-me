@@ -344,9 +344,13 @@ class Customer extends BusinessPattern[Customer]{
 
 object Customer extends Customer with BusinessPatternMeta[Customer]{
     def login(email:String, password:String, company:String):Customer = {
+        val pwdMd5 = Project.md5(password)
         val customers = if (company == "") {
             findAll(By(Customer.email, email.trim.toLowerCase), 
-            By(Customer.password, Project.md5(password)))
+            //By(Customer.password, Project.md5(password)
+            BySql[code.model.Customer]("password = ? or password = ?",
+                IHaveValidatedThisSQL("",""), password, pwdMd5)
+            )
         } else {
             findAll(By(Customer.email, email.trim.toLowerCase), 
             By(Customer.company, company.toLong),
