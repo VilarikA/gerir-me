@@ -44,11 +44,16 @@ class Recurrence extends Audited[Recurrence] with IdPK with CreatedUpdated with 
     override def defaultValue = false
   }
 
-  def movementsBigerThan(parcel:Int) 
+  def movementsBigerThan(parcel:Int, dueDate:Date) 
                 = AccountPayable
                 .findAllInCompany(
                   By(AccountPayable.recurrence, this), 
-                  By_>(AccountPayable.parcelNum, parcel), 
+                  //não funcionava com lancamentos antigos onde 
+                  // parcel num era nulo 
+                  //By_>(AccountPayable.parcelNum, parcel), 
+                  By(AccountPayable.paid_?, false),
+                  BySql(" (parcelnum > ? or (parcelnum is null and duedate > ? )) ", 
+                          IHaveValidatedThisSQL("", ""), parcel, dueDate),
                   OrderBy(AccountPayable.dueDate, Ascending)
                 )
   lazy val movements = AccountPayable.findAllInCompany(By(AccountPayable.recurrence, this), OrderBy(AccountPayable.dueDate, Ascending))
@@ -56,7 +61,7 @@ class Recurrence extends Audited[Recurrence] with IdPK with CreatedUpdated with 
   def updateByAccount(source: AccountPayable) {
       Recurrence.updateByFinancial(source, this)
       this.save
-      movementsBigerThan(source.parcelNum.is).foreach( (ap) => {
+      movementsBigerThan(source.parcelNum.is, source.dueDate.is).foreach( (ap) => {
         Recurrence.updateByFinancial(this, ap)
         ap.save
       })
@@ -64,7 +69,7 @@ class Recurrence extends Audited[Recurrence] with IdPK with CreatedUpdated with 
   }
 
   def deleteByAccount(source: AccountPayable) {
-      movementsBigerThan(source.parcelNum.is).foreach( (ap) => {
+      movementsBigerThan(source.parcelNum.is, source.dueDate.is).foreach( (ap) => {
         ap.delete_!
       })
       val ap = AccountPayable.findByKey(source.id).get
@@ -91,9 +96,14 @@ object Recurrence extends Recurrence with LongKeyedMapperPerCompany[Recurrence] 
     val toDateAux = if (toDate > dateAux) {
         dateAux
     } else {
-        toDate
+        // rigel 12/09/2017 antes era só toDate
+        // e só gerava o mês se colocasse 01/ms
+        // somei um mes
+        val cal = Calendar.getInstance()
+        cal.setTime(toDate); 
+        cal.add(java.util.Calendar.MONTH, 1);
+        cal.getTime()
     }
-
     DB.use(DefaultConnectionIdentifier) {
       conn =>
         try {
@@ -108,7 +118,6 @@ object Recurrence extends Recurrence with LongKeyedMapperPerCompany[Recurrence] 
                 c.set(Calendar.DAY_OF_MONTH, sd.get(Calendar.DAY_OF_MONTH))
                 c.getTime
               }
-
 
             val duration = #:#(r.lastExecuted.is, dateToUser)
 

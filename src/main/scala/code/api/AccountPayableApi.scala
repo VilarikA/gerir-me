@@ -519,7 +519,7 @@ object AccountPayableApi extends RestHelper with ReportRest with net.liftweb.com
 					.category(category.toLong)
 					.obs(obs)
 					.complement(complement)
-					.value(value.toDouble)
+					.value(BusinessRulesUtil.snippetToDouble(value))
 					.dueDate(dueDate)
 					.paymentDate(paymentDate)
 					.exerciseDate(exerciseDate)
@@ -527,7 +527,7 @@ object AccountPayableApi extends RestHelper with ReportRest with net.liftweb.com
 					.user(userId)
 					.account(accountStr.toLong)
 					.cashier(cashierBox)
-					.amount(amount.toDouble)
+					.amount(BusinessRulesUtil.snippetToDouble(amount))
 					.costCenter(costCenterId)
 					.paymentType(paymentTypeId)
 					.cheque(chequeId)
@@ -679,6 +679,7 @@ object AccountPayableApi extends RestHelper with ReportRest with net.liftweb.com
 											}),
 											("paymenttype_id",c.paymentType.is),
 											("cheque_id",c.cheque.is),
+											("cheque_desc",c.chequeDesc),
 											("paymenttype_name",c.paymentType.obj match {
 												case Full(u) => u.short_name.is
 												case _ => ""

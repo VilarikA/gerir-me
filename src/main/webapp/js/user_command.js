@@ -49,8 +49,10 @@
 
     Manager.getCustomers = function() {
       var url;
-      url = "/command/getCustomers";
+      dataaux = $("#day").val();
+      url = "/command/getCustomers" + "?day=" + dataaux;
       return $.get(url, function(t) {
+        $('#customer option').remove();
         var obj, _i, _len, _results;
         eval("customerObj = " + t);
         $('#customer, #customer').append("<option value=''>Selecione um cliente</option>");
@@ -227,7 +229,12 @@
       fields[14] = "none" // id assistente
       fields[15] = "none" // id animal
       fields[16] = "none" // tr.status2
-      renderReport("/command/usersales" + "?user=" + (Manager.user())+"&password=" + password, fields, {
+      dataaux = $("#day").val();
+      renderReport("/command/usersales" + 
+        "?user=" + (Manager.user())+
+        "&password=" + password +
+        "&day=" + dataaux, 
+        fields, {
         project: gup('id')
       }, "#grid");
 
@@ -279,7 +286,12 @@
       fields1[9] = "none"
       fields1[10] = "none"
 
-      renderReport("/command/treataux" + "?user=" + (Manager.user())+"&password=" + password, fields1, {
+      dataaux = $("#day").val();
+      renderReport("/command/treataux" + 
+        "?user=" + (Manager.user())+
+        "&password=" + password +
+        "&day=" + dataaux, 
+        fields1, {
         project: gup('id')
       }, "#grid1");
 
@@ -507,10 +519,12 @@
     $("#start").val(start)
     Manager.getUsersCurrentUnitCommand();
     Manager.getAuxiliarsCurrentUnitCommand();
-    Manager.getCustomers();
+    // Manager.getCustomers(); agora tem que ver a data do dia
     // comentadoo para nao entrar buscando
-    //Manager.getListFromServer();
+    // Manager.getListFromServer();
     $("#send").click(function() {
+      $("#start").val($("#day").val())
+      Manager.getCustomers();
       return Manager.getListFromServer();
     });
     $("#user").change(function () {

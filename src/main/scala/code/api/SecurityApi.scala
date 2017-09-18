@@ -34,6 +34,12 @@ object SecurityApi extends RestHelper with net.liftweb.common.Logger {
       else
         JInt(1)
     }    
+    case "security" :: "userParameters" :: Nil JsonGet _ => {
+      if(AuthUtil ?)
+        AuthUtil.user.asJs
+      else
+        JInt(1)
+    }    
     case "security" :: "emailRulesCheck" :: Nil JsonGet _ => {
       if(AuthUtil ?){
         JsObj(
@@ -70,13 +76,32 @@ object SecurityApi extends RestHelper with net.liftweb.common.Logger {
           JInt(1)
         }
       }
+    }
 
+    case "security" :: "remember_key_customer" :: Nil JsonGet _ => {
+      Customer.findByKey((S.param("_keepCalm") openOr "0").toLong) match {
+        case Full(u) => {
+          if (u.resetPasswordKey == (S.param("info") openOr "0")) {
+            AuthUtil << u
+            S.redirectTo("/security/change_password")
+            JInt(1)
+          } else {
+            S.redirectTo("/")
+            JInt(1)
+          }
+        }
+        case _ => {
+          S.redirectTo("/")
+          JInt(1)
+        }
+      }
     }
 
     case "security" :: "remember_password" :: Nil Post (r) => {
       val json = parse(new String(r.body.get))
       val remember = json.extract[RememberDto]
       try {
+        println ("vaiiii ====================== remember " + remember.email)
         EmailUtil.sendRememberEMail(remember.email);
         JInt(1)
       }catch{

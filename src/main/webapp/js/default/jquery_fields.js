@@ -111,7 +111,8 @@ jQuery.fn.chequeField = function(allow_null, callback, allow_all, show_all) {
 			html += "<option value='SELECT_ALL'>Todas</option>";
 		}
 		for (var i = items.length - 1; i >= 0; i--) {
-			html += "<option value='" + items[i].id + "'>" + items[i].customerName + " - " + items[i].bankName + " - " + items[i].value + "</option>";
+			html += "<option value='" + items[i].id + "'>" + 
+			items[i].chequeDesc + "</option>";
 		};
 		if (callback) {
 			callback(items);

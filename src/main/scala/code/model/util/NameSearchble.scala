@@ -66,7 +66,7 @@ trait NameSearchble [self <: net.liftweb.mapper.Mapper[self]]{
       }
       if(isPersonalName_?){
           if(NOT_ALLOWED_NAME_CHARAPTERS.exists( (c:String) => { this.is.contains(c)})){
-            throw new RuntimeException("Existem caracteres especiais no nome da pessoa, use o campo de observação!")
+            throw new RuntimeException("Existem caracteres especiais no nome da pessoa! "  + this.is + " use o campo de observação!")
           }
           if (this.is.length < 4) {
             throw new RuntimeException("Nome não pode conter menos de 4 caracteres!" + this.is)

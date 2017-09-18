@@ -3,14 +3,26 @@
     <script src="/js/angular-resource.min.js"></script>      
     <script src="/js/angular.date.js"></script>
     <script src="/js/angular.select2.js"></script>
-    
+    <script type="text/javascript">
+      $(function() {
+        $(".useCompany").click(function() {
+          return useCompany();
+        });
+        var useCompany = function () {
+         $.get('/security/useCompany?id='+gup("company"), function(r) {
+            });
+        };
+      });
+    </script>    
     <form  class="lift:form.ajax">
       <div class="well">
         <label for="btn"></label>
         <a class="btn primary" href="/monthly/list_monthly">Lista</a>
         <input class="btn success" type="submit" value="Salvar">
         <a class="btn primary" href="/monthly/edit_monthly">Inserir novo</a>
-      </div>
+        <a class="btn success useCompany" href='/financial/monthly'>Ir
+        </a>      
+        </div>
       <div class="lift:MonthlySnippet.maintain">
         <span id="monthly_form">
                 <span class='row'>
@@ -36,6 +48,10 @@
                       <div class="input-prepend" style='float:left; padding-right:10px'>
                         <span class="add-on"><img src='/images/sex.png'/></span> 
                         <input class="input-large disabled" disabled="true" id="bpname" name="bpname" size="19" type="text"/>
+                      </div>
+                      <div class="input-prepend" style='float:left; padding-right:10px'>
+                        <span class="add-on"><img src='/images/sex.png'/></span> 
+                        <input class="input-large disabled" disabled="true" id="company_customer" name="company_customer" size="19" type="text"/>
                       </div>
                     </div>
                   </div>                            

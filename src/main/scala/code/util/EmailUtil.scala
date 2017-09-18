@@ -246,13 +246,40 @@ object EmailUtil {
   }
 
 
-  def rememberPasswordEMail(company:Company, user:User, product:String, lnkproduct:String) = <div>
+  def rememberPasswordEMailUser(company:Company, user:User, product:String, lnkproduct:String) = <div>
                 <img width="100px" src={company.thumb_web}/>
                 <br/>
                  <h1>Olá {user.name.is} </h1><br/>
                   Clique no link abaixo para redefinir sua senha em nosso ambiente.
                  <div>
-                    <a href={"http://"+lnkproduct+".vilarika.com.br/security/remember_key?info="+user.resetPasswordKey+"&_keepCalm="+user.id.is}>Redefinir senha</a>
+                    <a href={
+                      if (S.hostName.contains ("local")) {
+                      "http://localhost:7171/security/remember_key?info="+user.resetPasswordKey+"&_keepCalm="+user.id.is
+                      } else {
+                      "http://"+lnkproduct+".vilarika.com.br/security/remember_key?info="+user.resetPasswordKey+"&_keepCalm="+user.id.is
+                      }
+                      }>Redefinir senha</a>
+                 </div>
+                 <br/>
+                 <div>
+                    <span>Para acessar o {product}</span> <a href={"http://"+lnkproduct+".vilarika.com.br"}>{lnkproduct}.vilarika.com.br</a>
+                 </div> 
+                 <br/>
+                 <span>Caso não tenha sido você a solicitar esse reenvio, por favor, desconsidere a mensagem </span>
+          </div>
+  def rememberPasswordEMailCustomer(company:Company, user:Customer, product:String, lnkproduct:String) = <div>
+                <img width="100px" src={company.thumb_web}/>
+                <br/>
+                 <h1>Olá {user.name.is} </h1><br/>
+                  Clique no link abaixo para redefinir sua senha em nosso ambiente.
+                 <div>
+                    <a href={
+                      if (S.hostName.contains ("local")) {
+                      "http://localhost:7171/security/remember_key_customer?info="+user.resetPasswordKey+"&_keepCalm="+user.id.is
+                      } else {
+                      "http://"+lnkproduct+".vilarika.com.br/security/remember_key_customer?info="+user.resetPasswordKey+"&_keepCalm="+user.id.is
+                      }
+                      }>Redefinir senha</a>
                  </div>
                  <br/>
                  <div>
@@ -285,16 +312,28 @@ object EmailUtil {
   def sendRememberEMail(email:String) = {
     val ct = User.countByEmail(email)
     if (ct > 0) {
-      User.findByEmail(email).map((user)=>{
-        //println ("vaiii ===================== " + user.email)
-        //sendMailTo(user.email.is, rememberPasswordEMail(user.company.obj.get, user, product1, lnkProduct1), "Recuperar senha" + product1 + local1)
-        sendMailCustomer(CompanyUnit.findByKey(user.unit).get,
-            Company.findByKey (user.company).get, 
-            user.email.is, rememberPasswordEMail(user.company.obj.get, user, product1, lnkProduct1), 
-            "Recuperar senha" + product1 + local1, user.id.is)
+      User.findByEmail(email).map((ac)=>{
+        //println ("vaiii ===================== " + ac.email)
+        //sendMailTo(ac.email.is, rememberPasswordEMail(ac.company.obj.get, user, product1, lnkProduct1), "Recuperar senha" + product1 + local1)
+        sendMailCustomer(CompanyUnit.findByKey(ac.unit).get,
+            Company.findByKey (ac.company).get, 
+            ac.email.is, rememberPasswordEMailUser(ac.company.obj.get, ac, product1, lnkProduct1), 
+            "Recuperar senha" + product1 + local1, ac.id.is)
       })
     } else {
-      throw new RuntimeException ("Email " + email + " não foi encontrado em nossa base de dados, por favor verifique.")
+      val cl = Customer.countByEmail(email)
+      if (cl > 0) {
+        Customer.findByEmail(email).map((ac)=>{
+          //println ("vaiii ===================== " + ac.email)
+          //sendMailTo(ac.email.is, rememberPasswordEMail(ac.company.obj.get, user, product1, lnkProduct1), "Recuperar senha" + product1 + local1)
+          sendMailCustomer(CompanyUnit.findByKey(ac.unit).get,
+              Company.findByKey (ac.company).get, 
+              ac.email.is, rememberPasswordEMailCustomer(ac.company.obj.get, ac, product1, lnkProduct1), 
+              "Recuperar senha" + product1 + local1, ac.id.is)
+        })
+      } else {
+        throw new RuntimeException ("Email " + email + " não foi encontrado em nossa base de dados, por favor verifique.")
+      }
     }
   }
 

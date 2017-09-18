@@ -102,7 +102,7 @@ class  MonthlySnippet extends BootstrapPaginatorSnippet[Monthly] {
 							//"paid" -> Text(if(ac.paid.is){ "Sim" }else{ "Não" }),
 							"late" -> Text(late(ac.originalDate, ac.dateExpiration, ac.paid)),
 							"paid" -> thumbSN(ac.paid.is, ac.dateExpiration),
-							"actions" -> <a class="btn" href={"/monthly/edit_monthly?id="+ac.id.is}>Editar</a>,
+							"actions" -> <a class="btn" href={"/monthly/edit_monthly?id="+ac.id.is + "&company="+ac.company_customer.is}>Editar</a>,
 							"gocompany" -> <a class="btn success" href={"/security/useCompany?id="+ac.company_customer.is}>Ir</a>,
 							"delete" -> SHtml.submit("Excluir - Use Status",delete,"class" -> "btn danger","data-confirm-message" -> {" excluir a mensalidade "+ac.description}),
 							"_id" -> SHtml.text(ac.id.is.toString, id = _),
@@ -150,6 +150,8 @@ class  MonthlySnippet extends BootstrapPaginatorSnippet[Monthly] {
 
 			}))&
 			"name=bpname" #> (SHtml.text(ac.bpName, (p)=> {} ))&
+			"name=company_customer" #> (SHtml.text(ac.company_customer.is.toString, 
+				(f:String) => ac.company_customer(BusinessRulesUtil.snippetToInt(f))))&
 		    "name=description" #> (SHtml.text(ac.description.is, ac.description(_)))&
 		    "name=paymentDate" #> (SHtml.text(getDateAsString(ac.paymentDate.is),
 						(date:String) => {

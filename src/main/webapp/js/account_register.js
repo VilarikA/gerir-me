@@ -153,8 +153,14 @@
         }
       }  
       if ((!account.value) || (parseFloat(account.value) == 0)) {
-        if (!confirm("Tem certeza que deseja cadastrar um lançamento como valor zero?")) {
-          throw "Operação cancelada!";
+        if (!account.cheque) {
+          if (!confirm("Tem certeza que deseja cadastrar um lançamento como valor zero?")) {
+            throw "Operação cancelada!";
+          }
+        } else {
+          // rigel 13/09/2017
+          // o valor do cheque vai ser assumido como sendo 
+          // o valor do lançamento
         }
       }
       if (!account.dueDate) {
@@ -218,6 +224,7 @@
         $("#paymentDate").val(obj.paymentDate !== "" ? getDateBr(new Date(parseInt(obj.paymentDate))) : "");
         $("#paid").attr("checked", obj.paid);
         $("#obs_account").val(obj.obs);
+        $("#cheque_account").val(obj.cheque_desc);
         $("#complement_account").val(obj.complement);
         $("#type_select").val(obj.type);
         $("#category_select").val(obj.category_id).change();
@@ -264,6 +271,7 @@
     $("#paid").attr("checked", true);
     $("#recurrence").attr("checked", false);
     $("#obs_account").val("");
+    $("#cheque_account").val("");
     $("#complement_account").val("");
     $("#recurrence_id").val("");
     $("#cashier_number").val("");

@@ -306,6 +306,28 @@ object Reports2 extends RestHelper with ReportRest with net.liftweb.common.Logge
 				List(AuthUtil.company.id.is,start,end))
 			}
 
+			case "report" :: "contacts_conciliation" :: Nil Post _ => {
+				def origin:String = S.param("origin") match {
+					case Full(p) if(p != "") => p
+					case _ => " 1 = 2 "  // origem precisa ser informada
+				}			
+				def unit:String = S.param("unit") match {
+					case Full(p) if(p != "") => " co.unit =%S ".format(p) 
+					case _ => " 1 = 1" 
+				}			
+
+				val SQL_REPORT = """
+					select co.id, co.name, co.email, co.phone, 
+					co.birthday, co.date1, co.obs, bc.name 
+					from contact co
+					left join business_pattern bc on bc.id = co.business_pattern
+					where co.company = ? and co.origin = ?
+					and %s
+					order by co.name
+				"""
+				toResponse(SQL_REPORT.format(unit),List(AuthUtil.company.id.is, origin))
+			}
+
 			case "report" :: "customers" :: Nil Post _ => {
 				// customers_report.html
 				val sql = """

@@ -467,7 +467,7 @@ class User extends  BusinessPattern[User] with UserIdAsString{
 
     def isReportUser = isAdmin || isAdminRead || groupPermissionList.filter(_==UserGroupPermission.REPORT_USER).size > 0
 
-    def resetPasswordKey = BusinessRulesUtil.md5(this.id.is.toString)+BusinessRulesUtil.md5(this.email.is.toString)+BusinessRulesUtil.md5(this.password.is.toString)
+//    def resetPasswordKey = BusinessRulesUtil.md5(this.id.is.toString)+BusinessRulesUtil.md5(this.email.is.toString)+BusinessRulesUtil.md5(this.password.is.toString)
     
     object canCreateCalendarEvents_? extends MappedBoolean(this){
         override def dbColumnName = "cancreatecalendarevents"
@@ -619,7 +619,10 @@ object User extends User with BusinessPatternMeta[User] with OnlyCurrentUnit[Use
         }
         uList
     }
-    
+
+    // rigel 18/09/2017
+    // duplicados no customer para login em agenda onine
+    //    
     // like para emails separados por ,
     def countByEmail (email:String) = count(//Like(User.email,"%"+email+"%"))
         By(User.userStatus,1),
@@ -629,8 +632,8 @@ object User extends User with BusinessPatternMeta[User] with OnlyCurrentUnit[Use
     def findByEmail(email:String) = findAll(
         By(User.userStatus,1),
         Like(User.email,"%"+email+"%"))
-    override def findAll(params: QueryParam[User]*): List[User] = {
-        super.findAll(By(is_employee_?,true) :: params.toList :_*)
+        override def findAll(params: QueryParam[User]*): List[User] = {
+            super.findAll(By(is_employee_?,true) :: params.toList :_*)
     }
 
 //    def findAllInCompanyOrdened = if(AuthUtil.user.isSimpleUserCommission || AuthUtil.user.isSimpleUserCommand) { 

@@ -85,6 +85,41 @@ class Contact extends LongKeyedMapper[Contact]
 
   object business_pattern extends MappedLong(this)
 
+  def makeAsCustomer = {
+    if (business_pattern.is == 0 || business_pattern == null) {
+      val ac = Customer.createInCompany
+      .name (name)
+      .email (email)
+      .mobilePhone (phone)
+      .birthday (birthday)
+      .obs (obs + " " + origin)
+      try {
+        ac.save
+      } catch {
+        case e:Exception => {
+          println ("vaiiiii ==== " + e.getMessage)
+          throw e
+        }
+      }
+    } else {
+      val ac = Customer.findByKey(business_pattern).get
+      if (ac.email == "" && email != "") {
+        ac.email (email)
+      }
+      if (ac.phone == "" && phone != "") {
+        ac.phone (phone)
+      }
+      try {
+        ac.save
+      } catch {
+        case e:Exception => {
+          println ("vaiiiii ==== " + e.getMessage)
+          throw e
+        }
+      }
+    }
+    this.delete_!
+  }
 }
 
 object Contact extends Contact with LongKeyedMapperPerCompany[Contact]

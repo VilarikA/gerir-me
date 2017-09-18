@@ -454,6 +454,26 @@ object Customer extends Customer with BusinessPatternMeta[Customer]{
         super.findAll(By(is_customer_?,true))
     }
 
+
+    // rigel 18/09/2017
+    // duplicados do user para login em agenda onine
+    //    
+    // like para emails separados por ,
+    def countByEmail (email:String) = count(//Like(User.email,"%"+email+"%"))
+        //By(Customer.userStatus,1),
+        BySql[code.model.Customer]("(email like ? or email like ? or email like ?) ",
+            IHaveValidatedThisSQL("",""), email+"%", "%,"+email+"%", "%;"+email+"%"))
+    // like para emails separados por ,
+    def findByEmail(email:String) = findAll(
+        //By(Customer.userStatus,1),
+        Like(Customer.email,"%"+email+"%"))
+/*
+        override def findAll(params: QueryParam[Customer]*): List[Customer] = {
+            super.findAll(By(is_customer_?,false) :: params.toList :_*)
+
+    }
+*/
+
     // método usado pela importacao, is_person false
     // para ser mais tolerante com o nome
     def findByName(name:String):Customer = {

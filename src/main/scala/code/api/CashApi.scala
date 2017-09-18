@@ -63,8 +63,7 @@ object CashApi extends RestHelper with net.liftweb.common.Logger  {
 					OrderBy (Cheque.id, Ascending)).map((ch:Cheque)=>{
 						JsObj(
 							  ("status","success"),
-							  ("id",ch.id.is),("customerName",ch.customerName),
-							  ("bankName",ch.bankName),("value",ch.value.toString)
+							  ("id",ch.id.is),("chequeDesc",ch.chequeDesc)
 							 )
 					})
 				)

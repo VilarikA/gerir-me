@@ -59,6 +59,10 @@ object CommandApi extends RestHelper with ReportRest with net.liftweb.common.Log
 			try {
 				var userId:Long = S.param("user").get.toLong;
 				var password:String = S.param("password").get;
+				def day:Date = S.param("day") match {
+					case Full(p) => Project.strToDateOrToday(p)
+					case _ => new Date()
+				}
 
 				//if ((password == "edoctus") && (userId == 0)) {
 				if ((userId == 0)) {
@@ -98,12 +102,15 @@ object CommandApi extends RestHelper with ReportRest with net.liftweb.common.Log
 					left join treatedoctus ted on ted.treatment = tr.id
 					left join tdepet tdp on tdp.treatmentDetail = td.id
 					left join business_pattern ban on ban.id = tdp.animal
-					where tr.company = ? and (tr.user_c = ? or td.auxiliar = ?)  and tr.dateevent = date (now()) 
+					where tr.company = ? 
+					and (tr.user_c = ? or td.auxiliar = ?)  
+					and tr.dateevent = ?
 					and tr.hasdetail = true and tr.status <> 5
 					%s
 					order by start_c, bc.name, pr.name
 				"""
-				toResponse(SQL.format(str_unit),List(AuthUtil.company.id.is, userId, userId, AuthUtil.unit.id.is)) 
+				toResponse(SQL.format(str_unit),List(AuthUtil.company.id.is, 
+					userId, userId, day, AuthUtil.unit.id.is)) 
 			} catch {
 			  case e: Exception => JString(e.getMessage)
 			}			
@@ -112,6 +119,10 @@ object CommandApi extends RestHelper with ReportRest with net.liftweb.common.Log
 			try {
 				var userId:Long = S.param("user").get.toLong;
 				var password:String = S.param("password").get;
+				def day:Date = S.param("day") match {
+					case Full(p) => Project.strToDateOrToday(p)
+					case _ => new Date()
+				}
 
 				//if ((password == "edoctus") && (userId == 0)) {
 				if ((userId == 0)) {
@@ -140,18 +151,23 @@ object CommandApi extends RestHelper with ReportRest with net.liftweb.common.Log
 					left join business_pattern ba on ba.id = td.auxiliar
 					left join tdepet tdp on tdp.treatmentDetail = td.id
 					left join business_pattern ban on ban.id = tdp.animal
-					where tr.company = ? and tr.dateevent = date(now())
+					where tr.company = ? 
+					and tr.dateevent = ?
 					and tr.status not in (5,4,8,1) -- pago deletado desmarcou faltou
 					order by tr.start_c				"""
-				toResponse(SQL,List(AuthUtil.company.id.is)) 
+				toResponse(SQL,List(AuthUtil.company.id.is, day)) 
 			} catch {
 			  case e: Exception => JString(e.getMessage)
 			}			
 		}
 		case "command" :: "getCustomers" :: Nil JsonGet _ =>{
+			def day:Date = S.param("day") match {
+				case Full(p) => Project.strToDateOrToday(p)
+				case _ => new Date()
+			}
 			JsArray(Customer.findAllInCompany(
-				BySql(" id in (select distinct tr.customer from treatment tr where tr.dateevent = date (now()) and tr.company = ? and tr.hasdetail = true and tr.status not in (5,4,8,1) ) ", // pago deletado desmarcou faltou
-				IHaveValidatedThisSQL("datepayment","01-01-2012 00:00:00"), AuthUtil.company.id), OrderBy (Customer.name, Ascending)).map( (u) => {
+				BySql(" id in (select distinct tr.customer from treatment tr where tr.dateevent = ? and tr.company = ? and tr.hasdetail = true and tr.status not in (5,4,8,1) ) ", // pago deletado desmarcou faltou
+				IHaveValidatedThisSQL("datepayment","01-01-2012 00:00:00"), day, AuthUtil.company.id), OrderBy (Customer.name, Ascending)).map( (u) => {
 				JsObj(("status","success"),("name",u.name.is),("id",u.id.is))
 			}))
 		}

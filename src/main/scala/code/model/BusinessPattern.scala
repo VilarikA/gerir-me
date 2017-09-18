@@ -703,6 +703,8 @@ with PerCity{
 
     def full_address = street.is + ", "+number.is+"- "+district.is+", "+cityName+" - "+stateShortName
 
+    def resetPasswordKey = BusinessRulesUtil.md5(this.id.is.toString)+BusinessRulesUtil.md5(this.email.is.toString)+BusinessRulesUtil.md5(this.password.is.toString)
+
     object Sexs extends Enumeration {
      type Sexs = Value
      val Male = Value("M")

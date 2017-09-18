@@ -51,6 +51,8 @@ sudo npm install -g http-server
 cd github/portalEbelle
 http-server
 ele vai falar a porta ai é só colocar o caminho agenda.html
+localhost:8080/agenda.html
+localhost:8080/agenda.html?id=company
 
 alterar a agenda
 
@@ -145,6 +147,10 @@ vai na pasta com ctrl J descompacta (clica direito e extrai)
 renomear o arquivo para tirar o espaço
 
 cd ~/Downloads
+
+sftp gerir-me@45.33.99.152:/home/gerir-me/backup_bd/
+ls -ltr 
+get <nome_arquivo>
 
 chmod 777 ebelle(n)
 

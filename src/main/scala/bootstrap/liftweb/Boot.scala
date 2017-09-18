@@ -283,9 +283,8 @@ class Boot {
     LiftRules.dispatch.append(AgeRangeIntervalApi)    
     LiftRules.dispatch.append(MapIconApi)
     LiftRules.dispatch.append(MonthlyApi)
+    LiftRules.dispatch.append(ContactApi)
 
-  
-    
     def pricingUrl = {
       if(AuthUtil.? && AuthUtil.company.appType.isEgrex){
           "/pricing"
