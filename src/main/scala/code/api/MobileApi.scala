@@ -45,6 +45,7 @@ object MobileApi extends RestHelper with net.liftweb.common.Logger {
           }))
       }
     }
+
     case "mobile" :: "api" :: "login" :: Nil Post _ => {
       for {
         email <- S.param("email") ?~ "email parameter missing" ~> 400
@@ -146,7 +147,29 @@ object MobileApi extends RestHelper with net.liftweb.common.Logger {
           ("activities", JsArray(activities))
         )
       }
-    }    
+    }
+    case "mobile" :: "api" :: "companyInfo" :: Nil Get _ => {
+
+      def asJson (ac:Company):JsObj = JsObj(
+              ("status","success"),
+              ("name",ac.name.is),
+              ("id",ac.id.is),
+              ("thumb_web",ac.thumb_web ))
+
+      for {
+        company <- S.param("id") ?~ "id parameter missing" ~> 400
+      } yield {
+        val companyLong = if (company == "") {
+          1l
+        } else {
+          // testar aqui número e buscar na company pela url
+          company.toLong
+        }
+        val ac = Company.findByKey(companyLong).get
+        asJson (ac)
+      }
+    }
+
     case "mobile" :: "api" :: "joinus" :: Nil Post _ => {
       for {
         company <- S.param("company") ?~ "company parameter missing" ~> 400
