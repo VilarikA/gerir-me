@@ -23,8 +23,21 @@ var AuthUtil = {
 			});
 		}, 500);
 	},
+	updateDataUser: function () {
+		var userInfo = localStorage.getItem("userInfo");
+		if (userInfo) {
+			eval("AuthUtil.user = " + userInfo);
+		}
+		setTimeout(function () {
+			$.get("/security/userParameters", function (userInfo) {
+				eval("AuthUtil.user = " + userInfo);
+				localStorage.setItem("userInfo", userInfo);
+			});
+		}, 500);
+	},
 	company: {},
-	unit: {}
+	unit: {},
+	user: {}
 };
 var Cachier = {
 	prepareCashierParams: function (params) {

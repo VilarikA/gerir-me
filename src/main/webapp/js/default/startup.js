@@ -1,6 +1,7 @@
 $(function() {
 	AuthUtil.updateDataCompany();
 	AuthUtil.updateDataUnit();
+	AuthUtil.updateDataUser(); // rigel 18/09/2017
 	$.ajaxSetup({
 		dataType: "text",
 		error: function(t) {

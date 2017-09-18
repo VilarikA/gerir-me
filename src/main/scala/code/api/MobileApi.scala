@@ -156,13 +156,20 @@ object MobileApi extends RestHelper with net.liftweb.common.Logger {
         email <- S.param("email") ?~ "email parameter missing" ~> 400
         password <- S.param("password") ?~ "password parameter missing" ~> 400
       } yield {
-        var ac = Customer.findAll (By(Customer.company, company.toLong),
+        val companyLong = if (company == "") {
+          1l
+        } else {
+          // testar aqui número e buscar na company pela url
+          company.toLong
+        }
+        var ac = Customer.findAll (By(Customer.company, companyLong),
           Like (Customer.email, "%"+email+"%"));
         if (ac.length > 0) {
-
+          println ("vaiiiii ======================= JA existe ")
+          JString("Email já cadastrado use a opção Esqueci minha Senha")
         } else {
           var customer = Customer.create
-          customer.company(company.toLong).
+          customer.company(companyLong).
           name (name).
           email (email).
           phone (phone).
@@ -170,8 +177,8 @@ object MobileApi extends RestHelper with net.liftweb.common.Logger {
           password (password).
           obs ("agenda online").
           save
+          JString("1")
         }
-        JInt(1)
       }
     }    
     case req if(req.requestType.method == "OPTIONS") => {

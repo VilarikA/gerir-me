@@ -35,6 +35,12 @@ object AuthUtil {
     curUser(Full(userP))
   }
 
+  def <<(userPi: Customer) = {
+    val userP = User.findByKey (userPi.id).get
+    ExtSession.userDidLogin(userP)
+    curUser(Full(userP))
+  }
+
   def >> = {
     curUser.remove()
     S.session.foreach(_.destroySession())
