@@ -353,7 +353,7 @@ object Customer extends Customer with BusinessPatternMeta[Customer]{
             )
         } else {
             findAll(By(Customer.email, email.trim.toLowerCase), 
-            By(Customer.company, company.toLong),
+            By(Customer.company, Company.calPubCompany (company)),
             //By(Customer.password, Project.md5(password))
             BySql[code.model.Customer]("password = ? or password = ?",
                 IHaveValidatedThisSQL("",""), password, pwdMd5)

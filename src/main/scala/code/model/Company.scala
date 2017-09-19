@@ -487,6 +487,26 @@ class Company extends Audited[Company] with PerCompany with IdPK with CreatedUpd
   def mainUnit = {
     CompanyUnit.findAll(OrderBy(CompanyUnit.id, Ascending),By(CompanyUnit.company, this), By(CompanyUnit.showInCalendar_?, true))(0)
   }
+
+  def calPubCompany (company:String) = {
+    if (company == "") {
+      1l
+    } else {
+      // testar aqui número e buscar na company pela url
+      if (BusinessRulesUtil.isNumeric(company)) {
+        company.toLong
+      } else {
+        val clist = Company.findAll(
+          By (Company.status, 1),
+          By (Company.calendarUrl,company))   
+        if (clist.length > 0) {
+          clist (0).id.is
+        } else {
+          1l;
+        }
+      }
+    }
+  }
 }
 
 object Company extends Company with LongKeyedMapperPerCompany[Company] with SitebleMapper[Company] {
@@ -507,6 +527,11 @@ object Company extends Company with LongKeyedMapperPerCompany[Company] with Site
   val CmdNever = 0
   val CmdDaily = 1
   val CmdEver = 2;
+
+  // public calendar
+  val CPubNoone = 0
+  val CPubCustomer = 1
+  val CPubEveryone = 2;
 
   override def findByKey(id: Long) = {
     val company = super.findByKey(id)

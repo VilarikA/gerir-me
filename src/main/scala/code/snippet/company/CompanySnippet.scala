@@ -20,6 +20,12 @@ object CompanySnippet{
 		Company.CmdEver.toString -> "Sempre incrementa, no momento da venda" 
 	)
 
+	val cPubControl = Seq(
+		Company.CPubNoone.toString -> "Ninguém" ,
+		Company.CPubCustomer.toString -> "Clientes" ,
+		Company.CPubEveryone.toString -> "Todos"
+	)
+
 
 	def render(in: NodeSeq):NodeSeq  = {
 		for {
@@ -145,6 +151,8 @@ object CompanySnippet{
 			"name=useTreatmentAsAClass" #> (SHtml.checkbox(ac.useTreatmentAsAClass_?, ac.useTreatmentAsAClass_?(_)))&
 //			"name=autoIncrementCommand" #> (SHtml.checkbox(ac.autoIncrementCommand_?, ac.autoIncrementCommand_?(_)))&
 		    "name=commandControl" #> (SHtml.select(cmdControl,Full(ac.commandControl.is.toString),(v:String) => ac.commandControl(v.toInt)))&
+		    "name=calendarPub" #> (SHtml.select(cPubControl,Full(ac.calendarPub.is.toString),(v:String) => ac.calendarPub(v.toInt)))&
+		    "name=calendarUrl" #> (SHtml.text(ac.calendarUrl.is,ac.calendarUrl(_)))&
 			"name=autoOpenCalendar" #> (SHtml.checkbox(ac.autoOpenCalendar_?, ac.autoOpenCalendar_?(_)))&
 			"name=allowrepeatcommand" #> (SHtml.checkbox(ac.allowRepeatCommand_?, ac.allowRepeatCommand_?(_)))&
 //			"name=notify" #> (SHtml.checkbox(ac.senNotifications_?, ac.senNotifications_?(_)))&
