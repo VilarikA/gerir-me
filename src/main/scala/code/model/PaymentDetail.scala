@@ -31,8 +31,10 @@ class PaymentDetail extends LongKeyedMapper[PaymentDetail]  with IdPK with Creat
     def percentInTotal = {
       if (value != 0.0) {
           ((100.00 * value.is) / payment.obj.get.value.is)
-      } else {
+      } else if (payment.obj.get.value.is != 0.0) {
         0.0
+      } else { // rigel 20/09/2016 para gerar comissão absoluta compagamento zero
+        100.0
       }
     }
 
