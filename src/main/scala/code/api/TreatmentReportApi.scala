@@ -218,7 +218,7 @@ object TreatmentReportApi extends RestHelper with ReportRest with net.liftweb.co
 							union
 								select null,null,p.name,null as amount, p.saleprice,' ' as status ,orderInCommand, '' as name
 								,orderInCommand as tdid from 
-								product p where p.company =? and showincommad =true
+								product p where p.company =? and showincommad =true and status = 1
 								and p.gender in('A',
 									(	select c.sex
 											from
