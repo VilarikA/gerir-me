@@ -27,12 +27,14 @@
       decode: function(name, row){
         var today = new Date();
         var line = new Date (row[1])
-        if (line.getDateBr() == today.getDateBr()) {
-          return "<img src='/images/account_customer.png' width='16'/>"
-        } else if (line > today) {
-          return "<img src='/images/good.png' width='16'/>"
+        if (line.getDateBr() == today.getDateBr() &&
+          row[4] != '3' /* atendido */) {
+          return "<img src='/images/account_customer.png' width='22'/>"
+        } else if (line > today || 
+          row[4] == '3' /* atendido */) {
+          return "<img src='/images/good.png' width='22'/>"
         } else {
-          return "<img src='/images/bad.png' width='16'/>"
+          return "<img src='/images/bad.png' width='22'/>"
         }
       }
     };
