@@ -1899,7 +1899,10 @@ object Reports extends RestHelper with ReportRest with net.liftweb.common.Logger
 				case _ => " status in (1) "
 			}			
 			AuthUtil.checkSuperAdmin
-			def SQL = """select id, name,id, phone, contact, email, status, createdat from company where %s order by id desc"""
+			def SQL = """select id, name,id, phone, 
+				contact, email, status, 
+				fu_dt_age (date (now()), date (createdat)), createdat 
+				from company where %s order by id desc"""
 			toResponse(SQL.format (status), Nil)
 		}
 
