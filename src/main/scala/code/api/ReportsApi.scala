@@ -1901,7 +1901,10 @@ object Reports extends RestHelper with ReportRest with net.liftweb.common.Logger
 			AuthUtil.checkSuperAdmin
 			def SQL = """select id, name,id, phone, 
 				contact, email, status, 
-				fu_dt_age (date (now()), date (createdat)), createdat 
+				fu_dt_age (date (now()), date (createdat)), 
+				(select count (*) from business_pattern where company = company.id and is_employee = true and userstatus = 1 and showincalendar = true)
+				|| '/' || (select count (*) from business_pattern where company = company.id and is_employee = true and userstatus = 1),
+				createdat 
 				from company where %s order by id desc"""
 			toResponse(SQL.format (status), Nil)
 		}
