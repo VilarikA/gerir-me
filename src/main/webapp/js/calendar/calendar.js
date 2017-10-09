@@ -489,6 +489,10 @@ $(function(){
 			EventBusyController.save(new EventBussy(start, end, user, obs), function(sucess, error){
 				if(sucess){
 					alert("Bloqueio salvo com sucesso!");
+					// 09/10/2017 - rigel para mostrar bloqueio 
+					// fora do dia corrente
+					// antes tinha que dar setinha pra frente e voltar
+					$('#calendar').weekCalendar("refresh");
 				}else{
 					alert(eval(error));
 					CalendarManager.closeTreatmentPopUp();
