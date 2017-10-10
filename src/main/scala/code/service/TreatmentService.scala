@@ -377,8 +377,14 @@ object  TreatmentService extends net.liftweb.common.Logger {
 	 		conn =>
 	 			try{
 					val treatment = Treatment.findByKey(id).get
+					// rigel 10/10/2017 - para alertar e não duplicar
+					// sem querer na agenda
+					if (validate && treatment.details.filter(_.activity == activity).size > 0) {
+						val strAux = Activity.findByKey(activity.id.is).get.name							
+						throw new RuntimeException("Já existe este serviço/procedimento <" + strAux + "> neste agendamento!");
+					}
 					if(treatment.isPaid){
-						throw new RuntimeException("Não é possível adicionar serviço a um atendimento já pago!");
+						throw new RuntimeException("Não é possível adicionar serviço/procedimento a um atendimento já pago!");
 					}
 					var detail = TreatmentDetail.createInCompany
 					detail.treatment(treatment)

@@ -21,7 +21,7 @@ var TreatmentManger = {
 			}, function(t) {
 				eval("t=" + t);
 				if (t != 1) {
-					if (confirm(t + "\n Deseja salvar assim mesmo?")) {
+					if (confirm(t + "\n\n" + "Deseja salvar assim mesmo?")) {
 						TreatmentManger.updateTreatmentData(id, user, startDate, endDate, status, false);
 					} else {
 						refreshCalendarByAjax();
@@ -71,7 +71,7 @@ var TreatmentManger = {
 						global_calEvent = eventData;
 						TreatmentManger.creatTreatmentDetail(eventData);
 					} else {
-						if (confirm(eventData.message + " Deseja agendar assim mesmo?")) {
+						if (confirm(eventData.message + "\n\n" + "Deseja agendar assim mesmo?")) {
 							TreatmentManger.saveTreatment(true);
 						}
 					}
@@ -110,7 +110,7 @@ var TreatmentManger = {
 			if (t == 1) {
 				TreatmentManger.creatTreatmentDetail(global_calEvent);
 			} else {
-				if (confirm(t + "\n" + " Deseja agendar assim mesmo?")) {
+				if (confirm(t + "\n\n" + "Deseja agendar assim mesmo?")) {
 					TreatmentManger.addDetail(treatmentId, activityId, auxiliar, animal, offsale, "false");
 				}
 			}
