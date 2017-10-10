@@ -456,7 +456,7 @@ class Boot {
 //        Menu(Loc("/command/user_command", Link(List("command"), true, "/command/user_command"),"Comanda",simpleUserCommand)),
 //        Menu(Loc("/command_full/user_command_full", Link(List("command_full"), true, "/command_full/user_command_full"),"Co1",commandAccess,Hidden)),
         Menu(Loc("Mapa", Link(List("map"), true, "/map"),"Mapa",mapAccess, Hidden)),
-        Menu(Loc("Formas de Pagamento", Link(List("company"), true, "/company/payment_forms"),"",financialAccess,Hidden)),
+        Menu(Loc("Formas de Pagamento", Link(List("company"), true, "/financial_admin/payment_forms"),"",financialManagerAccess,Hidden)),
         Menu(Loc("busy_manager", Link(List("busy_manager"), true, "/activity/busy_manager"),"busy_manager",crudeAccess,Hidden)),
         // antes T estava loggedin - os prof acessavam
         Menu(Loc("treatments_conferenc", Link(List("treatments_conferenc"), true, "/treatments_conferenc"),"treatments_conferenc",customerAccess,Hidden)),

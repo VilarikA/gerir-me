@@ -324,7 +324,7 @@ object ReceiveAddValueToUser extends FatChain{
 									movement.dueDate(pd.dueDate.is)
 											.user(bp)
 											.typeMovement(AccountPayable.OUT)
-											.paid_?(true)
+											.paid_?(true) // senão nao abate da comissão
 											.save
 								}
 								case _ => 

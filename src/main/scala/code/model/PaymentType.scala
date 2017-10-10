@@ -170,6 +170,7 @@ with CreatedUpdatedBy with NameSearchble[PaymentType] with ActiveInactivable[Pay
   override def save() = {
     if ((addUserAccountToDiscount_?) && (receiveAtSight_?)) {
       // println ("************************* Comportamento especial <vale profissional> não pode ser faturado a vista")
+      // para permitir parcelamento e alteracao da data de desconto
       throw new RuntimeException("Comportamento especial <vale profissional> não pode ser faturado a vista")
     }
     super.save
