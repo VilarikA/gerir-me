@@ -39,11 +39,13 @@ object UserCreateActors extends LiftActor {
       //"ebelle"
     } else if (company.appType == Company.SYSTEM_GERIRME) {
       PermissionModule.setModule (company, "BUDGET");
+      PermissionModule.setModule (company, "CRM");
       //"gerirme"
     } else if (company.appType == Company.SYSTEM_ESMILE) {
       PermissionModule.setModule (company, "QUIZ");
       PermissionModule.setModule (company, "BUDGET");
       PermissionModule.setModule (company, "ANVISA");
+      PermissionModule.setModule (company, "CRM");
 
       PermissionModule.resetModule (company, "FIDELITY");
       //"esmile"
@@ -51,6 +53,7 @@ object UserCreateActors extends LiftActor {
       PermissionModule.setModule (company, "QUIZ");
       PermissionModule.setModule (company, "OFFSALE");
       PermissionModule.setModule (company, "ANVISA");
+      PermissionModule.setModule (company, "BMINDEX");
 
       PermissionModule.resetModule (company, "FIDELITY");
       //"edoctus"
@@ -64,6 +67,7 @@ object UserCreateActors extends LiftActor {
     } else if (company.appType == Company.SYSTEM_EPHYSIO) {
       PermissionModule.setModule (company, "BPMONTHLY");
       PermissionModule.setModule (company, "QUIZ");
+      PermissionModule.setModule (company, "BMINDEX");
       //"ephysio"
     } else if (company.appType == Company.SYSTEM_EBELLEPET) {
       PermissionModule.setModule (company, "RELATION");

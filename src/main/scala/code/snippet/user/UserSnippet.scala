@@ -238,7 +238,7 @@ class  UserSnippet extends BootstrapPaginatorSnippet[User] {
 						user.parent(0)
 
 			}))&
-			"name=parent_percent" #> (SHtml.text(user.parent_percent.is.toString, (v:String) =>{ if(v !=""){user.parent_percent(v.toDouble)};}))&
+			"name=parent_percent" #> (SHtml.text(user.parent_percent.is.toString, (v:String) =>{ if(v !=""){user.parent_percent(BusinessRulesUtil.snippetToDouble(v))};}))&
 			"name=cancreatecalendarevents" #> (SHtml.checkbox(user.canCreateCalendarEvents_?, user.canCreateCalendarEvents_?(_)))&
 			"name=candeletecalendarevents" #> (SHtml.checkbox(user.canDeleteCalendarEvents_?, user.canDeleteCalendarEvents_?(_)))&
 			"name=canmovecalendarevents" #> (SHtml.checkbox(user.canMoveCalendarEvents_?, user.canMoveCalendarEvents_?(_)))&
