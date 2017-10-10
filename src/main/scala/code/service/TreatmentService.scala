@@ -211,7 +211,8 @@ object  TreatmentService extends net.liftweb.common.Logger {
 					treatments(0).command.is
 				}else{
 					//if(AuthUtil.company.autoIncrementCommand_?.is){
-					if(AuthUtil.company.commandControl.is == Company.CmdDaily){
+					if(AuthUtil.company.commandControl.is == Company.CmdDaily ||
+						AuthUtil.company.commandControl.is == Company.CmdDailyCompany){
 						Treatment.nextCommandNumber(startDate,AuthUtil.company, AuthUtil.unit).toString
 					}else{
 						// never - user vai por a comanda

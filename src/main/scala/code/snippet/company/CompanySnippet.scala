@@ -14,18 +14,27 @@ import Helpers._
 import scala.xml.{NodeSeq, Text}
 
 object CompanySnippet{
-	val cmdControl = Seq(
+	def cmdControl = if (PermissionModule.unit_?) {
+		Seq(
+		Company.CmdNever.toString -> "Nunca incrementa, usuário informa" ,
+		Company.CmdDaily.toString -> "Incrementa no dia, no momento do agendamento" ,
+		Company.CmdEver.toString -> "Sempre incrementa, no momento da venda" ,
+		Company.CmdDailyCompany.toString -> "Incrementa no dia, no momento do agendamento, ignora unidade" ,
+		Company.CmdEverCompany.toString -> "Sempre incrementa, no momento da venda, ignora unidade" 
+		)
+	} else {
+		Seq(
 		Company.CmdNever.toString -> "Nunca incrementa, usuário informa" ,
 		Company.CmdDaily.toString -> "Incrementa no dia, no momento do agendamento" ,
 		Company.CmdEver.toString -> "Sempre incrementa, no momento da venda" 
-	)
+		)
+	}
 
 	val cPubControl = Seq(
 		Company.CPubNoone.toString -> "Ninguém" ,
 		Company.CPubCustomer.toString -> "Clientes" ,
 		Company.CPubEveryone.toString -> "Todos"
 	)
-
 
 	def render(in: NodeSeq):NodeSeq  = {
 		for {

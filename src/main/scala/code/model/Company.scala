@@ -527,6 +527,8 @@ object Company extends Company with LongKeyedMapperPerCompany[Company] with Site
   val CmdNever = 0
   val CmdDaily = 1
   val CmdEver = 2;
+  val CmdDailyCompany = 3
+  val CmdEverCompany = 4;
 
   // public calendar
   val CPubNoone = 0

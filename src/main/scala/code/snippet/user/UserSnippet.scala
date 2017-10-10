@@ -230,15 +230,12 @@ class  UserSnippet extends BootstrapPaginatorSnippet[User] {
 			"name=is_auxiliar" #> (SHtml.checkbox(user.is_auxiliar_?, user.is_auxiliar_?(_)))&
 			"name=groupPermission_text" #> (SHtml.text(user.groupPermission, (a:String) => {}))&
 			"#img_thumb" #> user.thumb&
-			"name=orderInCalendar" #> (SHtml.text(user.orderInCalendar.is.toString, (s:String) => user.orderInCalendar(s.toInt))) &
-			"name=parent" #> (SHtml.text(user.parent.is.toString, (p:String) => { 
-					if(p != "")
-						user.parent(p.toLong)
-					else
-						user.parent(0)
-
-			}))&
-			"name=parent_percent" #> (SHtml.text(user.parent_percent.is.toString, (v:String) =>{ if(v !=""){user.parent_percent(BusinessRulesUtil.snippetToDouble(v))};}))&
+			"name=orderInCalendar" #> (SHtml.text(user.orderInCalendar.is.toString, (s:String) => user.orderInCalendar(s.toInt)))&
+			"name=parent" #> (SHtml.text(user.parent.is.toString, 
+				(f:String) => user.parent(BusinessRulesUtil.snippetToInt(f))))&
+//			"name=parent_percent" #> (SHtml.text(user.parent_percent.is.toString, (v:String) =>{ if(v !=""){user.parent_percent(BusinessRulesUtil.snippetToDouble(v))};}))&
+			"name=parent_percent" #> (SHtml.text(user.parent_percent.is.toString, 
+				(f:String) => user.parent_percent(BusinessRulesUtil.snippetToDouble(f))))&
 			"name=cancreatecalendarevents" #> (SHtml.checkbox(user.canCreateCalendarEvents_?, user.canCreateCalendarEvents_?(_)))&
 			"name=candeletecalendarevents" #> (SHtml.checkbox(user.canDeleteCalendarEvents_?, user.canDeleteCalendarEvents_?(_)))&
 			"name=canmovecalendarevents" #> (SHtml.checkbox(user.canMoveCalendarEvents_?, user.canMoveCalendarEvents_?(_)))&

@@ -104,7 +104,8 @@ var CalendarScreen = {
 			"backdrop": true
 		});
 		if ((calEvent.command === '' || !calEvent.command) && 
-			global_commandControl == 1 /* daily */) {
+			(global_commandControl == 1 /* daily */ ||
+			 global_commandControl == 3 /* dailyCompany */)) {
 			$.get("/calendar/" + encodeURIComponent(getDateBr(calEvent.start)) + 
 				"/getNextCommandId", function(t) {
 				$($inputs.get(0)).val(t);
@@ -180,7 +181,8 @@ var CalendarScreen = {
 			window.open("/financial_cashier/register_payment?command=" + $(".command").val() + "&date=" + encodeURIComponent($(".start_treatment").val()), "payment");
 			CalendarScreen.closeTreatmentPopUp();
 		} else {
-			if (global_commandControl == 2 /* ever */) {
+			if (global_commandControl == 2 /* ever */ ||
+				global_commandControl == 4 /* everCompany */) {
 				$.get("/calendar/" + encodeURIComponent($(".start_treatment").val()) + 
 					"/getNextCommandId", function(t) {
 					//	$($inputs.get(0)).val(t);
