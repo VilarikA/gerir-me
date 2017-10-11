@@ -19,6 +19,7 @@ object Project{
 	val date_format_hour = new java.text.SimpleDateFormat ("HH:mm")
 	val date_format_hourss = new java.text.SimpleDateFormat ("HH:mm:ss")
 	var date_format = new java.text.SimpleDateFormat ("dd/MM/yyyy")
+  var dateTime_format = new java.text.SimpleDateFormat ("dd/MM/yyyy HH:mm:ss")
 	var date_format_js = new java.text.SimpleDateFormat ("yyyy-MM-dd HH:mm:ss")
 	var date_format_db = new java.text.SimpleDateFormat ("yyyy-MM-dd")
 	val date_format_day_and_month = new java.text.SimpleDateFormat ("dd/MM")
@@ -288,6 +289,14 @@ object Project{
 	def dateToDb(date:Date) = {
 		date_format_db.format(date)
 	}
+
+  def dateTimeToStr(date:Date) = {
+    if(date != null)
+      dateTime_format.format(date)
+    else
+      ""
+  }
+
 	def dateToStr(date:Date) = {
 		if(date != null)
 			date_format.format(date)
