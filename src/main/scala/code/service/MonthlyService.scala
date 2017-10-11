@@ -89,7 +89,6 @@ object MonthlyService {
 	def generateMonthlyAllCompanies(date:Date = new Date()) = {
 		Company.findAll(By (Company.status, 1),
 			OrderBy (Company.id, Ascending)).map((company:Company)=>{
-			println ("vaiiii company ================= " + company.id.is)
 			company.partner.obj match {
 				case Full(customer)=>{
 					generateMonthly(customer, company, date)
