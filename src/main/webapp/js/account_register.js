@@ -714,48 +714,63 @@
       return Account.getListFromServer();
     });
 
-    $(".b_add_account").click($.throttle(1000, function() {
+    var callApiLock = false;
+    $(".b_add_account").click(function() {
       var e;
-      try {
-        if (Account.actualId) {
-          //alert ("vaiii ==== " + $("#recurrence_id").val())
-          if ($("#recurrence_all").is(":checked")) {
-             if (confirm("Tem certeza que deseja atualizar este lançamentos e inclusive os futuros?")) {
-             } else {
-              return
-             } 
+      if (!callApiLock) {
+        callApiLock = true;
+        try {
+          if (Account.actualId) {
+            //alert ("vaiii ==== " + $("#recurrence_id").val())
+            if ($("#recurrence_all").is(":checked")) {
+               if (confirm("Tem certeza que deseja atualizar este lançamentos e inclusive os futuros?")) {
+               } else {
+                callApiLock = false
+                return
+               } 
+            }
+            return $.post("/accountpayable/edit/" + Account.actualId, new Account(), function(t) {
+              if (t == 'true') {
+                alert("Lançamento alterado com sucesso!");
+                Account.getListFromServer();
+                Account.actualId = false;
+                $("#account_modal").modal({
+                  "hide": true
+                });
+                callApiLock = false;
+                return;
+              } else {
+                callApiLock = false;
+                return alert("Erro ao alterar lançamento! \n\n" + eval (t));
+              }
+            });
+          } else {
+            return $.post("/accountpayable/add", new Account(), function(t) {
+              if (t == 'true') {
+                alert("Lançamento cadastrado com sucesso!");
+                Account.getListFromServer();
+                Account.actualId = false;
+                $("#account_modal").modal({
+                  "hide": true
+                });
+                callApiLock = false;
+                return;
+              } else {
+                callApiLock = false;
+                return alert("Erro ao cadastrar lançamento! \n\n" + eval (t));
+              }
+            });
           }
-          return $.post("/accountpayable/edit/" + Account.actualId, new Account(), function(t) {
-            if (t == 'true') {
-              alert("Lançamento alterado com sucesso!");
-              Account.getListFromServer();
-              Account.actualId = false;
-              return $("#account_modal").modal({
-                "hide": true
-              });
-            } else {
-              return alert("Erro ao alterar lançamento! \n\n" + eval (t));
-            }
-          });
-        } else {
-          return $.post("/accountpayable/add", new Account(), function(t) {
-            if (t == 'true') {
-              alert("Lançamento cadastrado com sucesso!");
-              Account.getListFromServer();
-              Account.actualId = false;
-              return $("#account_modal").modal({
-                "hide": true
-              });
-            } else {
-              return alert("Erro ao cadastrar lançamento! \n\n" + eval (t));
-            }
-          });
+        } catch (_error) {
+          e = _error;
+          callApiLock = false;
+          return alert(e);
         }
-      } catch (_error) {
-        e = _error;
-        return alert(e);
+      } else {
+        alert("Já existe um processo em andamento. Aguarde o fim do processamento para clicar novamente!");
+        return;
       }
-    }));
+    });
     $("#cashier").cashierField(false, "all");
     $('.currency').calculator({
       showOn: 'button'
