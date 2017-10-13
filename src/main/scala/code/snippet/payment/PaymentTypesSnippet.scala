@@ -108,7 +108,7 @@ class PaymentTypesSnippet extends BootstrapPaginatorSnippet[PaymentType]{
 					ac.company(AuthUtil.company)
 				   	ac.save
 				   	S.notice("Forma de pagamento salva com sucesso!")
-				   	S.redirectTo("/company/payment_forms?id="+ac.id.is)
+				   	S.redirectTo("/financial_admin/payment_forms?id="+ac.id.is)
 	   			}catch{
 					case (e:net.liftweb.http.ResponseShortcutException) =>{
 						throw e
