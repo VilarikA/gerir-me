@@ -124,6 +124,10 @@
   var global_activityIndex = 0;
   var editPrice = function(treatmentIndex, activityIndex, element) {
     var value = $(element).val();
+    // rigel 13/10/2017 evitar NaN qdo limpa o valor
+    if (value == "NaN" || value == "") {
+      value = "0";
+    }
     value = value.replace(',', '.');
     global_treatmentIndex = treatmentIndex;
     global_activityIndex = activityIndex;
