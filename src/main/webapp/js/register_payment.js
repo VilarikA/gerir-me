@@ -12,6 +12,11 @@
 
   var paymentOfAccount = false;
 
+  var prodCustomerAccount = 0;
+  var hasCustomerAccount = false;
+  var prodCustomerCredit = 0;
+  var hasCustomerCredit = false;
+
   mousePrepare = function() {
     Mousetrap.init();
     Mousetrap.bind('!', function() {
@@ -311,6 +316,8 @@
         alert("Atendimento já foi pago!");
       }
     }
+    hasCustomerAccount = false;
+    hasCustomerCredit = false;
     for (var i = treatments.length - 1; i >= 0; i--) {
       treatment = treatments[i];
       if (treatment.ignored) {
@@ -350,6 +357,15 @@
           var hasOffSaleModule = $('.has-offsale-module').length > 0;
           var hasPetSystem = $('.has-pet-system').length > 0;
           var amount = activity.amount = activity.amount || 1;
+
+          if (activity.activityId == prodCustomerAccount) {
+            hasCustomerAccount = true;
+            //alert ("tem conta cliente")
+          }
+          if (activity.activityId == prodCustomerCredit) {
+            hasCustomerCredit = true;
+            //alert ("tem conta cliente")
+          }
           total += activity.price * amount;
           lines += "<tr>" + 
           "<td>" + getActivityIcon(activity) + "</td>" +
@@ -820,6 +836,9 @@
         eval("var prodObj = " + t);
         if (prodObj.price < 0) {
           paymentOfAccount = true;
+          // 13/10/2017 rigel - salva o produto conta cliente
+          prodCustomerAccount = prodObj.id
+          prodCustomerCredit = prodObj.credit
           addActivityToAtualTreatment({
             activity: prodObj.name,
             activityId: prodObj.id,
@@ -859,6 +878,12 @@
       if (treatments.length === 0) {
         messages.push("Não existem itens a serem pagos!");
       }
+
+      if (hasCustomerAccount && hasCustomerCredit) {
+        messages.push("Pagamento de Conta cliente e compra de Crédito cliente, devem ser efetuadas em transações separadas!" +
+          "\n\n" + "Você pode ignorar um dos itens fazer o pagamento e depois acessar o cliente/comanda para fazer um segundo pagamento"); 
+      }
+
       if (messages.length !== 0) {
         alert(messages.join("\n"));
         return false;
@@ -1227,6 +1252,17 @@
     prepareTreatmentsInUi();
   }
   var getCommandByServer = function(customerId) {
+    // 13/10/2017 - rigel para nao deixar pagar conta cliente e credito cliente na mesma transação
+    if (prodCustomerAccount == 0 && prodCustomerCredit == 0) {
+      var url = "/cash/getProductPreviousDebts/" + customerId;
+      $.get(url, function(t) {
+        eval("var prodObj = " + t);
+        // 13/10/2017 rigel - salva o produto conta cliente
+        prodCustomerAccount = prodObj.id
+        prodCustomerCredit = prodObj.credit
+      }, "text");
+    }  
+
     $.get("/cash/getCommand/" + customerId + "/" + gatDateTreatmentOr0(), function(t) {
       var commandData = {};
       eval("commandData=" + t);
