@@ -24,6 +24,11 @@ var dateDecode = function (value) {
   return !value || value == "" ? "" : getDateBr(FactoryDate.byTime(value));
 }
 
+var realDecode = function (value) {
+  var ret = (parseFloat(value).formatMoney());
+  return ret;
+}
+
 /**
  * [renderReport description]
  * @param  {[type]}  url
@@ -60,10 +65,6 @@ function renderReport(url, fields, filter, grid_selector, callback_report, isCro
   var integerDecode = function (value) {
     return window.parseInt(value);
   };
-  var realDecode = function (value) {
-    var ret = (parseFloat(value).formatMoney());
-    return ret;
-  }
 
   var integerNullDecode = function (value) {
     var ret = "";

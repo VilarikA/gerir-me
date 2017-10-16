@@ -823,7 +823,7 @@ object Reports extends RestHelper with ReportRest with net.liftweb.common.Logger
 					}
 				}
 			}
-			case "report" :: "paymenttype_details" :: Nil Post _ =>{
+			case "report" :: "paymenttype_details" :: fat :: Nil Post _ =>{
 				def start:Date = S.param("startDate") match {
 					case Full(p) => Project.strToDateOrToday(p)
 					case _ => new Date()
@@ -858,6 +858,7 @@ object Reports extends RestHelper with ReportRest with net.liftweb.common.Logger
 					}
 				}
 				def paymentTypesWhere = filterSqlIn("payment_type", " pt.id in(%s)")
+				def paymentTypesFatWhere = filterSqlIn("payment_type", " pd.typepayment in(%s)")
 				val SQL = """
 					select bc.id, bc.name as cliente, 
 					ca.idforcompany as caixa, pa.command as comanda, 
@@ -876,7 +877,25 @@ object Reports extends RestHelper with ReportRest with net.liftweb.common.Logger
 					and %s
 					order by pa.datepayment, ca.idforcompany, pd.duedate, bc.name, pa.command, pt.name
 				"""
-				toResponse(SQL.format(unit, paymentTypesWhere, cashier, commands),List(AuthUtil.company.id.is, start, end)) 
+				val sqlFat = """
+					select sum (
+					pa.value) as total, count (pa.value) as count
+					from payment pa
+					inner join cashier ca on ca.id = pa.cashier
+					inner join business_pattern bc on bc.id = pa.customer
+					inner join companyunit cu on cu.id = ca.unit
+					where pa.company = ?
+					and pa.datepayment between ? and ?
+					and pa.id in (select pd.payment from paymentdetail pd where pd.payment = pa.id and %s)
+					and %s
+					and %s
+					and %s
+				"""
+				if (fat == "false") {
+					toResponse(SQL.format(paymentTypesWhere, unit, cashier, commands),List(AuthUtil.company.id.is, start, end)) 
+				} else {
+					toResponse(sqlFat.format(paymentTypesFatWhere, unit, cashier, commands),List(AuthUtil.company.id.is, start, end)) 
+				}
 			}
 			case "report" :: "accountpayable" :: Nil Post _ =>{
 				def dttypes:String = S.param("dttype") match {
@@ -1234,6 +1253,10 @@ object Reports extends RestHelper with ReportRest with net.liftweb.common.Logger
 					case Full(p) => Project.strToDateOrToday(p)
 					case _ => new Date()
 				}				
+				def productclass:String = S.param("productclass") match {
+					case Full(p) => p
+					case _ => "0,1";
+				}
 				val sql = """
 					select 
 					     company,
@@ -1248,34 +1271,33 @@ object Reports extends RestHelper with ReportRest with net.liftweb.common.Logger
 					from (
 					select
 					     co.name as company,
-					     u.name as unidade,
+					     cu.name as unidade,
 					     ug.name as grupo,
 					     bp.name as profissional,
 					     tp.name as tipo,
-					     p.name as produto, 
+					     pr.name as produto, 
 					     td.price as price,
-					     COALESCE ((select sum (value) from commision where treatment_detail = td.id),0) as coust,
-					     td.price - COALESCE ((select sum (value) from commision where treatment_detail = td.id),0) as gain
-					from  
-						product p
-						left join producttype tp on(tp.id = p.typeproduct)
-						inner join treatmentdetail td on(td.activity = p.id)
-						inner join treatment t on(t.id=td.treatment)
-						inner join companyunit u on(u.id = t.unit)
-						inner join business_pattern bp on (bp.id = t.user_c)
+					     COALESCE ((select sum (value) from commision where treatment_detail = td.id),0) + coalesce(pr.purchaseprice,0) as coust,
+					     td.price - (COALESCE ((select sum (value) from commision where treatment_detail = td.id),0)+ coalesce(pr.purchaseprice,0)) as gain
+					from  treatment tr
+						inner join treatmentdetail td on tr.id = td.treatment
+						inner join product pr on (td.activity = pr.id or td.product = pr.id)
+						inner join company co on (co.id = tr.company)
+						inner join companyunit cu on(cu.id = tr.unit)
+						left join business_pattern bp on (bp.id = tr.user_c)
 						left join usergroup ug on( ug.id = bp.group_c)
-						inner join company co on (co.id = p.company)
+						left join producttype tp on(tp.id = pr.typeproduct)
 					where
-						p.company =  ? and
-						productclass  =0
-						and t.status = 4
-						and  t.dateevent between date(?) and date(?)
-						order by bp.name, p.name,u.name, co.name							
+						tr.company =  ? and
+						productclass  in (%s)
+						and tr.status = 4
+						and  tr.dateevent between date(?) and date(?)
+						order by bp.name, pr.name,cu.name, co.name							
 					) as data1
 					group by produto, profissional, grupo,tipo, unidade,company
 					order by profissional, produto,unidade, company						
 				"""
-				toResponse(sql,List(AuthUtil.company.id.is, start, end))
+				toResponse(sql.format (productclass),List(AuthUtil.company.id.is, start, end))
 			}
 
 			case "report" :: "presumed_income_product" :: Nil Post _ => {
@@ -1287,7 +1309,7 @@ object Reports extends RestHelper with ReportRest with net.liftweb.common.Logger
 					case Full(p) => Project.strToDateOrToday(p)
 					case _ => new Date()
 				}			
-				val sql = """
+/*
 				select
 				     co.name,
 				     u.name,
@@ -1311,6 +1333,46 @@ object Reports extends RestHelper with ReportRest with net.liftweb.common.Logger
 				and  t.dateevent between date(?) and date(?)
 				group by p.id,tp.id, u.id,co.name,p.name, tp.name, u.name
 				order by p.name,u.name, co.name
+*/
+				val sql = """
+					select 
+					     company,
+					     unidade,
+					     grupo,
+					     profissional,
+					     tipo,
+					     produto, 
+					     sum(price) as price, 
+					     sum (coust) as coust,
+					     sum(gain) as gain
+					from (
+					select
+					     co.name as company,
+					     cu.name as unidade,
+					     ug.name as grupo,
+					     bp.name as profissional,
+					     tp.name as tipo,
+					     pr.name as produto, 
+					     td.price as price,
+					     COALESCE ((select sum (value) from commision where treatment_detail = td.id),0) + coalesce(pr.purchaseprice,0) as coust,
+					     td.price - (COALESCE ((select sum (value) from commision where treatment_detail = td.id),0)+ coalesce(pr.purchaseprice,0)) as gain
+					from  treatment tr
+						inner join treatmentdetail td on tr.id = td.treatment
+						inner join product pr on (td.activity = pr.id or td.product = pr.id)
+						inner join company co on (co.id = tr.company)
+						inner join companyunit cu on(cu.id = tr.unit)
+						left join business_pattern bp on (bp.id = tr.user_c)
+						left join usergroup ug on( ug.id = bp.group_c)
+						left join producttype tp on(tp.id = pr.typeproduct)
+					where
+						tr.company =  ? and
+						productclass  in (1)
+						and tr.status = 4
+						and  tr.dateevent between date(?) and date(?)
+						order by bp.name, pr.name,cu.name, co.name							
+					) as data1
+					group by produto, profissional, grupo,tipo, unidade,company
+					order by profissional, produto,unidade, company						
 				"""
 			toResponse(sql,List(AuthUtil.company.id.is, start, end))
 		}
