@@ -171,10 +171,10 @@ object EmailUtil {
             "VilarikA Soluções OnLine"
           }
         try {
-      println ("vaii =================== try no email util GENERICO")
+  //    println ("vaii =================== try no email util GENERICO")
 
         Thread.sleep (300);
-        Mailer.sendMail(
+        Mailer.blockingSendMail(
            Mailer.From(from, Full("Notificações " + product2 + " " + local1)),
            Mailer.Subject(title),
            Mailer.To(prefix + email),
@@ -186,6 +186,7 @@ object EmailUtil {
           case e:Exception => {
             //e.printStackTrace
             println ("vaiiii ========================= Erro ao enviar email GENERICO - "+e.getMessage)
+            log.subject(title + " ERRO ======= ").save
 //            LogActor ! "Erro ao enviar email - "+e.getMessage
           }
           case _ =>
@@ -224,8 +225,8 @@ object EmailUtil {
 */
         try{
           Thread.sleep (300);
-      println ("vaii =================== try no email util")
-          companyUnit.mailer.sendMail(
+//      println ("vaii =================== try no email util")
+          companyUnit.mailer.blockingSendMail(
              companyUnit.mailer.From(company.email.is.split(",|;")(0), Full(company.name.is)),
              companyUnit.mailer.Subject(title),
              companyUnit.mailer.To(prefix + email),
@@ -238,6 +239,7 @@ object EmailUtil {
           case e:Exception => {
             //e.printStackTrace
             println ("vaiiii ========================= Erro ao enviar email - "+e.getMessage)
+            log.subject(title + " ERRO ======= ").save
 //            LogActor ! "Erro ao enviar email - "+e.getMessage
           }
           case _ =>
