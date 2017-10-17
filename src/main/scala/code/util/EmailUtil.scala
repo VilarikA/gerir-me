@@ -367,12 +367,22 @@ object EmailUtil {
             <br/>
             <br/>
             <a href={"http://" + appName + ".vilarika.com.br/"}><img src={"http://" + appName + ".vilarika.com.br/images/logo_fbr_name_"+ appName+".png"} style="width: 50px;"/></a>
-            <img src={"http://" + appName + ".vilarika.com.br/system/makeMailAsRead/"+id.toString} style="width: 0px;"/>
+            <img src={if (Project.isLocalHost) {
+              "localhost:7171/system/makeMailAsRead/"+id.toString
+              } else {
+              "http://" + appName + ".vilarika.com.br/system/makeMailAsRead/"+id.toString
+              }
+              } style="width: 0px;"/>
           </div>
   
   def simpleFooterHtml(id:Long, appName:String) = <div>
             <a href={"http://"+appName+".vilarika.com.br/"}> Enviado via <img src={"http://"+appName+".vilarika.com.br/images/logo_fbr_name_"+appName+".png"} style="width: 50px;"/></a>
-            <img src={"http://" + appName + ".vilarika.com.br/system/makeMailAsRead/"+id.toString} style="width: 0px;"/>
+            <img src={if (Project.isLocalHost) {
+              "localhost:7171/system/makeMailAsRead/"+id.toString
+              } else {
+              "http://" + appName + ".vilarika.com.br/system/makeMailAsRead/"+id.toString
+              }
+              } style="width: 0px;"/>
           </div>
   def simpleFooterHtmlEgrex(id:Long, company:Company) = <div>
             <br/>
