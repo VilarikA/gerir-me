@@ -82,9 +82,9 @@ trait NameSearchble [self <: net.liftweb.mapper.Mapper[self]]{
       this.set(BusinessRulesUtil.toCamelCase(this.is.trim()));
     }
   }
-      def testIfDuplicatedName ( id1: Long, name1 : String) = {
+      def testIfDuplicatedName ( company : Long, id1: Long, name1 : String) = {
         if(!allowDuplicated_? && self.getSingleton.count(
-          By(self.company, self.company.is), 
+          By(self.company, company), 
           Like(self.name, BusinessRulesUtil.toCamelCase(name1)), //self.name.is.trim)), 
           NotBy(self.id, id1) //self.id.is)
           ) > 0){
@@ -95,7 +95,7 @@ trait NameSearchble [self <: net.liftweb.mapper.Mapper[self]]{
       }
 
       def validateDuplicatedName = {
-        if (testIfDuplicatedName (self.id.is, self.name.is.trim)) {
+        if (testIfDuplicatedName (self.company.is, self.id.is, self.name.is.trim)) {
           throw new RuntimeException("Já existe um registro com esse nome : %s".format(self.name.is))
         }
 /*

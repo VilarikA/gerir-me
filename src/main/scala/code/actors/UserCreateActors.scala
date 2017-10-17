@@ -94,11 +94,11 @@ object UserCreateActors extends LiftActor {
 
   def _createCustomer(company:Company) = {
     var name = "";
-    if (Customer.testIfDuplicatedName (-1, 
+    if (Customer.testIfDuplicatedName (1, -1, 
       BusinessRulesUtil.clearString(company.name))) {
-      name = BusinessRulesUtil.clearString(company.name)
-    } else {
       name = BusinessRulesUtil.clearString(company.name) + " " + new Date()
+    } else {
+      name = BusinessRulesUtil.clearString(company.name)
     }
     Customer.create.name(name).phone(company.phone).email(company.email).is_person_?(false)
   }  
