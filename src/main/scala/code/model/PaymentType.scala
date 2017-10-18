@@ -27,7 +27,9 @@ with CreatedUpdatedBy with NameSearchble[PaymentType] with ActiveInactivable[Pay
     override def dbColumnName = "sumtoconference"
     override def defaultValue = false
   }  
-  object numDays extends MappedInt(this) // for commission
+  object numDays extends MappedInt(this) { // for commission
+    override def defaultValue = 1;
+  }  
 
   object order extends MappedInt(this){
     override def defaultValue = 1000

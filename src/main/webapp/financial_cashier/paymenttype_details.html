@@ -23,7 +23,7 @@
           }
         }
         fields[4] = "real";
-        fields[5] = "real";
+        //fields[5] = "real";
         fields[5] = {
           type : "format",
           decode: function(name, row) {
@@ -38,6 +38,18 @@
         }
         fields[7] = "date";
         fields[8] = "date";
+        fields[8] = {
+          type : "format",
+          decode: function(name, row) {
+            var color = "red"
+            if (row[8] != row[7]) {
+            return "<p style='color:" + color + "'>" + 
+                dateDecode(row[8]) + "<p/>"
+            } else {
+              return dateDecode(row[8])
+            }
+          }
+        }
         if (!hasUnitModule) {
           fields[9] = "none";
         }
@@ -188,6 +200,7 @@
         <th>Data</th>
         <th>Vencimento</th>
         <th class="clearfix lift:SecuritySnippet.hasUnitModule">Unidade</th>
+        <th>Usuário</th>
         </tr>
       </thead>
       <tbody>

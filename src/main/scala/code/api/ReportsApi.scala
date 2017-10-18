@@ -862,9 +862,12 @@ object Reports extends RestHelper with ReportRest with net.liftweb.common.Logger
 				val SQL = """
 					select bc.id, bc.name as cliente, 
 					ca.idforcompany as caixa, pa.command as comanda, 
-					pa.value as total, pd.value, pt.name as forma, pa.datepayment as pagamento, pd.duedate, cu.name as unidade
+					pa.value as total, pd.value, pt.name as forma, pa.datepayment as pagamento, 
+					pd.duedate, cu.name as unidade,
+					bu.short_name || ' ' || to_char (pd.createdat,'dd/mm/yy hh24:mi' )
 					from payment pa
 					inner join paymentdetail pd on pa.id = pd.payment
+					inner join business_pattern bu on bu.id = pd.createdby
 					inner join paymenttype pt on pt.id = pd.typepayment
 					inner join cashier ca on ca.id = pa.cashier
 					inner join business_pattern bc on bc.id = pa.customer
