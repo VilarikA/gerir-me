@@ -386,7 +386,7 @@ object CommissionGenerationStrategy {
     override def paymentDate(payment_detail: PaymentDetail) = {
       val c = Calendar.getInstance
       c.setTime(payment_detail.dueDate.is)
-      c.add(Calendar.DATE, (payment_detail.typePaymentObj.get.numDays.is-1)
+      c.add(Calendar.DATE, (payment_detail.typePaymentObj.get.numDays.is-1))
       c.getTime
     }
   }
