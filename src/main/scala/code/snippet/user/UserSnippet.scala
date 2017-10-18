@@ -227,6 +227,8 @@ class  UserSnippet extends BootstrapPaginatorSnippet[User] {
 			"name=showInCalendarPub" #> (SHtml.checkbox(user.showInCalendarPub_?, user.showInCalendarPub_?(_)))&
 			"name=showInCommand" #> (SHtml.checkbox(user.showInCommand_?, user.showInCommand_?(_)))&
 			"name=showInCashier" #> (SHtml.checkbox(user.showInCashier_?, user.showInCashier_?(_)))&
+			"name=discountToCommission" #> (SHtml.checkbox(user.discountToCommission_?, user.discountToCommission_?(_)))&
+			"name=deletePayment" #> (SHtml.checkbox(user.deletePayment_?, user.deletePayment_?(_)))&
 			"name=is_auxiliar" #> (SHtml.checkbox(user.is_auxiliar_?, user.is_auxiliar_?(_)))&
 			"name=groupPermission_text" #> (SHtml.text(user.groupPermission, (a:String) => {}))&
 			"#img_thumb" #> user.thumb&

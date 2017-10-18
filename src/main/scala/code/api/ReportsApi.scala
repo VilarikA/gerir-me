@@ -481,7 +481,9 @@ object Reports extends RestHelper with ReportRest with net.liftweb.common.Logger
                           co.value,
                           ba.short_name,
                           pt.short_name as paymenttype,
-                          customer.id
+                          customer.id,
+                          td.activity,
+                          td.product
                           from commision co
                           inner join payment pa on(pa.id = co.payment)
                           left join cashier ca on(ca.id = pa.cashier)
@@ -515,6 +517,8 @@ object Reports extends RestHelper with ReportRest with net.liftweb.common.Logger
 							ba.short_name,
 					        '' as paymenttype
 					        --(select min (name)||'*' from paymenttype pt where pd.typepayment = pt.id)
+	                        td.activity,
+	                        td.product
 					        from commision co
 					        inner join payment pa on(pa.id = co.payment)
 					        left join cashier ca on(ca.id = pa.cashier)
