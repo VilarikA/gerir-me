@@ -86,7 +86,7 @@ object CommandApi extends RestHelper with ReportRest with net.liftweb.common.Log
 					to_char (tr.start_c, 'hh24:mi'),
 					to_char (ted.arrivedat, 'hh24:mi'),
 					bc.name, ba.short_name, ban.short_name as pet, 
-					pr.name, td.amount, td.price, 
+					pr.name, tdd.tooth, td.amount, td.price, 
 					tr.status, 
 					trim (COALESCE (ted.obsLate, '') || ' ' || tr.obs || ' ' || td.obs), 
 					'Aguardando a ' || to_char (now() - ted.arrivedat,'hh24:mi'),
@@ -101,6 +101,7 @@ object CommandApi extends RestHelper with ReportRest with net.liftweb.common.Log
 					inner join product pr on pr.id = td.activity or pr.id = td.product
 					left join treatedoctus ted on ted.treatment = tr.id
 					left join tdepet tdp on tdp.treatmentDetail = td.id
+					left join tdedoctus tdd on tdd.treatmentDetail = td.id
 					left join business_pattern ban on ban.id = tdp.animal
 					where tr.company = ? 
 					and (tr.user_c = ? or td.auxiliar = ?)  
@@ -140,7 +141,7 @@ object CommandApi extends RestHelper with ReportRest with net.liftweb.common.Log
 					select to_char (tr.start_c,'hh24:mi') , bc.name as cliente, bp.short_name as profissional, 
 					ba.short_name as assistente, 
 					ban.short_name as pet, 
-					pr.short_name as prodserv, td.id, bc.id, bp.id, 
+					pr.short_name as prodserv, tooth, td.id, bc.id, bp.id, 
 					ba.id, -- assitente
 					ban.id -- animal
 					from treatment tr
@@ -150,6 +151,7 @@ object CommandApi extends RestHelper with ReportRest with net.liftweb.common.Log
 					inner join product pr on pr.id = td.activity or pr.id = td.product and pr.productclass in (0,1)
 					left join business_pattern ba on ba.id = td.auxiliar
 					left join tdepet tdp on tdp.treatmentDetail = td.id
+					left join tdedoctus tdd on tdd.treatmentDetail = td.id
 					left join business_pattern ban on ban.id = tdp.animal
 					where tr.company = ? 
 					and tr.dateevent = ?
@@ -185,12 +187,12 @@ object CommandApi extends RestHelper with ReportRest with net.liftweb.common.Log
 				def price = S.param("price") openOr ""
 				def amount = S.param("amount") openOr ""
 				def animal = S.param("animal") openOr ""
+				def tooth = S.param("tooth") openOr ""
 				def offsale = S.param("offsale") openOr ""
 
 				def userId:String = S.param("user") openOr "0"
 				def customerId:String = S.param("customer") openOr "0"
 				def auxiliarId:String = S.param("auxiliar") openOr "0"
-
 				if (AuthUtil.user.isCommandPwd) {
 					if (!User.loginCommand(userId.toLong, password)) {
 						throw  new Exception("Senha inválida!");
@@ -200,7 +202,8 @@ object CommandApi extends RestHelper with ReportRest with net.liftweb.common.Log
 				var tempt = TreatmentService.factoryTreatment("", customerId, userId, start, start, end,"0")
 				if (activity.isEmpty || activity == "") {
 					var prod = Product.findByKey(product.toLong).get
-					var tempd1 = TreatmentService.addDetailTreatment(tempt.get.id, prod, animal.toLong, offsale.toLong)
+					var tempd1 = TreatmentService.addDetailTreatment(tempt.get.id, 
+						prod, animal.toLong, offsale.toLong)
 					if (amount != "" && amount != "1") {
 						//println ("vai amount ========= " + amount );
 						tempd1.get.amount(amount.toDouble).price(tempd1.get.price*amount.toDouble).save
@@ -213,7 +216,7 @@ object CommandApi extends RestHelper with ReportRest with net.liftweb.common.Log
 					}
 				} else {
 					var tempd = TreatmentService.addDetailTreatmentWithoutValidate(tempt.get.id, activity.toLong, 
-						auxiliarId.toLong, animal.toLong, offsale.toLong)
+						auxiliarId.toLong, animal.toLong, tooth, offsale.toLong)
 					if (amount != "" && amount != "1") {
 						tempd.get.amount(amount.toDouble).price(tempd.get.price*amount.toDouble).save
 					}

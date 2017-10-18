@@ -361,18 +361,18 @@ object  TreatmentService extends net.liftweb.common.Logger {
 		TratmentServer ! TreatmentMessage("SaveUpdateTratment",end)		
 	}	
 
-	def addDetailTreatment(id:Long,activityCode:Long, auxiliar:Long, animal:Long, offsale:Long):Box[TreatmentDetail] = {
+	def addDetailTreatment(id:Long,activityCode:Long, auxiliar:Long, animal:Long, tooth: String, offsale:Long):Box[TreatmentDetail] = {
 		val activity = Activity.findByKey(activityCode).get
-		var tempd = addDetailTreatment(id, activity, auxiliar, animal, offsale, true)
+		var tempd = addDetailTreatment(id, activity, auxiliar, animal, tooth, offsale, true)
 		tempd
 	}
-	def addDetailTreatmentWithoutValidate(id:Long,activityCode:Long, auxiliar:Long, animal:Long, offsale:Long):Box[TreatmentDetail] = {
+	def addDetailTreatmentWithoutValidate(id:Long,activityCode:Long, auxiliar:Long, animal:Long, tooth: String, offsale:Long):Box[TreatmentDetail] = {
 		val activity = Activity.findByKey(activityCode).get
-		var tempd = addDetailTreatment(id,activity, auxiliar, animal, offsale, false)
+		var tempd = addDetailTreatment(id,activity, auxiliar, animal, tooth, offsale, false)
 		tempd
 	}	
 
-	def addDetailTreatment(id:Long,activity:Activity, auxiliar:Long, animal:Long, offsale:Long, validate:Boolean =true):Box[TreatmentDetail] = {
+	def addDetailTreatment(id:Long,activity:Activity, auxiliar:Long, animal:Long, tooth: String, offsale:Long, validate:Boolean =true):Box[TreatmentDetail] = {
 		DB.use(DefaultConnectionIdentifier) {
 	 		conn =>
 	 			try{
@@ -396,6 +396,9 @@ object  TreatmentService extends net.liftweb.common.Logger {
 
 			        if (AuthUtil.company.appType.isEbellepet) {
 						detail.getTdEpet.animal(animal).save;
+					}
+			        if (AuthUtil.company.appType.isEsmile) {
+						detail.getTdEdoctus.tooth(tooth).save;
 					}
 
 					//treatment.details += detail

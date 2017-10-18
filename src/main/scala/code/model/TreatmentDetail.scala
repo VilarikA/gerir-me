@@ -66,6 +66,7 @@ class TreatmentDetail extends Audited[TreatmentDetail] with IdPK with CreatedUpd
             case Full(t)  if(t.isPaid)=> { throw new RuntimeException(" Não é permitido excluir atendimento pago!") }
             case _ => 
         } 
+        // deletar TdEpet tdEdoctus
         super.delete_!
     }
 
