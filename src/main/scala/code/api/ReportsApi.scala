@@ -515,8 +515,9 @@ object Reports extends RestHelper with ReportRest with net.liftweb.common.Logger
 					        td.price,
 					        sum(co.value),
 							ba.short_name,
-					        '' as paymenttype
+					        '' as paymenttype,
 					        --(select min (name)||'*' from paymenttype pt where pd.typepayment = pt.id)
+					        '',
 	                        td.activity,
 	                        td.product
 					        from commision co
@@ -537,7 +538,9 @@ object Reports extends RestHelper with ReportRest with net.liftweb.common.Logger
 					        where co.company = ? and co.user_c in (%s) 
 					        and date(co.payment_date) between date(?) and date(?)
 					        and p.productclass in(%s) %s
-					        group by  td.treatment, ca.idforcompany, pa.command, pa.datepayment, /*pd.typepayment,*/cu.short_name,customer.short_name, td.price,ba.short_name,p.short_name, co.payment_date
+					        group by  td.treatment, ca.idforcompany, pa.command, pa.datepayment, 
+					        /*pd.typepayment,*/
+					        cu.short_name,customer.short_name, td.price,ba.short_name,p.short_name, co.payment_date, td.product, td.activity
 					        order by datepayment desc, pa.command, cu.short_name, customer.short_name, p.short_name, co.payment_date;  
 					"""
 				if(rel_mini == 0){

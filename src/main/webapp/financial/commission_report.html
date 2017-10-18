@@ -54,6 +54,16 @@
         return "<a href='/customer/edit?id=" + row[11] + "' target='_customer_maste'>" + name + "</a>";
       }
     }
+    fields[6] = {
+      type: "format",
+      decode: function(name, row) {
+        if (row[12] != "" && row[12] != "0") {
+          return "<a href='/activity/edit?id=" + row[12] + "' target='_activity_maste'>" + name + "</a>";
+        } else {
+          return "<a href='/product_admin/edit?id=" + row[13] + "' target='_product_maste'>" + name + "</a>";
+        }
+      }
+    }
     if (!AuthUtil.company.showSalesToUser_$qmark) {
       fields[7] = "none";
     } else {
