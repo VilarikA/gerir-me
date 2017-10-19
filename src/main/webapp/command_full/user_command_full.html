@@ -4,36 +4,6 @@
   </script>
   <script type="text/javascript" src="/js/user_command.js"></script>
   <script type="text/javascript">
-    var set_auxiliar = function (userId, tdId) {
-        //
-        // usado também na agenda
-        //
-        return $.post("/command/setaux", {
-          "user": userId,
-          "tdid": tdId,
-          "command": "1"
-        }, function(results) {
-          if(results === 1 || results == "1"){
-            alert("Assistente cadastrado com sucesso");
-          }else{
-            alert(eval(results));
-          }
-          return Manager.getListFromServer();
-        });
-    };
-    var del_auxiliar = function (userId, tdId) {
-        return $.post("/command/delaux", {
-          "user": userId,
-          "tdid": tdId
-        }, function(results) {
-          if(results === 1 || results == "1"){
-            alert("Assistente excluído com sucesso");
-          }else{
-            alert(eval(results));
-          }
-          return Manager.getListFromServer();
-        });
-    };
   </script>
   <div class="well">
     <div class='filter block-message success"'>

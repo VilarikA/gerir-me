@@ -296,8 +296,8 @@
           return "<a class='btn primary' onclick='Manager.new_detail("+
           row[8]+ ',"' +row[0]+ '"' + ")'" + 
           " title='Inserir novo serviço para este cliente/paciente' target=''>Inserir novo</a> " +
-          "<a class='btn success' onclick='set_auxiliar(" + (Manager.user()) + "," +row[7]+")'  target=''>Gravar assistente</a> " +
-          "<a class='btn danger' onclick='del_auxiliar(" + (Manager.user()) + "," +row[7]+")'  target=''>Excluir assistente</a>"
+          "<a class='btn success' onclick='Manager.set_auxiliar(" + (Manager.user()) + "," +row[7]+")'  target=''>Gravar assistente</a> " +
+          "<a class='btn danger' onclick='Manager.del_auxiliar(" + (Manager.user()) + "," +row[7]+")'  target=''>Excluir assistente</a>"
         }
       };
       fields1[8] = "none"
@@ -359,6 +359,20 @@
         });
     };
   
+    Manager.del_auxiliar = function (userId, tdId) {
+      return $.post("/command/delaux", {
+        "user": userId,
+        "tdid": tdId
+      }, function(results) {
+        if(results === 1 || results == "1"){
+          alert("Assistente excluído com sucesso");
+        }else{
+          alert(eval(results));
+        }
+        return Manager.getListFromServer();
+      });
+    };
+
     var callApiLock = false;
 
     Manager.save = function() {
