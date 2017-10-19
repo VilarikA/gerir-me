@@ -94,7 +94,7 @@ var TreatmentManger = {
 			});
 		}
 	},
-	addDetail: function(treatmentId, activityId, auxiliar, animal, offsale, valida) {
+	addDetail: function(treatmentId, activityId, auxiliar, animal, tooth, offsale, valida) {
 		if (!valida) {
 			valida = "true";
 		}
@@ -102,6 +102,7 @@ var TreatmentManger = {
 			"activity": activityId,
 			"auxiliar": auxiliar,
 			"animal": animal,
+			"tooth": tooth,
 			"offsale": offsale,
 			"id": treatmentId,
 			"validate": valida
@@ -111,7 +112,7 @@ var TreatmentManger = {
 				TreatmentManger.creatTreatmentDetail(global_calEvent);
 			} else {
 				if (confirm(t + "\n\n" + "Deseja agendar assim mesmo?")) {
-					TreatmentManger.addDetail(treatmentId, activityId, auxiliar, animal, offsale, "false");
+					TreatmentManger.addDetail(treatmentId, activityId, auxiliar, animal, tooth, offsale, "false");
 				}
 			}
 		});
@@ -206,6 +207,42 @@ var TreatmentManger = {
 			alert ("Suas permissões não permitem editar agendamento");
 		}
 	},
+	setToothDetail: function(detailId) {
+		if (CalendarManager.calendarPermitions.editEvent) {
+			var tooth = $("#tooth").val();
+			var msgAux = "";
+			if (!tooth) {
+				tooth = "";  
+				msgAux = "\nComo o campo está vazio, um possível dente no atendimento será excluído!"
+			} else {
+				msgAux = "";
+			}
+			if (confirm("Tem certeza que deseja atribuir este dente a este serviço?" + msgAux)) {
+				//
+				// usado tambem na comanda e na agenda e no caixa
+				// duplicado no register_payment.js
+				//
+		        return $.post("/command/settooth", {
+		          "tooth": tooth,
+		          "tdid": detailId,
+		          "command": "0" // agenda 1 seria commanda
+		        }, function(results) {
+		          if(results === 1 || results == "1"){
+		          	if (tooth == "") {
+			            alert("Dente excluído com sucesso");
+		          	} else {
+			            alert("Dente cadastrado com sucesso");
+		          	}
+					TreatmentManger.creatTreatmentDetail(global_calEvent);
+		          }else{
+		            alert(eval(results));
+		          }
+		        });
+			}
+		} else {
+			alert ("Suas permissões não permitem editar agendamento");
+		}
+	},
 	creatTreatmentDetail: function(calEvent) {
 	    var decodeStatus = function(status){
 	    	// duplicado do treatments_conference.js
@@ -263,6 +300,7 @@ var TreatmentManger = {
 	        var hasAuxiliarModule = $('.has-auxiliar-module').length > 0;
 	        var hasUnitModule = $('.has-unit-module').length > 0;
 	        var hasPetSystem = $('.has-pet-system').length > 0;
+	        var hasEsmileSystem = $('.has-esmile-system').length > 0;
 			for (var i = details.length - 1; i >= 0; i--) {
 				detail = details[i];
 				var auxAux = "<a href='/customer/edit?id=" + detail.auxiliarId + "' target='_customer_maste'>" + detail.auxiliar + "</a>"
@@ -274,12 +312,14 @@ var TreatmentManger = {
 				(hasAuxiliarModule ? "</td><td>" + auxAux : "") + 
 				(hasPetSystem ? "</td><td>" + auxPet : "") + 
 				"</td><td>" + detail.activity + 
+				(hasEsmileSystem ? "</td><td>" + detail.tooth : "") + 
 				"</td><td>" + getHourBr(FactoryDate.byTime(detail.start)) + 
 				"</td><td>" + getHourBr(FactoryDate.byTime(detail.end)) + 	
 				//"</td><td class='treatment-status'>" + detail.status + 
 				"</td><td>" + decodeStatus(detail.status) +
 				"</td><td><a title='Excluir item' href='#' onclick='TreatmentManger.removeDetail(" + detail.id + ")'><img src='/images/delete.png'/></a></td>" +
 				(hasPetSystem ? "</td><td><a title='Atribuir pet' href='#' onclick='TreatmentManger.setAnimalDetail(" + detail.id + ")'><img width='24px' src='/images/addpet.png'/></a></td>" : "") +
+				(hasEsmileSystem ? "</td><td><a title='Atribuir dente' href='#' onclick='TreatmentManger.setToothDetail(" + detail.id + ")'><img width='24px' src='/images/addtooth.png'/></a></td>" : "") +
 				(hasAuxiliarModule ? "</td><td><a title='Atribuir assistente' href='#' onclick='TreatmentManger.setAuxiliarDetail(" + detail.id + ")'><img width='24px' src='/images/user.png'/></a></td>" : "") +
 				"</tr>";
 				if (detail.treatment == calEvent.id) {

@@ -349,6 +349,7 @@ $(function(){
 	$("#add_detail_button").click(function(){
 		var aux = $("#auxiliar").val();
 		var ani = $("#animal").val();
+		var tooth = $("#tooth").val();
 		var off = $("#offsale").val();
 		if (!aux){
 			aux = 0;
@@ -356,12 +357,15 @@ $(function(){
 		if (!ani){
 			ani = 0;
 		}
+		if (!tooth){
+			tooth = 0;
+		}
 		if (!off){
 			off = 0;
 		}
 		//	TreatmentManger.addDetail($("#treatment_id").val(), $("#activitys").val(), 0, off);
 		//}else{
-			TreatmentManger.addDetail($("#treatment_id").val(), $("#activitys").val(), aux, ani, off);
+			TreatmentManger.addDetail($("#treatment_id").val(), $("#activitys").val(), aux, ani, tooth, off);
 		//}
 		$("#auxiliar").val("").change();
 	});
@@ -402,7 +406,7 @@ $(function(){
 			$("#animal").val("").change();
 			$("#offsale").val("").change();
 	});
-	$('#tooth').toothField(false);
+	$('#tooth').toothField(true);
 	$('#auxiliar').auxiliarField(false);
     $("#offsale").offSaleField(true);
     Customer.addonsListeners.push(processOffSale);

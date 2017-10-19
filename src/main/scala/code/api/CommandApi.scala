@@ -306,7 +306,7 @@ object CommandApi extends RestHelper with ReportRest with net.liftweb.common.Log
 		}
 		case "command" :: "setpet" :: Nil Post _ => {
 			//
-	        // usado tambem na Agenda além de aqui na comnda e no caixa
+	        // usado tambem na Agenda além de aqui na comanda e no caixa
 	        //
 			try { 
 				def petId:String = S.param("animal") openOr "0"
@@ -325,6 +325,30 @@ object CommandApi extends RestHelper with ReportRest with net.liftweb.common.Log
 				} else {
 					// agenda deixa excluir e alterar pet setado
 					td.getTdEpet.animal(petId.toLong).save;
+				}
+				JInt(1)
+			} catch {
+			  case e: Exception => JString(e.getMessage)
+			}			
+		}
+		case "command" :: "settooth" :: Nil Post _ => {
+			//
+	        // usado tambem na Agenda além de aqui na comanda e no caixa
+	        //
+			try { 
+				def tooth:String = S.param("tooth") openOr ""
+				def tdId:String = S.param("tdid") openOr "0"
+				def command:Boolean = S.param("command") == "1"
+				val td = TreatmentDetail.findByKey (tdId.toLong).get
+				val tdtooth = td.getTdEdoctus.tooth;
+				if (tdtooth == tooth && tooth != "") {
+					// agenda
+					throw new RuntimeException (tooth + " já é o dente neste serviço!")
+				} else if (tdtooth == "" || tdtooth == null) {
+					td.getTdEdoctus.tooth(tooth).save;
+				} else {
+					// agenda deixa excluir e alterar pet setado
+					td.getTdEdoctus.tooth(tooth).save;
 				}
 				JInt(1)
 			} catch {

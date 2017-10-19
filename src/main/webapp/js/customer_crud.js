@@ -33,11 +33,15 @@ $(function() {
       startDate: $("#history_startDate").val(),
       endDate: $("#history_endDate").val()
     };
+    var hasUnitModule = $('.has-unit-module').length > 0;
     var fields = [];
     //fields[0] = "date";
     fields[0] = "time";
     fields[1] = "none";
     fields[2] = "none";
+    if (!hasUnitModule) {
+      fields[5] = "none";
+    }
     fields[6] = {
       type: "format",
       decode: function(status, row) {

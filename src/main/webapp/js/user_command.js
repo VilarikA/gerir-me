@@ -559,7 +559,7 @@
     var hasEdoctusSystem = $('.has-edoctus-system').length > 0;
     if (hasEdoctusSystem) {
 //    if (document.location.href.indexOf("edoctus") != -1) {
-      var min = 5 // minutos para rfresh
+      var min = 5 // minutos para refresh
       setTimeout(function(){    
         window.location.reload();
       },1000*60*min);

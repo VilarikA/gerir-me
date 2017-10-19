@@ -724,6 +724,7 @@ object  TreatmentService extends net.liftweb.common.Logger {
 													0, 
 													td.auxiliar.is.toInt,
 													td.animal.toInt,
+													td.tooth,
 													td.offsale.is.toInt
 												);
 									}),

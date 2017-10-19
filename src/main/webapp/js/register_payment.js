@@ -265,6 +265,41 @@
       });
     }
   };
+  var setToothActivity = function(treatmentIndex, activityIndex) {
+    var customerId = treatments[treatmentIndex].customerId;
+    var detailId = treatments[treatmentIndex].activitys[activityIndex].id
+    var tooth = $("#tooth").val();
+    var msgAux = "";
+    if (!tooth) {
+      tooth = "";  
+      msgAux = "\nComo o campo está vazio, um possível dente no atendimento será excluído!"
+    } else {
+      msgAux = "";
+    }
+    if (confirm("Tem certeza que deseja atribuir este dente a este serviço?" + msgAux)) {
+      //
+      // usado tambem na comanda e na agenda e no caixa
+      // duplicado identico ao treatmentManger
+      //
+      return $.post("/command/settooth", {
+        "tooth": tooth,
+        "tdid": detailId,
+        "command": "0" // agenda 1 seria commanda
+      }, function(results) {
+        if(results === 1 || results == "1"){
+          if (tooth == "") {
+            alert("Dente excluído com sucesso");
+          } else {
+            alert("Dente cadastrado com sucesso");
+          }
+          getTreatmentbyCommand(false, customerId);
+        }else{
+          alert(eval(results));
+        }
+      });
+    }
+  };
+
   var removeTreatments = function() {
       for (var i = treatments.length - 1; i >= 0; i--) {
         var treatment = treatments[i];
@@ -356,6 +391,7 @@
           var hasAuxiliarModule = $('.has-auxiliar-module').length > 0;
           var hasOffSaleModule = $('.has-offsale-module').length > 0;
           var hasPetSystem = $('.has-pet-system').length > 0;
+          var hasEsmileSystem = $('.has-esmile-system').length > 0;
           var amount = activity.amount = activity.amount || 1;
 
           if (activity.activityId == prodCustomerAccount) {
@@ -374,6 +410,7 @@
             (hasAuxiliarModule ? "<td>" + activity.auxiliarShortName + "</td>" : "" ) +
             (hasPetSystem ? "<td>" + activity.animalShortName + "</td>" : "" ) +
             "<td>" + activity.activity + "</td>" +
+            (hasEsmileSystem ? "<td>" + activity.tooth + "</td>" : "" ) +
             "<td>" + getChagePrice(activity) + "</td>" +
             "<td><input type='number' step='1' min='0' class='mini' onchange='editQtd(" + i + "," + j + ",this)' value='" + amount + "'/></td>" +
             (hasOffSaleModule ? "<td>" + activity.offsaleShortName + "</td>" : "" ) +
@@ -381,6 +418,7 @@
             "<a title='Ignorar este item neste pagamento' href='#' onclick=\"if(confirm('Tem certeza que deseja ignorar o atendimento!')){ignoreTreatment(" + i + "," + j + "); return false;}else{return false};\"><img width='16px' src='../images/cancel.png'/></a>   " + 
             (hasPetSystem ? "<a title='Atribuir pet' href='#' onclick=setPetActivity(" + i + "," + j + ")><img width='16px' src='/images/addpet.png'/></a>" : "") +
             (hasAuxiliarModule ? "<a title='Atribuir assistente' href='#' onclick=setAuxiliarActivity(" + i + "," + j + ")><img width='16px' src='/images/user.png'/></a>" : "") +
+            (hasEsmileSystem ? "<a title='Atribuir dente' href='#' onclick=setToothActivity(" + i + "," + j + ")><img width='16px' src='/images/addtooth.png'/></a>" : "") +
             "</td>" +
             "</tr>";
         }
@@ -601,6 +639,10 @@
       objAcitivity.offsale = parseInt($("#offsale").val()) || 0;
     }
 
+    if (!objAcitivity.tooth) {
+      objAcitivity.tooth = $("#tooth").val() || "";
+    }
+
     if (!objAcitivity.animal) {
       objAcitivity.animal = parseInt($("#animal").val()) || 0;
     }
@@ -701,6 +743,7 @@
       userFieldSelector: '#user'
     });
     $('#auxiliar').auxiliarField(false);
+    $("#tooth").toothField(true);
     $("#offsale").offSaleField(true);
     $("#offsale").change(function() {
       OffSaleCurrent.getProcuts($(this).val());

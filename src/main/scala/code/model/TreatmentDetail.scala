@@ -144,6 +144,14 @@ class TreatmentDetail extends Audited[TreatmentDetail] with IdPK with CreatedUpd
         }
     }
 
+    def tooth:String = {
+        if (AuthUtil.company.appType.isEsmile) {
+            getTdEdoctus.tooth
+        } else { 
+            ""
+        }
+    }
+
     def status = {
         treatment.obj match {
             case Full(t) => t.status.is

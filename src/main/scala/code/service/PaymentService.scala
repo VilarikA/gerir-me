@@ -51,6 +51,9 @@ object  PaymentService extends  net.liftweb.common.Logger  {
 		        if (AuthUtil.company.appType.isEbellepet) {
 					detail.getTdEpet.animal(a.animal).save;
 				}
+		        if (AuthUtil.company.appType.isEsmile) {
+					detail.getTdEdoctus.tooth(a.tooth).save;
+				}
 			})
 			treatment.status(status)
 			if (status2 =="4") {
@@ -432,7 +435,7 @@ object  PaymentService extends  net.liftweb.common.Logger  {
 }
 case class ActivityDTO(activityId:Int, activityType:String, id:Int, price:Double, 
 	removed:Boolean, amount:Float, for_delivery:Boolean, parentBom:Int, 
-	auxiliar:Int=0, animal:Int=0, offsale:Int=0);
+	auxiliar:Int=0, animal:Int=0, tooth:String="", offsale:Int=0);
 
 case class PaymentDTO(typePayment:Int,value:Double,removed:Boolean,chequeInfo:ChequeRequest, dateDetailStr:String){
 	def this(typePayment:Int,value:Double,removed:Boolean, dateDetailStr:String) = this( typePayment, value, removed, null, dateDetailStr);
