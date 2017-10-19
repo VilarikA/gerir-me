@@ -45,6 +45,18 @@
     }
     fields[2] = "date";
     fields[3] = "date";
+    fields[3] = {
+      type : "format",
+      decode: function(name, row) {
+        var color = "red"
+        if (row[3] != row[2]) {
+        return "<p style='color:" + color + "'>" + 
+            dateDecode(row[3]) + "<p/>"
+        } else {
+          return dateDecode(row[3])
+        }
+      }
+    }
     if (!hasUnitModule) {
       fields[4] = "none";
     }

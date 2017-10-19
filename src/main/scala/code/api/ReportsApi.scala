@@ -1518,8 +1518,10 @@ object Reports extends RestHelper with ReportRest with net.liftweb.common.Logger
 				case _ => " and " + Treatment.unitsToShowSql
 			}		
 
-			val SQL = """ select bc.id, bc.short_name as cliente, tr.id, tr.status, tr.start_c as inicio, tr.end_c as fim, 
-			cu.short_name, bp.short_name as profissional, am.idobj, pr.name as servico, bu.short_name as excluido_por, 
+			val SQL = """ select bc.id, bc.short_name as cliente, 
+			tr.id, tr.status2, tr.start_c as inicio, tr.end_c as fim, 
+			cu.short_name, bp.short_name as profissional, am.idobj, 
+			pr.name as servico, bu.short_name as excluido_por, 
 			am.createdat as excluido_em 
 			from treatment tr 
 			inner join log.auditmapper am on (am.company = tr.company and am.jsobj like '%'||trim (to_char (tr.id,'99999999'))||'%' 
@@ -1533,7 +1535,10 @@ object Reports extends RestHelper with ReportRest with net.liftweb.common.Logger
 			and date (am.createdat) between date(?) and date(?)
 
 			"""
-			val SQL1 = """ union select bc.id, bc.short_name as cliente, tr.id, tr.status, tr.start_c as inicio, tr.end_c as fim, cu.short_name, bp.short_name as profissional, td.id, pr.name as servico, bu.short_name as excluido_por, 
+			val SQL1 = """ union select bc.id, bc.short_name as cliente, 
+			tr.id, tr.status2, tr.start_c as inicio, tr.end_c as fim, 
+			cu.short_name, bp.short_name as profissional, td.id, 
+			pr.name as servico, bu.short_name as excluido_por, 
 			am.createdat as excluido_em 
 			from treatment tr 
 			inner join log.auditmapper am on (am.company = tr.company and am.idobj = tr.id
