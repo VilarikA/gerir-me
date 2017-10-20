@@ -254,7 +254,13 @@ object TreatmentDetailsApi extends RestHelper {
 						("start",Project.dateToStrJs(treatment.start.is)),
 						("end",Project.dateToStrJs(treatment.end.is)),
 						("status",treatment.status.is.toString),
-						("id",td.id.is)
+						("id",td.id.is),
+						("create",td.createdByName + " " + 
+							Project.dateToMonthAndDay(td.createdAt) + " " +
+							Project.dateToHours(td.createdAt)),
+						("update",td.updatedByName + " " + 
+							Project.dateToMonthAndDay(td.updatedAt) + " " +
+							Project.dateToHours(td.updatedAt))
 					)
 	}	
 }

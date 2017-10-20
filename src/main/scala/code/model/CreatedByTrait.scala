@@ -31,7 +31,7 @@ trait CreatedByTrait {
   }
 
   lazy val createdByName = createdBy.obj match {
-        case Full(t:User) => t.name.is
+        case Full(t:User) => t.short_name.is
         case _ => ""
   }
 }
@@ -57,7 +57,7 @@ trait UpdatedByTrait {
   }
 
   lazy val updatedByName = updatedBy.obj match {
-        case Full(t:User) => t.name.is
+        case Full(t:User) => t.short_name.is
         case _ => ""
   }
 }

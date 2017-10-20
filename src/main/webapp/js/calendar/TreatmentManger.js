@@ -311,6 +311,7 @@ var TreatmentManger = {
 			var details = [];
 			eval("details=" + ret);
 			var table = "";
+	        var hasAuditModule = $('.has-audit-module').length > 0;
 	        var hasAuxiliarModule = $('.has-auxiliar-module').length > 0;
 	        var hasUnitModule = $('.has-unit-module').length > 0;
 	        var hasPetSystem = $('.has-pet-system').length > 0;
@@ -335,6 +336,7 @@ var TreatmentManger = {
 				(hasPetSystem ? "</td><td><a title='Atribuir pet' href='#' onclick='TreatmentManger.setAnimalDetail(" + detail.id + ")'><img width='24px' src='/images/addpet.png'/></a></td>" : "") +
 				(hasEsmileSystem ? "</td><td><a title='Atribuir dente' href='#' onclick='TreatmentManger.setToothDetail(" + detail.id + ")'><img width='24px' src='/images/addtooth.png'/></a></td>" : "") +
 				(hasAuxiliarModule ? "</td><td><a title='Atribuir assistente' href='#' onclick='TreatmentManger.setAuxiliarDetail(" + detail.id + ")'><img width='24px' src='/images/user.png'/></a></td>" : "") +
+				(hasAuditModule ? "</td><td><a title='Criado por " + detail.create + "\nAlterado por " + detail.update + "' href='#' ><img width='24px' src='/images/audit.png'/></a></td>" : "") +
 				"</tr>";
 				if (detail.treatment == calEvent.id) {
 					$("#hour_treatment_end").val(getHourBr(FactoryDate.byTime(detail.end)));
