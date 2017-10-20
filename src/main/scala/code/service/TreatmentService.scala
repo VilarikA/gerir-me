@@ -381,6 +381,9 @@ object  TreatmentService extends net.liftweb.common.Logger {
 					// sem querer na agenda
 					if (validate && treatment.details.filter(_.activity == activity).size > 0) {
 						val strAux = Activity.findByKey(activity.id.is).get.name							
+						// nao alterar esta mensagem "Já existe este serviço
+						// sem verificar o trecho no treatmentManger.js
+						// que testa este string para inverte ok e cancelar
 						throw new RuntimeException("Já existe este serviço/procedimento <" + strAux + "> neste agendamento!");
 					}
 					if(treatment.isPaid){

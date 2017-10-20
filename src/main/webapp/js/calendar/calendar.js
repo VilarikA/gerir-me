@@ -346,7 +346,11 @@ $(function(){
 	$("#treatment_div").click(function(){
 		TreatmentManger.saveTreatment();
 	});
+
+	var callApiLock = false;
 	$("#add_detail_button").click(function(){
+	  if (!callApiLock) {
+	    callApiLock = true
 		var aux = $("#auxiliar").val();
 		var ani = $("#animal").val();
 		var tooth = $("#tooth").val();
@@ -367,7 +371,12 @@ $(function(){
 		//}else{
 			TreatmentManger.addDetail($("#treatment_id").val(), $("#activitys").val(), aux, ani, tooth, off);
 		//}
+
 		$("#auxiliar").val("").change();
+		callApiLock = false;
+	  } else {
+	    alert("Já existe um processo em andamento. Aguarde o fim do processamento para clicar novamente!");
+	  }
 	});
 	$(".send_email_customer").click(function(){
 		sendEmailCustomer({id:$("#treatment_id").val()});

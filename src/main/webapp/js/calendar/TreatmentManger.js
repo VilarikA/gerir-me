@@ -111,8 +111,14 @@ var TreatmentManger = {
 			if (t == 1) {
 				TreatmentManger.creatTreatmentDetail(global_calEvent);
 			} else {
-				if (confirm(t + "\n\n" + "Deseja agendar assim mesmo?")) {
-					TreatmentManger.addDetail(treatmentId, activityId, auxiliar, animal, tooth, offsale, "false");
+				if (t.indexOf ("Já existe este serviço") != -1) {
+					if (!confirm(t + "\n\n" + "Clique em **<cancelar>** para agendar assim mesmo")) {
+						TreatmentManger.addDetail(treatmentId, activityId, auxiliar, animal, tooth, offsale, "false");
+					}
+				} else {
+					if (confirm(t + "\n\n" + "Deseja agendar assim mesmo?")) {
+						TreatmentManger.addDetail(treatmentId, activityId, auxiliar, animal, tooth, offsale, "false");
+					}
 				}
 			}
 		});
