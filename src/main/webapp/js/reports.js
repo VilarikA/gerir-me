@@ -1,4 +1,51 @@
 // rigel
+
+var trStatus = 0;
+var trStatus2 = 0;
+var trStatusdecode = function(name, row){
+// duplicado do treatments_conference.js
+  var status = row[trStatus]
+  var statstr = '' 
+  var title = ''
+  if (status == '0') {
+    statstr = 'open'
+    title ='agendado'
+  } else if (status == '1') {
+    statstr = 'missed'
+    title ='faltou'
+  } else if (status == '2') {
+    statstr = 'Arrived'
+    title ='chegou'
+  } else if (status == '3') {
+    statstr = 'Ready'
+    title ='atendido'
+  } else if (status == '4') {
+    if (row[trStatus2] == '3') {
+      statstr = 'ready_paid'
+      title ='atendido / pago'
+    } else {
+      statstr = 'paid'
+      title ='pago'
+    }
+  } else if (status == '5') {
+    statstr = 'Deleted'
+    title ='excluído'
+  } else if (status == '6') {
+    statstr = 'Confirmed'
+    title ='confirmado1'
+  } else if (status == '7') {
+    statstr = 'PreOpen'
+    title ='pré agendado'
+  } else if (status == '8') {
+    statstr = 'ReSchedule'
+    title ='desmarcou'
+  } else if (status == '9') {
+    statstr = 'Budget'
+    title ='orçamento'
+  }
+  return "<img title='" + title + "' src='/images/treatment_"+statstr.toLowerCase()+"1.png' width='24'/>"
+}
+
 var ageDecode = function (value) {
   var res = value;
   if (res.indexOf("0 years") == 0) {

@@ -42,6 +42,15 @@ $(function() {
     if (!hasUnitModule) {
       fields[5] = "none";
     }
+    fields [6] = {
+      type : "format",
+      decode: function(name, row) {
+        trStatus = 6;
+        trStatus2 = 15; // nao tem
+        return trStatusdecode (name,row)
+      }
+    };
+/*
     fields[6] = {
       type: "format",
       decode: function(status, row) {
@@ -93,6 +102,7 @@ $(function() {
         return "<img title='" + title + "' src='/images/treatment_"+statstr.toLowerCase()+"1.png' width='24'/>";
       }
     };
+*/
     fields[7] = "real";
     fields[12] = "none";
     fields[14] = "none";

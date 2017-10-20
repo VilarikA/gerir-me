@@ -245,13 +245,19 @@ var TreatmentManger = {
 	},
 	creatTreatmentDetail: function(calEvent) {
 	    var decodeStatus = function(status){
+	      trStatus = 0;
+          trStatus2 = 1; // nao tem
+          var row = [];
+          row.push (status, '')
+        	return trStatusdecode ('',row)
+	/* DELETAR
 	    	// duplicado do treatments_conference.js
 	      var status2 = ''; // na verdade este método nao recebe status 2	
           var statstr = '' 
           var title = ''
           if (status == 'Open' || status == '0') {
             statstr = 'open'
-            title ='agendado'
+            title ='agendado1'
           } else if (status == 'Missed' || status == '1') {
             statstr = 'Missed'
             title ='faltou'
@@ -291,7 +297,9 @@ var TreatmentManger = {
           // rigel alterado agora que status deixou de ser "string" e passou a ser int
           // 31/05/2017 
 	      return "<img title='" + title + "' src='/images/treatment_"+statstr.toLowerCase()+"1.png' width='24'/>"
+*/
 	    };
+
 		var url = "/treatment/by_customer/" + calEvent.customerId + "/" + encodeURIComponent(getDateBr(calEvent.start)) + "/details";
 		$.get(url, function(ret) {
 			var details = [];

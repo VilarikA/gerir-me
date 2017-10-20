@@ -154,53 +154,15 @@
       if (!hasNotMedical) { // valor
         fields[8] = "none";
       }
-      fields[9] = {
+      fields [9] = {
         type : "format",
-        decode: function(name, row){
-        // duplicado do treatments_conference.js
-          var status = row[9];
-          var statstr = '' 
-          var title = ''
-          if (status == '0') {
-            statstr = 'open'
-            title ='agendado'
-          } else if (status == '1') {
-            statstr = 'missed'
-            title ='faltou'
-          } else if (status == '2') {
-            statstr = 'Arrived'
-            title ='chegou'
-          } else if (status == '3') {
-            statstr = 'Ready'
-            title ='atendido'
-          } else if (status == '4') {
-            if (row[17] == '3') {
-              statstr = 'ready_paid'
-              title ='atendido / pago'
-            } else {
-              statstr = 'paid'
-              title ='pago'
-            }
-          } else if (status == '5') {
-            statstr = 'Deleted'
-            title ='excluído'
-          } else if (status == '6') {
-            statstr = 'Confirmed'
-            title ='confirmado'
-          } else if (status == '7') {
-            statstr = 'PreOpen'
-            title ='pré agendado'
-          } else if (status == '8') {
-            statstr = 'ReSchedule'
-            title ='desmarcou'
-          } else if (status == '9') {
-            statstr = 'Budget'
-            title ='orçamento'
-          }
-          // //"<img title='" + title + "' src='/images/treatment_"+statstr.toLowerCase()+".png' width='24'/>"
-          return "<img title='" + title + "' src='/images/treatment_"+statstr.toLowerCase()+"1.png' width='24'/>"
+        decode: function(name, row) {
+          trStatus = 9;
+          trStatus2 = 17;
+          return trStatusdecode (name,row)
         }
       };
+
       if (hasNotMedical) { // espera
         fields[11] = "none";
       }
