@@ -388,6 +388,13 @@ object SecuritySnippet {
         else
           NodeSeq.Empty
       }      
+      def hasContactModule(in:NodeSeq):NodeSeq ={
+        if (PermissionModule.contact_?)
+          in
+        else
+          NodeSeq.Empty
+      }      
+
 //
       def calendarFixed (in:NodeSeq):NodeSeq ={
         if (AuthUtil.user.calendarFixed_?)
