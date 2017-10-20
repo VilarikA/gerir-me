@@ -16,6 +16,7 @@ object Project{
 
 
 
+  val date_format_year = new java.text.SimpleDateFormat ("yyyy")
 	val date_format_hour = new java.text.SimpleDateFormat ("HH:mm")
 	val date_format_hourss = new java.text.SimpleDateFormat ("HH:mm:ss")
 	var date_format = new java.text.SimpleDateFormat ("dd/MM/yyyy")
@@ -295,6 +296,10 @@ object Project{
       dateTime_format.format(date)
     else
       ""
+  }
+
+  def dateToYear(date:Date) = {
+    date_format_year.format(date)
   }
 
 	def dateToStr(date:Date) = {
