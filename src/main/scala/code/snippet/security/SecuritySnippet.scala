@@ -394,6 +394,12 @@ object SecuritySnippet {
         else
           NodeSeq.Empty
       }      
+      def hasCostcenterModule(in:NodeSeq):NodeSeq ={
+        if (PermissionModule.costcenter_?)
+          in
+        else
+          NodeSeq.Empty
+      }      
 
 //
       def calendarFixed (in:NodeSeq):NodeSeq ={

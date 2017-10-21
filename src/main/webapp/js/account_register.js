@@ -454,6 +454,7 @@
       return $.post("/accountpayable/list", request, function(results) {
         var credit, debit, obj, ret, total, _i, _len;
         var hasUnitModule = $('.has-unit-module').length > 0;
+        var hasCostcenterModule = $('.has-costcenter-module').length > 0;
         eval("results = " + results);
         Account.list = results;
         Account.ids = Account.list.map(function(item) {
@@ -494,7 +495,7 @@
             (hasUnitModule ? "<td>" + obj.unit_name + "</td>" : "") + 
             "<td>" + obj.cashier + "</td>" +
             "<td>" + obj.account_name + "</td>" +
-            "<td>" + obj.costcenter_name + "</td>" + 
+            (hasCostcenterModule ? "<td>" + obj.costcenter_name + "</td>" : "") + 
             "<td>" + obj.paymenttype_name + "</td>" + 
             "<td><a href='#' data-id='" + 
             obj.id + "' class='action_edit'><img src='/images/edit.png' /></a></td>" +

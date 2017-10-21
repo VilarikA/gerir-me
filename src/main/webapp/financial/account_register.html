@@ -161,7 +161,8 @@
                   </span>
                 </div>
             </div>
-            <div class="clearfix">
+            <input type="hidden" class="has-costcenter-module lift:SecuritySnippet.hasCostcenterModule" value="1">
+            <div class="clearfix lift:SecuritySnippet.hasCostcenterModule">
                 <label for="type_select_filter">Centros de custo</label>
                 <div class="input">
                   <select id='costcenter_select_filter' multiple="true" name='costcenter_select_filter'>
@@ -267,7 +268,7 @@
         <th class="lift:SecuritySnippet.hasUnitModule">Unidade</th>
         <th title="Caixa">Cx</th>
         <th>Conta</th>
-        <th title="Centro de custo">Ccusto</th>
+        <th class="clearfix lift:SecuritySnippet.hasCostcenterModule" title="Centro de custo">Ccusto</th>
         <th title="Forma de pagamento">Fpagto</th>
         <th title="Editar registro" ><img src='/images/edit.png' /></th>
         <th title="Excluir registro"><img src='/images/delete.png'/></th>
