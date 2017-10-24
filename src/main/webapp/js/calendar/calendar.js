@@ -337,6 +337,7 @@ $(function(){
 
 		$("#cutomer_id_treatment").val("");
 		$("#command_treatment").val("");
+		$("#obs_treatment").val(""); // rigel 23/10/2017
 		$("#imgthumb_customer").attr("src", "");
 		//$("#treatment_parent_id").val($("#treatment_id").val());
 		$("#treatment_id").val("")

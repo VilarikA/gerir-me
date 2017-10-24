@@ -26,6 +26,11 @@ class  ProjectSnippet extends BootstrapPaginatorSnippet[Project1] {
 	def stages = ("0", "Selecione um Estágio") :: ProjectStage.findAllInCompany.map(t => (t.id.is.toString,t.name.is))
 	def costcenters = ("0" -> "Selecione um Centro de Custo")::CostCenter.findAllInCompany.map(cc => (cc.id.is.toString,cc.name.is))
 
+	def opt : String = S.param ("opt") match {
+			case Full(p) => p
+			case _ => ""
+		}			
+
 	def findForListParamsWithoutOrder: List[QueryParam[Project1]] = List(Like(Project1.search_name,"%"+BusinessRulesUtil.clearString(name)+"%"))
 	override def page = {
 		if(!showAll){
@@ -56,7 +61,11 @@ class  ProjectSnippet extends BootstrapPaginatorSnippet[Project1] {
 			bind("f", xhtml,"name" -> Text(ac.name.is),
 							"class" -> Text(ac.projectClassName),
 							"startat" -> Text(Project.dateToStrOrEmpty(ac.startAt.is)),
-							"actions" -> <a class="btn" href={"/project/event?id="+ac.id.is}>Editar</a>,
+							"actions" -> <a class="btn" href={if (opt == "budget") {
+								  "/project/budget?id="+ac.id.is+"&opt=budget"
+								  } else {
+								  "/project/event?id="+ac.id.is+"&opt=event"
+								  }}>Editar</a>,
 							"delete" -> SHtml.submit("Excluir",delete,"class" -> "btn danger","data-confirm-message" -> {" excluir o projeto "+ac.name}),
 							"_id" -> SHtml.text(ac.id.is.toString, id = _),
 							"id" ->Text(ac.id.is.toString)
@@ -236,6 +245,11 @@ class  ProjectSnippet extends BootstrapPaginatorSnippet[Project1] {
 					ac.company(AuthUtil.company)
 					ac.save
 				   	S.notice("Projeto/evento salvo com sucesso!")
+				   	if (opt == "budget") {
+				   		S.redirectTo("/project/budget?id="+ac.id.is+"&opt=budget")
+				   	} else {
+			   			S.redirectTo("/project/event?id="+ac.id.is+"&opt=event")
+			   		}
 		   		}catch{
 					case (e:net.liftweb.http.ResponseShortcutException) =>{
 						throw e
@@ -276,6 +290,7 @@ class  ProjectSnippet extends BootstrapPaginatorSnippet[Project1] {
 		    "name=costcenter" #> (SHtml.select(costcenters,Full(ac.costCenter.is.toString),(s:String) => ac.costCenter( s.toLong)))&
 			"name=bp_sponsor" #> (SHtml.text(ac.bp_sponsor.is.toString, (p:String) => ac.bp_sponsor(p.toLong)))&
 			"name=bp_manager" #> (SHtml.text(ac.bp_manager.is.toString, (p:String) => ac.bp_manager(p.toLong)))&
+			"name=manager" #> (SHtml.text(ac.bp_managerName, (a:String) => {}))&
 			"name=status" #> (SHtml.select(status,Full(ac.status.is.toString),(v:String) => ac.status(v.toInt))++SHtml.hidden(process))			
 		}catch {
 		    case e: NoSuchElementException => S.error("Projeto não existe!")

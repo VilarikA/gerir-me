@@ -6,12 +6,13 @@
   <style>
     @import url("/js/datetimepicker/jquery.datetimepicker.css");
   </style>
+  <script type="text/javascript" src="/js/budget.js"></script>
   <script type="text/javascript" charset="utf-8">
     setTimeout(function(){
       if($("#bp_sponsor").val() && $("#bp_sponsor").val() != '0'){
         $("#bp_sponsor").change();
       }
-/*
+/* rigel criado managername no project.scala
       setTimeout(function(){
         if($("#bp_manager").val() && $("#bp_manager").val() != '0'){
           $("#bp_manager").change();
@@ -26,9 +27,10 @@
     <form  class="lift:form.ajax">
       <div class="well">
         <label for="btn"></label>
-        <a class="btn primary" href="/project/list_event?opt=event">Lista</a>
+        <a class="btn primary" href="/project/list_budget?opt=budget">Lista</a>
         <input class="btn success lift:SecuritySnippet.isNotAdminRead" type="submit" value="Salvar">
-        <a class="btn primary" href="/project/event?opt=event">Inserir novo</a>
+        <a class="btn primary" href="/project/budget?opt=budget">Inserir novo</a>
+        <a class="btn primary" onclick="new_detail()">Novo item</a>
       </div>
       <div>
         <span id="project_form">
@@ -64,20 +66,6 @@
                   </div>
                 </div>
               </div>                     
-              <div>
-                <label for="schedule">Data / Hora</label>
-                <div class="input">
-                  <textarea class="large" id="schedule" name="schedule" size="30"></textarea>
-                  <span class="help-block">Detalha dia(s) e horário(s) do evento</span>
-                </div>
-              </div>
-              <div class="clearfix">
-                <label for="name">Nro Participantes</label>
-                <div class="input">
-                  <input class="mini" id = "numberofguests" name="numberofguests" size="16" type="text">
-                  <span class="help-block">Número de participantes/convidados</span>
-                </div>
-              </div>        
               <div class="clearfix">
                 <label for="projectclass">Classe de Evento</label>
                 <div class="input">
@@ -133,23 +121,22 @@
             </span>
             <span class="span12">
               <div class="clearfix">
-                <label for="bp_sponsor">Patrocinador</label>
+                <label for="bp_sponsor"><span data-i18n='Cliente'></span></label>
                 <div class="input">
                   <span>
                     <img class="customer_search_button" width='24' src="/images/search.png"/>
                     <input data-url-name="bp_sponsor" class='mini id_customer_search url_parameter' id='bp_sponsor' name="bp_sponsor" /> 
                     <input class="name_customer_search" name="bp_sponsorname" id="bp_sponsorname"  size="30" type="text" placeholder="Nome"/>    
                   </span>
-                  <span class="help-block">Patrocinador</span>
                 </div>
               </div>
               <div class="clearfix">
-                <label for="bp_manager">Responsável</label>
+                <label for="bp_manager"><span data-i18n='Profissional'></span></label>
                 <div class="input">
                   <span>
                     <img class="customer_search_button" width='24' src="/images/search.png"/>
                     <input class='mini id_customer_search' id='bp_manager' name="bp_manager" /> 
-                    <input class="name_customer_search" name="manager" id="manager"  size="30" type="text" placeholder="Nome"/>
+                    <input class="name_customer_search" name="manager" id="manager"  size="30" type="text" placeholder="Nome" data-just_user='true'/>
                   </span>
                   <span class="help-block">Responsável</span>
                 </div>
@@ -201,57 +188,10 @@
       </div>
       <span>
         <ul class="tabs">
-          <li class="lift:SecuritySnippet.hasPortalModule active tab"><a href="#site">Portal</a></li>
           <li class="tab"><a href="#stakeholders">Participantes</a></li>
-          <li class="tab"><a href="#paymentconditions">Condições de Pagamento</a></li>
+          <li class="active tab"><a href="#paymentconditions">Condições de Pagamento</a></li>
         </ul>
         <div class="pill-content">
-          <div class="lift:SecuritySnippet.hasPortalModule tab_content row" id="site">
-            <div class='span12'>
-              <div class="clearfix">
-                <label for="allowshowonsite">Mostrar no Site</label>
-                <div class="input">
-                  <div class='inline-inputs'>
-                    <div class="input-prepend" style='float:left; padding-right:10px'>
-                      <input type="checkbox" name="allowshowonsite">
-                    </div>
-                    <div class="input-prepend" style='float:left; padding-right:20px'>
-                      <label for="allowshowonsite">Mostrar no Portal</label>
-                    </div>
-                    <div class="input-prepend" style='float:left; padding-right:10px'>
-                      <input type="checkbox" name="allowshowonportal">
-                    </div>
-                  </div>
-                </div>
-              </div>                     
-              <div class="lift:SecuritySnippet.isSuperAdmin clearfix">
-                <label for="moderatedportal">Aprovado Moderador</label>
-                <div class="input">
-                  <input type="checkbox" name="moderatedportal">
-                  <span class="help-block">Se foi aprovado pelo moderador do portal do ebelle</span>
-                </div>
-              </div>                     
-              <div class="clearfix">
-                <label for="sitetitle">Título Público</label>        
-                <div class="input">
-                  <input class="large" id="sitetitle" name="sitetitle" size="30" type="text"/>
-                  <span class="help-block">Título como aparecerá no site/portal</span>
-                </div>
-              </div>
-              <div class="clearfix">
-                <label for="sitedescription">Descrição Pública</label>
-                <div class="input">
-                  <div class="input-prepend">
-                    <textarea class="xlarge" id="sitedescription" name="sitedescription" size="16"></textarea>
-                    <a data-original-title="Informação" data-content="clique para abrir a documentação" data-help-url='/docs/portal.html' rel="popover" class="_popover_basic _help">
-                      <img src="/images/info.gif" width="20">
-                    </a>
-                    <span class="help-block">Descrição como aparecerá no site/portal</span>
-                  </div>
-                </div>
-              </div>              
-            </div>
-          </div>
           <div class="active tab_content row" id="stakeholders">
             <span class='span12'>
               <div class="clearfix">
@@ -355,6 +295,115 @@
         </div>  
       </span>      
     </form>
+    <div id="budget_modal" style="width: 60%; left: 20%; margin: auto auto auto auto; top:5%; height:100%; max-height:100%;" class="modal hide">
+      <div class="modal-header" style="border-bottom:none">
+        <a href="#" class="close">&times;</a>
+        <h3 class='hide_mobile' style="position: relative;margin: auto;margin-left: 10px;margin-right: 10px;text-align: center;">
+          Adicionar Atividade <span class="lift:CompanySnippet.thumb"> </span>
+        </h3>
+      </div>
+      <div class="modal-body ">
+        <div class="row">       
+          <form>
+            <div id="treatment_div_span">
+              <div class="well">
+                <input class="btn success b_add_todo" id="b_add_todo" type="button" value="Salvar">
+              </div>
+              <div class="span12">
+                <div class="clearfix">
+                  <label for='customer'>
+                    <img class="customer_search_button" width='24' src="/images/search.png"/>
+                  </label>
+                  <div class="input">
+                    <div class='inline-inputs'>
+                      <span>
+                        <input class='mini id_customer_search'  id="cutomer_id_treatment" name='customer' /> 
+                        <input class="disabled name_customer_search" name="name_customer" id="cutomer_name_treatment" size="30" type="text" placeholder="Nome" disabled=""/>
+                      </span>
+                      <span class="help-block"><span data-i18n='Cliente'></span> que será atendido
+                        <img id="customer_add_button" width='24' src="/images/add.png" alt="Cadastro rápido"/>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <div class="clearfix lift:SecuritySnippet.hasOffSaleModule">
+                  <label for="offsale">Convênio</label>
+                   <div class="input">
+                      <select name="offsale" id='offsale'></select>
+                   </div>
+                </div>                  
+                <input type="hidden" class="has-pet-system lift:SecuritySnippet.isEbellepetSystem" value="1">
+                <div class="clearfix lift:SecuritySnippet.isEbellepetSystem">
+                  <label for="animal">Pet</label>
+                    <div class="input">
+                        <select name="animal" id="animal"></select>
+                    <a href="#" title="Ir para animal"> <img src="/images/pets.png" width="32" onclick="openAnimalSelected()"></a>
+                    <a href="#" title="Prontuário"> <img src="/images/records.png" width="32" onclick='openAnimalRecordSelected()'></a>
+                    <a href="#" title="Cadastro rápido"> <img src="/images/add.png" width="32" onclick='openAnimalRapidAdd()'></a>
+                  </div>
+                </div>                  
+                <div class="clearfix">
+                  <label for="name"><span data-i18n='Profissionais'></label>
+                    <div class="input">
+                        <select class='local_storage' id='user_todo' name='user_todo'></select>
+                    </div>
+                </div>
+                <div class="clearfix">
+                  <label for="activity"><span data-i18n='Serviço'></span> </label>
+                  <div class="input">
+                    <div class="inline-inputs">
+                        <div style="float:left; padding-right:10px" class="input-prepend">
+                          <span class="add-on"><img width="16" src="/images/cut.png"></span> 
+                          <select name="activity" id='activity' class="local_storage"></select>
+                        </div>
+                    </div>
+                  </div>
+                </div>              
+                <div class="clearfix">
+                  <label for="start">Data</label>
+                    <div class="input">
+                      <div class="inline-inputs">
+                          <div style="float:left; padding-right:10px" class="input-prepend">
+                            <span class="add-on"><img width="16" src="/images/calendar_addon.png"></span>
+                            <input type="text" size="19" name="start" id="start" class="input-small date"/>
+                          </div>
+                          <input class="btn primary tomorrow_todo" id="tomorrow_todo" type="button" value="Amanhã">
+                          <input class="btn primary nextweek_todo" id="nextweek_todo" type="button" value="1 Semana">
+                          <input class="btn primary nextmonth_todo" id="nextmonth_todo" type="button" value="1 Mês">
+                      </div>
+                    </div>
+                </div>
+                <div class="clearfix">
+                  <label for="hour_start">Hora Início/Fim</label>
+                    <div class="input">
+                      <div class="inline-inputs">
+                          <div style="float:left; padding-right:10px" class="input-prepend">
+                            <span class="add-on"><img width="16" src="/images/clock.png"></span>
+                            <input type="text" size="19" name="hour_start" id="hour_start" class="mini time"/>
+                          </div>
+                          <div style="float:left; padding-right:10px" class="input-prepend">
+                            <span class="add-on"><img width="16" src="/images/clock.png"></span>
+                            <input type="text" size="19" name="hour_end" id="hour_end" class="mini time"/>
+                          </div>
+                      </div>
+                    </div>
+                </div>
+                <div class="clearfix">
+                  <label>Obs </label>
+                  <div class="input">
+                    <div class="inline-inputs">
+                      <textarea style = "width: 350px" name="obs" id="obs"></textarea>
+                    </div>
+                  </div>
+                </div>                     
+              </div>
+              <div class="well">
+                <input class="btn success b_add_todo" id="b_add_todo" type="button" value="Salvar">
+              </div>
+            </div>                    
+          </form>
+        </div>
+    </div>  
     <script type="text/javascript" src="/js/reports.js"></script>
     <script type="text/javascript" src="/js/events.js"></script>
     <script>
@@ -367,4 +416,5 @@
     </script>
   </span>
 </div>
-</div>
+
+

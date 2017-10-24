@@ -19,7 +19,7 @@ class Project1 extends Audited[Project1] with KeyedMapper[Long, Project1] with B
     def getSingleton = Project1
     override def updateShortName = false
 
-    object bp_sponsor extends MappedLong(this)
+    object bp_sponsor extends MappedLongForeignKey(this, Customer)
     object bp_manager extends MappedLong(this)
     object startAt extends EbMappedDateTime(this) {
         override def defaultValue = new Date()
@@ -36,8 +36,32 @@ class Project1 extends Audited[Project1] with KeyedMapper[Long, Project1] with B
     object costCenter extends MappedLongForeignKey(this.asInstanceOf[MapperType], CostCenter) {
         override def dbIndexed_? = true
     }
+    object projectOpt extends MappedInt(this)// projeto evento, grupo orçamento...
+
+    def bp_managerName : String = {
+        if (bp_manager != 0) {
+          val ac = Customer.findByKey(bp_manager).get
+          ac.name;
+        } else {
+          ""
+        }
+    }
+
+    def hasSponsor = bp_sponsor.obj  match {
+        case Full(a) => true
+        case _ => false
+    }
 
     override def save = {
+        if (!hasSponsor) {
+          throw new RuntimeException("Um cliente/sponsor é obrigatório!")
+        }
+        if (this.name == "") {
+            this.name (Customer.findByKey(bp_sponsor).get.name.is)
+            if (this.short_name == "") {
+                this.short_name (Customer.findByKey(bp_sponsor).get.short_name.is)
+            }
+        }
         val isNew = this.id.is match {
             case p:Long if(p > 0) => false
             case _ => true
@@ -193,4 +217,21 @@ class ProjectStage extends Audited[ProjectStage] with PerCompany with IdPK with 
 }
 
 object ProjectStage extends ProjectStage with LongKeyedMapperPerCompany[ProjectStage]  with  OnlyActive[ProjectStage]
+
+class ProjectTreatment extends Audited[ProjectTreatment] 
+    with PerCompany with IdPK 
+    with CreatedUpdated with CreatedUpdatedBy 
+    with ActiveInactivable[ProjectTreatment] 
+    with net.liftweb.common.Logger {
+    def getSingleton = ProjectTreatment
+    object project extends MappedLongForeignKey(this, Project1)
+    object treatment extends MappedLongForeignKey(this, Treatment)
+    object title extends MappedPoliteString(this,255)
+    object obs extends MappedPoliteString(this,2000)
+
+}
+
+object ProjectTreatment extends ProjectTreatment with LongKeyedMapperPerCompany[ProjectTreatment] 
+    with OnlyCurrentCompany[ProjectTreatment]  with OnlyActive[ProjectTreatment] {
+}
 
