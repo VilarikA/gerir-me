@@ -11,19 +11,19 @@ $(function() {
       newItem ();
     });
 
-    $(".b_add_todo").click(function() {
-      return saveTodo ();
+    $(".b_add_budget").click(function() {
+      return saveBudget ();
     });
 
-    $(".tomorrow_todo").click(function() {
-      return tomorrowTodo ();
+    $(".tomorrow_budget").click(function() {
+      return tomorrowBudget ();
     });
 
-    $(".nextweek_todo").click(function() {
-      return nextweekTodo ();
+    $(".nextweek_budget").click(function() {
+      return nextweekBudget ();
     });
-    $(".nextmonth_todo").click(function() {
-      return nextmonthTodo ();
+    $(".nextmonth_budget").click(function() {
+      return nextmonthBudget ();
     });
 
     $("#cutomer_id_treatment").change(function(){
@@ -62,32 +62,32 @@ var getUsersCurrentUnitCommand = function() {
   return $.get(url, function(t) {
     var obj, _i, _len, _results;
     eval("userObj = " + t);
-    $('#user_todo, #user_todo').append("<option value='0'>Selecione um profissional</option>");
+    $('#user_budget, #user_budget').append("<option value='0'>Selecione um profissional</option>");
     _results = [];
     for (_i = 0, _len = userObj.length; _i < _len; _i++) {
       obj = userObj[_i];
-      _results.push($('#user_todo, #user_todo').append("<option value='" + obj.id + "'>" + 
+      _results.push($('#user_budget, #user_budget').append("<option value='" + obj.id + "'>" + 
         obj.name + " " + obj.idForCompany + "</option>"));
     }
     return _results;
   });
 };
 
-var tomorrowTodo = function() {
+var tomorrowBudget = function() {
   var today = new Date();
   var tomorrow = new Date(today.getTime() + 24 * 60 * 60 * 1000);
   var start = getDateBr(tomorrow);
   $("#start").val(start)
 }
 
-var nextweekTodo = function() {
+var nextweekBudget = function() {
   var today = new Date();
   var nextweek = new Date(today.getTime() + ((24 * 60 * 60 * 1000) * 7));
   var start = getDateBr(nextweek);
   $("#start").val(start)
 }
 
-var nextmonthTodo = function() {
+var nextmonthBudget = function() {
   var today = new Date();
   var nextweek = new Date(today.getTime() + ((24 * 60 * 60 * 1000) * 30));
   var start = getDateBr(nextweek);
@@ -105,12 +105,12 @@ var newItem = function() {
 
 var callApiLock = false;
 
-var saveTodo = function() {
+var saveBudget = function() {
   var end, obs, start, user, password, auxiliar, animal, offsale;
   start = $("#start").val() + " " + $("#hour_start").val();
   // aqui é start mesmo pq dt fim não é informada
   end = $("#start").val() + " " + $("#hour_end").val();
-  user = $("#user_todo").val();
+  user = $("#user_budget").val();
   password = ""//$("#password").val();
   auxiliar = $("#auxiliar").val();
   animal = $("#animal").val() || 0 ;
@@ -135,7 +135,7 @@ var saveTodo = function() {
     return alert('Um serviço precisa ser selecionado');
   }
 
-  if ((!$("#user_todo").val()) || (parseFloat($("#user_todo").val()) == 0)) {
+  if ((!$("#user_budget").val()) || (parseFloat($("#user_budget").val()) == 0)) {
     return alert('Um profissional precisa ser selecionado!');
   }
 
@@ -155,11 +155,12 @@ var saveTodo = function() {
         "price": price,
         "amount": amount,
         "activity": activity,
+//        "status": "9", // budget
         "product": product
       }, function(results) {
         if(results === 1 || results == "1"){
           alert("Cadastrado com sucesso");
-          $("#todo_modal").modal({
+          $("#budget_modal").modal({
             "hide": true
           });
         }else{
@@ -179,8 +180,8 @@ var new_detail = function () {
     $("#cutomer_id_treatment").val($("#bp_sponsor").val())
     $("#cutomer_id_treatment").change();
 //    $("#hour_start").val(start_hour);
-    $("#user_todo").val($("#bp_manager").val())
-    $("#user_todo").change();
+    $("#user_budget").val($("#bp_manager").val())
+    $("#user_budget").change();
     $("#new_item").click();
     newItem ();
 };

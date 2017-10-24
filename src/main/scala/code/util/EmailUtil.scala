@@ -188,6 +188,7 @@ object EmailUtil {
             println ("vaiiii ========================= Erro ao enviar email GENERICO - "+e.getMessage)
             log.subject(title + " ERRO ======= ").save
 //            LogActor ! "Erro ao enviar email - "+e.getMessage
+            Thread.sleep (60000);
           }
           case _ =>
         }
