@@ -323,7 +323,7 @@ object Reports2 extends RestHelper with ReportRest with net.liftweb.common.Logge
 					left join business_pattern bc on bc.id = co.business_pattern
 					where co.company = ? and co.origin = ?
 					and %s
-					and co.email in (select to_c from logmailsend lm where lm.company = co.company and subject like 'Dia da Noiva Fidelis Studio ERRO ======= ')
+					and co.email in (select to_c from logmailsend lm where lm.company = co.company and subject like 'Dia da Noiva Fidelis Studio ERRO ======= ' and lm.id > 340884)
 					order by co.name
 				"""
 				toResponse(SQL_REPORT.format(unit),List(AuthUtil.company.id.is, origin))
