@@ -173,7 +173,7 @@ object EmailUtil {
         try {
   //    println ("vaii =================== try no email util GENERICO")
 
-        Thread.sleep (300);
+        Thread.sleep (500);
         Mailer.blockingSendMail(
            Mailer.From(from, Full("Notificações " + product2 + " " + local1)),
            Mailer.Subject(title),
@@ -189,6 +189,13 @@ object EmailUtil {
             log.subject(title + " ERRO ======= ").save
 //            LogActor ! "Erro ao enviar email - "+e.getMessage
             Thread.sleep (60000);
+            Mailer.blockingSendMail(
+               Mailer.From(from, Full("Notificações " + product2 + " " + local1)),
+               Mailer.Subject(title),
+               Mailer.To(prefix + email),
+               Mailer.ReplyTo(prefix + companyEmail1, Full(companyName)),
+               toSend
+               )
           }
           case _ =>
         }
@@ -225,7 +232,7 @@ object EmailUtil {
         }
 */
         try{
-          Thread.sleep (300);
+          Thread.sleep (500);
 //      println ("vaii =================== try no email util")
           companyUnit.mailer.blockingSendMail(
              companyUnit.mailer.From(company.email.is.split(",|;")(0), Full(company.name.is)),
@@ -242,6 +249,15 @@ object EmailUtil {
             println ("vaiiii ========================= Erro ao enviar email - "+e.getMessage)
             log.subject(title + " ERRO ======= ").save
 //            LogActor ! "Erro ao enviar email - "+e.getMessage
+            Thread.sleep (60000);
+            companyUnit.mailer.blockingSendMail(
+               companyUnit.mailer.From(company.email.is.split(",|;")(0), Full(company.name.is)),
+               companyUnit.mailer.Subject(title),
+               companyUnit.mailer.To(prefix + email),
+               companyUnit.mailer.ReplyTo(company.email.is.split(",|;")(0), Full(company.name.is)),
+  //             companyUnit.mailer.XHTMLMailBodyType(toSend)
+               toSend
+               )        
           }
           case _ =>
         }

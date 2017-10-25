@@ -260,7 +260,12 @@ object Reports2 extends RestHelper with ReportRest with net.liftweb.common.Logge
 
 				}
 
-				toResponse(LogMailSend.SQL_TO_REPORT.format(subFilter.toLowerCase, qtd_query),List(AuthUtil.company.id.is,start,end))
+			    val compl = if (AuthUtil.user.isSuperAdmin) {
+		            " 1 = 1 "
+		        } else {
+		            " subject not like '%ERRO%' "
+		        }
+				toResponse(LogMailSend.SQL_TO_REPORT.format(subFilter.toLowerCase, qtd_query, compl),List(AuthUtil.company.id.is,start,end))
 			}
 
 			case "report" :: "animal_report" :: Nil Post _ => {
@@ -323,9 +328,11 @@ object Reports2 extends RestHelper with ReportRest with net.liftweb.common.Logge
 					left join business_pattern bc on bc.id = co.business_pattern
 					where co.company = ? and co.origin = ?
 					and %s
-					and co.email in (select to_c from logmailsend lm where lm.company = co.company and subject like 'Dia da Noiva Fidelis Studio ERRO ======= ' and lm.id > 340884)
 					order by co.name
 				"""
+
+//					and co.email in (select to_c from logmailsend lm where lm.company = co.company and subject like 'Dia da Noiva Fidelis Studio ERRO ======= ' and lm.id > 340884)
+
 				toResponse(SQL_REPORT.format(unit),List(AuthUtil.company.id.is, origin))
 			}
 
