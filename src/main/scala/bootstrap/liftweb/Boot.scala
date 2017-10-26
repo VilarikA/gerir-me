@@ -420,6 +420,7 @@ class Boot {
         Menu(Loc("Faixa Etária", Link(List("agerange"), true, "/agerange/list_agerange"),"Faixa Etária",customerAccess,Hidden)),
         Menu(Loc("Ícone", Link(List("mapicon"), true, "/mapicon/list_mapicon"),"Ícone",customerAccess,Hidden)),
 
+        Menu(Loc("Orçamentos", Link(List("budget"), true, "/project/list_budget"),"Orçamentos",peopleManagerAccess,Hidden)),
         Menu(Loc("Projetos", Link(List("project"), true, "/project/list_event"),projectMenuLabel,peopleManagerAccess,Hidden)),
 
         Menu(Loc("Relacionamentos", Link(List("bprelationship"), true, "/bprelationship/list_bprelationship"),"Relacionamentos",customerAccess,Hidden)),

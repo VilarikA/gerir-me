@@ -374,7 +374,9 @@ $(function(){
 		//}
 
 		$("#auxiliar").val("").change();
-		callApiLock = false;
+	    setTimeout(function(){
+		   callApiLock = false;
+	    },200);
 	  } else {
 	    alert("Já existe um processo em andamento. Aguarde o fim do processamento para clicar novamente!");
 	  }

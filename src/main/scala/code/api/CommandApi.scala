@@ -189,10 +189,13 @@ object CommandApi extends RestHelper with ReportRest with net.liftweb.common.Log
 				def animal = S.param("animal") openOr ""
 				def tooth = S.param("tooth") openOr ""
 				def offsale = S.param("offsale") openOr ""
+				def status = S.param("status") openOr ""
+				def project = S.param("project") openOr "" // normaly budget
 
 				def userId:String = S.param("user") openOr "0"
 				def customerId:String = S.param("customer") openOr "0"
 				def auxiliarId:String = S.param("auxiliar") openOr "0"
+println ("vaiiii ====================== " + status)				
 				if (AuthUtil.user.isCommandPwd) {
 					if (!User.loginCommand(userId.toLong, password)) {
 						throw  new Exception("Senha inválida!");
@@ -200,6 +203,18 @@ object CommandApi extends RestHelper with ReportRest with net.liftweb.common.Log
 				}
 
 				var tempt = TreatmentService.factoryTreatment("", customerId, userId, start, start, end,"0")
+				if (status == "9") { // budget
+					if (!tempt.get.hasDetail) {
+						println ("vaiii ====== criou agora ")
+						tempt.get.showInCalendar(false)
+						tempt.get.markAsBudget
+						tempt.get.save
+					} else {
+						println ("vaiiiii ===== ja tava criado nao altera o status")
+					}
+				} else {
+					println ("vaiiiii ===== NAO é ORCAMENTO")
+				}
 				if (activity.isEmpty || activity == "") {
 					var prod = Product.findByKey(product.toLong).get
 					var tempd1 = TreatmentService.addDetailTreatment(tempt.get.id, 
@@ -214,6 +229,9 @@ object CommandApi extends RestHelper with ReportRest with net.liftweb.common.Log
 					if (obs != "") {
 						tempd1.get.obs(obs).save
 					}
+					if (status == "9" && project != "") { // budget
+						ProjectTreatment.createProlectTreatment(project.toLong, tempt.get.id, tempd1.get.id)
+					}
 				} else {
 					var tempd = TreatmentService.addDetailTreatmentWithoutValidate(tempt.get.id, activity.toLong, 
 						auxiliarId.toLong, animal.toLong, tooth, offsale.toLong)
@@ -225,6 +243,9 @@ object CommandApi extends RestHelper with ReportRest with net.liftweb.common.Log
 					}
 					if (obs != "") {
 						tempd.get.obs(obs).save
+					}
+					if (status == "9" && project != "") { // budget
+						ProjectTreatment.createProlectTreatment(project.toLong, tempt.get.id, tempd.get.id)
 					}
 				}
 				if (end != "" && end.length > 11) {

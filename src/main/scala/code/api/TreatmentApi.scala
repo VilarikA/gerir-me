@@ -208,12 +208,13 @@ object TreatmentDetailsApi extends RestHelper {
 				val offsale = S.param("offsale") openOr "0"
 				val id = S.param("id") openOr "0"
 				val validate = S.param("validate") openOr "false"
-				if(validate.toBoolean)
+				if(validate.toBoolean) {
 					TreatmentService.addDetailTreatment(id.toLong,activityCode.toLong, 
 						auxiliar.toLong, animal.toLong, tooth, offsale.toLong)
-				else
+				} else {
 					TreatmentService.addDetailTreatmentWithoutValidate(id.toLong,
 						activityCode.toLong, auxiliar.toLong, animal.toLong, tooth, offsale.toLong)
+				}
 				JInt(1)
 			}catch{
 				case e:Exception => {

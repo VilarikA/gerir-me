@@ -411,10 +411,11 @@ object  TreatmentService extends net.liftweb.common.Logger {
 						}
 					}
 					treatment.resetEndDate
-					if(validate)
+					if(validate) {
 						treatment.save
-					else 
+					} else {
 						treatment.saveWithoutValidate
+					}
 					updateCalendar("updateDetail", treatment)
 					Full (detail)
 				}catch{

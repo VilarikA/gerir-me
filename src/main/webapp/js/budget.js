@@ -95,6 +95,9 @@ var nextmonthBudget = function() {
 }
 
 var newItem = function() {
+  if (!gup("id") || gup("id") == "") {
+    return alert('É preciso salvar o orçamento antes de inserir itens ao mesmo');
+  }
   getActivities ();    
   return $("#budget_modal").modal({
     "show": true,
@@ -122,6 +125,7 @@ var saveBudget = function() {
   activity = $("#activity").val();
   product = "" //$("#product").val();
   var valid = false;
+
   if ((!$("#cutomer_id_treatment").val()) || (parseFloat($("#cutomer_id_treatment").val()) == 0)) {
     return alert('Um cliente precisa ser selecionado');
   }
@@ -155,7 +159,8 @@ var saveBudget = function() {
         "price": price,
         "amount": amount,
         "activity": activity,
-//        "status": "9", // budget
+        "status": "9", // budget
+        "project": gup("id"), // budget
         "product": product
       }, function(results) {
         if(results === 1 || results == "1"){

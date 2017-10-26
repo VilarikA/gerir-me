@@ -226,8 +226,30 @@ class ProjectTreatment extends Audited[ProjectTreatment]
     def getSingleton = ProjectTreatment
     object project extends MappedLongForeignKey(this, Project1)
     object treatment extends MappedLongForeignKey(this, Treatment)
+    object treatmentDetail extends MappedLongForeignKey(this, TreatmentDetail)
     object title extends MappedPoliteString(this,255)
     object obs extends MappedPoliteString(this,2000)
+    object treatmentDetailOk extends MappedLongForeignKey(this, TreatmentDetail)
+
+    def countProjectTreatment (treatment:Long, treatmendDetail:Long) = {
+        ProjectTreatment.count(By(ProjectTreatment.treatment, treatment),
+            By(ProjectTreatment.treatmentDetail, treatmentDetail))
+    }
+     
+    def createProlectTreatment(project:Long, treatment:Long, treatmentDetail:Long):Long = {
+        val itcount = ProjectTreatment.countProjectTreatment (treatment, treatmentDetail)
+        if (itcount < 1) {
+            val projectTreatment = ProjectTreatment.createInCompany.project(project)
+            .treatment(treatment)
+            .treatmentDetail(treatmentDetail)
+            .obs("teste")
+            projectTreatment.save
+            projectTreatment.id.is
+        } else {
+            // este treatment/td já está em algum project, nesse ou outro
+            0
+        }
+    }
 
 }
 
