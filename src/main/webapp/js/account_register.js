@@ -241,7 +241,8 @@
         $("#paymenttype_select").val(obj.paymenttype_id).change();
         $("#cheque_select").val(obj.cheque_id).change();
         $("#unitvalue").val(obj.unitvalue);
-        $("#recurrence_id").val(obj.recurrence_id);
+        $("#unitvalue").val(obj.unitvalue);
+        $("#conciliate").val(obj.conciliate);
         $("#createdAt").val(obj.createdAt).datetimeDecode();
         $("#updatedAt").val(obj.updatedAt).datetimeDecode();
         $("#createdby").val(obj.createdBy);
@@ -455,6 +456,7 @@
         var credit, debit, obj, ret, total, _i, _len;
         var hasUnitModule = $('.has-unit-module').length > 0;
         var hasCostcenterModule = $('.has-costcenter-module').length > 0;
+        var hasFinancialadModule = $('.has-financialad-module').length > 0;
         eval("results = " + results);
         Account.list = results;
         Account.ids = Account.list.map(function(item) {
@@ -497,6 +499,11 @@
             "<td>" + obj.account_name + "</td>" +
             (hasCostcenterModule ? "<td>" + obj.costcenter_name + "</td>" : "") + 
             "<td>" + obj.paymenttype_name + "</td>" + 
+            (hasFinancialadModule ? "<td>" + 
+              "<img width='16px' src=\"/images/" + 
+              (obj.conciliate == "0" ? 'audit'     : (obj.conciliate == "1" ? 'tick'       : 'consolidate')) + ".png\" title=\"" + 
+              (obj.conciliate == "0" ? 'em aberto' : (obj.conciliate == "1" ? 'conciliado' : 'consolidado')) + "\"/>" +
+            "</a>" + "</td>" : "") + 
             "<td><a href='#' data-id='" + 
             obj.id + "' class='action_edit'><img src='/images/edit.png' /></a></td>" +
             "<td><a href='#' data-id='" + obj.id + "' data-recid='" + 

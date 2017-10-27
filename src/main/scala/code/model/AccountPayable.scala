@@ -451,7 +451,7 @@ with CanCloneThis[AccountPayable] {
   def conCilSol (id : String, idofx : String, 
     aggreg : Boolean, conciliation : Int) = {
     val apofx = AccountPayable.findByKey(idofx.toLong).get
-    var aplist = if (aggreg) {
+    var aplist = if (!aggreg) {
       AccountPayable.findAllInCompany(
         By(AccountPayable.id, id.toLong))
     } else {
@@ -486,7 +486,6 @@ with CanCloneThis[AccountPayable] {
       }
 
     if (aggreg && dif != 0.0) {
-      println ("vaiii ============= complementando agregado " + dif)
       if (dif < 0.0) {
         dif = dif * -1
       }

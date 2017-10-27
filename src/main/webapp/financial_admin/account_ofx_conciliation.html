@@ -51,7 +51,8 @@
       type : "format",
       decode: function(name, row) {
         var ret = "";
-        if (row[8] != "0") { // api.id
+        if ((row[8] != "0") /*api.id*/ &&  
+          (row[10] == "0") /*ap1.agregateid*/) { 
           if (row[11] != "0") { // ap1.conciliate
             ret = ""
           } else {
@@ -248,6 +249,7 @@
 
     var consolidateOne = function(id, idofx, aggreg) {
       var msg = "";
+      alert (aggreg)
       if (aggreg) {
         msg = "Tem certeza que deseja consolidar os lançamentos agregados?"
       } else {
