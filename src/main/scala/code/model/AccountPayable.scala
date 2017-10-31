@@ -178,6 +178,7 @@ with CanCloneThis[AccountPayable] {
     this.aggregateId(aggregId)
     if (this.id == aggregId) {
         this.aggregateValue (this.aggregateValue.is + this.value.is)
+        this.aggregateLabel ((bpShortName + " " + categoryShortName + "=== Agregado  ").trim)
     } else {
        var vaux = AccountPayable.findByKey(aggregId).get.aggregateValue.is
        AccountPayable.findByKey(aggregId).get.
@@ -203,7 +204,6 @@ with CanCloneThis[AccountPayable] {
   def makeAsConsolidated = this.conciliate(2).partialySecureSave
 
   lazy val accountBox = this.account.obj
-
   lazy val accountShortName:String = {
       accountBox match {
           case Full(c)=> c.short_name.is
@@ -221,9 +221,16 @@ with CanCloneThis[AccountPayable] {
   }
 
   lazy val categoryBox = this.category.obj
-
   lazy val categoryShortName:String = {
       categoryBox match {
+          case Full(c)=> c.short_name.is
+          case _ => ""
+      }
+  }
+
+  lazy val bpBox = this.user.obj
+  lazy val bpShortName:String = {
+      bpBox match {
           case Full(c)=> c.short_name.is
           case _ => ""
       }

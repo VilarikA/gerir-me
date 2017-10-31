@@ -580,6 +580,7 @@ object AccountPayableApi extends RestHelper with ReportRest with net.liftweb.com
 											("value",c.value.is.toFloat),
 											("aggregateValue",c.aggregateValue.is.toFloat),
 											("aggregateId",c.aggregateId.is),
+											("aggregateLabel",c.aggregateLabel.is),
 											("conciliate",c.conciliate.is),
 											("unitvalue",c.unitvalue.is.toFloat),
 											("amount",c.amount.is.toFloat),
