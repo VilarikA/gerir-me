@@ -234,7 +234,7 @@ class  UserSnippet extends BootstrapPaginatorSnippet[User] {
 			"#img_thumb" #> user.thumb&
 			"name=orderInCalendar" #> (SHtml.text(user.orderInCalendar.is.toString, (s:String) => user.orderInCalendar(s.toInt)))&
 			"name=parent" #> (SHtml.text(user.parent.is.toString, 
-				(f:String) => user.parent(BusinessRulesUtil.snippetToInt(f))))&
+				(f:String) => user.parent(BusinessRulesUtil.snippetToLong(f))))&
 //			"name=parent_percent" #> (SHtml.text(user.parent_percent.is.toString, (v:String) =>{ if(v !=""){user.parent_percent(BusinessRulesUtil.snippetToDouble(v))};}))&
 			"name=parent_percent" #> (SHtml.text(user.parent_percent.is.toString, 
 				(f:String) => user.parent_percent(BusinessRulesUtil.snippetToDouble(f))))&

@@ -400,6 +400,22 @@ object BusinessRulesUtil{
       0
     }
   }
+  
+  def snippetToLong (value:String) : Long = {
+    if(value.trim != "") {
+      var aux = "";
+      aux = value.trim
+      aux = aux.replaceAll(" ", "");
+      aux = aux.replaceAll(",", "");
+      // nao sei pq isso nao funciona
+      // testar println antes e depois
+      //aux = aux.replaceAll(".", "");
+      aux.toLong
+    } else {
+      0
+    }
+  }
+
 	def toCamelCase(value:String):String = {
 		if (value != null && value.trim() != EMPTY){
 			val val_camel = value split(" ") filter( _!="" ) map(_.toLowerCase) map( (current:String) => {  if( !notCamelize.contains(current)) { current.capitalize }else{ current } } ) reduceLeft(_+" "+_)
