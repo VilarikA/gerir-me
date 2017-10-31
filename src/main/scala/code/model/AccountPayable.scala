@@ -165,6 +165,12 @@ with CanCloneThis[AccountPayable] {
   object aggregateId extends MappedLong(this)
   object aggregateValue extends MappedCurrency(this.asInstanceOf[MapperType])
 
+  // rigel 27/10/2017
+  object aggregateLabel extends MappedPoliteString(this, 255)
+  object ofxId extends MappedPoliteString(this, 255) {
+    override def dbIndexed_? = true
+  } 
+
   def aggregate (aggregId : Long)= {
     if (this.aggregateId != 0 && this.aggregateId != aggregId) {
       throw new RuntimeException("Um lançamento não pode fazer parte de duas agregações!")
@@ -467,6 +473,7 @@ with CanCloneThis[AccountPayable] {
       // por isso usa duedate
       ap.paymentDate (apofx.dueDate)
       ap.account (apofx.account)
+      ap.ofxId (apofx.ofxId)
       var compl = ap.complement
       ap.complement (compl + " " + apofx.obs)
       if (conciliate == 1) {

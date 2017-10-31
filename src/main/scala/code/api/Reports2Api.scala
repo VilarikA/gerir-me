@@ -1876,7 +1876,8 @@ object Reports2 extends RestHelper with ReportRest with net.liftweb.common.Logge
 				lazy val SQL_REPORT = """
 					select ap.duedate, ap.obs, ap.typemovement, 
 					ap.value, ap.id, 
-					ap1.obs, ap1.value, ap1.duedate, 
+					trim (coalesce(ap1.aggregateLabel,'') || ' ' || ap1.obs), 
+					ap1.value, ap1.duedate, 
 					ap1.id,
 					ap1.aggregatevalue, ap1.aggregateid,
 					ap1.conciliate,
