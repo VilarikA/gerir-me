@@ -453,11 +453,28 @@ class Company extends Audited[Company] with PerCompany with IdPK with CreatedUpd
 
   def productTypes = ProductType.findAllInCompany(OrderBy(ProductType.name, Ascending))
 
-  def bmMonthlyPaymentType = PaymentType.findAllInCompany(By(PaymentType.bpmonthly_?, true))(0)
+  def bmMonthlyPaymentType = {
+    if (PaymentType.count(By(PaymentType.bpmonthly_?, true)) < 1) {
+       throw new RuntimeException("É preciso que haja uma forma de pagamento marcada com comportamento especial de <baixa de sessão de mensalidade>" + "\n\n" +
+        "E ela precisa estar ativa, para que seja gerada a comissão para o profissional");
+    }
+    PaymentType.findAllInCompany(By(PaymentType.bpmonthly_?, true))(0)
+  }  
+  def offSalePaymentType = {
+    if (PaymentType.count(By(PaymentType.offSale_?, true)) < 1) {
+       throw new RuntimeException("É preciso que haja uma forma de pagamento marcada com comportamento especial de <pagamento por convênio>" + "\n\n" +
+        "E ela precisa estar ativa, para que seja gerada a comissão para o profissional");
+    }
+    PaymentType.findAllInCompany(By(PaymentType.offSale_?, true))(0)
+  }
 
-  def offSalePaymentType = PaymentType.findAllInCompany(By(PaymentType.offSale_?, true))(0)
-
-  def packagePaymentType = PaymentType.findAllInCompany(By(PaymentType.deliveryContol_?, true))(0)
+  def packagePaymentType = {
+    if (PaymentType.count(By(PaymentType.deliveryContol_?, true)) < 1) {
+       throw new RuntimeException("É preciso que haja uma forma de pagamento marcada com comportamento especial de <baixa de sessão de pacote>" + "\n\n" +
+        "E ela precisa estar ativa, para que seja gerada a comissão para o profissional");
+    }
+    PaymentType.findAllInCompany(By(PaymentType.deliveryContol_?, true))(0)
+  }
 
   def treatmentsToDay = Treatment.findAll(By(Treatment.company, this.id), By(Treatment.hasDetail, true), BySql("date(start_c) = date(?)", IHaveValidatedThisSQL("start_c", "01-01-2012 00:00:00"), new Date()))
 
