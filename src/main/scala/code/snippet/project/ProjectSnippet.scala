@@ -51,6 +51,7 @@ class  ProjectSnippet extends BootstrapPaginatorSnippet[Project1] {
 		  				S.notice("Projeto excluído com sucesso!")
 		  			}catch{
 		  				case e: NoSuchElementException => S.error("Projeto não existe!")
+		  				case e:Exception => S.error(e.getMessage)
 		  				case _ => S.error("Projeto não pode ser excluído!")
 		  			}
 			
@@ -255,16 +256,18 @@ println ("vaiiiiiii ================ attr " + S.attr("projectOpt"));
 				try {
 println ("vaiiiii =============== tipo user " + S.params ("projectOpt"))
 					ac.company(AuthUtil.company)
-					ac.projectOpt (Project1.prjOpt (opt))
+					ac.projectOpt (ac.prjOpt (opt))
 					ac.save
 println ("vaiiiiii ========= opt " + opt )
-				   	if (opt == "budget") {
+
+// rigel 02/11/2017 - retirar o apptype qdo o parm funcionar
+				   	if (opt == "budget" || AuthUtil.company.appType.isEsmile) {
 					   	S.notice("Orçamento salvo com sucesso!")
 				   		S.redirectTo("/budget/budget?id="+ac.id.is+"&opt=budget")
 				   	} else if (opt == "event") {
 					   	S.notice("Evento salvo com sucesso!")
 			   			S.redirectTo("/project/event?id="+ac.id.is+"&opt=event")
-				   	} else if (opt == "group") {
+				   	} else if (opt == "group" || AuthUtil.company.appType.isEgrex) {
 					   	S.notice("Grupo salvo com sucesso!")
 			   			S.redirectTo("/project_group/group?id="+ac.id.is+"&opt=group")
 			   		} else {

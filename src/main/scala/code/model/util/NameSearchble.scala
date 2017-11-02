@@ -35,6 +35,9 @@ trait NameSearchble [self <: net.liftweb.mapper.Mapper[self]]{
   protected class MySearch(obj: self) extends MappedPoliteString(obj,255) with LifecycleCallbacks {
     override def beforeSave() {
       super.beforeSave;
+      if (fieldOwner.asInstanceOf[NameSearchble[self]].name.is.trim() == "") {
+        throw new RuntimeException("Nome não pode ser vazio!")
+      }
       this.set(BusinessRulesUtil.clearString(fieldOwner.asInstanceOf[NameSearchble[self]].name.is.trim()))
       if(this.is == BusinessRulesUtil.EMPTY){
         throw new RuntimeException("Nome não pode conter apenas caracteres especiais!")

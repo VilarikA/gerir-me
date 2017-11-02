@@ -36,18 +36,46 @@ class Project1 extends Audited[Project1] with KeyedMapper[Long, Project1] with B
     object costCenter extends MappedLongForeignKey(this.asInstanceOf[MapperType], CostCenter) {
         override def dbIndexed_? = true
     }
-    object projectOpt extends MappedInt(this)// projeto evento, grupo orçamento...
+
+    object projectOpt extends MappedInt(this) {// projeto evento, grupo orçamento...
+        override def defaultValue = 
+        if (AuthUtil.company.appType.isEsmile) {
+            5 // budget
+        } else if (AuthUtil.company.appType.isEgrex) {
+            3 // group
+        } else {
+println ("vaiiii ===================== caindo aqui")
+            2 // event
+        }
+    }
 
     def prjOpt (opt : String) : Int = {
 println ("vaiiiii ======================= no project opt " + opt)
         if (opt == "budget" || opt == "5") {
-            5
+            Project1.OPT_BUDGET
         } else if (opt == "event" || opt == "2") {
-            2
+            Project1.OPT_EVENT
         } else if (opt == "group" || opt == "3") {
-            3
+            Project1.OPT_GROUP
+        } else if (opt == "") {
+            // retirar depois que resolver o parm no snippet
+            this.projectOpt.is
         } else {
-            1 // project
+            Project1.OPT_PROJECT // project
+        }
+    }
+
+    def prjOptDesc = {
+        if (this.projectOpt == Project1.OPT_PROJECT) {
+            "Projeto"
+        } else if (this.projectOpt == Project1.OPT_EVENT) {
+            "Evento"
+        } else if (this.projectOpt == Project1.OPT_GROUP) {
+            "Grupo"
+        } else if (this.projectOpt == Project1.OPT_BUDGET) {
+            "Orçamento"
+        } else {
+            "Projeto"
         }
     }
 
@@ -127,9 +155,21 @@ println ("vaiiiii ======================= no project opt " + opt)
         }
     }
 
+    override def delete_! = {
+    if(ProjectTreatment.count(By(ProjectTreatment.project,this.id)) > 0){
+        throw new RuntimeException("Existe item ligado a este " + this.prjOptDesc)
+    }
+    super.delete_!;
+    }
+
 }
 
 object Project1 extends Project1 with LongKeyedMapperPerCompany[Project1] with OnlyActive[Project1]{
+  val OPT_PROJECT = 1
+  val OPT_EVENT = 2
+  val OPT_GROUP = 3
+  val OPT_BUDGET = 5
+
     
     def createFromJson(json: JsonAST.JObject) = decodeFromJSON_!(json, true)
     override def dbTableName = "project"
