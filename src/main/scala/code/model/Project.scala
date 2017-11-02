@@ -44,7 +44,6 @@ class Project1 extends Audited[Project1] with KeyedMapper[Long, Project1] with B
         } else if (AuthUtil.company.appType.isEgrex) {
             3 // group
         } else {
-println ("vaiiii ===================== caindo aqui")
             2 // event
         }
     }
@@ -158,6 +157,9 @@ println ("vaiiiii ======================= no project opt " + opt)
     override def delete_! = {
     if(ProjectTreatment.count(By(ProjectTreatment.project,this.id)) > 0){
         throw new RuntimeException("Existe item ligado a este " + this.prjOptDesc)
+    }
+    if(ProjectSection.count(By(ProjectSection.project,this.id)) > 0){
+        throw new RuntimeException("Existe Seção ligada a este " + this.prjOptDesc)
     }
     super.delete_!;
     }
@@ -283,6 +285,7 @@ class ProjectTreatment extends Audited[ProjectTreatment]
     object treatmentDetail extends MappedLongForeignKey(this, TreatmentDetail)
     object title extends MappedPoliteString(this,255)
     object obs extends MappedPoliteString(this,2000)
+    object projectSection extends MappedLongForeignKey(this, ProjectSection)
     object treatmentDetailOk extends MappedLongForeignKey(this, TreatmentDetail)
 
     def countProjectTreatment (treatment:Long, treatmendDetail:Long) = {
@@ -309,5 +312,28 @@ class ProjectTreatment extends Audited[ProjectTreatment]
 
 object ProjectTreatment extends ProjectTreatment with LongKeyedMapperPerCompany[ProjectTreatment] 
     with OnlyCurrentCompany[ProjectTreatment]  with OnlyActive[ProjectTreatment] {
+}
+
+class ProjectSection extends Audited[ProjectSection] with KeyedMapper[Long, ProjectSection] with BaseLongKeyedMapper
+     with PerCompany with IdPK with CreatedUpdated with CreatedUpdatedBy
+     with ActiveInactivable[ProjectSection] {
+    def getSingleton = ProjectSection
+
+    object project extends MappedLongForeignKey(this, Project1)
+    object section extends MappedLong(this)
+/* depois para cronograma
+    object startAt extends EbMappedDateTime(this) {
+        override def defaultValue = new Date()
+    }
+    object endAt extends EbMappedDateTime(this)
+*/
+    object title extends MappedPoliteString(this,255)
+    object obs extends MappedString(this, 2000)
+}
+
+object ProjectSection extends ProjectSection 
+    with LongKeyedMapperPerCompany[ProjectSection] 
+    with OnlyCurrentCompany[ProjectSection] 
+    with OnlyActive[ProjectSection]{
 }
 

@@ -2,9 +2,11 @@ $(function() {
     $('#tooth').toothField(false);
     $("#offsale").offSaleField(true);
     $("#new_item").click(function() {
+alert (" na var function click aqui não chega NUNCA !!!!!! ")
       var agora = getHourBr(FactoryDate.byTime(Date.toDay().getTime()));
       $("#cutomer_id_treatment").val("")
       $("#cutomer_id_treatment").change();
+      var agora = getHourBr(FactoryDate.byTime(Date.toDay().getTime()));
       if (!$("#hour_start").val()) {
          $("#hour_start").val(agora);
       } else {
@@ -203,9 +205,16 @@ var saveBudget = function() {
 };
 
 var new_detail = function () {
+//alert (" na var new detail")
     $("#cutomer_id_treatment").val($("#bp_sponsor").val())
     $("#cutomer_id_treatment").change();
 //    $("#hour_start").val(start_hour);
+    var agora = getHourBr(FactoryDate.byTime(Date.toDay().getTime()));
+    if (!$("#hour_start").val()) {
+       $("#hour_start").val(agora);
+    } else {
+      // aceita hora de atendiemto existente do cliente
+    }
     $("#user_budget").val($("#bp_manager").val())
     $("#user_budget").change();
     $("#new_item").click();

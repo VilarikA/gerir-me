@@ -68,7 +68,8 @@ class Boot {
     Schemifier.schemify(true, Schemifier.infoF _, JobRequisition, Quiz, QuizSection, QuizQuestion, QuizDomain, QuizDomainItem,
       QuizApplying, QuizAnswer, UserCompanyUnit, AccountCompanyUnit, Breed, Species)
 
-    Schemifier.schemify(true, Schemifier.infoF _, ProjectStage, ProjectType, ProjectClass, Project1, StakeHolderType, StakeHolder, ProjectTreatment, Contact)
+    Schemifier.schemify(true, Schemifier.infoF _, ProjectStage, ProjectType, ProjectClass, Project1, StakeHolderType, StakeHolder, 
+      ProjectTreatment, ProjectSection, Contact)
   
     Schemifier.schemify(true, Schemifier.infoF _, RelationshipType, Relationship, BpRelationship, InstructionDegree, Occupation,
       Invoice, InvoiceTreatment)
