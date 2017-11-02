@@ -26,11 +26,6 @@ class  ProjectSnippet extends BootstrapPaginatorSnippet[Project1] {
 	def stages = ("0", "Selecione um Estágio") :: ProjectStage.findAllInCompany.map(t => (t.id.is.toString,t.name.is))
 	def costcenters = ("0" -> "Selecione um Centro de Custo")::CostCenter.findAllInCompany.map(cc => (cc.id.is.toString,cc.name.is))
 
-	def opt : String = S.param ("opt") match {
-			case Full(p) => p
-			case _ => ""
-		}			
-
 	def findForListParamsWithoutOrder: List[QueryParam[Project1]] = List(Like(Project1.search_name,"%"+BusinessRulesUtil.clearString(name)+"%"))
 	override def page = {
 		if(!showAll){
@@ -44,6 +39,10 @@ class  ProjectSnippet extends BootstrapPaginatorSnippet[Project1] {
 
 
 	def list(xhtml: NodeSeq): NodeSeq = {
+			def opt : String = S.param ("opt") match {
+					case Full(p) => p
+					case _ => ""
+				}			
 			var id:String = ""
 		 	def delete(): Unit ={
 			  		try{
@@ -61,11 +60,17 @@ class  ProjectSnippet extends BootstrapPaginatorSnippet[Project1] {
 			bind("f", xhtml,"name" -> Text(ac.name.is),
 							"class" -> Text(ac.projectClassName),
 							"startat" -> Text(Project.dateToStrOrEmpty(ac.startAt.is)),
-							"actions" -> <a class="btn" href={if (opt == "budget") {
-								  "/project/budget?id="+ac.id.is+"&opt=budget"
-								  } else {
+							"actions" -> <a class="btn" href={
+								if (opt == "budget") {
+								  "/budget/budget?id="+ac.id.is+"&opt=budget"
+								  } else if (opt == "event") {
 								  "/project/event?id="+ac.id.is+"&opt=event"
-								  }}>Editar</a>,
+								  } else if (opt == "group") {
+								  "/project_group/group?id="+ac.id.is+"&opt=group"
+								  } else {
+								  "/project/event?id="+ac.id.is+"&opt=project"
+								  }
+								}>Editar</a>,
 							"delete" -> SHtml.submit("Excluir",delete,"class" -> "btn danger","data-confirm-message" -> {" excluir o projeto "+ac.name}),
 							"_id" -> SHtml.text(ac.id.is.toString, id = _),
 							"id" ->Text(ac.id.is.toString)
@@ -237,18 +242,34 @@ class  ProjectSnippet extends BootstrapPaginatorSnippet[Project1] {
   		}
   	}
 
-	def maintain = {
+	def maintain () = {
+println ("vaiiiiiii ================ attr " + S.attr("projectOpt"));
+		def opt : String = S.param ("projectOpt") match {
+				case Full(p) => p
+				case _ => ""
+			}			
+
 		try{
 			var ac:Project1 = getProject
-			def process(): JsCmd= {
+			def process(): JsCmd = {
 				try {
+println ("vaiiiii =============== tipo user " + S.params ("projectOpt"))
 					ac.company(AuthUtil.company)
+					ac.projectOpt (Project1.prjOpt (opt))
 					ac.save
-				   	S.notice("Projeto/evento salvo com sucesso!")
+println ("vaiiiiii ========= opt " + opt )
 				   	if (opt == "budget") {
-				   		S.redirectTo("/project/budget?id="+ac.id.is+"&opt=budget")
-				   	} else {
+					   	S.notice("Orçamento salvo com sucesso!")
+				   		S.redirectTo("/budget/budget?id="+ac.id.is+"&opt=budget")
+				   	} else if (opt == "event") {
+					   	S.notice("Evento salvo com sucesso!")
 			   			S.redirectTo("/project/event?id="+ac.id.is+"&opt=event")
+				   	} else if (opt == "group") {
+					   	S.notice("Grupo salvo com sucesso!")
+			   			S.redirectTo("/project_group/group?id="+ac.id.is+"&opt=group")
+			   		} else {
+					   	S.notice("Projeto salvo com sucesso!")
+			   			S.redirectTo("/project/event?id="+ac.id.is+"&opt=project")
 			   		}
 		   		}catch{
 					case (e:net.liftweb.http.ResponseShortcutException) =>{
@@ -283,6 +304,7 @@ class  ProjectSnippet extends BootstrapPaginatorSnippet[Project1] {
 		    "name=projectclass" #> (SHtml.select(classes,Full(ac.projectClass.is.toString),(s:String) => ac.projectClass( s.toLong)))&
 		    "name=projectstage" #> (SHtml.select(stages,Full(ac.projectStage.is.toString),(s:String) => ac.projectStage( s.toLong)))&
 		    "name=numberofguests" #> (SHtml.text(ac.numberofguests.is.toString, (s:String) => ac.numberofguests(s.toInt))) &
+			"name=projectOpt" #> (SHtml.text(ac.projectOpt.is.toString, (s:String) => {}))&
 			"name=obs" #> (SHtml.textarea(ac.obs.is, ac.obs(_)))&
 			"name=about" #> (SHtml.textarea(ac.about.is, ac.about(_)))&
 			"name=schedule" #> (SHtml.textarea(ac.schedule.is, ac.schedule(_)))&

@@ -38,6 +38,19 @@ class Project1 extends Audited[Project1] with KeyedMapper[Long, Project1] with B
     }
     object projectOpt extends MappedInt(this)// projeto evento, grupo orçamento...
 
+    def prjOpt (opt : String) : Int = {
+println ("vaiiiii ======================= no project opt " + opt)
+        if (opt == "budget" || opt == "5") {
+            5
+        } else if (opt == "event" || opt == "2") {
+            2
+        } else if (opt == "group" || opt == "3") {
+            3
+        } else {
+            1 // project
+        }
+    }
+
     def bp_managerName : String = {
         if (bp_manager != 0) {
           val ac = Customer.findByKey(bp_manager).get
@@ -53,10 +66,11 @@ class Project1 extends Audited[Project1] with KeyedMapper[Long, Project1] with B
     }
 
     override def save = {
-        if (!hasSponsor) {
-          throw new RuntimeException("Um cliente/sponsor é obrigatório!")
-        }
-        if (this.name == "") {
+// alguns grupos da cczs não tem sponsor
+//        if (!hasSponsor) {
+//          throw new RuntimeException("Um cliente/sponsor é obrigatório!")
+//        }
+        if (this.name == "" && hasSponsor) {
             this.name (Customer.findByKey(bp_sponsor).get.name.is)
             if (this.short_name == "") {
                 this.short_name (Customer.findByKey(bp_sponsor).get.short_name.is)

@@ -1,4 +1,6 @@
 $(function() {
+    $('#tooth').toothField(false);
+    $("#offsale").offSaleField(true);
     $("#new_item").click(function() {
       var agora = getHourBr(FactoryDate.byTime(Date.toDay().getTime()));
       $("#cutomer_id_treatment").val("")
@@ -39,22 +41,41 @@ $(function() {
     $("#start").val(start)
 
     getUsersCurrentUnitCommand ();
+    getAuxiliarsCurrentUnitCommand ();
 
     return;
 })
 
 var getActivities = function() {
-  DataManager.getCRMActivities(function(activitiesObj) {
+  DataManager.getActivities($("#user_budget").val(), function(activitysObj) {
+    global_activitiesObj = activitysObj;
     $('#activity option').remove();
-    var ret = "";
-    //var ret = "<option value=''>Selecione um serviço</option>";
-    for (var i in activitiesObj) {
-      ret += "<option value='" + activitiesObj[i].id + "'>" + activitiesObj[i].name + "</option>";
+    var ret = "<option value=''>Selecione um serviço</option>";
+    for (var i in activitysObj) {
+      ret += "<option value='" + activitysObj[i].id + "'>" + activitysObj[i].name + "</option>";
     }
     $('#activity').append(ret);
     //$('#activity').change().select2('open');
   });
 };
+
+var getAuxiliarsCurrentUnitCommand = function() {
+  var url;
+  url = "/cash/getAuxiliarsCurrentUnitCommand";
+  return $.get(url, function(t) {
+    var obj, _i, _len, _results;
+    eval("userObj = " + t);
+    $('#auxiliar, #auxiliar').append("<option value='0'>Selecione um auxiliar</option>");
+    _results = [];
+    for (_i = 0, _len = userObj.length; _i < _len; _i++) {
+      obj = userObj[_i];
+      _results.push($('#auxiliar, #auxiliar').append("<option value='" + obj.id + "'>" + 
+        obj.name + " " + obj.idForCompany + "</option>"));
+    }
+    return _results;
+  });
+};
+
 
 var getUsersCurrentUnitCommand = function() {
   var url;

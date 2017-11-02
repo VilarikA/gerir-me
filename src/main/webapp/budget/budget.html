@@ -1,0 +1,434 @@
+<div id="main" class="lift:surround?with=budget;at=content">
+  <script src="/js/angular.js"></script>
+  <script src="/js/angular-resource.min.js"></script>      
+  <script src="/js/angular.date.js"></script>
+  <script src="/js/datetimepicker/jquery.datetimepicker.js"></script>
+  <style>
+    @import url("/js/datetimepicker/jquery.datetimepicker.css");
+  </style>
+  <script type="text/javascript" src="/js/budget.js"></script>
+  <script type="text/javascript" charset="utf-8">
+    setTimeout(function(){
+      if($("#bp_sponsor").val() && $("#bp_sponsor").val() != '0'){
+        $("#bp_sponsor").change();
+      }
+/* rigel criado managername no project.scala
+      setTimeout(function(){
+        if($("#bp_manager").val() && $("#bp_manager").val() != '0'){
+          $("#bp_manager").change();
+        }
+      },500);
+*/
+    }, 500);    
+    //$('#stakeholdertype').stakeholderTypeField();
+  </script>
+  <script src="/js/angular.select2.js"></script>
+  <span class=' lift:ProjectSnippet.maintain'>
+    <form  class="lift:form.ajax">
+      <div class="well">
+        <label for="btn"></label>
+        <a class="btn primary" href="/budget/list_budget?opt=budget">Lista</a>
+        <input class="btn success lift:SecuritySnippet.isNotAdminRead" type="submit" value="Salvar">
+        <a class="btn primary" href="/budget/budget?opt=budget">Inserir novo</a>
+        <a class="btn primary" onclick="new_detail()">Novo item</a>
+      </div>
+      <div>
+        <span id="project_form">
+          <span class="row">
+            <span class="span18">
+              <div class="clearfix">
+                <label for="name">Nome</label>        
+                <div class="input">
+                  <div class='inline-inputs'>
+                    <div class="input-prepend" style='float:left; padding-right:10px'>
+                      <input class="large" id="name" name="name" size="30" type="text"/>
+                    </div>
+                    <div class="input-prepend">
+                      <input class="medium" id="short_name" name="short_name" size="30" type="text"/>
+                      <a data-original-title="Informação" data-content="clique para abrir a documentação" data-help-url='/docs/name.html' rel="popover" class="_popover_basic _help">
+                        <img src="/images/info.gif" width="20">
+                      </a>
+                    </div>
+                    <span class="help-block">Nome completo e nome reduzido, este último usado em alguns relatórios</span>
+                  </div>
+                </div>
+              </div>
+            </span>
+            <span class="span7">
+              <div class="clearfix">
+                <label for="startat">Início</label>
+                <div class="input">
+                  <div class='inline-inputs'>
+                    <div class="input-prepend" style='float:left; padding-right:10px'>
+                      <span class="add-on"><img width="16" src='/images/calendar_addon.png'/></span> 
+                      <input class="medium datetime" id="startat" name="startat" size="19" type="text"/>
+                    </div>
+                  </div>
+                </div>
+              </div>                     
+              <div class="clearfix">
+                <label for="projectclass">Classe de <span data-i18n='Orçamento'></span></label>
+                <div class="input">
+                  <select id='projectclass' class="projectclass" name='projectclass'></select>
+                  <span class="help-block">Classe de <span data-i18n='Orçamento'></span></span>
+                </div>
+              </div>
+              <div class="clearfix lift:SecuritySnippet.hasUnitModule">
+                <label for="unit">Unidade</label>
+                <div class="input">
+                  <div class="input-prepend">
+                    <select class="medium" id="unit" name="unit" >
+                    </select>
+                  </div>
+                  <span class="help-block">Unidade do <span data-i18n='Orçamento'></span></span>
+                </div>
+              </div>
+            </span>
+            <span class="span7">
+              <div class="clearfix">
+                <label for="startat">Fim</label>
+                <div class="input">
+                  <div class='inline-inputs'>
+                    <div class="input-prepend" style='float:left; padding-right:10px'>
+                      <span class="add-on"><img width="16" src='/images/calendar_addon.png'/></span> 
+                      <input class="medium datetime" id="endat" name="endat" size="19" type="text"/>
+                    </div>
+                  </div>
+                </div>
+              </div>                     
+              <div class="clearfix">
+                <label for="status">Status</label>
+                <div class="input">
+                  <select class="medium" id="status" name="status" >
+                  </select>
+                  <a data-original-title="Informação" data-content="clique para abrir a documentação" data-help-url='/docs/status.html' rel="popover" class="_popover_basic _help">
+                    <img src="/images/info.gif" width="20">
+                  </a>
+                </div>
+              </div>
+              <div class="clearfix">
+                <label for="projectstage">Estágio</label>
+                <div class="input">
+                  <select id='projectstage' class="projectstage" name='projectstage'></select>
+                </div>
+              </div>
+              <div class="clearfix lift:SecuritySnippet.hasCostcenterModule">
+                <label for="costcenter">Centro de Custo</label>
+                <div class="input">
+                  <select id='costcenter' class="costcenter" name='costcenter'></select>
+                </div>
+              </div>
+            </span>
+            <span class="span12">
+              <div class="clearfix">
+                <label for="bp_sponsor"><span data-i18n='Cliente'></span></label>
+                <div class="input">
+                  <span>
+                    <img class="customer_search_button" width='24' src="/images/search.png"/>
+                    <input data-url-name="bp_sponsor" class='mini id_customer_search url_parameter' id='bp_sponsor' name="bp_sponsor" /> 
+                    <input class="name_customer_search" name="bp_sponsorname" id="bp_sponsorname"  size="30" type="text" placeholder="Nome"/>    
+                  </span>
+                </div>
+              </div>
+              <div class="clearfix">
+                <label for="bp_manager"><span data-i18n='Profissional'></span></label>
+                <div class="input">
+                  <span>
+                    <img class="customer_search_button" width='24' src="/images/search.png"/>
+                    <input class='mini id_customer_search' id='bp_manager' name="bp_manager" /> 
+                    <input class="name_customer_search" name="manager" id="manager"  size="30" type="text" placeholder="Nome" data-just_user='true'/>
+                  </span>
+                  <span class="help-block">Responsável</span>
+                </div>
+              </div>
+              <div class="clearfix">
+                <label for="Obs">Obs</label>
+                <div class="input">
+                  <textarea class="large" id="obs" name="obs" size="30"></textarea>
+                  <span class="help-block">Observações</span>
+                </div>
+              </div>
+              <div class="clearfix">
+                <label for="about">Resumo</label>
+                <div class="input">
+                  <textarea class="large" id="about" name="about" size="30"></textarea>
+                  <span class="help-block">Sobre</span>
+                </div>
+              </div>
+              <div class="clearfix lift:SecuritySnippet.hasAuditModule">
+                  <label for="createdAt">Criado/Alterado</label>
+                  <div class="input">
+                    <div class='inline-inputs'>
+                      <div class="input-prepend" style='float:left; padding-right:10px'>
+                        <span class="add-on"><img width="16" src='/images/calendar_addon.png'/></span> 
+                        <input class="input-medium datetime disabled" disabled="true" id="createdAt" name="createdAt" size="19" type="text"/>
+                      </div>
+                      <div class="input-prepend" style='float:left; padding-right:10px'>
+                        <span class="add-on"><img width="16" src='/images/calendar_addon.png'/></span> 
+                        <input class="input-medium datetime disabled" disabled="true" id="updatedAt" name="updatedAt" size="19" type="text"/>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="input">
+                    <div class='inline-inputs'>
+                      <div class="input-prepend" style='float:left; padding-right:10px'>
+                        <span class="add-on"><img src='/images/sex.png'/></span> 
+                        <input class="input-medium disabled" disabled="true" id="createdby" name="createdby" size="19" type="text"/>
+                      </div>
+                      <div class="input-prepend" style='float:left; padding-right:10px'>
+                        <span class="add-on"><img src='/images/sex.png'/></span> 
+                        <input class="input-medium disabled" disabled="true" id="updatedby" name="updatedby" size="19" type="text"/>
+                      </div>
+                    </div>
+                  </div>                            
+              </div>                     
+            </span>
+          </span>
+        </span>
+      </div>
+      <span>
+        <ul class="tabs">
+          <li class="tab"><a href="#stakeholders">Participantes</a></li>
+          <li class="active tab"><a href="#paymentconditions">Condições de Pagamento</a></li>
+        </ul>
+        <div class="pill-content">
+          <div class="active tab_content row" id="stakeholders">
+            <span class='span12'>
+              <div class="clearfix">
+                <label for="bp_stakeholder">Participante</label>
+                <div class="input">
+                  <span>
+                    <img class="customer_search_button" width='24' src="/images/search.png"/>
+                    <input data-url-name="bp_stakeholder" class='mini id_customer_search url_parameter' id='bp_stakeholder' name="bp_stakeholder" /> 
+                    <input class="name_customer_search" name="bp_stakeholdername" id="bp_stakeholdername"  size="30" type="text" placeholder="Nome"/>    
+                  </span>
+                  <span class="help-block">Participante</span>
+                </div>
+              </div>
+              <div class="clearfix">
+                <label for="stakeholdertype">Tipo Participante</label>
+                <div class="input">
+                  <select id='stakeholdertype' class="stakeholdertype" name='stakeholdertype'></select>
+                  <span class="help-block">Tipo de participante</span>
+                </div>
+              </div>
+              <div class="clearfix">
+                <div class="input">
+                  <input class="btn success" id="add_stakeholder" type="button" value="Adicionar">
+                </div>
+              </div>              
+              <table id="table_stakeholders" class='bordered-table zebra-striped'>
+                <thead>
+                  <tr>
+                    <th>Tipo</th>
+                    <th>Nome</th>
+                    <th>Telefone</th>
+                    <th>Ações</th>
+                  </tr>
+                </thead>
+                <tbody>
+                </tbody>
+              </table>
+            </span>
+          </div>
+          <div class="active tab_content row" id="paymentconditions">
+            <form class='row'>
+              <div class='span6'>
+                <div class="clearfix">
+                    <label for="text">Dias</label>
+                    <div class="input">
+                        <input class="small" id="paymentconditions_days" size="30" type="text"/>
+                    </div>
+                </div>
+                <div class="clearfix">
+                    <label for="text">Percentual</label>
+                    <div class="input">
+                        <input class="small" id="paymentconditions_percent" size="30" type="text"/>
+                    </div>
+                </div>
+              </div>
+              <div class='span12'>
+                <div class="clearfix">
+                    <label for="text">Data</label>
+                    <div class="input">
+                        <input class="small date" id="paymentconditions_datepayment" size="30" type="text"/>
+                    </div>
+                </div>
+                <div class="clearfix">
+                    <label for="text">Valor</label>
+                    <div class="input">
+                        <input class="small currency" id="paymentconditions_value" size="30" type="text"/>
+                    </div>
+                </div>
+                <div class="clearfix">
+                    <label for="text">Obs</label>
+                    <div class="input">
+                        <input class="xlarge" id="paymentconditions_obs" size="30" type="textarea"/>
+                    </div>
+                </div>
+              </div>
+              <div class ='span18'>
+                <div class="clearfix">
+                  <div class="input">
+                    <input class="btn success" id="add_paymentcondition" type="button" value="Adicionar">
+                  </div>
+                </div>
+              </div>
+              <div class ='span18'>
+            <table id="table_paymentconditions" class='bordered-table zebra-striped'>
+              <thead>
+                <tr>
+                  <th>Dias</th>
+                  <th>Data</th>
+                  <th>Percentual</th>
+                  <th>Valor</th>
+                  <th>Obs</th>
+                  <th>Ações</th>
+                </tr>
+              </thead>
+              <tbody>
+              </tbody>
+            </table>
+            </div>
+            </form>
+          </div>
+        </div>  
+      </span>      
+    </form>
+    <div id="budget_modal" style="width: 60%; left: 20%; margin: auto auto auto auto; top:5%; height:100%; max-height:100%;" class="modal hide">
+      <div class="modal-header" style="border-bottom:none">
+        <a href="#" class="close">&times;</a>
+        <h3 class='hide_mobile' style="position: relative;margin: auto;margin-left: 10px;margin-right: 10px;text-align: center;">
+          Adicionar Atividade <span class="lift:CompanySnippet.thumb"> </span>
+        </h3>
+      </div>
+      <div class="modal-body ">
+        <div class="row">       
+          <form>
+            <div id="treatment_div_span">
+              <div class="well">
+                <input class="btn success b_add_budget" id="b_add_budget" type="button" value="Salvar">
+              </div>
+              <div class="span12">
+                <div class="clearfix">
+                  <label for='customer'>
+                    <img class="customer_search_button" width='24' src="/images/search.png"/>
+                  </label>
+                  <div class="input">
+                    <div class='inline-inputs'>
+                      <span>
+                        <input class='mini id_customer_search'  id="cutomer_id_treatment" name='customer' /> 
+                        <input class="disabled name_customer_search" name="name_customer" id="cutomer_name_treatment" size="30" type="text" placeholder="Nome" disabled=""/>
+                      </span>
+                      <span class="help-block"><span data-i18n='Cliente'></span> que será atendido
+                        <img id="customer_add_button" width='24' src="/images/add.png" alt="Cadastro rápido"/>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <div class="clearfix lift:SecuritySnippet.hasOffSaleModule">
+                  <label for="offsale">Convênio</label>
+                   <div class="input">
+                      <select name="offsale" id='offsale'></select>
+                   </div>
+                </div>                  
+                <input type="hidden" class="has-pet-system lift:SecuritySnippet.isEbellepetSystem" value="1">
+                <div class="clearfix lift:SecuritySnippet.isEbellepetSystem">
+                  <label for="animal">Pet</label>
+                    <div class="input">
+                        <select name="animal" id="animal"></select>
+                    <a href="#" title="Ir para animal"> <img src="/images/pets.png" width="32" onclick="openAnimalSelected()"></a>
+                    <a href="#" title="Prontuário"> <img src="/images/records.png" width="32" onclick='openAnimalRecordSelected()'></a>
+                    <a href="#" title="Cadastro rápido"> <img src="/images/add.png" width="32" onclick='openAnimalRapidAdd()'></a>
+                  </div>
+                </div>                  
+                <div class="clearfix">
+                  <label for="name"><span data-i18n='Profissionais'></label>
+                    <div class="input">
+                        <select class='local_storage' id='user_budget' name='user_budget'></select>
+                    </div>
+                </div>
+                <div class="clearfix lift:SecuritySnippet.hasAuxiliarModule">
+                  <label for="auxiliar"><span data-i18n='Assistente'></label>
+                    <div class="input">
+                      <div class="inline-inputs">
+                        <select id='auxiliar' name='auxiliar'></select>
+                      </div>
+                    </div>
+                </div>
+                <div class="lift:SecuritySnippet.IsEsmileSystem clearfix">
+                  <label for="tooth">Dente</label>
+                  <div class="input">
+                    <select class="xlarge" id="tooth" name="tooth" size="30"></select>
+                  </div>
+                </div>
+                <div class="clearfix">
+                  <label for="activity"><span data-i18n='Serviço'></span> </label>
+                  <div class="input">
+                    <div class="inline-inputs">
+                        <div style="float:left; padding-right:10px" class="input-prepend">
+                          <span class="add-on"><img width="16" src="/images/cut.png"></span> 
+                          <select name="activity" id='activity' class="local_storage"></select>
+                        </div>
+                    </div>
+                  </div>
+                </div>              
+                <div class="clearfix">
+                  <label for="start">Data</label>
+                    <div class="input">
+                      <div class="inline-inputs">
+                          <div style="float:left; padding-right:10px" class="input-prepend">
+                            <span class="add-on"><img width="16" src="/images/calendar_addon.png"></span>
+                            <input type="text" size="19" name="start" id="start" class="input-small date"/>
+                          </div>
+                          <input class="btn primary tomorrow_budget" id="tomorrow_budget" type="button" value="Amanhã">
+                          <input class="btn primary nextweek_budget" id="nextweek_budget" type="button" value="1 Semana">
+                          <input class="btn primary nextmonth_budget" id="nextmonth_budget" type="button" value="1 Mês">
+                      </div>
+                    </div>
+                </div>
+                <div class="clearfix">
+                  <label for="hour_start">Hora Início/Fim</label>
+                    <div class="input">
+                      <div class="inline-inputs">
+                          <div style="float:left; padding-right:10px" class="input-prepend">
+                            <span class="add-on"><img width="16" src="/images/clock.png"></span>
+                            <input type="text" size="19" name="hour_start" id="hour_start" class="mini time"/>
+                          </div>
+                          <div style="float:left; padding-right:10px" class="input-prepend">
+                            <span class="add-on"><img width="16" src="/images/clock.png"></span>
+                            <input type="text" size="19" name="hour_end" id="hour_end" class="mini time"/>
+                          </div>
+                      </div>
+                    </div>
+                </div>
+                <div class="clearfix">
+                  <label>Obs </label>
+                  <div class="input">
+                    <div class="inline-inputs">
+                      <textarea style = "width: 350px" name="obs" id="obs"></textarea>
+                    </div>
+                  </div>
+                </div>                     
+              </div>
+              <div class="well">
+                <input class="btn success b_add_budget" id="b_add_budget" type="button" value="Salvar">
+              </div>
+            </div>                    
+          </form>
+        </div>
+    </div>  
+    <script type="text/javascript" src="/js/reports.js"></script>
+    <script type="text/javascript" src="/js/events.js"></script>
+    <script>
+      $(function(){
+        $('#essential').jqte();
+        $('#sitedescription').jqte();
+        $('#wish').jqte();
+        $('#benefits').jqte();
+      });
+    </script>
+  </span>
+</div>
+
+
