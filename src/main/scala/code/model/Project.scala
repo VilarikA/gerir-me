@@ -283,7 +283,12 @@ class ProjectTreatment extends Audited[ProjectTreatment]
     object project extends MappedLongForeignKey(this, Project1)
     object treatment extends MappedLongForeignKey(this, Treatment)
     object treatmentDetail extends MappedLongForeignKey(this, TreatmentDetail)
-    object title extends MappedPoliteString(this,255)
+    object title extends MappedPoliteString(this,255) with LifecycleCallbacks {
+      override def beforeSave() {
+          super.beforeSave;
+          this.set(BusinessRulesUtil.toCamelCase(this.is))
+      }      
+    }  
     object obs extends MappedPoliteString(this,2000)
     object projectSection extends MappedLongForeignKey(this, ProjectSection)
     object treatmentDetailOk extends MappedLongForeignKey(this, TreatmentDetail)
@@ -320,15 +325,31 @@ class ProjectSection extends Audited[ProjectSection] with KeyedMapper[Long, Proj
     def getSingleton = ProjectSection
 
     object project extends MappedLongForeignKey(this, Project1)
-    object section extends MappedLong(this)
+    object orderInReport extends MappedLong(this)
 /* depois para cronograma
     object startAt extends EbMappedDateTime(this) {
         override def defaultValue = new Date()
     }
     object endAt extends EbMappedDateTime(this)
 */
-    object title extends MappedPoliteString(this,255)
+    object title extends MappedPoliteString(this,255) with LifecycleCallbacks {
+      override def beforeSave() {
+          super.beforeSave;
+          this.set(BusinessRulesUtil.toCamelCase(this.is))
+      }      
+    }  
     object obs extends MappedString(this, 2000)
+
+    def addSection(projectId:Long, orderInReport:Long, title:String, obs:String){
+        ProjectSection
+                .createInCompany
+                .project(projectId)
+                .orderInReport(orderInReport)
+                .title(title)
+                .obs(obs)
+                .save
+
+    }    
 }
 
 object ProjectSection extends ProjectSection 

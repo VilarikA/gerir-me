@@ -193,50 +193,56 @@
       </div>
       <span>
         <ul class="tabs">
-          <li class="tab"><a href="#stakeholders">Participantes</a></li>
-          <li class="active tab"><a href="#paymentconditions">Condições de Pagamento</a></li>
+          <li class="active tab"><a href="#sections">Seções</a></li>
+          <li class="tab"><a href="#paymentconditions">Condições de Pagamento</a></li>
         </ul>
         <div class="pill-content">
-          <div class="active tab_content row" id="stakeholders">
-            <span class='span12'>
-              <div class="clearfix">
-                <label for="bp_stakeholder">Participante</label>
-                <div class="input">
-                  <span>
-                    <img class="customer_search_button" width='24' src="/images/search.png"/>
-                    <input data-url-name="bp_stakeholder" class='mini id_customer_search url_parameter' id='bp_stakeholder' name="bp_stakeholder" /> 
-                    <input class="name_customer_search" name="bp_stakeholdername" id="bp_stakeholdername"  size="30" type="text" placeholder="Nome"/>    
-                  </span>
-                  <span class="help-block">Participante</span>
+          <div class="active tab_content row" id="sections">
+            <form class='row'>
+              <div class='span6'>
+                <div class="clearfix">
+                    <label for="text">Ordem</label>
+                    <div class="input">
+                        <input class="mini" id="sections_orderInReport" size="30" type="text"/>
+                    </div>
+                </div>
+                <div class="clearfix">
+                    <label for="text">Título</label>
+                    <div class="input">
+                        <input class="xlarge" id="sections_title" size="30" type="text"/>
+                    </div>
+                </div>
+                <div class="clearfix">
+                    <label for="text">Obs</label>
+                    <div class="input">
+                        <input class="xlarge" id="sections_obs" size="30" type="textarea"/>
+                    </div>
                 </div>
               </div>
-              <div class="clearfix">
-                <label for="stakeholdertype">Tipo Participante</label>
-                <div class="input">
-                  <select id='stakeholdertype' class="stakeholdertype" name='stakeholdertype'></select>
-                  <span class="help-block">Tipo de participante</span>
+              <div class ='span18'>
+                <div class="clearfix">
+                  <div class="input">
+                    <input class="btn success" id="add_section" type="button" value="Adicionar">
+                  </div>
                 </div>
               </div>
-              <div class="clearfix">
-                <div class="input">
-                  <input class="btn success" id="add_stakeholder" type="button" value="Adicionar">
-                </div>
-              </div>              
-              <table id="table_stakeholders" class='bordered-table zebra-striped'>
-                <thead>
-                  <tr>
-                    <th>Tipo</th>
-                    <th>Nome</th>
-                    <th>Telefone</th>
-                    <th>Ações</th>
-                  </tr>
-                </thead>
-                <tbody>
-                </tbody>
-              </table>
-            </span>
+              <div class ='span18'>
+            <table id="table_sections" class='bordered-table zebra-striped'>
+              <thead>
+                <tr>
+                  <th>Ordem</th>
+                  <th>Título</th>
+                  <th>Obs</th>
+                  <th>Ações</th>
+                </tr>
+              </thead>
+              <tbody>
+              </tbody>
+            </table>
+            </div>
+            </form>
           </div>
-          <div class="active tab_content row" id="paymentconditions">
+          <div class="tab_content row" id="paymentconditions">
             <form class='row'>
               <div class='span6'>
                 <div class="clearfix">

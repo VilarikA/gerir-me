@@ -1201,6 +1201,22 @@ object Reports2 extends RestHelper with ReportRest with net.liftweb.common.Logge
 				toResponse(SQL,List(AuthUtil.company.id.is, project)) //, start, end))
 			}
 
+			case "report" :: "section_by_project" :: Nil Post _ =>{
+				def project = S.param("project") match {
+					case Full(p) => p.toLong
+					case _ => 0l
+				}
+				val SQL = """
+					select orderinreport, title, obs, id from projectsection 
+					where 
+					company = ? and project = ? and status = 1
+					order by orderinreport, title
+	        	"""
+
+				toResponse(SQL,List(AuthUtil.company.id.is, project)) //, start, end))
+			}
+
+
 			case "report" :: "td_activities" :: Nil Post _ =>{
 				def treatment = S.param("treatment") match {
 					case Full(p) => p.toLong
