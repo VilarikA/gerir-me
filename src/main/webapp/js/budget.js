@@ -14,20 +14,15 @@ alert (" na var function click aqui não chega NUNCA !!!!!! ")
       }
       newItem ();
     });
+    $("#product").productSearch({
+      createName: false,
+      iconElement: ".add-on",
+      userThuch: true,
+      userFieldSelector: '#user'
+    });
 
     $(".b_add_budget").click(function() {
       return saveBudget ();
-    });
-
-    $(".tomorrow_budget").click(function() {
-      return tomorrowBudget ();
-    });
-
-    $(".nextweek_budget").click(function() {
-      return nextweekBudget ();
-    });
-    $(".nextmonth_budget").click(function() {
-      return nextmonthBudget ();
     });
 
     $("#cutomer_id_treatment").change(function(){
@@ -57,6 +52,19 @@ var getActivities = function() {
       ret += "<option value='" + activitysObj[i].id + "'>" + activitysObj[i].name + "</option>";
     }
     $('#activity').append(ret);
+    //$('#activity').change().select2('open');
+  });
+};
+
+var getProjectSections = function() {
+  DataManager.getProjectSections(gup("id"), function(projectSectionObj) {
+    global_activitiesObj = projectSectionObj;
+    $('#projectSection option').remove();
+    var ret = "<option value=''>Selecione uma seção</option>";
+    for (var i in projectSectionObj) {
+      ret += "<option value='" + projectSectionObj[i].id + "'>" + projectSectionObj[i].name + "</option>";
+    }
+    $('#projectSection').append(ret);
     //$('#activity').change().select2('open');
   });
 };
@@ -96,31 +104,11 @@ var getUsersCurrentUnitCommand = function() {
   });
 };
 
-var tomorrowBudget = function() {
-  var today = new Date();
-  var tomorrow = new Date(today.getTime() + 24 * 60 * 60 * 1000);
-  var start = getDateBr(tomorrow);
-  $("#start").val(start)
-}
-
-var nextweekBudget = function() {
-  var today = new Date();
-  var nextweek = new Date(today.getTime() + ((24 * 60 * 60 * 1000) * 7));
-  var start = getDateBr(nextweek);
-  $("#start").val(start)
-}
-
-var nextmonthBudget = function() {
-  var today = new Date();
-  var nextweek = new Date(today.getTime() + ((24 * 60 * 60 * 1000) * 30));
-  var start = getDateBr(nextweek);
-  $("#start").val(start)
-}
-
 var newItem = function() {
   if (!gup("id") || gup("id") == "") {
     return alert('É preciso salvar o orçamento antes de inserir itens ao mesmo');
   }
+  getProjectSections ();
   getActivities ();    
   return $("#budget_modal").modal({
     "show": true,

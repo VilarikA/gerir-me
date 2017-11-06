@@ -75,6 +75,17 @@ object ProjectApi extends RestHelper with ReportRest with net.liftweb.common.Log
 				projectObj.delete_!
 				JInt(1)
 			}			
+
+			case "project" :: "getProjectSections" :: projectId :: Nil JsonGet _ =>{
+				JsArray(ProjectSection.findAllInCompany(By(ProjectSection.project, projectId.toLong)).
+					map((a) => {
+					JsObj(
+							("name",a.title.is),
+							("id",a.id.is)
+						)
+					}))
+			}
+
 			case "api" :: "v2" :: "projectclass" :: Nil JsonGet _ =>{
 			 	JsArray(ProjectClass.findAllInCompany.map((obj:ProjectClass) =>{
 			 		obj.asJsToSelect

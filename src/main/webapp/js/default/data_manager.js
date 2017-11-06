@@ -8,6 +8,7 @@ var DataManagerClass = function() {
 	var paymentTypes = [];
 	var cheques = [];
 	var activitys = [];
+	var projectsections = [];
 	var units = [];
 	var chashiers = [];
 	var causes = [];
@@ -147,6 +148,24 @@ var DataManagerClass = function() {
 			});
 		}
 	};
+
+	this.getProjectSections = function(project, callback) {
+		if (arguments.length == 1) {
+			callback = project;
+			project = false;
+		}
+		if (projectsections[project || 0] && projectsections[project || 0].length > 0) {
+			callback(projectsections[project || 0])
+
+		} else {
+			url = "/project/getProjectSections/" + project;
+			$.get(url, function(t) {
+				eval("projectsections[project] = " + t);
+				callback(projectsections[project])
+			});
+		}
+	};
+
 	this.getPaymentTypes = function(callback) {
 		if (paymentTypes.length > 0) {
 			callback(paymentTypes)
