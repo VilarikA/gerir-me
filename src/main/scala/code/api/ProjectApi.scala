@@ -77,7 +77,9 @@ object ProjectApi extends RestHelper with ReportRest with net.liftweb.common.Log
 			}			
 
 			case "project" :: "getProjectSections" :: projectId :: Nil JsonGet _ =>{
-				JsArray(ProjectSection.findAllInCompany(By(ProjectSection.project, projectId.toLong)).
+				JsArray(ProjectSection.findAllInCompany(
+					By(ProjectSection.project, projectId.toLong),
+					OrderBy (ProjectSection.orderInReport, Ascending)).
 					map((a) => {
 					JsObj(
 							("name",a.title.is),

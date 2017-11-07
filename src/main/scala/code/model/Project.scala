@@ -112,6 +112,12 @@ println ("vaiiiii ======================= no project opt " + opt)
         addStakeholder(bp_manager.is, StakeHolderType.MANAGER)
         addStakeholder(bp_sponsor.is, StakeHolderType.SPONSOR)
         //}
+        if(ProjectSection.count(By(ProjectSection.project,this.id)) < 1){
+            val ac = ProjectSection.createInCompany.
+            project(this.id).
+            title(this.name)
+            ac.save
+        }
         r
     }
 
@@ -255,7 +261,7 @@ class StakeHolderType extends Audited[StakeHolderType] with PerCompany with IdPK
     def getSingleton = StakeHolderType
     override def updateShortName = false
     object obs extends MappedPoliteString(this,255)
-    object orderInreport extends MappedInt(this){
+    object orderInReport extends MappedLong(this){
         override def defaultValue = 10
     }
 }
@@ -298,12 +304,13 @@ class ProjectTreatment extends Audited[ProjectTreatment]
             By(ProjectTreatment.treatmentDetail, treatmentDetail))
     }
      
-    def createProlectTreatment(project:Long, treatment:Long, treatmentDetail:Long):Long = {
+    def createProjectTreatment(project:Long, projectSection:Long, treatment:Long, treatmentDetail:Long):Long = {
         val itcount = ProjectTreatment.countProjectTreatment (treatment, treatmentDetail)
         if (itcount < 1) {
             val projectTreatment = ProjectTreatment.createInCompany.project(project)
             .treatment(treatment)
             .treatmentDetail(treatmentDetail)
+            .projectSection (projectSection)
             .obs("teste")
             projectTreatment.save
             projectTreatment.id.is
@@ -325,7 +332,9 @@ class ProjectSection extends Audited[ProjectSection] with KeyedMapper[Long, Proj
     def getSingleton = ProjectSection
 
     object project extends MappedLongForeignKey(this, Project1)
-    object orderInReport extends MappedLong(this)
+    object orderInReport extends MappedLong(this) {
+        override def defaultValue = 10
+    }
 /* depois para cronograma
     object startAt extends EbMappedDateTime(this) {
         override def defaultValue = new Date()

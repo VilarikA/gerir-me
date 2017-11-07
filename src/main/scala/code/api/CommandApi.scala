@@ -191,6 +191,7 @@ object CommandApi extends RestHelper with ReportRest with net.liftweb.common.Log
 				def offsale = S.param("offsale") openOr ""
 				def status = S.param("status") openOr ""
 				def project = S.param("project") openOr "" // normaly budget
+				def projectSection = S.param("projectSection") openOr "" // normaly budget section
 
 				def userId:String = S.param("user") openOr "0"
 				def customerId:String = S.param("customer") openOr "0"
@@ -230,7 +231,8 @@ println ("vaiiii ====================== " + status)
 						tempd1.get.obs(obs).save
 					}
 					if (status == "9" && project != "") { // budget
-						ProjectTreatment.createProlectTreatment(project.toLong, tempt.get.id, tempd1.get.id)
+						ProjectTreatment.createProjectTreatment(project.toLong, 
+							projectSection.toLong, tempt.get.id, tempd1.get.id)
 					}
 				} else {
 					var tempd = TreatmentService.addDetailTreatmentWithoutValidate(tempt.get.id, activity.toLong, 
@@ -245,7 +247,8 @@ println ("vaiiii ====================== " + status)
 						tempd.get.obs(obs).save
 					}
 					if (status == "9" && project != "") { // budget
-						ProjectTreatment.createProlectTreatment(project.toLong, tempt.get.id, tempd.get.id)
+						ProjectTreatment.createProjectTreatment(project.toLong, 
+							projectSection.toLong, tempt.get.id, tempd.get.id)
 					}
 				}
 				if (end != "" && end.length > 11) {

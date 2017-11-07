@@ -60,7 +60,7 @@ var getProjectSections = function() {
   DataManager.getProjectSections(gup("id"), function(projectSectionObj) {
     global_activitiesObj = projectSectionObj;
     $('#projectSection option').remove();
-    var ret = "<option value=''>Selecione uma seção</option>";
+    var ret = ""; //"<option value=''>Selecione uma seção</option>";
     for (var i in projectSectionObj) {
       ret += "<option value='" + projectSectionObj[i].id + "'>" + projectSectionObj[i].name + "</option>";
     }
@@ -108,8 +108,16 @@ var newItem = function() {
   if (!gup("id") || gup("id") == "") {
     return alert('É preciso salvar o orçamento antes de inserir itens ao mesmo');
   }
+  var ps = $("#projectSection").val()
   getProjectSections ();
+  if (ps) {
+    $("#projectSection").val(ps).change();
+  }
+  var ac = $("#activity").val()
   getActivities ();    
+  if (ac) {
+    $("#activity").val(ac).change();
+  }
   return $("#budget_modal").modal({
     "show": true,
     "keyboard": true,
@@ -120,7 +128,8 @@ var newItem = function() {
 var callApiLock = false;
 
 var saveBudget = function() {
-  var end, obs, start, user, password, auxiliar, animal, offsale;
+  var end, obs, start, user, password, auxiliar, animal, offsale
+  projectSection;
   start = $("#start").val() + " " + $("#hour_start").val();
   // aqui é start mesmo pq dt fim não é informada
   end = $("#start").val() + " " + $("#hour_end").val();
@@ -134,7 +143,8 @@ var saveBudget = function() {
   amount = "1" //$("#amount").val();
   obs = $("#obs").val();
   activity = $("#activity").val();
-  product = "" //$("#product").val();
+  product = $("#product").val();
+  projectSection = $("#projectSection").val();
   var valid = false;
 
   if ((!$("#cutomer_id_treatment").val()) || (parseFloat($("#cutomer_id_treatment").val()) == 0)) {
@@ -152,6 +162,10 @@ var saveBudget = function() {
 
   if ((!$("#user_budget").val()) || (parseFloat($("#user_budget").val()) == 0)) {
     return alert('Um profissional precisa ser selecionado!');
+  }
+
+  if ((!$("#projectSection").val()) || (parseFloat($("#projectSection").val()) == 0)) {
+    return alert('Uma seção precisa ser selecionado!');
   }
 
   if (!callApiLock) {
@@ -172,6 +186,7 @@ var saveBudget = function() {
         "activity": activity,
         "status": "9", // budget
         "project": gup("id"), // budget
+        "projectSection": projectSection, // budget section
         "product": product
       }, function(results) {
         if(results === 1 || results == "1"){
