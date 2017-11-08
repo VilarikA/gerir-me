@@ -159,7 +159,7 @@
         decode: function(name, row) {
           trStatus = 9;
           trStatus2 = 17;
-          return trStatusdecode (name,row)
+          return trStatusdecode (name,row, true)
         }
       };
 

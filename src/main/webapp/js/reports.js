@@ -2,7 +2,7 @@
 
 var trStatus = 0;
 var trStatus2 = 0;
-var trStatusdecode = function(name, row){
+var trStatusdecode = function(name, row, showhint){
 // duplicado do treatments_conference.js
   var status = row[trStatus]
   var statstr = '' 
@@ -43,7 +43,11 @@ var trStatusdecode = function(name, row){
     statstr = 'Budget'
     title ='orçamento'
   }
-  return "<img title='" + title + "' src='/images/treatment_"+statstr.toLowerCase()+"1.png' width='24'/>"
+  if (showhint) {
+    return "<p>" + title + "</p><img title='" + title + "' src='/images/treatment_"+statstr.toLowerCase()+"1.png' width='24'/>"
+  } else {
+    return "<img title='" + title + "' src='/images/treatment_"+statstr.toLowerCase()+"1.png' width='24'/>"
+  }
 }
 
 var ageDecode = function (value) {
