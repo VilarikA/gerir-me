@@ -196,4 +196,11 @@ object PaymentType extends PaymentType with LongKeyedMapperPerCompany[PaymentTyp
            case a:Any => a.toString.toDouble
            case _ => 0.toDouble
     }
+ 
+    def resetPt (company:Company, nameLike:String) = {
+      val pm = PaymentType.findAll (By(PaymentType.company, company),
+        BySql(" lower (name) like ? ",IHaveValidatedThisSQL("dateevent","01-01-2012 00:00:00"),nameLike))
+      pm(0).status (0).save
+    }
+
  }

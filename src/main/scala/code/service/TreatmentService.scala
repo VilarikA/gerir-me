@@ -166,11 +166,17 @@ object  TreatmentService extends net.liftweb.common.Logger {
 */
 
 	def loadTreatmentByCommandOrCustomer(command:String,customer:Long,dateIni:Date,date:Date,unit:Long):List[Treatment] = {
+		val statusSql = if (date != dateIni) {
+			" status not in (5,8,1) "
+		} else {
+			" status not in (5) "
+		}
 		if (command == "0") {
 			// vai pelo customer
 			Treatment.findAllInCompany(By(Treatment.customer,customer),
 			  By(Treatment.unit,unit),
 			  By(Treatment.hasDetail,true),
+			  BySql(statusSql,IHaveValidatedThisSQL("dateevent","01-01-2012 00:00:00")),
 			  BySql("dateevent between date(?) and date(?)",IHaveValidatedThisSQL("dateevent","01-01-2012 00:00:00"),dateIni, date),
 			  OrderBy(Treatment.id, Ascending)
 			 )
@@ -180,6 +186,7 @@ object  TreatmentService extends net.liftweb.common.Logger {
 			  By(Treatment.command,command), 
 			  By(Treatment.unit,unit),
 			  By(Treatment.hasDetail,true),
+			  BySql(statusSql,IHaveValidatedThisSQL("dateevent","01-01-2012 00:00:00")),
 			  BySql("dateevent between date(?) and date(?)",IHaveValidatedThisSQL("dateevent","01-01-2012 00:00:00"),dateIni, date),
 			  OrderBy(Treatment.id, Ascending)
 			 )
@@ -188,6 +195,7 @@ object  TreatmentService extends net.liftweb.common.Logger {
 			Treatment.findAllInCompany(By(Treatment.command,command),
 			  By(Treatment.unit,unit),
 			  By(Treatment.hasDetail,true),
+			  BySql(statusSql,IHaveValidatedThisSQL("dateevent","01-01-2012 00:00:00")),
 			  BySql("dateevent between date(?) and date(?)",IHaveValidatedThisSQL("dateevent","01-01-2012 00:00:00"),dateIni, date),
 			  OrderBy(Treatment.id, Ascending)
 			 )

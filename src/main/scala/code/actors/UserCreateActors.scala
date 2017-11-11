@@ -5,7 +5,7 @@ import net.liftweb._
 import mapper._
 import http._
 import actor._
-import model.{Company, CompanyUnit, Customer, ProductType, Account, User, Product, Activity, PermissionModule}
+import model.{Company, CompanyUnit, Customer, ProductType, Account, User, Product, Activity, PermissionModule, PaymentType}
 import code.util._
 import java.util.Random
 import java.util.Date
@@ -293,6 +293,12 @@ object FinancialSqlMigrate{
     val id = company.id.is
     DB.runUpdate(CREATE_PAYMENT_TYPES,id::Nil)
     DB.runUpdate(UPDATE_FACT_INFORMATIONS,id::id::id::id::Nil)
+    if (company.appType == Company.SYSTEM_EBELLE) {
+      //"ebelle"
+      PaymentType.resetPt (company, "%mensalidade%");
+    } else if (company.appType == Company.SYSTEM_GERIRME) {
+      //
+    } 
   }  
   
   val CLEAR_ACCOUNTS = "delete from accountcategory where company =?";
