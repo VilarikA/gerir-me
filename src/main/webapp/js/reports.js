@@ -109,6 +109,16 @@ function renderReport(url, fields, filter, grid_selector, callback_report, isCro
   if (!grid_selector) {
     grid_selector = "#grid";
   }
+
+  var textNullDecode = function (value) {
+    if (!value || value == 'null') {
+      ret = ""
+    } else {
+      ret = value || "";
+    } 
+    return ret;
+  };
+
   var textDecode = function (value) {
 
     return value || "";
@@ -188,6 +198,8 @@ function renderReport(url, fields, filter, grid_selector, callback_report, isCro
       return realDecode(value);
     case "realNull":
       return realNullDecode(value);
+    case "textNull":
+      return textNullDecode(value);
     case "approved":
       return approvedDecode(value);
     default:

@@ -195,11 +195,46 @@
       </div>
       <span>
         <ul class="tabs">
-          <li class="active tab"><a href="#sections">Seções</a></li>
+          <li class="active tab"><a href="#items">Itens</a></li>
+          <li class="tab"><a href="#sections">Seções</a></li>
           <li class="tab"><a href="#paymentconditions">Condições de Pagamento</a></li>
         </ul>
         <div class="pill-content">
-          <div class="active tab_content row" id="sections">
+          <div class="active tab_content row" id="items">
+            <form class='row'>
+              <div class='span6'>
+              </div>
+              <div class ='span18'>
+                <div class="clearfix">
+                  <div class="input">
+                    <input class="btn success" id="add_section" type="button" value="Adicionar">
+                  </div>
+                </div>
+              </div>
+              <div class ='span18'>
+            <table id="table_items" class='bordered-table zebra-striped'>
+              <thead>
+                <tr>
+                  <th>Orçamento</th>
+                  <th>Seção</th>
+                  <th>Prod/Serv</th>
+                  <th>Dente</th>
+                  <th>Pr Lista</th>
+                  <th>Tot Lista</th>
+                  <th>Qtde</th>
+                  <th>Pr Unit</th>
+                  <th>Pr Total</th>
+                  <th>Realiz</th>
+                  <th>Ações</th>
+                </tr>
+              </thead>
+              <tbody>
+              </tbody>
+            </table>
+            </div>
+            </form>
+          </div>
+          <div class="tab_content row" id="sections">
             <form class='row'>
               <div class='span6'>
                 <div class="clearfix">
@@ -435,7 +470,7 @@
                         </div>
                       </div>
                   </div>
-                  <div class="clearfix lift:SecuritySnippet.isNotMedicalSystem">
+                  <div class="clearfix">
                     <label for="price">Valor/Qtde</label>
                       <div class="input">
                         <div class="inline-inputs">

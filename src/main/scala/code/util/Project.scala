@@ -24,6 +24,7 @@ object Project{
 	var date_format_js = new java.text.SimpleDateFormat ("yyyy-MM-dd HH:mm:ss")
 	var date_format_db = new java.text.SimpleDateFormat ("yyyy-MM-dd")
 	val date_format_day_and_month = new java.text.SimpleDateFormat ("dd/MM")
+  val date_format_month_and_year = new java.text.SimpleDateFormat ("MM/YYYY")
 	lazy val isLinuxServer = sys.props("os.name") == "Linux"
 
   lazy val isLocalHost = if (S.hostName.contains ("localhost") || 
@@ -321,6 +322,10 @@ object Project{
 	def dateToMonthAndDay(date:Date) = {
 		date_format_day_and_month.format(date)
 	}
+
+  def dateToMonthAndYear(date:Date) = {
+    date_format_month_and_year.format(date)
+  }
 
 	def strToDateOrToday(date:String) = date match {
 				case (s:String) if(s != "") => Project.strOnlyDateToDate(s)

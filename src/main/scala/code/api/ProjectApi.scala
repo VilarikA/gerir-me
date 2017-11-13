@@ -88,6 +88,25 @@ object ProjectApi extends RestHelper with ReportRest with net.liftweb.common.Log
 					}))
 			}
 
+			case "project" :: budget :: projectId :: Nil Post _ =>{
+				val SQL = """
+					select pj.name, ps.title, pr.name, tdd.tooth, pr.saleprice, pr.saleprice * td.amount, 
+					td.amount, td.price/td.amount, td.price, td1.price, td.id
+					from project pj
+					inner join projectsection ps on ps.project = pj.id
+					inner join projecttreatment pt on pt.project = pj.id and pt.projectsection = ps.id
+					inner join treatment tr on tr.id = pt.treatment
+					inner join treatmentdetail td on td.id = pt.treatmentdetail
+					inner join product pr on pr.id = td.activity or pr.id = td.product
+					left join tdedoctus tdd on tdd.treatmentDetail = td.id
+					left join treatmentdetail td1 on td1.id = pt.treatmentdetailok
+					where pj.company =? and pj.id = ?
+					order by ps.orderinreport, tr.id, td.id
+				"""
+				toResponse(SQL,List(AuthUtil.company.id.is, 
+					projectId.toLong)) 
+			}
+
 			case "api" :: "v2" :: "projectclass" :: Nil JsonGet _ =>{
 			 	JsArray(ProjectClass.findAllInCompany.map((obj:ProjectClass) =>{
 			 		obj.asJsToSelect

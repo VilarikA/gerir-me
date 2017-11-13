@@ -154,16 +154,11 @@ var DataManagerClass = function() {
 			callback = project;
 			project = false;
 		}
-		if (projectsections[project || 0] && projectsections[project || 0].length > 0) {
-			callback(projectsections[project || 0])
-
-		} else {
-			url = "/project/getProjectSections/" + project;
-			$.get(url, function(t) {
-				eval("projectsections[project] = " + t);
-				callback(projectsections[project])
-			});
-		}
+		url = "/project/getProjectSections/" + project;
+		$.get(url, function(t) {
+			eval("projectsections[project] = " + t);
+			callback(projectsections[project])
+		});
 	};
 
 	this.getPaymentTypes = function(callback) {

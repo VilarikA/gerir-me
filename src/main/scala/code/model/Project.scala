@@ -98,7 +98,7 @@ println ("vaiiiii ======================= no project opt " + opt)
 //          throw new RuntimeException("Um cliente/sponsor é obrigatório!")
 //        }
         if (this.name == "" && hasSponsor) {
-            this.name (Customer.findByKey(bp_sponsor).get.name.is)
+            this.name (Customer.findByKey(bp_sponsor).get.name.is + " " + Project.dateToMonthAndYear(Project.today))
             if (this.short_name == "") {
                 this.short_name (Customer.findByKey(bp_sponsor).get.short_name.is)
             }

@@ -128,7 +128,8 @@ var newItem = function() {
 var callApiLock = false;
 
 var saveBudget = function() {
-  var end, obs, start, user, password, auxiliar, animal, offsale
+  var end, obs, start, user, password, auxiliar, animal, 
+  price, amount, tooth, offsale
   projectSection;
   start = $("#start").val() + " " + $("#hour_start").val();
   // aqui é start mesmo pq dt fim não é informada
@@ -139,11 +140,12 @@ var saveBudget = function() {
   animal = $("#animal").val() || 0 ;
   offsale = $("#offsale").val() || 0;
   customer = $("#cutomer_id_treatment").val();
-  price = "" //$("#price").val();
-  amount = "1" //$("#amount").val();
+  price = $("#price").val();
+  amount = $("#amount").val();
   obs = $("#obs").val();
   activity = $("#activity").val();
   product = $("#product").val();
+  tooth = $("#tooth").val();
   projectSection = $("#projectSection").val();
   var valid = false;
 
@@ -187,7 +189,8 @@ var saveBudget = function() {
         "status": "9", // budget
         "project": gup("id"), // budget
         "projectSection": projectSection, // budget section
-        "product": product
+        "product": product,
+        "tooth":tooth
       }, function(results) {
         if(results === 1 || results == "1"){
           alert("Cadastrado com sucesso");

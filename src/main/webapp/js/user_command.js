@@ -339,7 +339,7 @@
 
     Manager.save = function() {
       var end, obs, start, user, password, auxiliar, 
-      animal, tooth, offsale;
+      animal, tooth, price, amount, offsale;
       start = $("#start").val() + " " + $("#hour_start").val();
       // aqui é start mesmo pq dt fim não é informada
       end = $("#start").val() + " " + $("#hour_end").val();

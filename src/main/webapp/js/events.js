@@ -75,11 +75,25 @@ var updateReportSection = function() {
 	}, "#table_sections");
 };
 
+var updateReportItems = function() {
+    var fields = [];
+    fields[3] = "textNull";
+    fields[4] = "real";
+    fields[5] = "real";
+    fields[6] = "real";
+    fields[7] = "real";
+    fields[8] = "real";
+	renderReport("/project/budget/" + gup('id'), fields, {
+		project: gup('id')
+	}, "#table_items");
+};
+
 $(function() {
 	if (gup('id')) {
 		updateReportStake();
 		updateReportCondition();
 		updateReportSection();
+		updateReportItems();
 		$("#add_stakeholder").click(function() {
 			$.post("/project/add_stakeholder/" + gup('id'), {
 					bp_stakeholder: $("#bp_stakeholder").val(),
