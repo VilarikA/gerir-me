@@ -518,6 +518,9 @@
                             <label for="is_customer">É <span data-i18n='Cliente'></span></label>
                             <div class="input">
                                 <input name="is_customer" id="is_customer"/>
+                                <a data-original-title="Informação" data-content="clique para abrir a documentação" data-help-url='/docs/customer_properties.html' rel="popover" class="_popover_basic _help">
+                                <img src="/images/info.gif" width="20">
+                                </a>
                                 <span class="help-block">Indica que este parceiro é um <span data-i18n='Cliente'></span></span>
                             </div>
                         </div>
@@ -535,28 +538,28 @@
                                 <span class="help-block">Indica que este parceiro é um prospect</span>
                             </div>
                         </div>
-                        <div class="clearfix">
+                        <div class="clearfix lift:SecuritySnippet.isInventoryManager">
                             <label for="is_suplier">É Fornecedor</label>
                             <div class="input">
                                 <select name="is_suplier"></select>
                                 <span class="help-block">Indica que este parceiro é um fornecedor</span>
                             </div>
                         </div>
-                        <div class="clearfix">
+                        <div class="clearfix lift:SecuritySnippet.isInventoryManager">
                             <label for="is_brand">É Fabricante</label>
                             <div class="input">
                                 <select name="is_brand"></select>
                                 <span class="help-block">Indica que este parceiro é um fabricante de produtos</span>
                             </div>
                         </div>
-                        <div class="clearfix">
+                        <div class="clearfix lift:SecuritySnippet.isPeopleManager">
                             <label for="is_employee">É <span data-i18n='Profissional'></span></label>
                             <div class="input">
                                 <select name="is_employee"></select>
                                 <span class="help-block">Indica que este parceiro é um <span data-i18n='Profissional'></span> da empresa</span>
                             </div>
                         </div>
-                        <div class="clearfix">
+                        <div class="clearfix lift:SecuritySnippet.isPeopleManager">
                             <label for="is_employee">Status <span data-i18n='Profissional'></span></label>
                             <div class="input">
                                 <select id="userstatus" name="userstatus" size="5 ">
@@ -564,13 +567,14 @@
                                 <span class="help-block">Status do <span data-i18n='Profissional'></span></span>
                             </div>
                         </div>
-                        <div class="clearfix">
+                        <div class="clearfix lift:SecuritySnippet.isPeopleManager">
                             <label for="is_user">É Usuário</label>
                             <div class="input">
                                 <select name="is_user"></select>
                                 <span class="help-block">Indica que este parceiro é um usuário que acessa o <span class='system-name'></span></span>
                             </div>
                         </div>
+                        <span class="lift:SecuritySnippet.isPeopleManager">
                         <div class="lift:SecuritySnippet.hasAuxiliarModule clearfix">
                             <label for="is_auxiliar">É <span data-i18n='Assistente'></span></label>
                             <div class="input">
@@ -578,6 +582,7 @@
                                 <span class="help-block">Indica que este parceiro é um <span data-i18n='Assistente'></span></span>
                             </div>
                         </div>
+                        </span>
                     </div>
                 </div>
                 <div class="tab_content row" id="fidelity">

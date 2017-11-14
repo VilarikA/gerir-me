@@ -82,6 +82,13 @@ object SecuritySnippet {
         NodeSeq.Empty
       }
 
+      def isPeopleManager(in:NodeSeq):NodeSeq ={
+        if (AuthUtil.user.isPeopleManager)
+        in
+        else
+        NodeSeq.Empty
+      }
+
       def isInventoryManager(in:NodeSeq):NodeSeq ={
         if (AuthUtil.user.isInventoryManager)
         in
