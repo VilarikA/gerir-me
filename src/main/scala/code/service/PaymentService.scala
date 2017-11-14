@@ -32,11 +32,11 @@ object  PaymentService extends  net.liftweb.common.Logger  {
 		val validTreatments = treatRemovedTreatments(treatments)
 		validTreatments.map((t:TreatmentDTO) => {
 			val treatment:Treatment = factoryTreatment(t,command,dateTreatment)
-			if (treatment.hasDetail) {
+//			if (treatment.hasDetail) {
 				// rigel 08/11/2017
 				// fiz o if pq antes setava paid em treatment vazio
 				saveTreatment(treatment, validate)
-			}
+//			}
 			
 			val validActivities = treatRemovedActivity(t.activitys)
 			validActivities foreach((a:ActivityDTO) => {
@@ -59,7 +59,7 @@ object  PaymentService extends  net.liftweb.common.Logger  {
 					detail.getTdEdoctus.tooth(a.tooth).save;
 				}
 			})
-			if (treatment.hasDetail) {
+//			if (treatment.hasDetail) {
 				// rigel 08/11/2017
 				// fiz o if pq antes setava paid em treatment vazio
 				treatment.status(status)
@@ -67,7 +67,7 @@ object  PaymentService extends  net.liftweb.common.Logger  {
 					treatment.status2(status)
 				}
 				saveTreatment(treatment, validate)
-			}
+//			}
 			treatment
 		})
 	}
