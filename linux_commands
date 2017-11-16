@@ -1,3 +1,7 @@
+select id, name as nome, commission as comissao, saleprice as preco, duration as duracao, obs from product where company = 387 and productclass = 0
+order by name
+
+
 rever o IP no 
 boot.scala
 no toolbar.html

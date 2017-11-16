@@ -57,6 +57,12 @@ class PaymentDetail extends LongKeyedMapper[PaymentDetail]  with IdPK with Creat
       case Full(o:PaymentType) => o.name.is
       case _ => "Def"
     }
+
+    def typePaymentName = typePaymentObj match {
+      case Full(o:PaymentType) => o.short_name.is
+      case _ => "Def"
+    }
+
     def treatmentDetailsAsText = payment.obj.get.treatmentDetailsAsText
 
     // usado para pgto vale profissional feito para cliente
