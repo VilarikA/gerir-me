@@ -433,7 +433,7 @@ class Boot {
         // peopleManagerAccess - lider na cczs
         Menu(Loc("Projetos", Link(List("project"), true, "/project/list_event"),projectMenuLabel,peopleManagerAccess,Hidden)),
 
-        Menu(Loc("Grupos", Link(List("project_group"), true, "/project+group/list_group"),projectMenuLabel,peopleManagerAccess,Hidden)),
+        Menu(Loc("Grupos", Link(List("project_group"), true, "/project_group/list_group"),projectMenuLabel,peopleManagerAccess,Hidden)),
 
         Menu(Loc("Relacionamentos", Link(List("bprelationship"), true, "/bprelationship/list_bprelationship"),"Relacionamentos",customerAccess,Hidden)),
         Menu(Loc("Questionários", Link(List("quiz"), true, "/quiz/list"),quizMenuLabel,customerAccess,Hidden)),
