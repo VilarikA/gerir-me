@@ -763,6 +763,51 @@ println (" vaiiii ============= " + SQL )
 					"""
 				toResponse(sql.format(unit, user),List(AuthUtil.company.id.is,month, start, end))
 			}
+
+			case "report" :: "animalbirthdays" :: Nil Post _ => {
+				def start:Int = S.param("start") match {
+					case Full(p) => p.toInt
+					case _ => 1 
+				}
+				def end:Int = S.param("end") match {
+					case Full(p) => p.toInt
+					case _ => 31
+				}
+
+				def month:Int = S.param("month") match {
+					case Full(p) => p.toInt+1
+					case _ => Calendar.getInstance().get(Calendar.MONTH)+1
+				}
+
+				def unit:String = S.param("unit") match {
+					case Full(p) if(p != "") => " and ba.unit =%S".format(p) 
+					case _ => ""
+				}			
+
+				val sql = """
+select * from ( 
+select date_part ('day', ba.birthday) as day, ba.birthday, 
+ba.id, ba.name, bc.name,  
+trim (bc.mobile_phone || ' ' || bc.phone || ' ' || bc.email_alternative),
+bc.email, cu.short_name, bi.name, bc.id, bi.id 
+from business_pattern ba 
+left join business_pattern bc on bc.id in (select business_pattern from bprelationship br 
+   where br.company = ba.company and br.status = 1 and relationship = 26 /* dono de */
+   and bp_related = ba.id) and bc.company = ba.company and bc.is_animal = false
+left join business_pattern bi on bi.id = ba.bp_indicatedby
+left join companyunit cu on cu.id = ba.unit
+where ba.company = ? and ba.is_animal = true
+and ba.birthday is not null
+and ba.deathDate is null
+and date_part ('month', ba.birthday) = ?
+%s
+) as data
+where day between ? and ?
+order by 1, 3
+"""
+				toResponse(sql.format(unit),List(AuthUtil.company.id.is, month, start, end))
+			}
+
 			case "report" :: "customer_account" :: Nil Post _=> {
 				def customer:String = S.param("customer") match {
 					case Full(p) if(p != "") => " and bp.id =%S".format(p) 

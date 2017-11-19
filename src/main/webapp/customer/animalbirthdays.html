@@ -1,23 +1,42 @@
 <div id="main" class="lift:surround?with=calendar;at=content">
   <link rel="stylesheet" type="text/css" href="/select2/select2.css" />
-  <script src="/select2/select2.js"></script><script src="/select2/select2_locale_pt-BR.js"></script>
+  <script src="/select2/select2.js"></script><script src="/mselect2/select2_locale_pt-BR.js"></script>
   <script src="/js/reports.js"></script>
   <script src="/js/jquery.tablesorter.pager.js"></script>
   <script type="text/javascript">
     var customers = [];
     $(function(){
       $("#send_message").notificationField(true);
-      $("#mapIcon").mapIcon(true);
       $("#month").monthField(false,true);
       $("#start").val("1");
       $("#end").val(new Date().getDate());    
+      var hasUnitModule = $('.has-unit-module').length > 0;
       var total = 0;
       var fields = [];
       fields[0] = "int";
       fields[1] = "date";
       fields[2] = "int";
-      fields[7] = "boolean";
-      fields[8] = "boolean";
+      fields[3] = {
+        type: "format",
+        decode: function(name, row) {
+          return "<a href='/animal/edit_animal?id=" + row[2] + "' target='_animal_maste'>" + name + "</a>";
+        }
+      }
+      fields[4] = {
+        type: "format",
+        decode: function(name, row) {
+          return "<a href='/customer/edit?id=" + row[9] + "' target='_customer_maste'>" + name + "</a>";
+        }
+      }
+      if (!hasUnitModule) {
+        fields[7] = "none";
+      }
+      fields[8] = {
+        type: "format",
+        decode: function(name, row) {
+          return "<a href='/customer/edit?id=" + row[10] + "' target='_customer_maste'>" + name + "</a>";
+        }
+      }
       fields[9] = {
         type : "format",
         decode : function(id){
@@ -27,7 +46,7 @@
         }
       };
       $("#unit").unitField(true,false);
-      var url = "/report/birthdays";
+      var url = "/report/animalbirthdays";
       var request = function(){
         total = 0;
         customers=[];
@@ -58,9 +77,10 @@
   </script>
   <div class="">
     <form id="form_report" class="well form-search" method='get'>
-      <h1><span class="lift:CompanySnippet.thumb"> </span>
-        <input class="report_title local_storage" id="title_birthdays" name="title_birthdays" size="30" type="text" value="Relatório de Aniversariantes"/>
-        </h1>
+      <h1>
+        <span class="lift:CompanySnippet.thumb"> </span>
+        <input class="report_title local_storage" id="title_animalbirthdays" name="title_animalbirthdays" size="30" type="text" value="Relatório de Animais Aniversariantes"/>
+      </h1>
       <div class="row">
         <div class="span9">
           <div class="clearfix">
@@ -71,46 +91,13 @@
             </div>
           </div>
           <div class="clearfix">
-            <label for="mapIcon">Ícone / Status</label>
-              <div class="input">
-                <div class="inline-inputs">
-                  <div style="float:left; padding-right:10px" class="input-prepend">
-                    <select multiple size="30" id="mapIcon" class='local_storage medium' name="mapIcon">
-                    </select>                               
-                  </div>
-                  <div style="float:left; padding-right:10px" class="input-prepend">
-                    <select multiple="multiple" class="medium" id="status" name="status" value="" >
-                        <option value="All">Todos</option>
-                        <option value="1">Ativo</option>
-                        <option value="4">Inativo</option>
-                    </select>
-                  </div>
-                </div>
-              </div>
-          </div>
-          <div class="clearfix">
-            <label for=""> Tipos </label>
-            <div class="input">
-              <p>
-              <input type="checkbox" id='customer' checked="true" name="customer">
-              <span data-i18n='Clientes'></span>?
-              <input type="checkbox" id='employee' name="employee"> <span data-i18n='Profissionais'></span>?
-              </p>
-            </div>
-            <label for=""></label>
-            <div class="input">
-              <p>
-              <input class="local_storage" type="checkbox" id='userstatus' name="userstatus"> <span data-i18n='Profissionais'></span> Ativos?
-              </p>
-            </div>
-          </div>                  
-          <div class="clearfix">
             <label for=""> Dias </label>
             <div class="input">
               <input type="text" class="mini" id='start' name="start" placeholder="Início">
               <input type="text" class="mini" id='end' name="end" placeholder="Fim">  
             </div>
           </div>
+          <input type="hidden" class="has-unit-module lift:SecuritySnippet.hasUnitModule" value="1">
           <div class="clearfix lift:SecuritySnippet.hasUnitModule">
             <label for="unit">Unidade </label>
             <div class="input">
@@ -173,11 +160,11 @@
       <th>Aniversário</th>
       <th>Cod</th>
       <th>Nome</th>
+      <th>Responsável</th>
       <th>Telefone</th>
       <th>E-mail</th>
-      <th>Unidade</th>
-      <th><span data-i18n='Cliente'></span></th>
-      <th><span data-i18n='Profissional'></span>?</th>
+      <th class="lift:SecuritySnippet.hasUnitModule">Unidade</th>
+      <th>Indicado Por</th>
       <th>Id</th>
     </thead>
     <tbody>
