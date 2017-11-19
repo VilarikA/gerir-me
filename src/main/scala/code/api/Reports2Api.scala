@@ -576,10 +576,16 @@ object Reports2 extends RestHelper with ReportRest with net.liftweb.common.Logge
 					case _ => " and 1 = 1 "
 				}
 
+				val strAux = if (PermissionModule.anvisa_?) {
+						" bc.barcode  || ' ' || "
+					} else {
+						""
+					}
 				val SQL = """
 					select bc.id, tr.dateevent, 
 					fu_dt_humanize (tr.dateevent),
-					to_char (tr.start_c, 'hh24:mi'), tr.status, pr.name, bc.name as cliente, 
+					to_char (tr.start_c, 'hh24:mi'), tr.status, pr.name, trim (""" +
+					strAux + """ bc.name) as cliente, 
 					(select case 
 					  when tr1.status = 1 then 'faltou' 
 					  when tr1.status = 8 then 'desmarcou' 
@@ -620,6 +626,7 @@ object Reports2 extends RestHelper with ReportRest with net.liftweb.common.Logge
 					/* project class */
 					order by tr.dateevent desc, bp.name asc
 				"""
+println (" vaiiii ============= " + SQL ) 
 				toResponse(SQL.format(customer, status, unit, offsale, user, prod),
 					List(AuthUtil.company.id.is, start, end))
 			}
